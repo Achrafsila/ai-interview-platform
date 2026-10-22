@@ -72,3 +72,76 @@ test("malformed codes rejected before network access", async () => {
   assert.throws(()=>api.getEngineSnapshot("../admin"),TypeError);
   assert.throws(()=>api.getEvaluatorReference("TECH-1"),TypeError);
 });
+
+const sessionId = "123e4567-e89b-42d3-a456-426614174000";
+const candidateId = "123e4567-e89b-42d3-a456-426614174001";
+
+test("S2-04 opens a verified interview session and captures candidate identity", async () => {
+  let request;
+  const api=createQuestionBankClient({
+    baseUrl:"https://example.supabase.co/functions/v1/question-bank",
+    tokenProvider:async()=>"signed-test-jwt",
+    fetchImpl:async(url,init)=>{request={url,init};return {ok:true,status:201,json:async()=>({session_id:sessionId,locale:"fr"})};},
+  });
+  const response=await api.createSession({candidate_user_id:candidateId,locale:"fr"});
+  assert.equal(response.session_id,sessionId);
+  assert.match(request.url,/question-bank\/engine\/sessions$/);
+  assert.equal(request.init.method,"POST");
+  assert.deepEqual(JSON.parse(request.init.body),{candidate_user_id:candidateId,locale:"fr"});
+  assert.equal(request.init.headers.authorization,"Bearer signed-test-jwt");
+});
+
+test("S2-04 selects next published question and preserves server-provided snapshot",async()=>{
+  let request;
+  const api=createQuestionBankClient({
+    baseUrl:"https://example.supabase.co/functions/v1/question-bank",
+    tokenProvider:async()=>"signed-jwt",
+    fetchImpl:async(url,init)=>{request={url,init};return {ok:true,status:201,json:async()=>({
+      snapshot:{question_version_id:"immutable-version",rubric_version_id:"immutable-rubric",
+                locale:"en",prompt_text:"Tell me about...",turn_index:1}})};},
+  });
+  const r=await api.nextQuestion(sessionId,{family:"rh",difficulty:2});
+  assert.match(request.url,/engine\/sessions\/123e4567-e89b-42d3-a456-426614174000\/questions\/next$/);
+  assert.equal(request.init.method,"POST");
+  assert.deepEqual(JSON.parse(request.init.body),{family:"rh",difficulty:2});
+  assert.equal(r.snapshot.question_version_id,"immutable-version");
+  assert.equal(r.snapshot.turn_index,1);
+});
+
+test("S2-04 supports explicit published-question assignment and session replay",async()=>{
+  const requests=[];
+  const api=createQuestionBankClient({
+    baseUrl:"https://example.supabase.co/functions/v1/question-bank",
+    tokenProvider:async()=>"signed-jwt",
+    fetchImpl:async(url,init)=>{requests.push({url,method:init.method});return {ok:true,json:async()=>({items:[]})};},
+  });
+  await api.appendQuestion(sessionId,"TECH-003");
+  await api.getSessionQuestions(sessionId);
+  await api.getCandidateQuestions(sessionId);
+  assert.match(requests[0].url,/engine\/sessions\/.*\/questions$/);
+  assert.equal(requests[0].method,"POST");
+  assert.match(requests[1].url,/engine\/sessions\/.*\/questions$/);
+  assert.equal(requests[1].method,"GET");
+  assert.match(requests[2].url,/candidate\/sessions\/.*\/questions$/);
+});
+
+test("reject invalid session IDs before network activity",async()=>{
+  const api=createQuestionBankClient({
+    baseUrl:"https://example.supabase.co/functions/v1/question-bank",
+    tokenProvider:async()=>"jwt",
+    fetchImpl:async()=>{throw Error("request should never be sent");},
+  });
+  assert.throws(()=>api.nextQuestion("../sessions",{}),TypeError);
+  assert.throws(()=>api.getCandidateQuestions("fake-id"),TypeError);
+  assert.throws(()=>api.appendQuestion(sessionId,"TECH-../../etc"),TypeError);
+});
+
+test("S2-04 adapter surfaces unauthorized HTTP denial",async()=>{
+  const api=createQuestionBankClient({
+    baseUrl:"https://example.supabase.co/functions/v1/question-bank",
+    tokenProvider:async()=>"expired-token",
+    fetchImpl:async()=>({ok:false,status:401}),
+  });
+  await assert.rejects(api.createSession({candidate_user_id:candidateId}),
+    e=>e instanceof QuestionBankApiError && e.status===401);
+});
