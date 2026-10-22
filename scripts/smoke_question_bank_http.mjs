@@ -68,16 +68,8 @@ if (missing.length) {
   const noAuth=await request("questions");
   expect(noAuth,401,"No-token request is denied");
 
-  const listing=await request("questions?locale=fr",candidate.token);
-  expect(listing,200,"Authenticated candidate reads only published catalog");
-  if(!Array.isArray(listing.body.items))throw new Error("Published list missing items array");
-  // The initial bank has 120 drafts; a later review may publish content.
-  for(const item of listing.body.items){
-    for(const forbidden of ["expected_elements","weights","red_flags","rubric_version_id",
-       "question_version_id","evaluation_notes"]){
-      if(Object.hasOwn(item,forbidden))throw Error("Candidate catalog leaked "+forbidden);
-    }
-  }
+  expect(await request("questions?locale=fr",candidate.token),
+    403,"Candidate cannot enumerate future interview questions");
   expect(await request("engine/snapshot/RH-001",candidate.token),
     403,"Candidate cannot read engine preview");
   expect(await request("evaluator/questions/RH-001",candidate.token),
@@ -88,6 +80,16 @@ if (missing.length) {
 
   if(env.TEST_ENGINE_EMAIL&&env.TEST_ENGINE_PASSWORD){
     const engine=await login(env.TEST_ENGINE_EMAIL,env.TEST_ENGINE_PASSWORD);
+    const listing=await request("questions?locale=fr",engine.token);
+    expect(listing,200,"Trusted engine can inspect published-only catalog");
+    if(!Array.isArray(listing.body.items))throw new Error("Published catalog missing items array");
+    for(const item of listing.body.items){
+      for(const forbidden of ["expected_elements","weights","red_flags",
+         "evaluation_notes","rubric_version_id","question_version_id"]){
+        if(Object.hasOwn(item,forbidden))throw Error("Catalog leaked "+forbidden);
+      }
+    }
+
     const opened=await request("engine/sessions",engine.token,"POST",
       {candidate_user_id:candidate.id,locale:"fr"});
     expect(opened,201,"Engine can create persisted session");
