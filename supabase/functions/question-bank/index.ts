@@ -21,9 +21,16 @@ const canEngine = (role: unknown) => role === "interview_engine" || role === "ad
 const canEvaluate = (role: unknown) => role === "evaluator" || role === "admin";
 const validLocale = (s: string | null) => s === null || s === "fr" || s === "en";
 const validCode = (s: string) => /^(RH|TECH)-[0-9]{3}$/.test(s);
+const validUuid = (s: unknown): s is string => typeof s === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(s);
+async function readSmallJson(req: Request): Promise<Record<string, unknown> | null> {
+  const body = await req.text();
+  if (body.length > 2048) return null;
+  try { const value = JSON.parse(body); return value && typeof value === "object" && !Array.isArray(value) ? value : null; }
+  catch { return null; }
+}
 
 Deno.serve(async (req: Request) => {
-  if (req.method !== "GET") return json({ error: "method_not_allowed" }, 405);
+  if (req.method !== "GET" && req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
   if (!sql || !projectUrl || !publishable) return json({ error: "configuration_unavailable" }, 503);
   const authorization = req.headers.get("authorization") ?? "";
   const match = /^Bearer (\S+)$/.exec(authorization);
@@ -56,12 +63,11 @@ Deno.serve(async (req: Request) => {
   if (after && !validCode(after)) return json({ error: "invalid_cursor" }, 400);
 
   try {
-    if (endpoint.length === 1 && endpoint[0] === "questions") {
+    if (req.method === "GET" && endpoint.length === 1 && endpoint[0] === "questions") {
       // The view includes only approved current published revisions.
       // Fetch metadata only; private expected answer fields are never selected here.
       const rows = await sql`
-        SELECT question_id, question_version_id, rubric_version_id,
-          code, version, family, category_code, question_type,
+        SELECT code, version, family, category_code, question_type,
           difficulty, locale, prompt, primary_competency
         FROM question_bank.published_questions_safe
         WHERE locale = ${locale}
@@ -75,7 +81,7 @@ Deno.serve(async (req: Request) => {
       const items = rows.slice(0, limit);
       return json({ items, next_cursor: more ? items[items.length - 1].code : null });
     }
-    if (endpoint.length === 3 && endpoint[0] === "engine" && endpoint[1] === "snapshot") {
+    if (req.method === "GET" && endpoint.length === 3 && endpoint[0] === "engine" && endpoint[1] === "snapshot") {
       if (!canEngine(role)) return json({ error: "forbidden" }, 403);
       const code = endpoint[2];
       if (!validCode(code)) return json({ error: "invalid_code" }, 400);
@@ -88,7 +94,95 @@ Deno.serve(async (req: Request) => {
       `;
       return rows.length ? json({ snapshot: rows[0] }) : json({ error: "not_found" }, 404);
     }
-    if (endpoint.length === 3 && endpoint[0] === "evaluator" && endpoint[1] === "questions") {
+
+    // Session orchestration is restricted to an authenticated S2-04 engine.
+    // SQL functions write versioned snapshots atomically; never store expected answers.
+    if (req.method === "POST" && endpoint.join("/") === "engine/sessions") {
+      if (!canEngine(role)) return json({ error: "forbidden" }, 403);
+      const input = await readSmallJson(req);
+      const candidateId = input?.candidate_user_id;
+      const requestedLocale = input?.locale ?? "fr";
+      if (!validUuid(candidateId) || !validLocale(String(requestedLocale)))
+        return json({ error: "invalid_session" }, 400);
+      const rows = await sql`
+        SELECT question_bank.open_interview_session(
+          ${candidateId}::uuid, ${data.user.id}::uuid,
+          ${requestedLocale}::text
+        ) AS session_id
+      `;
+      return json({ session_id: rows[0].session_id, locale: requestedLocale }, 201);
+    }
+    if (req.method === "POST" && endpoint.length === 5 &&
+        endpoint[0] === "engine" && endpoint[1] === "sessions" &&
+        endpoint[3] === "questions" && endpoint[4] === "next") {
+      if (!canEngine(role)) return json({ error: "forbidden" }, 403);
+      const sessionId = endpoint[2];
+      if (!validUuid(sessionId)) return json({ error: "invalid_session" }, 400);
+      const input = await readSmallJson(req);
+      if (!input) return json({ error: "invalid_selection" }, 400);
+      const requestedFamily = input.family ?? null;
+      const requestedCategory = input.category ?? null;
+      const requestedDifficulty = input.difficulty ?? null;
+      if ((requestedFamily !== null && !["rh", "transversal", "technical"].includes(String(requestedFamily))) ||
+          (requestedCategory !== null && (typeof requestedCategory !== "string" || !/^[a-z_]{1,64}$/.test(requestedCategory))) ||
+          (requestedDifficulty !== null && (![1, 2, 3, 4].includes(Number(requestedDifficulty)) || typeof requestedDifficulty !== "number"))) {
+        return json({ error: "invalid_selection" }, 400);
+      }
+      const rows = await sql`
+        SELECT * FROM question_bank.next_interview_question(
+          ${sessionId}::uuid, ${data.user.id}::uuid,
+          ${requestedFamily}::text, ${requestedCategory}::text,
+          ${requestedDifficulty}::smallint
+        )
+      `;
+      return rows.length ? json({ snapshot: rows[0] }, 201) : json({ error: "no_question" }, 404);
+    }
+    if (req.method === "POST" && endpoint.length === 4 &&
+        endpoint[0] === "engine" && endpoint[1] === "sessions" && endpoint[3] === "questions") {
+      if (!canEngine(role)) return json({ error: "forbidden" }, 403);
+      const sessionId = endpoint[2];
+      if (!validUuid(sessionId)) return json({ error: "invalid_session" }, 400);
+      const input = await readSmallJson(req);
+      const code = input?.code;
+      if (typeof code !== "string" || !validCode(code))
+        return json({ error: "invalid_code" }, 400);
+      const rows = await sql`
+        SELECT * FROM question_bank.append_published_question(
+          ${sessionId}::uuid, ${code}::text, ${data.user.id}::uuid
+        )
+      `;
+      return rows.length ? json({ snapshot: rows[0] }, 201) : json({ error: "not_found" }, 404);
+    }
+    if (req.method === "GET" && endpoint.length === 4 &&
+        endpoint[1] === "sessions" && endpoint[3] === "questions" &&
+        (endpoint[0] === "engine" || endpoint[0] === "candidate")) {
+      const sessionId = endpoint[2];
+      if (!validUuid(sessionId)) return json({ error: "invalid_session" }, 400);
+      if (endpoint[0] === "engine") {
+        if (!canEngine(role)) return json({ error: "forbidden" }, 403);
+        const rows = await sql`
+          SELECT s.id AS session_id, s.status, q.turn_index, q.question_code,
+                 q.question_version_id, q.rubric_version_id, q.locale,
+                 q.prompt_text, q.selected_at
+          FROM question_bank.interview_sessions s
+          JOIN question_bank.interview_question_snapshots q ON q.session_id=s.id
+          WHERE s.id=${sessionId}::uuid AND s.engine_actor_id=${data.user.id}::uuid
+          ORDER BY q.turn_index
+        `;
+        return json({ items: rows });
+      }
+      // Candidate route returns only their own question text, not private IDs.
+      const rows = await sql`
+        SELECT q.turn_index, q.question_code, q.locale, q.prompt_text
+        FROM question_bank.interview_sessions s
+        JOIN question_bank.interview_question_snapshots q ON q.session_id=s.id
+        WHERE s.id=${sessionId}::uuid AND s.candidate_user_id=${data.user.id}::uuid
+        ORDER BY q.turn_index
+      `;
+      return json({ items: rows });
+    }
+
+    if (req.method === "GET" && endpoint.length === 3 && endpoint[0] === "evaluator" && endpoint[1] === "questions") {
       if (!canEvaluate(role)) return json({ error: "forbidden" }, 403);
       const code = endpoint[2];
       if (!validCode(code)) return json({ error: "invalid_code" }, 400);
