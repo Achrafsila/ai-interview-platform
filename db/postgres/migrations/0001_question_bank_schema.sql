@@ -126,8 +126,9 @@ BEGIN
  IF OLD.status = 'published' THEN
    RAISE EXCEPTION 'Published question version is immutable; create a new version';
  END IF;
+ IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
  RETURN NEW;
-END $$;
+END $;
 CREATE TRIGGER trg_protect_published_version BEFORE UPDATE OR DELETE ON question_bank.question_versions
  FOR EACH ROW EXECUTE FUNCTION question_bank.protect_published_version();
 
@@ -137,8 +138,9 @@ BEGIN
  IF OLD.status = 'published' THEN
    RAISE EXCEPTION 'Published rubric version is immutable; create a new version';
  END IF;
+ IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
  RETURN NEW;
-END $$;
+END $;
 CREATE TRIGGER trg_protect_published_rubric BEFORE UPDATE OR DELETE ON question_bank.rubric_versions
  FOR EACH ROW EXECUTE FUNCTION question_bank.protect_published_rubric();
 
@@ -148,8 +150,9 @@ BEGIN
  IF EXISTS (SELECT 1 FROM question_bank.question_versions WHERE id = OLD.question_version_id AND status = 'published') THEN
    RAISE EXCEPTION 'Published localization is immutable';
  END IF;
+ IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
  RETURN NEW;
-END $$;
+END $;
 CREATE TRIGGER trg_protect_published_localization BEFORE UPDATE OR DELETE ON question_bank.localizations
  FOR EACH ROW EXECUTE FUNCTION question_bank.protect_published_localization();
 
@@ -159,8 +162,9 @@ BEGIN
  IF EXISTS (SELECT 1 FROM question_bank.question_versions WHERE id = OLD.question_version_id AND status = 'published') THEN
    RAISE EXCEPTION 'Published competency links are immutable';
  END IF;
+ IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
  RETURN NEW;
-END $$;
+END $;
 CREATE TRIGGER trg_protect_published_competency BEFORE UPDATE OR DELETE ON question_bank.question_competencies
  FOR EACH ROW EXECUTE FUNCTION question_bank.protect_published_competency();
 
