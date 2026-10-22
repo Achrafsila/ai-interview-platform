@@ -96,3 +96,12 @@ La [matrice d'audit du corpus](S2-03_Quality_Review_Matrix.md) détaille les 120
 Migration `0004_private_catalog_boundary.sql` appliquée sur Supabase : aucune permission client (`anon` ou `authenticated`) vers le schéma privé et ses fonctions, vue `published_questions_safe` restreinte aux champs non sensibles et contenant actuellement zéro entrée publiée. Vérifications d'accès sur la base réelle : réussies. [Rapport](S2-03_Access_Security_Verification.md).
 
 **Le point « Versioning, droits d'accès et sécurité » reste ouvert**, malgré les contrôles déjà déployés, car aucun service applicatif authentifié, politique d'accès métier nominative ni test intégral S2-04 n'existent encore. Les 120 questions restent toutes en `draft`.
+
+
+## Service API authentifié déployé — 22/10/2026 (PR #41 fusionnée)
+
+La [PR #41](https://github.com/Achrafsila/ai-interview-platform/pull/41) a été fusionnée sur `main` (commit `00e380d`). Quatre jobs CI réussis : validation du corpus, intégration PostgreSQL, tests de l'adaptateur S2-04 et vérification TypeScript Deno.
+
+**Supabase en service :** Edge Function `question-bank` `ACTIVE`, `verify_jwt=true`. Contrôle `auth.getUser`, routes de lecture du catalogue `published` uniquement, accès aux snapshots limité aux rôles `interview_engine/admin`, réponses d'évaluation limitées aux rôles `evaluator/admin`, tous définis dans `app_metadata` (serveur). Un adaptateur serveur est désormais versionné sous `src/integrations/s2-04/question-bank-client.mjs` et [documenté](S2-03_S2-04_Integration.md).
+
+**À ne pas confondre avec une recette E2E complète :** le moteur de simulation S2-04, la création contrôlée des identités de test, la persistance des snapshots de sessions et les essais avec vrais JWT/rôles sont encore manquants. Aucun utilisateur n'a été promu administrateur ou évaluateur et aucune question n'a été publiée. Les éléments « connecter au moteur » et « recette fonctionnelle complète » restent **ouverts**. La sécurité et les droits sont en place pour les données et pour les routes, mais doivent encore subir des tests réels multirôles.
