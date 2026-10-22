@@ -1,0 +1,19 @@
+name: Repository checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  repository-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required project documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in README.md .gitignore docs/CONTRIBUTING.md docs/DECISIONS.md docs/SECURITY.md; do
+            test -s "$file" || { echo "Missing or empty: $file"; exit 1; }
+          done
+          echo 'Repository foundation checks passed'
