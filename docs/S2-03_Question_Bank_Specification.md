@@ -416,3 +416,17 @@ S2-01 conserve les objectifs professionnels principaux et les objectifs de prép
 **Non livré à ce stade :** 120 fiches complètes et validées, migrations SQL effectives, services API, tests automatisés exécutés, configuration RLS réelle, intégration au dépôt, enregistrement dans ClickUp. Ces éléments sont volontairement documentés comme travaux d'implémentation, pas comme réalisations déjà effectuées.
 
 **Action suivante dans ce projet :** passer à la revue technique du dépôt puis mettre en œuvre le lot A. La liste des 15 sous-tâches est conservée intégralement **dans ce document uniquement** à la demande de l'utilisateur.
+
+---
+
+## 18. Mise à jour d'avancement — 22 octobre 2026
+
+La section 17 décrit la situation **au moment de la rédaction initiale**. Depuis, un **corpus pilote de 20 questions** et ses grilles ont été ajoutés au dépôt :
+
+- [10 questions RH, revue éditoriale approuvée](../data/question-bank/rh_questions.json) ; toutes restent en `draft` non publiées.
+- [10 questions techniques pré-auditées et corrigées par IA](../data/question-bank/technical_questions.json) ; expertise humaine spécialisée toujours requise.
+- [Grilles de référence pilotes](../data/question-bank/evaluation_rubrics.json) ; pondérations 100 %, seuil N/E encore proposé.
+- [Compte rendu de clôture RH](S2-03_Revue_RH_Cloture.md) et [rapport d'audit technique](S2-03_Audit_Technique.md).
+- [Suivi d'implémentation / checklist ClickUp](S2-03_Implementation_Tracker.md) : source de vérité pour l'état courant et les points restants.
+
+**Reste à faire :** calibration de la notation, création et revue des 100 questions supplémentaires, migration/implémentation backend, contrôles d'accès, intégration S2-04 et recette. Aucune publication dans Supabase n'a été effectuée.
