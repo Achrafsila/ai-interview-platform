@@ -123,6 +123,25 @@ BEGIN
  EXCEPTION WHEN OTHERS THEN blocked:=true; END;
  IF NOT blocked THEN RAISE EXCEPTION 'Unowned engine invoked dynamic selection'; END IF;
 
+
+ -- A session may only be completed by its owning engine.
+ blocked:=false;
+ BEGIN PERFORM question_bank.complete_interview_session(sess,other_engine);
+ EXCEPTION WHEN OTHERS THEN blocked:=true; END;
+ IF NOT blocked THEN RAISE EXCEPTION 'Unowned engine completed interview'; END IF;
+ PERFORM question_bank.complete_interview_session(sess,engine);
+ IF NOT EXISTS (SELECT 1 FROM question_bank.interview_sessions
+                WHERE id=sess AND status='completed' AND completed_at IS NOT NULL) THEN
+   RAISE EXCEPTION 'Interview session completion was not persisted';
+ END IF;
+ blocked:=false;
+ BEGIN PERFORM question_bank.next_interview_question(sess,engine,'rh',NULL,1::smallint);
+ EXCEPTION WHEN OTHERS THEN blocked:=true; END;
+ IF NOT blocked THEN RAISE EXCEPTION 'Completed session accepted another question'; END IF;
+ IF (SELECT count(*) FROM question_bank.interview_question_snapshots WHERE session_id=sess)<>2 THEN
+   RAISE EXCEPTION 'Session completion changed immutable snapshots';
+ END IF;
+
  IF has_table_privilege('anon','question_bank.interview_sessions','SELECT')
     OR has_table_privilege('authenticated','question_bank.interview_question_snapshots','SELECT')
     OR has_function_privilege('authenticated',
