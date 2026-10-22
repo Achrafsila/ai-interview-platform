@@ -1,0 +1,491 @@
+{
+  "schema_version": "pilot-1.0",
+  "publication_status": "draft_not_imported",
+  "questions": [
+    {
+      "code": "RH-001",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "parcours",
+      "question_type": "introductory",
+      "difficulty": 1,
+      "primary_competency": "communication",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Présentez votre parcours en deux minutes et expliquez ce qui vous a conduit à votre projet actuel.",
+          "followup_seeds": [
+            "Qu’avez-vous choisi de mettre en avant et pourquoi ?",
+            "Quelle expérience a le plus influencé votre orientation ?"
+          ]
+        },
+        "en": {
+          "prompt": "Walk me through your background in two minutes and explain what led you to your current goal.",
+          "followup_seeds": [
+            "What did you choose to emphasize and why?",
+            "Which experience most shaped your direction?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "chronologie compréhensible",
+        "choix majeurs expliqués",
+        "lien avec le projet ciblé"
+      ],
+      "acceptable_variations_fr": "Un parcours académique ou associatif constitue une preuve pertinente.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "approved",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "editorial_note_fr": "Validée éditorialement le 22/10/2026, formulation initiale conservée."
+      },
+      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+    },
+    {
+      "code": "RH-002",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "motivation",
+      "question_type": "motivational",
+      "difficulty": 1,
+      "primary_competency": "motivation",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Pourquoi ce type de poste vous intéresse-t-il et qu’attendez-vous de votre prochain environnement ?",
+          "followup_seeds": [
+            "Quelles missions vous attirent précisément ?",
+            "Comment vérifieriez-vous que ce poste vous correspond ?"
+          ]
+        },
+        "en": {
+          "prompt": "Why does this type of role interest you, and what do you expect from your next environment?",
+          "followup_seeds": [
+            "Which responsibilities specifically appeal to you?",
+            "How would you check whether this role fits you?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "motivations concrètes",
+        "compréhension des activités visées",
+        "attentes réalistes et cohérentes"
+      ],
+      "acceptable_variations_fr": "Une motivation intrinsèque n’exige pas de connaître une entreprise donnée.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "approved",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "editorial_note_fr": "Validée éditorialement le 22/10/2026, formulation initiale conservée."
+      },
+      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+    },
+    {
+      "code": "RH-003",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "realisation",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "reflection",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Décrivez une réalisation dont vous êtes fier : quel était votre rôle exact et quel impact a-t-elle eu ?",
+          "followup_seeds": [
+            "Qu’avez-vous fait personnellement ?",
+            "Comment avez-vous mesuré ou observé le résultat ?"
+          ]
+        },
+        "en": {
+          "prompt": "Describe an achievement you are proud of: what was your specific contribution and what impact did it have?",
+          "followup_seeds": [
+            "What did you personally do?",
+            "How did you measure or observe the outcome?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "contexte précis",
+        "contribution personnelle",
+        "impact ou apprentissage identifiable"
+      ],
+      "acceptable_variations_fr": "Résultats qualitatifs, scolaires ou bénévoles acceptés ; absence de métriques non pénalisante en soi.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "approved",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "editorial_note_fr": "Validée éditorialement le 22/10/2026, formulation initiale conservée."
+      },
+      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+    },
+    {
+      "code": "RH-004",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "resolution",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "problem_solving",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Racontez un problème difficile que vous avez rencontré. Comment l’avez-vous analysé et résolu ?",
+          "followup_seeds": [
+            "Quelle autre solution aviez-vous envisagée ?",
+            "Que changeriez-vous avec le recul ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about a difficult problem you faced. How did you analyze and solve it?",
+          "followup_seeds": [
+            "What alternative did you consider?",
+            "What would you change in hindsight?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "problème et contexte bien définis",
+        "causes ou hypothèses explicitées",
+        "options comparées selon des critères pertinents",
+        "actions adaptées au contexte et rôle personnel identifié",
+        "résultat, limites et apprentissages"
+      ],
+      "acceptable_variations_fr": "Une résolution partiellement réussie ou infructueuse peut démontrer une forte compétence si l'analyse, les arbitrages, les actions et le recul sont de qualité. Exemples académiques, associatifs et professionnels acceptés.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "approved",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "editorial_note_fr": "Validée éditorialement par le responsable produit le 22/10/2026, corrections acceptées."
+      },
+      "evaluation_notes_fr": "Évaluer explicitement l'identification des causes, la comparaison des options, la pertinence des actions et la capacité de recul. Ne pas confondre réussite du résultat et qualité du raisonnement. La communication est un critère distinct ; ne pas pénaliser l'accent ou l'absence d'expérience salariée.",
+      "competency_indicators": [
+        {
+          "code": "causal_analysis",
+          "fr": "Identification des causes et distinction entre symptômes et causes",
+          "en": "Identification of causes and distinction between symptoms and root causes"
+        },
+        {
+          "code": "option_comparison",
+          "fr": "Comparaison de solutions possibles et justification du choix",
+          "en": "Comparison of possible solutions and justification of the choice"
+        },
+        {
+          "code": "action_relevance",
+          "fr": "Pertinence et faisabilité des actions retenues",
+          "en": "Relevance and feasibility of the actions taken"
+        },
+        {
+          "code": "reflection",
+          "fr": "Capacité de recul, limites et apprentissages",
+          "en": "Reflection, limitations and lessons learned"
+        }
+      ]
+    },
+    {
+      "code": "RH-005",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "collaboration",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "collaboration",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Décrivez un désaccord avec un membre de votre groupe ou équipe et la manière dont vous l’avez géré.",
+          "followup_seeds": [
+            "Comment avez-vous compris sa perspective ?",
+            "Comment êtes-vous parvenus à une décision ou à une suite constructive ?"
+          ]
+        },
+        "en": {
+          "prompt": "Describe a disagreement with a teammate and how you handled it.",
+          "followup_seeds": [
+            "How did you understand their perspective?",
+            "How did you reach a decision or agree on a constructive next step?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "point de vue opposé compris",
+        "écoute et échange",
+        "action respectueuse",
+        "issue ou leçon"
+      ],
+      "acceptable_variations_fr": "Les désaccords étudiants, associatifs ou en stage sont recevables. Un accord complet ou un consensus final n'est pas nécessaire ; une gestion respectueuse et une suite constructive suffisent.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "approved",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "editorial_note_fr": "Validée éditorialement par le responsable produit le 22/10/2026, corrections acceptées."
+      },
+      "evaluation_notes_fr": "Évaluer l'écoute, la compréhension de points de vue différents, la gestion respectueuse du désaccord et les actions entreprises. Ne pas supposer une escalade ni exiger un consensus.",
+      "competency_indicators": [
+        {
+          "code": "active_listening",
+          "fr": "Écoute et compréhension du point de vue opposé",
+          "en": "Listening and understanding the other viewpoint"
+        },
+        {
+          "code": "respectful_dialogue",
+          "fr": "Dialogue respectueux et expression claire du désaccord",
+          "en": "Respectful dialogue and clear expression of disagreement"
+        },
+        {
+          "code": "constructive_outcome",
+          "fr": "Décision, compromis ou suite constructive (sans obligation de consensus)",
+          "en": "Decision, compromise or constructive next step (no required consensus)"
+        }
+      ]
+    },
+    {
+      "code": "RH-006",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "adaptabilite",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "adaptability",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Vous découvrez qu’une priorité importante change à la veille d’une échéance. Que faites-vous ?",
+          "followup_seeds": [
+            "Qui prévenez-vous en premier ?",
+            "Que feriez-vous si les deux échéances restent incontournables ?"
+          ]
+        },
+        "en": {
+          "prompt": "An important priority changes the day before a deadline. What do you do?",
+          "followup_seeds": [
+            "Who would you notify first?",
+            "What if both deadlines remain non-negotiable?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "clarification des priorités",
+        "identification des impacts",
+        "communication proactive",
+        "réorganisation réaliste"
+      ],
+      "acceptable_variations_fr": "Plusieurs séquences d’action peuvent être pertinentes selon le contexte.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false
+      },
+      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+    },
+    {
+      "code": "RH-007",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "apprentissage",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "learning_agility",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Parlez d’une erreur ou d’un retour critique qui vous a permis de progresser.",
+          "followup_seeds": [
+            "Quel comportement avez-vous changé ?",
+            "Comment savez-vous que vous avez progressé ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about a mistake or critical feedback that helped you improve.",
+          "followup_seeds": [
+            "What behavior did you change?",
+            "How do you know you improved?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "responsabilité assumée",
+        "retour compris",
+        "action corrective",
+        "changement vérifiable"
+      ],
+      "acceptable_variations_fr": "Ne pas récompenser uniquement le récit d’une erreur spectaculaire.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false
+      },
+      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+    },
+    {
+      "code": "RH-008",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "priorisation",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "prioritization",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Vous avez trois livrables urgents et ne pouvez pas tous les terminer à temps. Comment décidez-vous ?",
+          "followup_seeds": [
+            "Quelles informations vous manquent ?",
+            "Comment annoncez-vous votre décision ?"
+          ]
+        },
+        "en": {
+          "prompt": "You have three urgent deliverables and cannot finish them all on time. How do you decide?",
+          "followup_seeds": [
+            "What information is missing?",
+            "How would you communicate your decision?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "critères d’urgence et impact",
+        "dépendances identifiées",
+        "arbitrage explicite",
+        "communication des compromis"
+      ],
+      "acceptable_variations_fr": "La meilleure réponse peut demander une clarification avant de choisir.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false
+      },
+      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+    },
+    {
+      "code": "RH-009",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "influence",
+      "question_type": "behavioral",
+      "difficulty": 3,
+      "primary_competency": "influence",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Racontez une situation où vous avez convaincu des personnes initialement opposées à votre proposition.",
+          "followup_seeds": [
+            "Quel argument n’a pas fonctionné ?",
+            "Comment avez-vous adapté votre approche ?"
+          ]
+        },
+        "en": {
+          "prompt": "Describe a time you persuaded people who initially disagreed with your proposal.",
+          "followup_seeds": [
+            "Which argument did not work?",
+            "How did you adapt your approach?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "compréhension des objections",
+        "argumentation adaptée",
+        "écoute active",
+        "résultat et limites"
+      ],
+      "acceptable_variations_fr": "Convaincre n’implique ni domination ni consensus total.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false
+      },
+      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+    },
+    {
+      "code": "RH-010",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "rh",
+      "category_code": "projection",
+      "question_type": "motivational",
+      "difficulty": 1,
+      "primary_competency": "career_clarity",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quelles compétences souhaitez-vous développer dans les deux prochaines années et comment comptez-vous y parvenir ?",
+          "followup_seeds": [
+            "Quelle première action engageriez-vous ?",
+            "Que ferez-vous si le plan doit changer ?"
+          ]
+        },
+        "en": {
+          "prompt": "Which skills do you want to develop over the next two years, and how will you do it?",
+          "followup_seeds": [
+            "What first step would you take?",
+            "What if your plan needs to change?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "objectifs précis",
+        "motifs cohérents",
+        "actions concrètes",
+        "indicateurs de progression"
+      ],
+      "acceptable_variations_fr": "Un candidat peut exprimer une incertitude réfléchie sur son orientation.",
+      "red_flags_fr": [],
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false
+      },
+      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+    }
+  ],
+  "review_batch": {
+    "batch": "RH-001_to_RH-005",
+    "date": "2026-10-22",
+    "editorially_approved": [
+      "RH-001",
+      "RH-002",
+      "RH-003",
+      "RH-004",
+      "RH-005"
+    ],
+    "publication": "none",
+    "note": "Lot 1 clos en revue éditoriale ; contrôle métier final et publication restent distincts."
+  }
+}
