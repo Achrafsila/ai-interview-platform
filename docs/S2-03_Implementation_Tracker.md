@@ -73,3 +73,12 @@ La [PR #39](https://github.com/Achrafsila/ai-interview-platform/pull/39) a été
 **Non livré :** projet Supabase dédié, application des migrations dans un environnement AI Interview, API HTTP effective, authentification et habilitations opérationnelles, intégration S2-04, approbation humaine complète du corpus. Les actions ClickUp sur ces sujets restent **ouvertes**, malgré la fusion de la PR.
 
 [Conditions de clôture de S2-03](S2-03_Closure_Gates.md). Aucun statut ClickUp n'a été modifié par la fusion GitHub.
+
+
+## Déploiement Supabase effectif — 22/10/2026
+
+Les migrations PostgreSQL `0001`, `0002` et `0003` ont été **appliquées dans le projet dédié** [ai-interview-platform](https://supabase.com/dashboard/project/aqybktqgoartjiqoqcfg). Les **120 questions** (50 RH/70 techniques) et **240 localisations** ont été importées en `draft`, sans publication ni accès candidat. Les 10 tables ont RLS active ; `anon` et `authenticated` ne disposent pas d'accès au schéma ni de droit de publication. Le générateur de seed répétable a passé les tests d'intégration PostgreSQL dans la [PR #40](https://github.com/Achrafsila/ai-interview-platform/pull/40), fusionnée sur main.
+
+**Les deux parties du point « Implémenter les banques dans Supabase » qui sont prouvées sont les migrations et l'import initial.** La clôture complète dépend encore de la gouvernance métier, du workflow de publication et de l'intégration serveur. Aucun changement de statut ClickUp n'a été effectué depuis ce document.
+
+[Rapport détaillé du déploiement](S2-03_Supabase_Deployment_2026-10-22.md).
