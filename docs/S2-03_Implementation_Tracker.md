@@ -20,7 +20,7 @@
 - [x] Pré-auditer et corriger par IA les 10 questions techniques (TECH-001 à TECH-010).
 - [x] Versionner les JSON pilotes et les comptes rendus dans GitHub.
 - [ ] Tester les grilles sur réponses simulées solides/moyennes/insuffisantes et cas N/E.
-- [ ] Produire les 100 questions restantes pour atteindre 50 RH/transverses + 70 techniques.
+- [x] Rédiger et versionner en brouillon les 100 questions restantes pour atteindre 50 RH/transverses + 70 techniques (revue qualité en attente).
 - [ ] Faire la validation métier finale des questions techniques et du corpus complet.
 - [ ] Implémenter migrations, contraintes, statut, publication et historique des versions dans Supabase (selon stack effectivement retenue).
 - [ ] Appliquer RLS/autorisations, séparation attendus internes / données candidats, et journalisation.
@@ -49,3 +49,8 @@
 ## Définition de terminé
 
 S2-03 pourra être clôturé quand les questions du périmètre V1 seront importées, revues et publiées de façon contrôlée, versionnées, protégées par autorisations, accessibles par le service S2-04, et que les tests de sécurité et d'intégration auront été validés. Les détails restent dans la spécification S2-03 et ses 15 éléments de backlog, sans ajout de 15 sous-tâches ClickUp.
+
+
+## Mise à jour — corpus étendu à 120 (22/10/2026)
+
+Les 100 questions complémentaires ont été rédigées et ajoutées au dépôt : 40 RH + 60 techniques ; voir [rapport de lot](S2-03_120_Questions_Status.md) et [validateur](../scripts/validate_question_bank.py). La rédaction est terminée, **pas la validation métier**, ni la publication Supabase. Les relances des nouvelles fiches doivent être spécifiées davantage, et les attendus internes sont pour le moment en français.
