@@ -1,0 +1,46 @@
+{
+  "schema_version": "pilot-1.0",
+  "rubrics": [
+    {
+      "code": "RH_GENERAL",
+      "version": 1,
+      "status": "draft",
+      "weights": {
+        "relevance": 25,
+        "structure_clarity": 25,
+        "evidence_examples": 20,
+        "reflection": 20,
+        "communication": 10
+      },
+      "scale": {
+        "1": "Réponse incorrecte ou très insuffisante",
+        "2": "Partiellement correcte, lacunes importantes",
+        "3": "Attendus essentiels couverts",
+        "4": "Réponse solide, détaillée et justifiée",
+        "5": "Réponse approfondie, nuancée et maîtrisée"
+      },
+      "not_evaluable": "N/E, exclu du dénominateur ; indiquer la couverture observée ; ne pas noter si couverture < 60 %"
+    },
+    {
+      "code": "TECH_GENERAL",
+      "version": 1,
+      "status": "draft",
+      "weights": {
+        "technical_accuracy": 35,
+        "reasoning": 30,
+        "practical_application": 20,
+        "tradeoffs": 10,
+        "clarity": 5
+      },
+      "scale": {
+        "1": "Réponse incorrecte ou très insuffisante",
+        "2": "Partiellement correcte, lacunes importantes",
+        "3": "Attendus essentiels couverts",
+        "4": "Réponse solide, détaillée et justifiée",
+        "5": "Réponse approfondie, nuancée et maîtrisée"
+      },
+      "not_evaluable": "N/E, exclu du dénominateur ; indiquer la couverture observée ; ne pas noter si couverture < 60 %"
+    }
+  ],
+  "note": "Seuil de couverture de 60 % proposé, non validé par S2-04. Les critères inapplicables doivent être repondérés dans une grille spécifique validée."
+}
