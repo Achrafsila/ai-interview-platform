@@ -53,3 +53,38 @@ const { items } = await bank.listPublished({ locale: "fr", family: "technical" }
 - Les endpoints évaluateur ne doivent jamais être exposés directement à l'application navigateur, même lorsqu'un utilisateur est administrateur.
 
 **Statut :** service S2-03 déployé, adaptateur S2-04 livré en branche ; parcours d'entretien réel à développer et tester avant clôture de S2-04.
+
+## Extension livrée : sessions et snapshots persistants S2-04
+
+La migration `0005_interview_session_snapshots.sql` ajoute les deux tables privées `question_bank.interview_sessions` et `question_bank.interview_question_snapshots`. Les snapshots stockent le **prompt réellement posé**, le `question_version_id`, le `rubric_version_id`, la langue et l'ordre des tours. Ils sont immuables et restent valables lorsqu'une question reçoit une nouvelle version. Toutes les actions de sélection passent par une version effectivement publiée et une grille publiée.
+
+| Méthode et route (sous `question-bank`) | Accès | Comportement |
+|---|---|---|
+| `POST /engine/sessions` | `interview_engine/admin` | Initialise une session avec `candidate_user_id` et `locale` |
+| `POST /engine/sessions/:id/questions` | moteur propriétaire | Assigne explicitement le code d'une question publiée et crée son snapshot |
+| `POST /engine/sessions/:id/questions/next` | moteur propriétaire | Choisit la suivante selon famille/catégorie/difficulté, sans répéter un code |
+| `GET /engine/sessions/:id/questions` | moteur propriétaire | Relit les identifiants de version et les prompts persistés |
+| `GET /candidate/sessions/:id/questions` | candidat propriétaire de la session | Renvoie uniquement le prompt et l'ordre ; pas de critères internes |
+
+Exemple d'orchestration côté serveur :
+
+```js
+import { createInterviewSessionOrchestrator } from "./src/interview-engine/session-orchestrator.mjs";
+// `bank` est le client sécurisé createQuestionBankClient déjà configuré.
+const engine = createInterviewSessionOrchestrator(bank);
+const first = await engine.start({
+  candidateUserId: verifiedCandidateId,
+  locale: "fr",
+  selection: { family: "rh", difficulty: 1 },
+});
+const next = await engine.next(first.sessionId, {family:"rh", difficulty:2});
+const history = await engine.replay(first.sessionId);
+```
+
+**Aucun entretien ne peut démarrer via l'orchestrateur lorsqu'aucune question n'est publiée.** Les 120 questions du corpus sont encore en brouillon.
+
+### Portée fonctionnelle
+
+Cette extension prouve une sélection déterministe selon des contraintes métier et la persistance du handoff S2-03 → S2-04. **Elle n'est pas la boucle IA conversationnelle finale** : suivi des réponses, relances sémantiques, avatar/voix, moteur de scoring et coaching restent dans leurs sprints respectifs.
+
+La recette de vraie session HTTP avec utilisateurs de test et rôles vérifiés est décrite dans [le bilan technique](S2-03_Technical_Closure_2026-10-22.md).
