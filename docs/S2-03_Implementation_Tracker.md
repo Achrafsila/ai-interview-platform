@@ -89,3 +89,10 @@ Les migrations PostgreSQL `0001`, `0002` et `0003` ont été **appliquées dans 
 **7/11 actions de la checklist technique GitHub documentées comme réalisées** après la validation du déploiement Supabase. Les 4 points restants : revue métier du corpus, authentification/RLS applicative et journalisation opérationnelle, intégration S2-04, recette complète. La couverture de chaque point est distincte des validations sous-jacentes.
 
 La [matrice d'audit du corpus](S2-03_Quality_Review_Matrix.md) détaille les 120 fiches, 60 relances techniques génériques et les besoins de validation humaine et de localisation des attendus. **ClickUp n'a pas été modifié** : quota API atteint ; synchroniser manuellement le statut de l'action « Implémenter les banques de questions dans Supabase » sur la preuve du déploiement.
+
+
+## Sécurité d'accès renforcée — 22/10/2026
+
+Migration `0004_private_catalog_boundary.sql` appliquée sur Supabase : aucune permission client (`anon` ou `authenticated`) vers le schéma privé et ses fonctions, vue `published_questions_safe` restreinte aux champs non sensibles et contenant actuellement zéro entrée publiée. Vérifications d'accès sur la base réelle : réussies. [Rapport](S2-03_Access_Security_Verification.md).
+
+**Le point « Versioning, droits d'accès et sécurité » reste ouvert**, malgré les contrôles déjà déployés, car aucun service applicatif authentifié, politique d'accès métier nominative ni test intégral S2-04 n'existent encore. Les 120 questions restent toutes en `draft`.
