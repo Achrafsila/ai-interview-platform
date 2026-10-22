@@ -71,6 +71,8 @@ jobs:
       - name: Ensure PostgreSQL client exists
         run: |
           command -v psql || (sudo apt-get update && sudo apt-get install -y postgresql-client)
+      - name: Prepare test roles
+        run: psql -X -v ON_ERROR_STOP=1 -c 'CREATE ROLE anon NOLOGIN; CREATE ROLE authenticated NOLOGIN;'
       - name: Apply reference schema on isolated test database
         run: |
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0001_question_bank_schema.sql
