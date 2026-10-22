@@ -107,19 +107,19 @@ BEGIN
  INSERT INTO question_bank.question_competencies(question_version_id,competency_id,is_primary)
  VALUES(another_v,skill,true);
  PERFORM question_bank.publish_question(another_v,reviewer);
- SELECT * INTO s FROM question_bank.next_interview_question(sess,engine,'rh',NULL,1);
+ SELECT * INTO s FROM question_bank.next_interview_question(sess,engine,'rh',NULL,1::smallint);
  IF s.question_code<>'RH-995' OR s.turn_index<>2 OR s.prompt_text<>'Autre question publiée'
  THEN RAISE EXCEPTION 'Automatic selection ignored filters or asked previous code'; END IF;
  blocked:=false;
- BEGIN PERFORM question_bank.next_interview_question(sess,engine,'rh',NULL,1);
+ BEGIN PERFORM question_bank.next_interview_question(sess,engine,'rh',NULL,1::smallint);
  EXCEPTION WHEN OTHERS THEN blocked:=true; END;
  IF NOT blocked THEN RAISE EXCEPTION 'Re-asked exhausted questions'; END IF;
  sess_en := question_bank.open_interview_session(candidate,engine,'en');
- SELECT * INTO s FROM question_bank.next_interview_question(sess_en,engine,'rh',NULL,1);
+ SELECT * INTO s FROM question_bank.next_interview_question(sess_en,engine,'rh',NULL,1::smallint);
  IF s.turn_index<>1 OR s.locale<>'en' OR s.prompt_text<>'Another published question'
  THEN RAISE EXCEPTION 'Selection did not honor English session locale'; END IF;
  blocked:=false;
- BEGIN PERFORM question_bank.next_interview_question(sess_en,other_engine,'rh',NULL,1);
+ BEGIN PERFORM question_bank.next_interview_question(sess_en,other_engine,'rh',NULL,1::smallint);
  EXCEPTION WHEN OTHERS THEN blocked:=true; END;
  IF NOT blocked THEN RAISE EXCEPTION 'Unowned engine invoked dynamic selection'; END IF;
 
