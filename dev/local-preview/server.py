@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import secrets
 import threading
 import webbrowser
@@ -18,6 +19,7 @@ from urllib.parse import parse_qs, urlsplit
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
+NEW_USER = HERE.parent / "new-user-e2e"
 BANK = ROOT / "data" / "question-bank"
 FILES = (
     "rh_questions.json",
@@ -92,6 +94,8 @@ def select_questions(questions: list[dict], payload: dict) -> list[dict]:
 
 def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
     html = (HERE / "index.html").read_bytes()
+    e2e_html = (NEW_USER / "index.html").read_bytes()
+    e2e_js = (NEW_USER / "app.js").read_bytes()
     class Handler(BaseHTTPRequestHandler):
         server_version = "AIInterviewLocalPreview/1.0"
 
@@ -104,7 +108,7 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
             self.send_header("Referrer-Policy", "no-referrer")
             self.send_header("Content-Security-Policy",
                 "default-src 'self'; script-src 'self' 'unsafe-inline'; "
-                "style-src 'self' 'unsafe-inline'; connect-src 'self'; "
+                "style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co; "
                 "img-src 'self' data:; object-src 'none'; frame-ancestors 'none'")
             if length is not None:
                 self.send_header("Content-Length", str(length))
@@ -135,6 +139,21 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
             if url.path == "/":
                 self._headers(kind="text/html; charset=utf-8", length=len(html))
                 self.wfile.write(html)
+            elif url.path in ("/e2e", "/e2e/"):
+                self._headers(kind="text/html; charset=utf-8", length=len(e2e_html))
+                self.wfile.write(e2e_html)
+            elif url.path == "/e2e/app.js":
+                self._headers(kind="text/javascript; charset=utf-8", length=len(e2e_js))
+                self.wfile.write(e2e_js)
+            elif url.path == "/api/e2e/config":
+                live_enabled = (os.environ.get("SUPABASE_URL", "").startswith("https://")
+                                and bool(os.environ.get("SUPABASE_PUBLISHABLE_KEY", "")))
+                self._send({
+                    "live_available": live_enabled,
+                    "supabase_url": os.environ.get("SUPABASE_URL", "").rstrip("/") if live_enabled else None,
+                    "publishable_key": os.environ.get("SUPABASE_PUBLISHABLE_KEY") if live_enabled else None,
+                    "mode": "local_e2e_frontend",
+                })
             elif url.path == "/api/health":
                 self._send({"ready": True, "mode": "local_draft_preview",
                             "supabase_connected": False})
