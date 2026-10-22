@@ -1,0 +1,1 @@
+-- S2-01 candidate onboarding profile migration placeholder
