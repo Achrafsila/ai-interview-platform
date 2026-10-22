@@ -2,6 +2,19 @@
 
 Plateforme d'entraînement aux entretiens d'embauche assistée par l'IA. **Statut : POC en cours, Sprint 2 en conception et préparation documentaire (Sprint 1 partiel).** Aucun choix définitif de stack applicative ni de fournisseur IA n'est validé. Le dépôt contient des spécifications, un corpus de questions fictif et un validateur Python, mais pas encore d'application de simulation intégrée.
 
+## Démarrage rapide pour contributeurs
+
+1. Lire [l'index de documentation](docs/README.md), [le statut du projet](docs/PROJECT_STATUS.md) et [les conventions de gouvernance](docs/REPO_GOVERNANCE.md).
+2. Consulter le ticket ClickUp, vérifier les décisions dans `docs/DECISIONS.md` et créer une branche dédiée à la modification.
+3. Pour le corpus de questions, lancer :
+   ```bash
+   python scripts/validate_question_bank.py
+   python -m unittest discover -s tests -v
+   ```
+4. Utiliser le [modèle de PR](.github/PULL_REQUEST_TEMPLATE.md), noter les tests réalisés et ne mettre le statut ClickUp à jour qu'après preuve de livraison.
+
+Documentation du changement : [CHANGELOG](CHANGELOG.md) · [Modèle ADR](docs/ADR_TEMPLATE.md) · [Checklist de release](docs/RELEASE_CHECKLIST.md).
+
 ## Vision produit
 
 Le candidat crée son compte et renseigne son profil (expérience, poste visé, langue, objectifs). Il reçoit ensuite un parcours de préparation adapté. Il passe un entretien IA interactif, idéalement avec avatar vidéo, voix et transcription. Après l'entretien, il obtient une évaluation structurée et explicable, fondée sur une grille versionnée, puis un plan de coaching IA, avec la possibilité de demander un coach humain. Un tableau de bord suit sa progression d'une session à l'autre. Un espace d'administration permet de configurer les parcours, les questions, les grilles d'évaluation et les contenus. Le produit cible le français et l'anglais.
