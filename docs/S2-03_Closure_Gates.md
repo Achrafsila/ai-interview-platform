@@ -1,6 +1,6 @@
 # S2-03 — Plan de clôture vérifiable
 
-**État :** implémentation partielle démontrée dans une PR. Ne pas fermer le parent ClickUp sans les jalons restants.
+**État actualisé (22/10/2026) :** stockage Supabase, service JWT, sécurité de base et raccordement technique de sessions S2-04 opérationnels au niveau POC. Le parent ClickUp reste ouvert jusqu'à revue métier et vraie recette HTTP/utilisateur.
 
 ## Livré et testé
 - Corpus : 120 questions `draft`, JSON FR/EN, identifiants uniques.
@@ -15,10 +15,10 @@
 | Chantier ClickUp existant | Condition pour cocher « terminé » | Aujourd'hui |
 |---|---|---|
 | Valider la qualité métier du corpus | 100 nouvelles fiches éditoriales relues, 70 techniques revues par experts ; catégories/relances harmonisées | Ouvert |
-| Implémenter les banques dans Supabase | Projet AI Interview dédié approuvé, migrations réellement appliquées, seed/versioning testé | Ouvert |
-| Versioning, droits et sécurité | Modèle de rôles, authentification, isolation service, tests multi-rôles RLS et audits | Partiel : modèle testé seulement |
-| Connexion banques à S2-04 | API opérationnelle authentifiée, snapshots des versions et tests de contrat consommateur | Ouvert |
-| Tests d'intégration complets | CI verte + tests auth/data/S2-04 + recette métier | Partiel : CI Python et DB éphémère |
+| Implémenter les banques dans Supabase | Projet dédié, migrations appliquées et import contrôlé | **Réalisé et vérifié** |
+| Versioning, droits et sécurité | Modèle de rôles, vérification JWT en Edge, RLS, audit, snapshots et tests SQL/rôles | **Implémenté pour POC** ; homologation production et vrais JWT en attente |
+| Connexion banques à S2-04 | API active, orchestrateur de sessions, sélection sans doublon, snapshot et relecture/clôture | **Raccordement technique réalisé** ; IA conversationnelle à développer dans S2-04 |
+| Tests d'intégration complets | CI PostgreSQL/Node/Deno et tests SQL sur Supabase réels réussis | **Partiel** : aucun utilisateur Auth pour recette HTTP réelle, corpus non approuvé |
 
 ## Checklist minimum avant la clôture S2-03
 
@@ -55,3 +55,12 @@ L'Edge Function active est [question-bank](https://supabase.com/dashboard/projec
 ### Essai positif de sécurité de la projection — Supabase réel
 
 Le test SQL transactionnel `db/postgres/tests/0003_published_projection_contract.sql` a été exécuté avec succès sur la base dédiée. Il crée temporairement une révision **fictive** approuvée puis publiée et une révision fictive brouillon, vérifie deux localisations visibles pour la version publiée, l'exclusion du brouillon et l'absence de colonnes privées dans la projection, puis termine par `ROLLBACK`. Vérification effectuée après transaction : **120 questions**, **0 publiée**, **0 visible**, **0 question test persistée**. Ce test prouve le contrat DB mais pas encore une requête HTTP avec JWT utilisateur réel.
+
+
+## Jalon de fin d'implémentation POC — PR #42
+
+- **Supabase :** migrations 0005/0006, 12 tables avec RLS, sélection dynamique vérifiée sur PostgreSQL réel, fonction `question-bank` version 3 active avec vérification JWT.
+- **Version conservée :** `question_version_id`, `rubric_version_id`, langue et prompt figés à chaque tour. Aucune réécriture silencieuse possible après publication d'une nouvelle version.
+- **Raccordement S2-04 :** création de session / prochaine question / historique / clôture, avec contrôles du moteur propriétaire et accès candidat restreint.
+- **Recette différée :** 0 utilisateur Auth projet et 0 question publiée. [Procédure de test HTTP](S2-03_Technical_Closure_2026-10-22.md) documentée. Ne pas attribuer des permissions admin fictives ni modifier le corpus pour forcer une démonstration.
+- **Décision de pilotage :** 9/11 cases techniques S2-03 vérifiables dans GitHub ; dernière recette et validation humaine restent ouvertes. Voir [le tracker](S2-03_Implementation_Tracker.md).
