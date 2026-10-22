@@ -66,7 +66,7 @@ Le navigateur utilise un service **HTTP local Python standard library** démarr�
 ### Tests automatisés localhost
 
 ```bash
-python3 -m unittest tests/test_local_preview.py -v
+python3 -m unittest discover -s tests -p 'test_local_preview.py' -v
 ```
 
 Vous pouvez aussi exécuter tous les tests Python du projet :
