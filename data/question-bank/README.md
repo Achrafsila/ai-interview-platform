@@ -18,3 +18,12 @@ Ce répertoire contient **20 questions de référence** dans deux fichiers JSON,
 ## Suite
 
 Valider les grilles sur des exemples de réponses, compléter les 100 questions restantes (cible de 50 RH/transverses et 70 techniques), faire relire les contenus par des experts, puis mettre en place tables, sécurité, publications versionnées et interface S2-04. Ne pas confondre la grille de référence S2-03 avec la production des scores et feedbacks (Sprint 3).
+
+## Expansion du corpus : 120 questions en brouillon
+
+- `rh_questions_expansion.json` : 40 nouvelles questions RH générées par IA, revue en attente.
+- `technical_questions_expansion_part1.json` : 38 nouvelles questions Software, Data et Cloud, revue en attente.
+- `technical_questions_expansion_part2.json` : 22 nouvelles questions Cybersecurity, QA et Business Analysis, revue en attente.
+- `scripts/validate_question_bank.py` : vérification structurelle de l'ensemble des 120 questions.
+
+Voir [le rapport de couverture et réserves](../../docs/S2-03_120_Questions_Status.md). **Ne pas importer automatiquement les brouillons dans un catalogue publié.**
