@@ -40,7 +40,7 @@ Le candidat crée son compte et renseigne son profil (expérience, poste visé, 
 | Fournisseur avatar / voix / transcription | Non validé, POC prioritaire |
 | Corpus S2-03 | 120 questions FR/EN importées en Supabase, toutes en brouillon ; sécurité/versioning et handoff S2-04 implémentés, revue métier en attente |
 | Calibration S2-03 | 12 cas simulés documentés ; moteur de notation non testé |
-| Implémentation applicative | Edge Function question-bank v3 active ; API S2-03 et orchestrateur de session S2-04 minimal ; aucune application candidat complète ni scoring |
+| Implémentation applicative | Edge Function question-bank v4 active ; API S2-03 et orchestrateur de session S2-04 minimal ; aucune application candidat complète ni scoring |
 
 La fusion de la PR #2 intègre une proposition d'architecture ; elle ne valide pas les choix de stack, de fournisseurs, d'hébergement ou de conformité.
 
