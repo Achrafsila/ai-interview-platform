@@ -46,7 +46,14 @@ BEGIN
    RAISE EXCEPTION 'Rubric must exist as a draft or review version';
  END IF;
  IF EXISTS (SELECT 1 FROM jsonb_each_text(rec.weights)
-            WHERE value !~ '^[0-9]+([.][0-9]+)?
+            WHERE value !~ '^[0-9]+([.][0-9]+)?$') THEN
+   RAISE EXCEPTION 'Rubric weights must be nonnegative numbers';
+ END IF;
+ SELECT coalesce(sum(value::numeric),0) INTO total
+ FROM jsonb_each_text(rec.weights);
+ IF total <> 100 OR (SELECT count(*) FROM jsonb_each(rec.weights)) = 0 THEN
+   RAISE EXCEPTION 'Rubric weights must sum to 100';
+ END IF;
  UPDATE question_bank.rubric_versions
  SET status='published',reviewed_by=p_reviewer,reviewed_at=now(),published_at=now()
  WHERE id=p_version;
