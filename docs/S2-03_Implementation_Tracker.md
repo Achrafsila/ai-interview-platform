@@ -22,7 +22,7 @@
 - [x] Réaliser la calibration illustrative des grilles sur 12 réponses simulées, y compris un cas N/E (moteur réel non testé).
 - [x] Rédiger et versionner en brouillon les 100 questions restantes pour atteindre 50 RH/transverses + 70 techniques (revue qualité en attente).
 - [ ] Faire la validation métier finale des questions techniques et du corpus complet (inclut **harmonisation des catégories**, **personnalisation des relances génériques**, **validation des attendus et variantes**, **localisation complète si nécessaire**).
-- [ ] Implémenter migrations, contraintes, statut, publication et historique des versions dans Supabase (selon stack effectivement retenue).
+- [x] Implémenter la structure, migrations, historique des versions et import initial des 120 questions dans le projet Supabase dédié (publication contrôlée et workflow applicatif à finaliser séparément).
 - [ ] Appliquer RLS/autorisations, séparation attendus internes / données candidats, et journalisation.
 - [ ] Intégrer catalogue publié au moteur S2-04 par contrat API et tests d'intégration.
 - [ ] Exécuter la recette AC-01 à AC-10 et documenter l'exploitation avant clôture de S2-03.
@@ -82,3 +82,10 @@ Les migrations PostgreSQL `0001`, `0002` et `0003` ont été **appliquées dans 
 **Les deux parties du point « Implémenter les banques dans Supabase » qui sont prouvées sont les migrations et l'import initial.** La clôture complète dépend encore de la gouvernance métier, du workflow de publication et de l'intégration serveur. Aucun changement de statut ClickUp n'a été effectué depuis ce document.
 
 [Rapport détaillé du déploiement](S2-03_Supabase_Deployment_2026-10-22.md).
+
+
+## Réconciliation checklist — 22/10/2026
+
+**7/11 actions de la checklist technique GitHub documentées comme réalisées** après la validation du déploiement Supabase. Les 4 points restants : revue métier du corpus, authentification/RLS applicative et journalisation opérationnelle, intégration S2-04, recette complète. La couverture de chaque point est distincte des validations sous-jacentes.
+
+La [matrice d'audit du corpus](S2-03_Quality_Review_Matrix.md) détaille les 120 fiches, 60 relances techniques génériques et les besoins de validation humaine et de localisation des attendus. **ClickUp n'a pas été modifié** : quota API atteint ; synchroniser manuellement le statut de l'action « Implémenter les banques de questions dans Supabase » sur la preuve du déploiement.
