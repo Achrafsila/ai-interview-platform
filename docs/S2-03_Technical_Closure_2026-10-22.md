@@ -51,3 +51,8 @@ La preuve de fonctionnement du contrat technique ne doit pas être présentée c
 - **Exécuter les tests d'intégration et valider la fonctionnalité :** tests CI et DB réels réussis, mais **recette HTTP multi-utilisateur et application complète non réalisables sans utilisateurs de test et questions approuvées**.
 
 **Conclusion :** la tranche S2-03 de persistance / sélection / sécurité est livrable. Les statuts ClickUp ne doivent être cochés comme totalement terminés qu'en accord avec les critères de leur périmètre ; les deux limites bloquantes ne doivent pas être dissimulées.
+
+
+## Dernier durcissement — PR #43
+
+Edge Function `question-bank` **version 4** déployée et active. La lecture globale du catalogue exige désormais le rôle `interview_engine/admin` et non la simple présence d'un JWT utilisateur. Le candidat ne voit que les formulations des questions déjà attribuées à sa propre session. Cette modification est fusionnée sur `main` après quatre jobs CI verts. L'essai HTTP avec une identité Auth réelle n'a pas encore été exécuté (aucun compte test Auth dans le projet).
