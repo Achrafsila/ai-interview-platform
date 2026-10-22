@@ -7,6 +7,8 @@ on:
       - 'scripts/validate_question_bank.py'
       - 'scripts/question_bank_catalog.py'
       - 'tests/test_question_bank.py'
+      - 'tests/test_postgres_migrations_static.py'
+      - 'db/postgres/**'
       - '.github/workflows/question-bank-validation.yml'
   pull_request:
     paths:
@@ -14,6 +16,8 @@ on:
       - 'scripts/validate_question_bank.py'
       - 'scripts/question_bank_catalog.py'
       - 'tests/test_question_bank.py'
+      - 'tests/test_postgres_migrations_static.py'
+      - 'db/postgres/**'
       - '.github/workflows/question-bank-validation.yml'
   workflow_dispatch:
 
