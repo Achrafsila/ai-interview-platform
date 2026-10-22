@@ -59,6 +59,6 @@ Les 100 questions complémentaires ont été rédigées et ajoutées au dépôt 
 ## Audit de cohérence documentaire — 22/10/2026
 
 - Voir [rapport d'audit](AUDIT_GITHUB_2026-10-22.md), [calibration](S2-03_Calibration_Grilles_Pilote.md) et [guide des agents](../CLAUDE.md).
-- La liste ci-dessus indique **7 éléments cochés sur 11 dans le registre GitHub** après réconciliation, mais le taux d'avancement n'est pas une mesure d'effort. Les actions liées à la qualité et au développement peuvent être plus importantes que les livrables documentaires.
+- La liste ci-dessus indique **6 éléments cochés sur 11 dans le registre GitHub** après réconciliation, mais le taux d'avancement n'est pas une mesure d'effort. Les actions liées à la qualité et au développement peuvent être plus importantes que les livrables documentaires.
 - **Synchronisation ClickUp impossible lors de cet audit : limite API atteinte** ; ne pas confondre ces cases du document avec le statut réel dans ClickUp.
 - Aucun nouveau ticket parent n'est recommandé. Utiliser la checklist existante sous « Implémentation & validation » et intégrer les trois éléments qualité complémentaires dans la description de cette action.
