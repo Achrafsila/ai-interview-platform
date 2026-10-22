@@ -23,7 +23,7 @@ assert page["items"] == []
 ```
 
 ## Limites connues et garde-fous
-- Ce module est une **preuve de fonctionnement du contrat**, **pas une API HTTP ni une implémentation Supabase**.
+- Ce module est une **preuve de fonctionnement du contrat**, **pas une API HTTP ni une implémentation Supabase**. Deux migrations PostgreSQL proposées existent désormais dans `db/postgres/migrations/` ; **elles n'ont pas été exécutées**.
 - Aucune authentification réelle n'est implémentée. Le paramètre `trusted_role` dans `evaluator_view` est une assertion de défense supplémentaire : **seul un service serveur authentifié et autorisé pourra l'utiliser**. Ne jamais connecter cette méthode directement au navigateur.
 - Le référentiel JSON actuel représente une version par code ; les versions publiées multiples, l'immutabilité en base, les snapshots d'entretien, les opérations d'administration et l'audit des changements restent à implémenter.
 - Les objectifs de préparation ne sont pas modifiés par le catalogue ; S2-04 prendra les décisions de séquencement et de relances.
@@ -43,3 +43,10 @@ assert page["items"] == []
 5. Tester avec le moteur réel et confirmer la CI de la Pull Request avant fusion.
 
 **Statut :** branche de développement, revue/CI à réaliser avant fusion ; S2-03 n'est pas clôturée.
+
+
+## Extension de la PR : proposition de persistance et publication
+
+Deux migrations PostgreSQL (`0001_question_bank_schema.sql`, `0002_publication_guards.sql`) et les tests statiques SQL sont inclus. Elles matérialisent les versions de questions, les rubriques, les propositions, les événements d'audit, l'immutabilité des contenus publiés et les conditions de publication. [Voir le design et ses restrictions](S2-03_Postgres_Persistence_Design.md) ; [guide d'exécution isolée](../db/postgres/README.md).
+
+**Attention :** pas de test SQL réel, de gestion des identités ni de serveur API ; les fonctions de publication doivent rester owner-only et ne sont pas une autorisation utilisateur. La PR demeure en revue pour ne pas présenter le modèle comme une fonctionnalité déployée.
