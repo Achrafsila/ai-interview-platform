@@ -50,3 +50,8 @@ L'Edge Function active est [question-bank](https://supabase.com/dashboard/projec
 - Refaire les tests de non-divulgation côté navigateur et le Go/No-Go de la recette complète.
 
 **Ce fichier indique les preuves techniques, pas une mise à jour effective dans ClickUp.**
+
+
+### Essai positif de sécurité de la projection — Supabase réel
+
+Le test SQL transactionnel `db/postgres/tests/0003_published_projection_contract.sql` a été exécuté avec succès sur la base dédiée. Il crée temporairement une révision **fictive** approuvée puis publiée et une révision fictive brouillon, vérifie deux localisations visibles pour la version publiée, l'exclusion du brouillon et l'absence de colonnes privées dans la projection, puis termine par `ROLLBACK`. Vérification effectuée après transaction : **120 questions**, **0 publiée**, **0 visible**, **0 question test persistée**. Ce test prouve le contrat DB mais pas encore une requête HTTP avec JWT utilisateur réel.
