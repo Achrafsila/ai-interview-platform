@@ -296,9 +296,10 @@
       "acceptable_variations_fr": "Plusieurs séquences d’action peuvent être pertinentes selon le contexte.",
       "red_flags_fr": [],
       "review": {
-        "editorial": "pending",
+        "editorial": "approved",
         "domain_expert": "pending",
-        "approved_for_publication": false
+        "approved_for_publication": false,
+        "editorial_note_fr": "Approuvée sans modification lors de la revue RH du lot 2, le 22/10/2026."
       },
       "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
     },
@@ -339,9 +340,10 @@
       "acceptable_variations_fr": "Ne pas récompenser uniquement le récit d’une erreur spectaculaire.",
       "red_flags_fr": [],
       "review": {
-        "editorial": "pending",
+        "editorial": "approved",
         "domain_expert": "pending",
-        "approved_for_publication": false
+        "approved_for_publication": false,
+        "editorial_note_fr": "Approuvée sans modification lors de la revue RH du lot 2, le 22/10/2026."
       },
       "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
     },
@@ -382,9 +384,10 @@
       "acceptable_variations_fr": "La meilleure réponse peut demander une clarification avant de choisir.",
       "red_flags_fr": [],
       "review": {
-        "editorial": "pending",
+        "editorial": "approved",
         "domain_expert": "pending",
-        "approved_for_publication": false
+        "approved_for_publication": false,
+        "editorial_note_fr": "Approuvée sans modification lors de la revue RH du lot 2, le 22/10/2026."
       },
       "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
     },
@@ -402,14 +405,14 @@
       "rubric_code": "RH_GENERAL",
       "localizations": {
         "fr": {
-          "prompt": "Racontez une situation où vous avez convaincu des personnes initialement opposées à votre proposition.",
+          "prompt": "Parlez-moi d’une situation où vous avez cherché à faire adhérer d’autres personnes à une idée. Comment avez-vous procédé ?",
           "followup_seeds": [
             "Quel argument n’a pas fonctionné ?",
             "Comment avez-vous adapté votre approche ?"
           ]
         },
         "en": {
-          "prompt": "Describe a time you persuaded people who initially disagreed with your proposal.",
+          "prompt": "Tell me about a time you tried to gain others’ support for an idea. How did you approach it?",
           "followup_seeds": [
             "Which argument did not work?",
             "How did you adapt your approach?"
@@ -422,14 +425,15 @@
         "écoute active",
         "résultat et limites"
       ],
-      "acceptable_variations_fr": "Convaincre n’implique ni domination ni consensus total.",
+      "acceptable_variations_fr": "Une démarche constructive peut être pertinente même sans adhésion complète. Le désaccord persistant, une adaptation de sa propre position ou un compromis sont recevables.",
       "red_flags_fr": [],
       "review": {
-        "editorial": "pending",
+        "editorial": "approved",
         "domain_expert": "pending",
-        "approved_for_publication": false
+        "approved_for_publication": false,
+        "editorial_note_fr": "Formulation révisée et validée explicitement le 22/10/2026 ; expertise métier et publication encore en attente."
       },
-      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+      "evaluation_notes_fr": "Évaluer l’écoute, la compréhension des objections, la construction d’arguments adaptés et l’ajustement de l’approche ; ne pas conditionner une forte note à une persuasion réussie ni à un consensus."
     },
     {
       "code": "RH-010",
@@ -445,14 +449,14 @@
       "rubric_code": "RH_GENERAL",
       "localizations": {
         "fr": {
-          "prompt": "Quelles compétences souhaitez-vous développer dans les deux prochaines années et comment comptez-vous y parvenir ?",
+          "prompt": "Quelles compétences souhaitez-vous développer à moyen terme et quelles premières actions pourriez-vous entreprendre ?",
           "followup_seeds": [
             "Quelle première action engageriez-vous ?",
             "Que ferez-vous si le plan doit changer ?"
           ]
         },
         "en": {
-          "prompt": "Which skills do you want to develop over the next two years, and how will you do it?",
+          "prompt": "Which skills would you like to develop in the medium term, and what first steps could you take?",
           "followup_seeds": [
             "What first step would you take?",
             "What if your plan needs to change?"
@@ -465,14 +469,15 @@
         "actions concrètes",
         "indicateurs de progression"
       ],
-      "acceptable_variations_fr": "Un candidat peut exprimer une incertitude réfléchie sur son orientation.",
+      "acceptable_variations_fr": "Une incertitude réfléchie sur son orientation est recevable. Ne pas exiger de projection rigide à deux ans, ni un plan de carrière entièrement fixé.",
       "red_flags_fr": [],
       "review": {
-        "editorial": "pending",
+        "editorial": "approved",
         "domain_expert": "pending",
-        "approved_for_publication": false
+        "approved_for_publication": false,
+        "editorial_note_fr": "Formulation révisée et validée explicitement le 22/10/2026 ; expertise métier et publication encore en attente."
       },
-      "evaluation_notes_fr": "Évaluer la pertinence et les éléments observables ; ne pas inférer la personnalité ni pénaliser l’accent, la nervosité ou l’absence d’expérience salariée."
+      "evaluation_notes_fr": "Évaluer la cohérence des pistes de développement et la capacité à identifier des premières actions réalistes. Ne pas pénaliser une incertitude constructive ou un changement de projet possible."
     }
   ],
   "review_batch": {
@@ -487,5 +492,41 @@
     ],
     "publication": "none",
     "note": "Lot 1 clos en revue éditoriale ; contrôle métier final et publication restent distincts."
+  },
+  "review_history": [
+    {
+      "batch": "RH-001_to_RH-005",
+      "date": "2026-10-22",
+      "editorially_approved": [
+        "RH-001",
+        "RH-002",
+        "RH-003",
+        "RH-004",
+        "RH-005"
+      ],
+      "publication": "none",
+      "note": "Lot 1 clos en revue éditoriale ; contrôle métier final et publication restent distincts."
+    },
+    {
+      "batch": "RH-006_to_RH-010",
+      "date": "2026-10-22",
+      "editorially_approved": [
+        "RH-006",
+        "RH-007",
+        "RH-008"
+      ],
+      "revised_pending_revalidation": [
+        "RH-009",
+        "RH-010"
+      ],
+      "publication": "none",
+      "note": "Décisions utilisateur appliquées. RH-009 et RH-010 à revalider avant approbation éditoriale."
+    }
+  ],
+  "review_summary": {
+    "editorial_approved": 10,
+    "domain_expert_pending": 10,
+    "publication_status": "draft_not_imported",
+    "last_decision_date": "2026-10-22"
   }
 }
