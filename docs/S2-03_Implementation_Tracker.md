@@ -112,9 +112,12 @@ La [PR #41](https://github.com/Achrafsila/ai-interview-platform/pull/41) a été
 **9 actions sur 11** peuvent être considérées comme réalisées dans la checklist GitHub au titre du périmètre technique S2-03. Les deux actions restantes concernent la **validation métier humaine du corpus** et la **recette applicative complète avec de vrais JWT et le moteur conversationnel**.
 
 - PostgreSQL : migration 0005 (sessions, snapshots immuables, sélection des seules questions publiées) et 0006 (clôture propriétaire de session) **appliquées sur Supabase** ; test SQL transactionnel positif sur la base réelle exécuté avec `ROLLBACK`.
-- Edge Function `question-bank` : **version 3 ACTIVE**, vérification JWT activée, séparation rôle engine/evaluator/candidate, méthodes de démarrage/choix/relecture/clôture.
+- Edge Function `question-bank` : **version 4 ACTIVE**, vérification JWT activée, séparation rôle engine/evaluator/candidate, méthodes de démarrage/choix/relecture/clôture.
 - S2-04 : client et orchestrateur déterministe versionnés et testés. **Ne pas confondre avec l'implémentation du moteur conversationnel IA de la tâche S2-04.**
 - Base Supabase vérifiée : 120 questions draft, 0 publiée, 0 session fictive persistée, 12 tables avec RLS. Aucun compte Supabase Auth créé dans ce projet lors de la vérification.
 - Références de test et limites : [bilan technique](S2-03_Technical_Closure_2026-10-22.md), [intégration S2-04](S2-03_S2-04_Integration.md).
 
 **ClickUp non synchronisé automatiquement** ; ses statuts doivent refléter les mêmes restrictions de périmètre et preuves.
+
+
+**Sécurité renforcée via [PR #43](https://github.com/Achrafsila/ai-interview-platform/pull/43) :** le catalogue global n'est plus énumérable par un candidat authentifié ; seuls les rôles moteur/admin peuvent le parcourir. Le candidat peut lire uniquement les questions de ses sessions autorisées. Les quatre jobs CI ont réussi et la version 4 est active dans Supabase.
