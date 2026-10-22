@@ -152,6 +152,17 @@ Deno.serve(async (req: Request) => {
       `;
       return rows.length ? json({ snapshot: rows[0] }, 201) : json({ error: "not_found" }, 404);
     }
+
+    if (req.method === "POST" && endpoint.length === 4 &&
+        endpoint[0] === "engine" && endpoint[1] === "sessions" && endpoint[3] === "complete") {
+      if (!canEngine(role)) return json({ error: "forbidden" }, 403);
+      const sessionId = endpoint[2];
+      if (!validUuid(sessionId)) return json({ error: "invalid_session" }, 400);
+      await sql`SELECT question_bank.complete_interview_session(
+        ${sessionId}::uuid, ${data.user.id}::uuid
+      )`;
+      return json({ session_id: sessionId, status: "completed" });
+    }
     if (req.method === "GET" && endpoint.length === 4 &&
         endpoint[1] === "sessions" && endpoint[3] === "questions" &&
         (endpoint[0] === "engine" || endpoint[0] === "candidate")) {
