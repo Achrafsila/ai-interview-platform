@@ -81,7 +81,6 @@ components:
   schemas:
     PublishedQuestion:
       type: object
-      additionalProperties: false
       required: [code, version, family, category_code, question_type, difficulty, primary_competency, locale, prompt]
       properties:
         code: {type: string}
