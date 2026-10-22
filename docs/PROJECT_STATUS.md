@@ -40,6 +40,6 @@ La PR #39 a été fusionnée dans `main` après contrôles Python et PostgreSQL 
 
 ## Mise à jour technique la plus récente — PR #42 (22/10/2026)
 
-Le projet Supabase `ai-interview-platform` est dédié à cette application. Les migrations 0001–0006 sont appliquées, l'Edge Function `question-bank` version 3 est active avec `verify_jwt=true`, les 120 questions restent `draft`. L'orchestrateur S2-04 **minimal** sait démarrer une session, sélectionner une question approuvée (ou refuser de démarrer), persister/rejouer un snapshot et clore une session. La validation du moteur conversationnel IA complet appartient à S2-04, pas au contrat de banque.
+Le projet Supabase `ai-interview-platform` est dédié à cette application. Les migrations 0001–0006 sont appliquées, l'Edge Function `question-bank` version 4 est active avec `verify_jwt=true`, les 120 questions restent `draft`. L'orchestrateur S2-04 **minimal** sait démarrer une session, sélectionner une question approuvée (ou refuser de démarrer), persister/rejouer un snapshot et clore une session. La validation du moteur conversationnel IA complet appartient à S2-04, pas au contrat de banque.
 
 Les tests réels SQL (transactions annulées) et CI ont réussi. **Aucun utilisateur Supabase Auth ni question publiée : la recette HTTP positive avec JWT et la validation métier restent des critères ouverts.** Consulter [le bilan de clôture technique](S2-03_Technical_Closure_2026-10-22.md) et [le suivi d'implémentation](S2-03_Implementation_Tracker.md) avant de cocher les cases ClickUp.
