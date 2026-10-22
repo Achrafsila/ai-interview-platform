@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Product backlog / delivery tracking
+    url: https://app.clickup.com/t/123ru7uztgq
+    about: Use ClickUp to manage sprint deliverables; use GitHub issues for defects and code changes.
+  - name: Project documentation
+    url: https://github.com/Achrafsila/ai-interview-platform/blob/main/docs/README.md
+    about: Read the architecture, decisions, status and contribution rules first.
