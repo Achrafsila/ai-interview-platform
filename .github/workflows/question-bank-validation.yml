@@ -12,6 +12,7 @@ on:
       - 'tests/test_interview_session_orchestrator.mjs'
       - 'tests/test_s2_04_bridge.mjs'
       - 'scripts/generate_question_bank_seed_sql.py'
+      - 'scripts/smoke_question_bank_http.mjs'
       - 'tests/test_question_bank.py'
       - 'tests/test_postgres_migrations_static.py'
       - 'db/postgres/**'
@@ -27,6 +28,7 @@ on:
       - 'tests/test_interview_session_orchestrator.mjs'
       - 'tests/test_s2_04_bridge.mjs'
       - 'scripts/generate_question_bank_seed_sql.py'
+      - 'scripts/smoke_question_bank_http.mjs'
       - 'tests/test_question_bank.py'
       - 'tests/test_postgres_migrations_static.py'
       - 'db/postgres/**'
@@ -128,4 +130,6 @@ jobs:
         with:
           node-version: '22'
       - name: Run S2-04 bridge adapter tests
-        run: node --test tests/test_s2_04_bridge.mjs tests/test_interview_session_orchestrator.mjs
+        run: |
+          node --test tests/test_s2_04_bridge.mjs tests/test_interview_session_orchestrator.mjs
+          node --check scripts/smoke_question_bank_http.mjs
