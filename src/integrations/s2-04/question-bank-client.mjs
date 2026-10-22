@@ -57,5 +57,6 @@ export function createQuestionBankClient({ baseUrl, tokenProvider, fetchImpl = f
     nextQuestion: (sessionId, filters = {}) => send("engine/sessions/" + sessionPath(sessionId) + "/questions/next", {}, "POST", filters),
     getSessionQuestions: sessionId => send("engine/sessions/" + sessionPath(sessionId) + "/questions"),
     getCandidateQuestions: sessionId => send("candidate/sessions/" + sessionPath(sessionId) + "/questions"),
+    completeSession: sessionId => send("engine/sessions/" + sessionPath(sessionId) + "/complete", {}, "POST", {}),
   });
 }
