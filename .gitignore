@@ -1,4 +1,4 @@
-# Environment and secrets
+# Secrets — do not commit credentials or candidate data
 .env
 .env.*
 !.env.example
@@ -7,24 +7,41 @@
 *.p12
 *.pfx
 credentials.json
+secrets.json
+*.secret
 
-# Dependencies/build
+# JavaScript / Next.js (if adopted later)
 node_modules/
 .next/
+out/
 dist/
 build/
 coverage/
-.venv/
-__pycache__/
-*.pyc
+.vercel/
+*.tsbuildinfo
 
-# Editors / OS
+# Python tooling
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Local development / editors
 .DS_Store
+Thumbs.db
 .idea/
 .vscode/
+*.swp
 
-# Local data / media
+# Temporary generated files and sensitive media
 uploads/
 recordings/
+transcripts/
+tmp/
+temp/
 *.sqlite
 *.sqlite3
