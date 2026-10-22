@@ -3,7 +3,7 @@
 BEGIN;
 DO $test$
 DECLARE cat uuid; skill uuid; rub uuid; rv uuid; ques uuid;
-        version1 uuid; version2 uuid; sess uuid;
+        version1 uuid; version2 uuid; sess uuid; sess_en uuid; another_q uuid; another_v uuid;
         engine uuid := gen_random_uuid(); other_engine uuid := gen_random_uuid();
         candidate uuid := gen_random_uuid(); reviewer uuid := gen_random_uuid();
         s RECORD; blocked boolean;
@@ -91,6 +91,37 @@ BEGIN
  IF NOT blocked THEN RAISE EXCEPTION 'Duplicate question in same session permitted'; END IF;
  IF (SELECT count(*) FROM question_bank.interview_question_snapshots WHERE session_id=sess)<>1
  THEN RAISE EXCEPTION 'Rejected writes changed session'; END IF;
+
+
+ -- Publish a second approved question and test dynamic non-repeating selection.
+ INSERT INTO question_bank.questions(code,category_id,origin)
+ VALUES('RH-995',cat,'human') RETURNING id INTO another_q;
+ INSERT INTO question_bank.question_versions(
+  question_id,version_no,status,question_type,difficulty,rubric_version_id,
+  expected_elements,approved_for_publication,reviewed_by,reviewed_at)
+ VALUES(another_q,1,'draft','behavioral',1,rv,'["internal response"]'::jsonb,
+        true,reviewer,now()) RETURNING id INTO another_v;
+ INSERT INTO question_bank.localizations(question_version_id,locale,prompt)
+ VALUES(another_v,'fr','Autre question publiée'),
+       (another_v,'en','Another published question');
+ INSERT INTO question_bank.question_competencies(question_version_id,competency_id,is_primary)
+ VALUES(another_v,skill,true);
+ PERFORM question_bank.publish_question(another_v,reviewer);
+ SELECT * INTO s FROM question_bank.next_interview_question(sess,engine,'rh',NULL,1);
+ IF s.question_code<>'RH-995' OR s.turn_index<>2 OR s.prompt_text<>'Autre question publiée'
+ THEN RAISE EXCEPTION 'Automatic selection ignored filters or asked previous code'; END IF;
+ blocked:=false;
+ BEGIN PERFORM question_bank.next_interview_question(sess,engine,'rh',NULL,1);
+ EXCEPTION WHEN OTHERS THEN blocked:=true; END;
+ IF NOT blocked THEN RAISE EXCEPTION 'Re-asked exhausted questions'; END IF;
+ sess_en := question_bank.open_interview_session(candidate,engine,'en');
+ SELECT * INTO s FROM question_bank.next_interview_question(sess_en,engine,'rh',NULL,1);
+ IF s.turn_index<>1 OR s.locale<>'en' OR s.prompt_text<>'Another published question'
+ THEN RAISE EXCEPTION 'Selection did not honor English session locale'; END IF;
+ blocked:=false;
+ BEGIN PERFORM question_bank.next_interview_question(sess_en,other_engine,'rh',NULL,1);
+ EXCEPTION WHEN OTHERS THEN blocked:=true; END;
+ IF NOT blocked THEN RAISE EXCEPTION 'Unowned engine invoked dynamic selection'; END IF;
 
  IF has_table_privilege('anon','question_bank.interview_sessions','SELECT')
     OR has_table_privilege('authenticated','question_bank.interview_question_snapshots','SELECT')
