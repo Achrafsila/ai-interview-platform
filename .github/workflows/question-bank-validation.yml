@@ -38,3 +38,40 @@ jobs:
         run: python scripts/validate_question_bank.py
       - name: Run question bank regression tests
         run: python -m unittest discover -s tests -v
+
+  postgres-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci-only-secret
+          POSTGRES_DB: question_bank_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d question_bank_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: ci-only-secret
+      PGDATABASE: question_bank_ci
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure PostgreSQL client exists
+        run: |
+          command -v psql || (sudo apt-get update && sudo apt-get install -y postgresql-client)
+      - name: Apply reference schema on isolated test database
+        run: |
+          psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0001_question_bank_schema.sql
+          psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0002_publication_guards.sql
+      - name: Test publication guards, audit and immutability
+        run: psql -X -v ON_ERROR_STOP=1 -f db/postgres/tests/0001_publication_contract.sql
