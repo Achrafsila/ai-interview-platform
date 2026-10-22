@@ -98,7 +98,7 @@ Deno.serve(async (req: Request) => {
       const input = await readSmallJson(req);
       const candidateId = input?.candidate_user_id;
       const requestedLocale = input?.locale ?? "fr";
-      if (!validUuid(candidateId) || !validLocale(String(requestedLocale)))
+      if (!validUuid(candidateId) || !validLocale(requestedLocale))
         return json({ error: "invalid_session" }, 400);
       const rows = await sql`
         SELECT question_bank.open_interview_session(
@@ -116,14 +116,17 @@ Deno.serve(async (req: Request) => {
       if (!validUuid(sessionId)) return json({ error: "invalid_session" }, 400);
       const input = await readSmallJson(req);
       if (!input) return json({ error: "invalid_selection" }, 400);
-      const requestedFamily = input.family ?? null;
-      const requestedCategory = input.category ?? null;
-      const requestedDifficulty = input.difficulty ?? null;
-      if ((requestedFamily !== null && !["rh", "transversal", "technical"].includes(String(requestedFamily))) ||
-          (requestedCategory !== null && (typeof requestedCategory !== "string" || !/^[a-z_]{1,64}$/.test(requestedCategory))) ||
-          (requestedDifficulty !== null && (![1, 2, 3, 4].includes(Number(requestedDifficulty)) || typeof requestedDifficulty !== "number"))) {
+      const rawFamily = input.family ?? null;
+      const rawCategory = input.category ?? null;
+      const rawDifficulty = input.difficulty ?? null;
+      if ((rawFamily !== null && (typeof rawFamily !== "string" || !["rh","transversal","technical"].includes(rawFamily))) ||
+          (rawCategory !== null && (typeof rawCategory !== "string" || !/^[a-z_]{1,64}$/.test(rawCategory))) ||
+          (rawDifficulty !== null && (typeof rawDifficulty !== "number" || !Number.isInteger(rawDifficulty) || ![1,2,3,4].includes(rawDifficulty)))) {
         return json({ error: "invalid_selection" }, 400);
       }
+      const requestedFamily: string | null = typeof rawFamily === "string" ? rawFamily : null;
+      const requestedCategory: string | null = typeof rawCategory === "string" ? rawCategory : null;
+      const requestedDifficulty: number | null = typeof rawDifficulty === "number" ? rawDifficulty : null;
       const rows = await sql`
         SELECT * FROM question_bank.next_interview_question(
           ${sessionId}::uuid, ${data.user.id}::uuid,
