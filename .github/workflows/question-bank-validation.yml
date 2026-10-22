@@ -89,6 +89,7 @@ jobs:
         run: |
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/tests/0001_publication_contract.sql
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/tests/0002_private_catalog_boundary.sql
+          psql -X -v ON_ERROR_STOP=1 -f db/postgres/tests/0003_published_projection_contract.sql
       - name: Generate and apply draft corpus seed
         run: |
           python scripts/generate_question_bank_seed_sql.py > /tmp/question_bank_seed.sql
