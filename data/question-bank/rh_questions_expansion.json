@@ -1,0 +1,1807 @@
+{
+  "schema_version": "pilot-expansion-1.0",
+  "publication_status": "draft_not_imported",
+  "questions": [
+    {
+      "code": "RH-011",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "parcours",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "career_transition",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Expliquez une transition importante de votre parcours et les facteurs qui ont guidé votre choix.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Explain an important transition in your background and the factors behind your choice.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "contexte de transition",
+        "critères de décision",
+        "enseignements"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à career_transition. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-012",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "parcours",
+      "question_type": "introductory",
+      "difficulty": 1,
+      "primary_competency": "skills_inventory",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quelles sont vos deux compétences les plus utiles pour le poste visé, et comment les avez-vous développées ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Which two of your skills are most relevant to the target role, and how did you build them?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "compétences liées au poste",
+        "preuves concrètes",
+        "conscience des limites"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à skills_inventory. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-013",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "parcours",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "experience_relevance",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quelle expérience apparemment éloignée de ce métier vous serait malgré tout utile ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Which experience that seems unrelated to this field could still help you in this role?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "compétence transférable",
+        "exemple vérifiable",
+        "lien explicite"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à experience_relevance. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-014",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "parcours",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "career_choices",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Racontez un choix de formation ou de mission que vous avez remis en question.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about an education or assignment choice you later reconsidered.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "contexte et critères",
+        "recul sur la décision",
+        "apprentissage"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à career_choices. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-015",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "parcours",
+      "question_type": "behavioral",
+      "difficulty": 1,
+      "primary_competency": "strengths_evidence",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Choisissez une de vos forces et donnez un exemple précis de son utilisation.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Choose one of your strengths and give a specific example of using it.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "force nommée",
+        "exemple contextualisé",
+        "résultat ou apprentissage"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à strengths_evidence. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-016",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "motivation",
+      "question_type": "motivational",
+      "difficulty": 2,
+      "primary_competency": "role_research",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment avez-vous vérifié que les missions de ce métier correspondent à vos attentes ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "How did you check that the responsibilities of this profession match your expectations?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "démarche d'information",
+        "compréhension du rôle",
+        "zones d'incertitude"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à role_research. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-017",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "motivation",
+      "question_type": "motivational",
+      "difficulty": 2,
+      "primary_competency": "value_alignment",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Qu'est-ce qui compte le plus pour vous dans votre prochain poste, et pourquoi ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "What matters most to you in your next role, and why?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "priorités assumées",
+        "motifs précis",
+        "cohérence professionnelle"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à value_alignment. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-018",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "motivation",
+      "question_type": "motivational",
+      "difficulty": 1,
+      "primary_competency": "curiosity",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quel sujet lié à votre futur métier avez-vous exploré récemment de votre propre initiative ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "What topic related to your future profession have you explored on your own recently?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "curiosité réelle",
+        "démarche d'exploration",
+        "apprentissage"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à curiosity. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-019",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "motivation",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "realistic_expectations",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Vous découvrez que le poste comporte des tâches moins attractives que prévu. Comment réagissez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "You discover the role includes less appealing tasks than expected. How do you respond?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "clarification des attentes",
+        "évaluation réaliste",
+        "dialogue constructif"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à realistic_expectations. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-020",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "motivation",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "commitment",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Racontez un engagement que vous avez tenu malgré une baisse de motivation.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about a commitment you maintained despite losing motivation.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "contexte",
+        "stratégie de persévérance",
+        "recul"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à commitment. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-021",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "communication",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "active_listening",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Racontez une situation où vous avez réalisé que vous aviez mal compris votre interlocuteur.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about a time you realized you had misunderstood someone.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "reconnaissance du malentendu",
+        "vérification de compréhension",
+        "correction"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à active_listening. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-022",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "communication",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "audience_adaptation",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment avez-vous expliqué un sujet complexe à quelqu'un qui n'en connaissait pas les bases ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "How did you explain a complex subject to someone unfamiliar with the basics?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "adaptation du langage",
+        "exemple concret",
+        "vérification de compréhension"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à audience_adaptation. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-023",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "communication",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "feedback_delivery",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment formuleriez-vous un retour constructif à un collègue dont le livrable est incomplet ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you give constructive feedback to a colleague whose deliverable is incomplete?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "faits observables",
+        "respect",
+        "proposition concrète"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à feedback_delivery. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-024",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "collaboration",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "shared_responsibility",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Décrivez un projet collectif dans lequel les responsabilités étaient mal réparties.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Describe a group project where responsibilities were unclear or poorly divided.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "problème de coordination",
+        "initiative réaliste",
+        "résultat"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à shared_responsibility. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-025",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "collaboration",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "inclusion",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Un membre de votre groupe prend rarement la parole. Comment facilitez-vous sa participation ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "A member of your group rarely speaks up. How do you encourage their participation?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "écoute sans présupposé",
+        "invitation respectueuse",
+        "adaptation"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à inclusion. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-026",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "collaboration",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "remote_work",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Votre équipe travaille à distance et les informations se perdent. Quelles pratiques mettez-vous en place ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Your team works remotely and information gets lost. What practices do you introduce?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "diagnostic de communication",
+        "rituels proportionnés",
+        "traçabilité"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à remote_work. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-027",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "problem_solving",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "ambiguity",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "On vous confie un problème mal défini avec peu d'informations. Par quoi commencez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "You are assigned a poorly defined problem with little information. Where do you start?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "clarification de l'objectif",
+        "hypothèses explicites",
+        "collecte ciblée"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à ambiguity. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-028",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "problem_solving",
+      "question_type": "behavioral",
+      "difficulty": 3,
+      "primary_competency": "decision_uncertainty",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Décrivez une décision que vous avez prise avec des informations incomplètes.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Describe a decision you made with incomplete information.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "incertitudes reconnues",
+        "options comparées",
+        "gestion des risques"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à decision_uncertainty. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-029",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "problem_solving",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "root_cause",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Racontez une fois où la première explication d'un problème s'est révélée fausse.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about a time the first explanation for a problem turned out to be wrong.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "révision des hypothèses",
+        "indices recherchés",
+        "correction de trajectoire"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à root_cause. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-030",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "problem_solving",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "creativity",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Parlez d'une solution simple que vous avez trouvée à un problème récurrent.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about a simple solution you found to a recurring problem.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "problème caractérisé",
+        "solution adaptée",
+        "effet observable"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à creativity. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-031",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "adaptability",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "rapid_learning",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment avez-vous appris rapidement une compétence nécessaire pour terminer une mission ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "How did you quickly learn a skill needed to complete an assignment?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "besoin identifié",
+        "méthode d'apprentissage",
+        "mise en pratique"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à rapid_learning. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-032",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "adaptability",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "change_management",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Décrivez une situation où les règles de votre projet ont changé en cours de route.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Describe a situation where the rules of your project changed midway.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "prise en compte du changement",
+        "réorganisation",
+        "communication"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à change_management. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-033",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "adaptability",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "uncertainty",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Votre responsable ne peut pas confirmer la prochaine étape d'un projet. Comment avancez-vous sans créer de risques inutiles ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Your manager cannot confirm the next project step. How do you make progress without unnecessary risk?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "hypothèses réversibles",
+        "clarification",
+        "limites d'initiative"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à uncertainty. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-034",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "learning",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "feedback_application",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quel retour avez-vous reçu que vous n'avez pas appliqué immédiatement, et pourquoi ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "What feedback did you receive that you did not apply right away, and why?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "écoute critique",
+        "justification nuancée",
+        "évolution éventuelle"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à feedback_application. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-035",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "learning",
+      "question_type": "motivational",
+      "difficulty": 1,
+      "primary_competency": "self_development",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment décidez-vous quelle compétence travailler en priorité ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "How do you decide which skill to work on first?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "besoin explicite",
+        "priorisation réaliste",
+        "mesure de progrès"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à self_development. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-036",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "organization",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "deadline_risk",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Vous identifiez un risque de retard deux jours avant une livraison. Que faites-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "You spot a delivery-delay risk two days before the deadline. What do you do?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "alerte précoce",
+        "options de réduction du risque",
+        "engagement réaliste"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à deadline_risk. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-037",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "organization",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "focus_management",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Parlez d'une période où vous aviez du mal à rester concentré sur vos priorités.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about a period when you struggled to stay focused on priorities.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "causes identifiées",
+        "mesures adaptées",
+        "recul"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à focus_management. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-038",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "organization",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "work_estimation",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment planifiez-vous une tâche lorsque sa durée est très incertaine ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "How do you plan a task when its duration is highly uncertain?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "décomposition",
+        "hypothèses d'estimation",
+        "jalons de réévaluation"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à work_estimation. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-039",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "leadership",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "initiative",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Décrivez une initiative prise sans rôle officiel de responsable.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Describe an initiative you took without having a formal leadership role.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "besoin collectif",
+        "prise d'initiative",
+        "respect des responsabilités"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à initiative. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-040",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "leadership",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "delegation",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Vous coordonnez un projet et une personne accumule du retard. Comment intervenez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "You coordinate a project and someone is falling behind. How do you intervene?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "diagnostic sans jugement",
+        "soutien et attentes claires",
+        "suivi"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à delegation. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-041",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "leadership",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "ethical_judgment",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Un collègue vous demande de masquer une erreur mineure dans un reporting. Que faites-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "A colleague asks you to conceal a minor error in a report. What do you do?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "exactitude des données",
+        "dialogue responsable",
+        "escalade proportionnée"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à ethical_judgment. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-042",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "leadership",
+      "question_type": "behavioral",
+      "difficulty": 3,
+      "primary_competency": "conflict_resolution",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Racontez un désaccord entre deux personnes auquel vous avez contribué à apporter une solution.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about a disagreement between two people that you helped resolve.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "neutralité et écoute",
+        "facilitation",
+        "résultat sans consensus imposé"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à conflict_resolution. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-043",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "leadership",
+      "question_type": "behavioral",
+      "difficulty": 3,
+      "primary_competency": "influence_without_authority",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment avez-vous obtenu la coopération d'une personne sur laquelle vous n'aviez aucune autorité ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "How did you gain cooperation from someone you had no authority over?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "compréhension des intérêts",
+        "persuasion respectueuse",
+        "relation durable"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à influence_without_authority. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-044",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "situational",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "customer_orientation",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Un client interne juge votre travail insuffisant alors que vous avez respecté les consignes. Comment réagissez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "An internal client says your work is insufficient even though you followed instructions. How do you respond?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "écoute du besoin",
+        "clarification des écarts",
+        "solution réaliste"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à customer_orientation. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-045",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "situational",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "pressure_handling",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Vous recevez une demande urgente contradictoire avec une consigne antérieure. Comment arbitrez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "You receive an urgent request that conflicts with an earlier instruction. How do you handle it?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "détection de contradiction",
+        "validation des priorités",
+        "communication"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à pressure_handling. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-046",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "situational",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "professional_integrity",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Vous repérez une donnée erronée après l'envoi d'un document important. Que faites-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "You notice an incorrect figure after sending an important document. What do you do?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "évaluation de l'impact",
+        "correction transparente",
+        "prévention de récidive"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à professional_integrity. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-047",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "situational",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "stakeholder_management",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Deux interlocuteurs importants défendent des demandes incompatibles. Comment les rapprochez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Two key stakeholders make incompatible requests. How do you reconcile them?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "objectifs identifiés",
+        "options de compromis",
+        "arbitrage explicite"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à stakeholder_management. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-048",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "situational",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "resilience",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Parlez d'un projet qui n'a pas abouti comme prévu et de la manière dont vous avez rebondi.",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "Tell me about a project that did not go as planned and how you recovered.",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "analyse factuelle",
+        "ajustement des actions",
+        "enseignements"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à resilience. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-049",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "situational",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "responsibility",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Vous recevez le crédit pour une réussite qui repose surtout sur le travail d'un collègue. Que faites-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "You get credit for an achievement mostly due to a colleague's work. What do you do?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "reconnaissance de la contribution",
+        "intégrité",
+        "communication adaptée"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à responsibility. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "RH-050",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "rh",
+      "category_code": "situational",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "resourcefulness",
+      "secondary_competencies": [],
+      "rubric_code": "RH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Il manque un outil indispensable pour terminer votre projet. Quelles solutions explorez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous donner un exemple ou préciser les étapes de votre démarche ?",
+            "Qu'avez-vous appris et que feriez-vous autrement ?"
+          ]
+        },
+        "en": {
+          "prompt": "A tool essential to your project is unavailable. What alternatives do you explore?",
+          "followup_seeds": [
+            "Can you give an example or walk me through the steps you took?",
+            "What did you learn, and what would you do differently?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "contournements sûrs",
+        "priorisation",
+        "communication des limites"
+      ],
+      "acceptable_variations_fr": "Exemples académiques, associatifs, personnels ou professionnels acceptés ; valoriser les preuves et le raisonnement plutôt que l'aisance orale ou les seuls résultats chiffrés.",
+      "red_flags_fr": [
+        "Absence totale de réponse à la compétence visée malgré relance."
+      ],
+      "evaluation_notes_fr": "Évaluer les comportements observables liés à resourcefulness. Utiliser la grille RH_GENERAL comme référence provisoire ; distinguer compétence et élocution. Critère N/E si réellement inapplicable, jamais assimilé à une erreur.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    }
+  ],
+  "editorial_note": "40 nouvelles questions RH proposées par IA, non approuvées par un humain. Les relances sont des suggestions génériques à personnaliser lors de la revue."
+}
