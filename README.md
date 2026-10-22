@@ -1,6 +1,6 @@
 # AI Interview Platform
 
-Plateforme d'entraînement aux entretiens d'embauche assistée par l'IA. **Statut : POC en cours, Sprint 1 sur 4.** Aucun choix de stack applicative ni de fournisseur IA n'est encore validé, et aucun code applicatif n'est présent dans ce dépôt.
+Plateforme d'entraînement aux entretiens d'embauche assistée par l'IA. **Statut : POC en cours, Sprint 2 en conception et préparation documentaire (Sprint 1 partiel).** Aucun choix définitif de stack applicative ni de fournisseur IA n'est validé. Le dépôt contient des spécifications, un corpus de questions fictif et un validateur Python, mais pas encore d'application de simulation intégrée.
 
 ## Vision produit
 
@@ -25,7 +25,9 @@ Le candidat crée son compte et renseigne son profil (expérience, poste visé, 
 | S1-02 Architecture et modèle de données conceptuel | Livré (PR #2), proposition v0.1 à affiner |
 | Stack frontend / backend / base de données | Non décidée |
 | Fournisseur avatar / voix / transcription | Non validé, POC prioritaire |
-| Implémentation applicative | Non démarrée |
+| Corpus S2-03 | 120 questions en brouillon GitHub (50 RH / 70 techniques) ; revue qualité et implémentation en attente |
+| Calibration S2-03 | 12 cas simulés documentés ; moteur de notation non testé |
+| Implémentation applicative | Non démontrée dans le dépôt à ce jour |
 
 La fusion de la PR #2 intègre une proposition d'architecture ; elle ne valide pas les choix de stack, de fournisseurs, d'hébergement ou de conformité.
 
@@ -35,14 +37,24 @@ La fusion de la PR #2 intègre une proposition d'architecture ; elle ne valide p
 - [`docs/architecture/DATA_MODEL.md`](docs/architecture/DATA_MODEL.md) : entités, cardinalités, invariants, questions ouvertes.
 - [`docs/DECISIONS.md`](docs/DECISIONS.md) : registre des décisions techniques (ADR).
 - [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) : branches, commits, PR, Definition of Done.
-- [`docs/SECURITY.md`](docs/SECURITY.md) : règles de sécurité et de confidentialité.
+- [`docs/SECURITY.md`](docs/SECURITY.md) : règles de sécurité et de confidentialité ; dépôt actuellement public.
+- [`CLAUDE.md`](CLAUDE.md) : guide de reprise pour les agents IA.
+- [`docs/AUDIT_GITHUB_2026-10-22.md`](docs/AUDIT_GITHUB_2026-10-22.md) : constats d'audit et registre des tâches à synchroniser.
+- [`docs/S2-03_Question_Bank_Specification.md`](docs/S2-03_Question_Bank_Specification.md) : spécification des banques de questions.
+- [`docs/S2-03_Implementation_Tracker.md`](docs/S2-03_Implementation_Tracker.md) : suivi opérationnel S2-03.
+- [`docs/S2-03_120_Questions_Status.md`](docs/S2-03_120_Questions_Status.md) : détail du corpus 120 questions.
+- [`docs/S2-03_Calibration_Grilles_Pilote.md`](docs/S2-03_Calibration_Grilles_Pilote.md) : 12 simulations de calibration (non tests du moteur).
+- [`data/question-bank/README.md`](data/question-bank/README.md) : formats et provenance des questions.
+- [`scripts/validate_question_bank.py`](scripts/validate_question_bank.py) : validateur structurel ; workflow `.github/workflows/question-bank-validation.yml`.
 
 ## Organisation du dépôt
 
 ```
 docs/           Décisions, conventions, sécurité, architecture
 .github/        Modèles d'issue et de PR, workflow de vérification
-src/, tests/    À créer après validation de l'architecture et de la stack
+data/question-bank/   Questions bilingues au statut draft et grilles de référence
+scripts/              Validation du corpus JSON
+src/, tests/          À créer après validation de l'architecture et de la stack
 ```
 
 ## Contribuer
@@ -50,7 +62,7 @@ src/, tests/    À créer après validation de l'architecture et de la stack
 1. Lire `docs/CONTRIBUTING.md` et `docs/DECISIONS.md`, puis vérifier `main`, les branches et PR ouvertes et le ticket ClickUp concerné.
 2. Créer une branche depuis `main` : `feat/`, `fix/`, `chore/` ou `docs/` suivi de l'ID du ticket et du sujet (ex. `docs/S1-03-provider-poc`).
 3. Utiliser les Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`, `test:`, `ci:`).
-4. Ouvrir une Pull Request avec la référence ClickUp, la portée et le plan de test. Les revues et la CI sont recommandées mais ne bloquent pas la fusion.
+4. Ouvrir une Pull Request avec la référence ClickUp, la portée et le plan de test. Les revues sont recommandées ; le workflow JSON doit être contrôlé lorsqu'il est déclenché, et la présence d'une règle de branche bloquante ne doit pas être présumée.
 5. Après intégration, mettre à jour la tâche ClickUp (avec l'accord du Product Owner) et consigner toute nouvelle décision dans `docs/DECISIONS.md`.
 
 Le backlog et le suivi des sprints sont tenus dans ClickUp ; GitHub et ClickUp sont les sources de vérité du projet.
