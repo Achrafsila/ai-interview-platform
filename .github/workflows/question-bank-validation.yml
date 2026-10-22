@@ -76,8 +76,11 @@ jobs:
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0001_question_bank_schema.sql
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0002_publication_guards.sql
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0003_question_bank_indexes.sql
+          psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0004_private_catalog_boundary.sql
       - name: Test publication guards, audit and immutability
-        run: psql -X -v ON_ERROR_STOP=1 -f db/postgres/tests/0001_publication_contract.sql
+        run: |
+          psql -X -v ON_ERROR_STOP=1 -f db/postgres/tests/0001_publication_contract.sql
+          psql -X -v ON_ERROR_STOP=1 -f db/postgres/tests/0002_private_catalog_boundary.sql
       - name: Generate and apply draft corpus seed
         run: |
           python scripts/generate_question_bank_seed_sql.py > /tmp/question_bank_seed.sql
