@@ -3,7 +3,7 @@
 **Projet :** AI Interview Platform  
 **Date de référence :** 22 octobre 2026  
 **Tâche ClickUp :** [S2-03 — Créer banques de questions RH et techniques](https://app.clickup.com/t/123ru7uztgq)  
-**Statut :** conception terminée ; corpus pilote préparé ; développement et publication non effectués.
+**Statut :** conception terminée ; corpus de 120 questions rédigé en brouillon ; calibration de 12 cas simulés documentée ; développement et publication non effectués.
 
 ## Décision d'organisation ClickUp
 
@@ -19,9 +19,9 @@
 - [x] Terminer la revue éditoriale des 10 questions RH (RH-001 à RH-010).
 - [x] Pré-auditer et corriger par IA les 10 questions techniques (TECH-001 à TECH-010).
 - [x] Versionner les JSON pilotes et les comptes rendus dans GitHub.
-- [ ] Tester les grilles sur réponses simulées solides/moyennes/insuffisantes et cas N/E.
+- [x] Réaliser la calibration illustrative des grilles sur 12 réponses simulées, y compris un cas N/E (moteur réel non testé).
 - [x] Rédiger et versionner en brouillon les 100 questions restantes pour atteindre 50 RH/transverses + 70 techniques (revue qualité en attente).
-- [ ] Faire la validation métier finale des questions techniques et du corpus complet.
+- [ ] Faire la validation métier finale des questions techniques et du corpus complet (inclut **harmonisation des catégories**, **personnalisation des relances génériques**, **validation des attendus et variantes**, **localisation complète si nécessaire**).
 - [ ] Implémenter migrations, contraintes, statut, publication et historique des versions dans Supabase (selon stack effectivement retenue).
 - [ ] Appliquer RLS/autorisations, séparation attendus internes / données candidats, et journalisation.
 - [ ] Intégrer catalogue publié au moteur S2-04 par contrat API et tests d'intégration.
@@ -54,3 +54,11 @@ S2-03 pourra être clôturé quand les questions du périmètre V1 seront import
 ## Mise à jour — corpus étendu à 120 (22/10/2026)
 
 Les 100 questions complémentaires ont été rédigées et ajoutées au dépôt : 40 RH + 60 techniques ; voir [rapport de lot](S2-03_120_Questions_Status.md) et [validateur](../scripts/validate_question_bank.py). La rédaction est terminée, **pas la validation métier**, ni la publication Supabase. Les relances des nouvelles fiches doivent être spécifiées davantage, et les attendus internes sont pour le moment en français.
+
+
+## Audit de cohérence documentaire — 22/10/2026
+
+- Voir [rapport d'audit](AUDIT_GITHUB_2026-10-22.md), [calibration](S2-03_Calibration_Grilles_Pilote.md) et [guide des agents](../CLAUDE.md).
+- La liste ci-dessus indique **7 éléments cochés sur 11 dans le registre GitHub** après réconciliation, mais le taux d'avancement n'est pas une mesure d'effort. Les actions liées à la qualité et au développement peuvent être plus importantes que les livrables documentaires.
+- **Synchronisation ClickUp impossible lors de cet audit : limite API atteinte** ; ne pas confondre ces cases du document avec le statut réel dans ClickUp.
+- Aucun nouveau ticket parent n'est recommandé. Utiliser la checklist existante sous « Implémentation & validation » et intégrer les trois éléments qualité complémentaires dans la description de cette action.
