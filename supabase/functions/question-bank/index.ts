@@ -60,6 +60,8 @@ Deno.serve(async (req: Request) => {
 
   try {
     if (req.method === "GET" && endpoint.length === 1 && endpoint[0] === "questions") {
+      // Candidate users must not enumerate future interview prompts.
+      if (!canEngine(role)) return json({ error: "forbidden" }, 403);
       // The view includes only approved current published revisions.
       // Fetch metadata only; private expected answer fields are never selected here.
       const rows = await sql`
