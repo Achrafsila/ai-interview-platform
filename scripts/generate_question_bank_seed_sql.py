@@ -4,6 +4,7 @@
 Requires migrations 0001 and 0002. No database connection or third-party packages.
 Usage: python scripts/generate_question_bank_seed_sql.py > /tmp/question_bank_seed.sql
 Never apply seed against a database containing real candidate data without review.
+Run the generated file on an isolated PostgreSQL test database before any deployment.
 """
 from __future__ import annotations
 import json
