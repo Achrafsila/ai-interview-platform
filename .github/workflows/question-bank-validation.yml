@@ -138,3 +138,5 @@ jobs:
         run: |
           node --test tests/test_s2_04_bridge.mjs tests/test_interview_session_orchestrator.mjs
           node --check scripts/smoke_question_bank_http.mjs
+          python3 -c "from pathlib import Path; h=Path('dev/local-preview/index.html').read_text(encoding='utf-8'); Path('/tmp/ai-local-preview.js').write_text(h.split('<script>',1)[1].split('</script>',1)[0],encoding='utf-8')"
+          node --check /tmp/ai-local-preview.js
