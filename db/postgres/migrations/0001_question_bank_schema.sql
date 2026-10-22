@@ -128,7 +128,7 @@ BEGIN
  END IF;
  IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
  RETURN NEW;
-END $;
+END $$;
 CREATE TRIGGER trg_protect_published_version BEFORE UPDATE OR DELETE ON question_bank.question_versions
  FOR EACH ROW EXECUTE FUNCTION question_bank.protect_published_version();
 
@@ -140,7 +140,7 @@ BEGIN
  END IF;
  IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
  RETURN NEW;
-END $;
+END $$;
 CREATE TRIGGER trg_protect_published_rubric BEFORE UPDATE OR DELETE ON question_bank.rubric_versions
  FOR EACH ROW EXECUTE FUNCTION question_bank.protect_published_rubric();
 
@@ -152,7 +152,7 @@ BEGIN
  END IF;
  IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
  RETURN NEW;
-END $;
+END $$;
 CREATE TRIGGER trg_protect_published_localization BEFORE UPDATE OR DELETE ON question_bank.localizations
  FOR EACH ROW EXECUTE FUNCTION question_bank.protect_published_localization();
 
@@ -164,7 +164,7 @@ BEGIN
  END IF;
  IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;
  RETURN NEW;
-END $;
+END $$;
 CREATE TRIGGER trg_protect_published_competency BEFORE UPDATE OR DELETE ON question_bank.question_competencies
  FOR EACH ROW EXECUTE FUNCTION question_bank.protect_published_competency();
 
