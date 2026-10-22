@@ -7,6 +7,8 @@ on:
       - 'scripts/validate_question_bank.py'
       - 'scripts/question_bank_catalog.py'
       - 'supabase/functions/question-bank/**'
+      - 'src/integrations/s2-04/**'
+      - 'tests/test_s2_04_bridge.mjs'
       - 'scripts/generate_question_bank_seed_sql.py'
       - 'tests/test_question_bank.py'
       - 'tests/test_postgres_migrations_static.py'
@@ -18,6 +20,8 @@ on:
       - 'scripts/validate_question_bank.py'
       - 'scripts/question_bank_catalog.py'
       - 'supabase/functions/question-bank/**'
+      - 'src/integrations/s2-04/**'
+      - 'tests/test_s2_04_bridge.mjs'
       - 'scripts/generate_question_bank_seed_sql.py'
       - 'tests/test_question_bank.py'
       - 'tests/test_postgres_migrations_static.py'
@@ -103,3 +107,16 @@ jobs:
           deno-version: v2.x
       - name: Check Edge Function TypeScript
         run: deno check supabase/functions/question-bank/index.ts
+
+  s2-04-adapter-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run S2-04 bridge adapter tests
+        run: node --test tests/test_s2_04_bridge.mjs
