@@ -15,6 +15,7 @@ test("engine starts an authenticated session using published catalogue",async()=
       question_version_id:"immutable-version",rubric_version_id:"immutable-rubric",
       locale:"fr",prompt_text:"Introduce yourself",turn_index:1}};},
     getSessionQuestions:async()=>({items:[]}),
+    completeSession:async(sessionId)=>({session_id:sessionId,status:'completed'}),
   };
   const engine=createInterviewSessionOrchestrator(bank);
   const result=await engine.start({candidateUserId:candidate,locale:"fr",
@@ -33,6 +34,7 @@ test("no published questions refuses to open empty session",async()=>{
     createSession:async()=>{wrote=true;},
     nextQuestion:async()=>{throw Error("should not select");},
     getSessionQuestions:async()=>({items:[]}),
+    completeSession:async(sessionId)=>({session_id:sessionId,status:'completed'}),
   };
   await assert.rejects(createInterviewSessionOrchestrator(bank).start({
     candidateUserId:candidate,selection:{family:"technical"},
@@ -48,10 +50,13 @@ test("engine session replay consumes immutable database snapshots",async()=>{
     createSession:async()=>({session_id:sessionId}),
     nextQuestion:async()=>({snapshot:saved}),
     getSessionQuestions:async()=>({items:[saved]}),
+    completeSession:async(sessionId)=>({session_id:sessionId,status:'completed'}),
   };
   const engine=createInterviewSessionOrchestrator(bank);
   assert.deepEqual(await engine.next(sessionId),saved);
   assert.deepEqual(await engine.replay(sessionId),[saved]);
+  const result=await engine.finish(sessionId);
+  assert.equal(result.status,"completed");
 });
 
 test("invalid filters reject before external API calls",async()=>{
@@ -61,6 +66,7 @@ test("invalid filters reject before external API calls",async()=>{
     createSession:async()=>{},
     nextQuestion:async()=>{},
     getSessionQuestions:async()=>({items:[]}),
+    completeSession:async(sessionId)=>({session_id:sessionId,status:'completed'}),
   };
   const engine=createInterviewSessionOrchestrator(bank);
   await assert.rejects(engine.start({candidateUserId:candidate,locale:"es"}),TypeError);
