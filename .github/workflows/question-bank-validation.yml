@@ -6,6 +6,7 @@ on:
       - 'data/question-bank/**'
       - 'scripts/validate_question_bank.py'
       - 'scripts/question_bank_catalog.py'
+      - 'supabase/functions/question-bank/**'
       - 'scripts/generate_question_bank_seed_sql.py'
       - 'tests/test_question_bank.py'
       - 'tests/test_postgres_migrations_static.py'
@@ -16,6 +17,7 @@ on:
       - 'data/question-bank/**'
       - 'scripts/validate_question_bank.py'
       - 'scripts/question_bank_catalog.py'
+      - 'supabase/functions/question-bank/**'
       - 'scripts/generate_question_bank_seed_sql.py'
       - 'tests/test_question_bank.py'
       - 'tests/test_postgres_migrations_static.py'
@@ -88,3 +90,16 @@ jobs:
           python scripts/generate_question_bank_seed_sql.py > /tmp/question_bank_seed.sql
           psql -X -v ON_ERROR_STOP=1 -f /tmp/question_bank_seed.sql
           psql -X -v ON_ERROR_STOP=1 -f /tmp/question_bank_seed.sql
+
+  edge-function-typecheck:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Check Edge Function TypeScript
+        run: deno check supabase/functions/question-bank/index.ts
