@@ -15,6 +15,18 @@ Plateforme d'entraînement aux entretiens d'embauche assistée par l'IA. **Statu
 
 Documentation du changement : [CHANGELOG](CHANGELOG.md) · [Modèle ADR](docs/ADR_TEMPLATE.md) · [Checklist de release](docs/RELEASE_CHECKLIST.md).
 
+## Tester en local sur Mac
+
+Un **aperçu fonctionnel du corpus S2-03 et du parcours de questions S2-04** est disponible sans dépendances externes :
+
+```bash
+python3 dev/local-preview/server.py
+```
+
+Ouvrir **http://127.0.0.1:8765**. L'outil permet d'explorer les 120 questions RH/techniques en FR/EN et de réaliser une simulation guidée avec récapitulatif. Il fonctionne exclusivement en mémoire locale : **aucune connexion Supabase, notation IA, authentification ou publication de brouillons**.
+
+[Guide Mac et explication des schémas Supabase](docs/LOCAL_PREVIEW.md) · [Tests localhost](tests/test_local_preview.py).
+
 ## Vision produit
 
 Le candidat crée son compte et renseigne son profil (expérience, poste visé, langue, objectifs). Il reçoit ensuite un parcours de préparation adapté. Il passe un entretien IA interactif, idéalement avec avatar vidéo, voix et transcription. Après l'entretien, il obtient une évaluation structurée et explicable, fondée sur une grille versionnée, puis un plan de coaching IA, avec la possibilité de demander un coach humain. Un tableau de bord suit sa progression d'une session à l'autre. Un espace d'administration permet de configurer les parcours, les questions, les grilles d'évaluation et les contenus. Le produit cible le français et l'anglais.
