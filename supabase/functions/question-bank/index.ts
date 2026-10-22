@@ -175,7 +175,7 @@ Deno.serve(async (req: Request) => {
         WHERE s.id=${sessionId}::uuid AND s.candidate_user_id=${data.user.id}::uuid
         ORDER BY q.turn_index
       `;
-      return json({ items: rows });
+      return json({ items: rows.map(safeCandidateTurn) });
     }
 
     if (req.method === "GET" && endpoint.length === 3 && endpoint[0] === "evaluator" && endpoint[1] === "questions") {
