@@ -92,6 +92,7 @@ jobs:
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0003_question_bank_indexes.sql
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0004_private_catalog_boundary.sql
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0005_interview_session_snapshots.sql
+          psql -X -v ON_ERROR_STOP=1 -f db/postgres/migrations/0006_complete_interview_session.sql
       - name: Test publication guards, audit and immutability
         run: |
           psql -X -v ON_ERROR_STOP=1 -f db/postgres/tests/0001_publication_contract.sql
