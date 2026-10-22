@@ -11,6 +11,7 @@ on:
     paths:
       - 'data/question-bank/**'
       - 'scripts/validate_question_bank.py'
+      - 'tests/test_question_bank.py'
       - '.github/workflows/question-bank-validation.yml'
   workflow_dispatch:
 
