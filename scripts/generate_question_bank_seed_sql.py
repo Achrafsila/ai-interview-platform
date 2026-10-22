@@ -21,6 +21,10 @@ def sql_json(data):
     return "'" + json.dumps(data, ensure_ascii=False).replace("'", "''") + "'::jsonb"
 
 
+def sql_text(value):
+    return "'" + value.replace("'", "''") + "'"
+
+
 def load():
     questions = []
     for name in FILES:
@@ -44,26 +48,26 @@ def generate():
     for code, family in categories:
         yield (
             "INSERT INTO question_bank.categories(code,family,label) "
-            f"VALUES({sql_json(code)} #>> '{{}}',{sql_json(family)} #>> '{{}}',{sql_json(code)} #>> '{{}}') "
+            f"VALUES({sql_text(code)},{sql_text(family)},{sql_text(code)}) "
             "ON CONFLICT(code) DO NOTHING;\n"
         )
     for code in competencies:
         yield (
             "INSERT INTO question_bank.competencies(code,label) "
-            f"VALUES({sql_json(code)} #>> '{{}}',{sql_json(code)} #>> '{{}}') "
+            f"VALUES({sql_text(code)},{sql_text(code)}) "
             "ON CONFLICT(code) DO NOTHING;\n"
         )
     for r in rubrics:
         code, family = r["code"], "rh" if r["code"].startswith("RH_") else "technical"
         yield (
             "INSERT INTO question_bank.rubrics(code,family) "
-            f"VALUES({sql_json(code)} #>> '{{}}',{sql_json(family)} #>> '{{}}') "
+            f"VALUES({sql_text(code)},{sql_text(family)}) "
             "ON CONFLICT(code) DO NOTHING;\n"
         )
         yield (
             "INSERT INTO question_bank.rubric_versions(rubric_id,version_no,status,weights,scale)\n"
             f"SELECT id,{int(r['version'])},'draft',{sql_json(r['weights'])},{sql_json(r['scale'])} "
-            f"FROM question_bank.rubrics WHERE code={sql_json(code)} #>> '{{}}'\n"
+            f"FROM question_bank.rubrics WHERE code={sql_text(code)}\n"
             "ON CONFLICT(rubric_id,version_no) DO NOTHING;\n"
         )
     yield "COMMIT;\n"
