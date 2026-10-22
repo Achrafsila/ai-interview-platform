@@ -1,0 +1,36 @@
+name: Question bank quality review
+description: Suggest corrections to draft questions; never publish automatically
+title: "review: "
+body:
+  - type: input
+    id: question
+    attributes:
+      label: Question code(s)
+      placeholder: "TECH-042, RH-011"
+    validations:
+      required: true
+  - type: dropdown
+    id: review_type
+    attributes:
+      label: Review focus
+      options:
+        - Technical accuracy
+        - Editorial clarity and fairness
+        - Localization (FR/EN)
+        - Rubric and scoring criteria
+        - Duplicate / taxonomy
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Finding, evidence or suggested correction
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Publication safety
+      options:
+        - label: Review is about synthetic/reference material, not a real candidate.
+          required: true
