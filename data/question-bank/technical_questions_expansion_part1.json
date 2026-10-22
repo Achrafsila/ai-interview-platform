@@ -1,0 +1,1717 @@
+{
+  "schema_version": "pilot-expansion-1.0",
+  "publication_status": "draft_not_imported",
+  "questions": [
+    {
+      "code": "TECH-011",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "conceptual",
+      "difficulty": 1,
+      "primary_competency": "http_semantics",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quelle différence faites-vous entre les méthodes HTTP GET, POST, PUT et PATCH ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What is the difference between HTTP GET, POST, PUT and PATCH?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "sémantique de lecture et de modification",
+        "notion d'idempotence et limites",
+        "exemples API"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence http_semantics au niveau L1 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-012",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "conceptual",
+      "difficulty": 1,
+      "primary_competency": "http_status",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment choisiriez-vous un code HTTP pour une requête réussie, une ressource introuvable et une erreur serveur ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you choose HTTP status codes for success, a missing resource and a server error?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "familles 2xx 4xx 5xx",
+        "codes adaptés au contexte",
+        "éviter réponses trompeuses"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence http_status au niveau L1 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-013",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "api_contracts",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment feriez-vous évoluer une API utilisée par plusieurs clients sans les casser ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you evolve an API used by several clients without breaking them?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "compatibilité ascendante",
+        "versioning et communication",
+        "tests de contrat"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence api_contracts au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-014",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "input_validation",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Un formulaire transmet des données inattendues à votre backend. Comment sécurisez-vous leur traitement ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "A form sends unexpected data to your backend. How do you secure its handling?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "validation côté serveur",
+        "messages d'erreur sûrs",
+        "contrôle des autorisations"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence input_validation au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-015",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "testing_units",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment testeriez-vous une fonction qui calcule des remises commerciales ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you test a function that calculates commercial discounts?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "cas normaux et limites",
+        "arrondis et montants invalides",
+        "tests reproductibles"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence testing_units au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-016",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "conceptual",
+      "difficulty": 2,
+      "primary_competency": "database_transactions",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Pourquoi utiliser une transaction pour transférer une somme entre deux comptes ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "Why use a transaction to transfer funds between two accounts?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "atomicité des mises à jour",
+        "cohérence des soldes",
+        "gestion échec et concurrence"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence database_transactions au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-017",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "concurrency",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Deux utilisateurs modifient simultanément la même donnée. Quelles stratégies considérez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "Two users update the same record at once. What strategies do you consider?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "conflit de concurrence",
+        "verrouillage optimiste ou pessimiste",
+        "choix selon usage"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence concurrency au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-018",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "caching",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quand mettriez-vous en cache le résultat d'une API et comment traiteriez-vous l'invalidation ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "When would you cache an API response and how would you handle invalidation?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "bénéfice et fraîcheur",
+        "TTL ou invalidation événementielle",
+        "risques de données périmées"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence caching au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-019",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "frontend_accessibility",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment rendriez-vous un formulaire web utilisable au clavier et par lecteur d'écran ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you make a web form usable with a keyboard and screen reader?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "étiquettes et messages accessibles",
+        "ordre de focus",
+        "tests clavier"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence frontend_accessibility au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-020",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "conceptual",
+      "difficulty": 2,
+      "primary_competency": "frontend_state",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quels problèmes peuvent survenir quand plusieurs composants partagent un état modifiable ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What problems can arise when several components share mutable state?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "cohérence des mises à jour",
+        "source de vérité",
+        "choix de gestion état"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence frontend_state au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-021",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "case_study",
+      "difficulty": 3,
+      "primary_competency": "architecture_tradeoffs",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment décideriez-vous entre une architecture monolithique et des microservices pour un petit produit ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you choose between a monolith and microservices for a small product?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "contraintes d'équipe et déploiement",
+        "coûts opérationnels",
+        "possibilité d'évolution"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence architecture_tradeoffs au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-022",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "observability",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Un bug n'apparaît qu'en production et reste difficile à reproduire. Comment enquêtez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "A bug only happens in production and is hard to reproduce. How do you investigate?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "logs et traces contextualisées",
+        "protection données sensibles",
+        "hypothèses contrôlées"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence observability au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-023",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "secure_dependencies",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Une dépendance majeure présente une vulnérabilité publiée. Comment décidez-vous d'une action ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "A major dependency has a published vulnerability. How do you decide what to do?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "exposition réelle",
+        "correctif ou mitigation",
+        "tests de non régression"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence secure_dependencies au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-024",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "behavioral",
+      "difficulty": 2,
+      "primary_competency": "code_review",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quels points vérifiez-vous avant d'approuver une pull request importante ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What do you check before approving a significant pull request?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "correction et tests",
+        "lisibilité et sécurité",
+        "risques de régression"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence code_review au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-025",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "conceptual",
+      "difficulty": 1,
+      "primary_competency": "sql_grouping",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quelle différence entre WHERE et HAVING dans une requête SQL agrégée ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What is the difference between WHERE and HAVING in an aggregated SQL query?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "filtrage avant agrégation",
+        "filtrage des groupes",
+        "exemple simple"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence sql_grouping au niveau L1 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-026",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "sql_window",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment calculeriez-vous le rang des ventes par commercial avec une fonction fenêtre SQL ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you rank sales by salesperson using a SQL window function?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "partitionnement et ordre",
+        "RANK ou DENSE_RANK",
+        "gestion ex aequo"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence sql_window au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-027",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "conceptual",
+      "difficulty": 1,
+      "primary_competency": "sql_nulls",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment NULL influence-t-il les comparaisons et les filtres SQL ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How does NULL affect SQL comparisons and filters?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "logique ternaire",
+        "IS NULL",
+        "différence zéro chaîne vide"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence sql_nulls au niveau L1 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-028",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "case_study",
+      "difficulty": 2,
+      "primary_competency": "data_modeling",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment modéliseriez-vous clients, commandes et lignes de commande pour un outil commercial ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you model customers, orders and order lines for a sales tool?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "clés et cardinalités",
+        "normalisation adaptée",
+        "contraintes intégrité"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence data_modeling au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-029",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "practical",
+      "difficulty": 3,
+      "primary_competency": "etl_idempotence",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment rendre un chargement quotidien rejouable sans dupliquer les données ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you make a daily data load rerunnable without duplicates?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "clé métier ou technique",
+        "upsert et déduplication",
+        "suivi des lots"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence etl_idempotence au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-030",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "conceptual",
+      "difficulty": 2,
+      "primary_competency": "data_lineage",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Pourquoi la traçabilité de l'origine des données est-elle importante dans un tableau de bord ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "Why is data lineage important in a dashboard?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "origine et transformations",
+        "audit des KPI",
+        "diagnostic des écarts"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence data_lineage au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-031",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "bi_kpis",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Deux services calculent différemment le même KPI. Comment réconciliez-vous les définitions ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "Two departments calculate the same KPI differently. How do you reconcile definitions?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "définition métier",
+        "grain et filtres",
+        "validation commune"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence bi_kpis au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-032",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "bi_visualization",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment choisiriez-vous une visualisation pour montrer une évolution mensuelle et ses anomalies ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you choose a chart to show a monthly trend and anomalies?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "choix du graphique",
+        "échelle et contexte",
+        "interprétation honnête"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence bi_visualization au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-033",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "conceptual",
+      "difficulty": 3,
+      "primary_competency": "statistical_leakage",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Que signifie une fuite de données dans l'entraînement d'un modèle prédictif ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What does data leakage mean when training a predictive model?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "information future ou cible induite",
+        "séparation train test",
+        "validation temporelle si nécessaire"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence statistical_leakage au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-034",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "ml_metrics",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Pour détecter un événement rare, comment comparez-vous précision et rappel ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "For a rare-event detector, how do you compare precision and recall?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "faux positifs et faux négatifs",
+        "coût métier",
+        "seuil et métriques pertinentes"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence ml_metrics au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-035",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "ml_drift",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "La performance d'un modèle baisse trois mois après sa mise en production. Que vérifiez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "A model performs worse three months after deployment. What do you check?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "dérive de données et cible",
+        "qualité du monitoring",
+        "plan de correction mesuré"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence ml_drift au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-036",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "case_study",
+      "difficulty": 3,
+      "primary_competency": "genai_evaluation",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment évalueriez-vous un assistant IA qui résume des documents internes ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you evaluate an AI assistant that summarizes internal documents?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "fidélité au source",
+        "jeu de cas représentatifs",
+        "protection des données"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence genai_evaluation au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-037",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "data_privacy",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "On vous demande d'ajouter des données nominatives à un tableau de bord partagé. Comment réagissez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "You are asked to add identifiable data to a shared dashboard. What do you do?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "finalité légitime",
+        "minimisation et habilitations",
+        "alternative agrégée"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence data_privacy au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-038",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "practical",
+      "difficulty": 3,
+      "primary_competency": "pipeline_observability",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Un pipeline réussit techniquement mais publie des volumes erronés. Comment le détectez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "A pipeline succeeds technically but publishes wrong volumes. How do you detect that?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "tests de fraîcheur et volume",
+        "contrôle métier",
+        "alerte et reprise"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence pipeline_observability au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-039",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "conceptual",
+      "difficulty": 1,
+      "primary_competency": "cloud_responsibility",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Qu'est-ce que le modèle de responsabilité partagée dans le cloud ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What is the cloud shared responsibility model?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "responsabilités fournisseur et client",
+        "variation selon service",
+        "exemple concret"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence cloud_responsibility au niveau L1 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-040",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "iam_least_privilege",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment appliqueriez-vous le moindre privilège à un service qui accède à une base de données ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you apply least privilege to a service accessing a database?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "identité dédiée",
+        "droits minimaux",
+        "rotation et audit"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence iam_least_privilege au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-041",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "conceptual",
+      "difficulty": 2,
+      "primary_competency": "ci_cd",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quelles étapes incluriez-vous dans un pipeline CI/CD pour un service web ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What stages would you include in a CI/CD pipeline for a web service?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "build et tests",
+        "scans et validation",
+        "déploiement contrôlé"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence ci_cd au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-042",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "conceptual",
+      "difficulty": 2,
+      "primary_competency": "infrastructure_as_code",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quels bénéfices et risques voyez-vous dans l'Infrastructure as Code ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What benefits and risks do you see in Infrastructure as Code?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "reproductibilité et revue",
+        "gestion état et secrets",
+        "dérive et changements"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence infrastructure_as_code au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-043",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "autoscaling",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Un service ralentit lors d'un pic saisonnier. Comment vérifiez-vous si l'autoscaling convient ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "A service slows during seasonal peaks. How do you assess whether autoscaling fits?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "métriques de saturation",
+        "goulots non scalables",
+        "coûts et seuils"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence autoscaling au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-044",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "k8s_health",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "À quoi servent les sondes readiness et liveness dans Kubernetes ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What are readiness and liveness probes used for in Kubernetes?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "trafic vers instances prêtes",
+        "redémarrage bloqué",
+        "configuration prudente"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence k8s_health au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-045",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "situational",
+      "difficulty": 2,
+      "primary_competency": "secrets_management",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment évitez-vous que des secrets d'application apparaissent dans Git ou dans les logs ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How do you keep application secrets out of Git and logs?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "stockage secret dédié",
+        "accès limités",
+        "révocation et rotation"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence secrets_management au niveau L2 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-046",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "case_study",
+      "difficulty": 3,
+      "primary_competency": "backup_recovery",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment définiriez-vous une stratégie de sauvegarde et reprise pour une base critique ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you design backup and recovery for a critical database?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "RPO et RTO",
+        "tests de restauration",
+        "intégrité et sécurité"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence backup_recovery au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-047",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "conceptual",
+      "difficulty": 3,
+      "primary_competency": "slo_alerting",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quelle différence entre SLI, SLO et SLA et comment les utiliseriez-vous ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "What is the difference between SLI, SLO and SLA and how would you use them?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "mesure fiabilité",
+        "objectif opérationnel",
+        "engagement contractuel"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence slo_alerting au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    },
+    {
+      "code": "TECH-048",
+      "status": "draft",
+      "version": 1,
+      "origin": "ai_generated_candidate_expansion",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "release_strategies",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Dans quels cas choisiriez-vous un déploiement canary plutôt qu'un blue-green ?",
+          "followup_seeds": [
+            "Pouvez-vous illustrer votre réponse par un exemple concret ?",
+            "Quel risque ou cas limite prendriez-vous en compte ?"
+          ]
+        },
+        "en": {
+          "prompt": "When would you choose canary over blue-green deployment?",
+          "followup_seeds": [
+            "Can you illustrate your answer with a concrete example?",
+            "What risk or edge case would you consider?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "exposition progressive",
+        "coûts et réversibilité",
+        "surveillance des métriques"
+      ],
+      "acceptable_variations_fr": "Accepter toute solution techniquement valable et justifiée dans son contexte, sans imposer une technologie précise sauf si la question la nomme.",
+      "red_flags_fr": [
+        "Confusion sur le concept central ou recommandation manifestement dangereuse sans justification."
+      ],
+      "evaluation_notes_fr": "Tester la compétence release_strategies au niveau L3 ; ne pas exiger de jargon avancé à L1. Les critères sans applicabilité réelle sont N/E ; les éléments attendus sont des guides non des mots-clés obligatoires.",
+      "review": {
+        "editorial": "pending",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_generation_date": "2026-10-22"
+      }
+    }
+  ],
+  "editorial_note": "Génération IA soumise à revue technique spécialisée, y compris exactitude des concepts et relances génériques."
+}
