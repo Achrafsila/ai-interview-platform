@@ -1,0 +1,29 @@
+name: Question bank JSON validation
+
+on:
+  push:
+    paths:
+      - 'data/question-bank/**'
+      - 'scripts/validate_question_bank.py'
+      - '.github/workflows/question-bank-validation.yml'
+  pull_request:
+    paths:
+      - 'data/question-bank/**'
+      - 'scripts/validate_question_bank.py'
+      - '.github/workflows/question-bank-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-question-bank:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate 120 question drafts and rubrics
+        run: python scripts/validate_question_bank.py
