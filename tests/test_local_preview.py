@@ -34,7 +34,7 @@ class LocalPreviewTests(unittest.TestCase):
 
     def request(self, method, path, data=None, headers=None):
         conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
-        body = json.dumps(data, ensure_ascii=False) if data is not None else None
+        body = json.dumps(data, ensure_ascii=False).encode("utf-8") if data is not None else None
         request_headers = dict(headers or {})
         if body is not None:
             request_headers.setdefault("Content-Type", "application/json")
