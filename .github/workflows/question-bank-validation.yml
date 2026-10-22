@@ -8,6 +8,8 @@ on:
       - 'scripts/question_bank_catalog.py'
       - 'supabase/functions/question-bank/**'
       - 'src/integrations/s2-04/**'
+      - 'src/interview-engine/**'
+      - 'tests/test_interview_session_orchestrator.mjs'
       - 'tests/test_s2_04_bridge.mjs'
       - 'scripts/generate_question_bank_seed_sql.py'
       - 'tests/test_question_bank.py'
@@ -21,6 +23,8 @@ on:
       - 'scripts/question_bank_catalog.py'
       - 'supabase/functions/question-bank/**'
       - 'src/integrations/s2-04/**'
+      - 'src/interview-engine/**'
+      - 'tests/test_interview_session_orchestrator.mjs'
       - 'tests/test_s2_04_bridge.mjs'
       - 'scripts/generate_question_bank_seed_sql.py'
       - 'tests/test_question_bank.py'
@@ -124,4 +128,4 @@ jobs:
         with:
           node-version: '22'
       - name: Run S2-04 bridge adapter tests
-        run: node --test tests/test_s2_04_bridge.mjs
+        run: node --test tests/test_s2_04_bridge.mjs tests/test_interview_session_orchestrator.mjs
