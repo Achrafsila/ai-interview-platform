@@ -1,0 +1,611 @@
+{
+  "schema_version": "pilot-1.0",
+  "publication_status": "draft_not_imported",
+  "questions": [
+    {
+      "code": "TECH-001",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "conceptual",
+      "difficulty": 1,
+      "primary_competency": "application_security",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quelle est la différence entre authentification et autorisation dans une application web ?",
+          "followup_seeds": [
+            "Donnez un exemple de requête authentifiée mais non autorisée.",
+            "Quel risque présente un contrôle seulement côté interface ?"
+          ]
+        },
+        "en": {
+          "prompt": "What is the difference between authentication and authorization in a web application?",
+          "followup_seeds": [
+            "Give an example of an authenticated but unauthorized request.",
+            "What is the risk of client-side-only checks?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "L’authentification vérifie ou établit une identité (ex. session validée).",
+        "L’autorisation détermine ce que cette identité est autorisée à faire sur une ressource ou action.",
+        "Les permissions doivent être contrôlées par un composant de confiance côté serveur, pas uniquement par l’interface."
+      ],
+      "acceptable_variations_fr": "Accepter rôles (RBAC), permissions, ACL ou politiques attributaires (ABAC) comme illustrations ; ne pas exiger OAuth/OIDC à L1.",
+      "red_flags_fr": [
+        "Confondre authentification et autorisation.",
+        "Considérer que masquer un bouton côté client constitue un contrôle d’accès."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Clarifications mineures des attendus.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence application_security. Indicateurs observables : Distinction identité / permissions; Exemple de requête authentifiée mais non autorisée; Compréhension des contrôles côté serveur. Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Distinction identité / permissions",
+        "Exemple de requête authentifiée mais non autorisée",
+        "Compréhension des contrôles côté serveur"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 1.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    },
+    {
+      "code": "TECH-002",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "software",
+      "question_type": "practical",
+      "difficulty": 3,
+      "primary_competency": "performance_diagnostics",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Une API devient lente en production. Comment établissez-vous un diagnostic avant d’appliquer une correction ?",
+          "followup_seeds": [
+            "Que regardez-vous pour distinguer base de données et réseau ?",
+            "Comment évitez-vous de dégrader la production pendant vos investigations ?"
+          ]
+        },
+        "en": {
+          "prompt": "An API becomes slow in production. How do you diagnose it before applying a fix?",
+          "followup_seeds": [
+            "How do you distinguish database latency from network latency?",
+            "How do you avoid worsening production during investigation?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "Qualifier impact, périmètre, temporalité et gravité (p50/p95/p99, erreurs, débit, saturation).",
+        "En incident sévère, stabiliser sans attendre le diagnostic complet si cela est plus sûr (rollback/feature flag/limitation de charge adaptés).",
+        "Comparer métriques, logs et traces corrélés ; repérer changement récent et segmenter par endpoint ou dépendance.",
+        "Formuler et tester des hypothèses : SQL lent, dépendances réseau, pool saturé, CPU, contention, cache ou régression.",
+        "Appliquer une correction ou atténuation contrôlée, surveiller indicateurs et prévenir la régression."
+      ],
+      "acceptable_variations_fr": "Diagnostics via APM, logs structurés, tracing distribué, métriques infra ou profiling, sans outil obligatoire. La mitigation peut précéder l’analyse approfondie selon le risque.",
+      "red_flags_fr": [
+        "Proposer du cache sans mesurer la cause.",
+        "Lancer un profilage invasif en production sans contrôle du risque.",
+        "Supposer qu’un rollback est toujours sans danger (migrations incompatibles)."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Atténuation prioritaire et sécurité des investigations explicitées.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence performance_diagnostics. Indicateurs observables : Mesure de l’impact et de la latence; Approche hypothèses → preuves → cause; Gestion sûre de la production; Vérification après mitigation. Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Mesure de l’impact et de la latence",
+        "Approche hypothèses → preuves → cause",
+        "Gestion sûre de la production",
+        "Vérification après mitigation"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 3.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    },
+    {
+      "code": "TECH-003",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "conceptual",
+      "difficulty": 1,
+      "primary_competency": "sql_joins",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Expliquez la différence entre INNER JOIN et LEFT JOIN avec un exemple de tables clients et commandes.",
+          "followup_seeds": [
+            "Que se passe-t-il pour un client sans commande ?",
+            "Dans quels cas un prédicat WHERE sur la table de droite peut-il éliminer les lignes sans correspondance ?"
+          ]
+        },
+        "en": {
+          "prompt": "Explain the difference between INNER JOIN and LEFT JOIN using customers and orders tables.",
+          "followup_seeds": [
+            "What happens for a customer with no order?",
+            "When can a WHERE predicate on the right-hand table remove unmatched rows?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "INNER JOIN conserve les combinaisons de lignes correspondant à la condition de jointure.",
+        "LEFT JOIN conserve toutes les lignes de la table de gauche, même sans correspondance à droite.",
+        "En absence de correspondance, les colonnes provenant de droite sont NULL.",
+        "Avec clients-commandes (un-à-plusieurs), un client peut apparaître plusieurs fois."
+      ],
+      "acceptable_variations_fr": "Un petit exemple de données ou une requête SQL juste suffit à L1 ; ne pas exiger une démonstration de l’ordre d’exécution.",
+      "red_flags_fr": [
+        "Dire qu’un LEFT JOIN produit exactement une ligne par client.",
+        "Généraliser que tout filtre WHERE sur la table de droite transforme toujours un LEFT JOIN en INNER JOIN : c’est vrai pour de nombreux prédicats éliminant NULL, pas pour tous (ex. IS NULL)."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Précisions sur lignes multiples et WHERE ; relance avancée non obligatoire pour L1.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence sql_joins. Indicateurs observables : Distinction des résultats INNER / LEFT; NULL côté droit sans correspondance; Effets des relations 1-N (bonus); Effets des prédicats WHERE avec NULL (relance avancée, bonus). Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Distinction des résultats INNER / LEFT",
+        "NULL côté droit sans correspondance",
+        "Effets des relations 1-N (bonus)",
+        "Effets des prédicats WHERE avec NULL (relance avancée, bonus)"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 1.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    },
+    {
+      "code": "TECH-004",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "data_ai",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "data_quality",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Comment contrôleriez-vous la qualité de données entrantes dans un pipeline ETL ?",
+          "followup_seeds": [
+            "Comment traitez-vous les données invalides sans les perdre ?",
+            "Quels indicateurs suivriez-vous au quotidien ?"
+          ]
+        },
+        "en": {
+          "prompt": "How would you validate the quality of incoming data in an ETL pipeline?",
+          "followup_seeds": [
+            "How do you handle invalid records without losing them?",
+            "Which metrics would you track daily?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "Valider schémas, types, formats et contraintes de référence.",
+        "Définir complétude, unicité, validité, fraîcheur et cohérence selon les règles métier.",
+        "Isoler ou mettre en quarantaine les anomalies ; tracer leur cause et préserver la possibilité de reprise.",
+        "Définir métriques, seuils, alertes et responsabilités de correction."
+      ],
+      "acceptable_variations_fr": "ETL/ELT ; tests à l’ingestion et/ou transformation, data contracts, contrôles SQL ou framework de qualité ; plusieurs politiques de données manquantes peuvent être valides.",
+      "red_flags_fr": [
+        "Supprimer par défaut toutes les lignes contenant des valeurs manquantes.",
+        "Considérer la qualité indépendante du besoin métier."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Ajout fraîcheur, reprise et responsabilités ; pas de changement de prompt.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence data_quality. Indicateurs observables : Qualité définie selon contexte métier; Contrôles de données variés; Gestion et traçabilité des anomalies; Monitoring et alerting. Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Qualité définie selon contexte métier",
+        "Contrôles de données variés",
+        "Gestion et traçabilité des anomalies",
+        "Monitoring et alerting"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 2.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    },
+    {
+      "code": "TECH-005",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "conceptual",
+      "difficulty": 2,
+      "primary_competency": "containers",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Quels avantages et quelles limites présente la conteneurisation pour le déploiement d’un service ?",
+          "followup_seeds": [
+            "Un conteneur est-il une machine virtuelle ?",
+            "Comment gérez-vous les secrets et données persistantes ?"
+          ]
+        },
+        "en": {
+          "prompt": "What are the benefits and limitations of containerization when deploying a service?",
+          "followup_seeds": [
+            "Is a container a virtual machine?",
+            "How do you handle secrets and persistent data?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "Un conteneur regroupe application et dépendances avec isolation de processus et ressources selon l’environnement.",
+        "Images versionnées, cohérence des déploiements et packaging reproductible (avec limites liées à l’architecture/OS).",
+        "Expliquer partage du noyau de l’hôte dans le modèle usuel ; isolation non équivalente par défaut à une VM.",
+        "Identifier les enjeux de mises à jour d’images, vulnérabilités, secrets, persistance, réseau et ressources."
+      ],
+      "acceptable_variations_fr": "Docker/OCI/Podman et environnements variés acceptés. Kubernetes est optionnel. Les conteneurs ne garantissent pas une portabilité absolue entre OS/architectures.",
+      "red_flags_fr": [
+        "Affirmer qu’un conteneur est une VM ou apporte automatiquement une isolation équivalente.",
+        "Stocker des secrets dans des images.",
+        "Affirmer qu’un conteneur est intrinsèquement sans état."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Portabilité conditionnelle, noyau partagé et compromis de sécurité rendus explicites.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence containers. Indicateurs observables : Packaging et reproductibilité; Isolation et limites comparées aux VM; Portabilité conditionnelle; Risques sécurité / persistance. Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Packaging et reproductibilité",
+        "Isolation et limites comparées aux VM",
+        "Portabilité conditionnelle",
+        "Risques sécurité / persistance"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 2.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    },
+    {
+      "code": "TECH-006",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "cloud_devops",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "incident_response",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Un déploiement provoque une régression critique. Quelles actions prenez-vous durant les quinze premières minutes ?",
+          "followup_seeds": [
+            "Quand éviteriez-vous un rollback immédiat ?",
+            "Comment vérifiez-vous le rétablissement ?"
+          ]
+        },
+        "en": {
+          "prompt": "A deployment causes a critical regression. What do you do in the first fifteen minutes?",
+          "followup_seeds": [
+            "When would you avoid an immediate rollback?",
+            "How would you verify recovery?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "Évaluer gravité, portée, régression mesurée et impact utilisateurs ; déclarer/coordonner l’incident selon procédure.",
+        "Privilégier stabilisation adaptée (rollback si sûr, feature flag, gel du déploiement, routage ou limitation du trafic).",
+        "Tenir compte des migrations de base de données, incompatibilités, effets secondaires et sécurité avant rollback.",
+        "Communiquer responsabilités, décision et état aux équipes impactées.",
+        "Vérifier reprise via métriques et tests ciblés ; conserver chronologie pour analyse post-incident sans mener tout le postmortem dans les quinze minutes."
+      ],
+      "acceptable_variations_fr": "Séquences d’actions différentes acceptables selon gravité et mécanismes de déploiement. Un rollback n’est pas nécessaire si mitigation plus sûre et rapide.",
+      "red_flags_fr": [
+        "Rollback automatique malgré migration irréversible ou schéma incompatible.",
+        "Ignorer la communication ou le suivi d’impact.",
+        "Confondre les premières 15 minutes avec l’analyse postmortem exhaustive."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Clarification fenêtre de quinze minutes et alternatives au rollback.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence incident_response. Indicateurs observables : Priorisation de la stabilisation; Sécurité des mesures de correction; Coordination et communication; Validation du rétablissement. Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Priorisation de la stabilisation",
+        "Sécurité des mesures de correction",
+        "Coordination et communication",
+        "Validation du rétablissement"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 3.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    },
+    {
+      "code": "TECH-007",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "cybersecurity",
+      "question_type": "conceptual",
+      "difficulty": 1,
+      "primary_competency": "crypto_basics",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Distinguez chiffrement, hachage et encodage, avec un usage typique de chacun.",
+          "followup_seeds": [
+            "Comment stockeriez-vous un mot de passe ?",
+            "Pourquoi Base64 ne protège-t-il pas un secret ?"
+          ]
+        },
+        "en": {
+          "prompt": "Distinguish encryption, hashing, and encoding, with a typical use case for each.",
+          "followup_seeds": [
+            "How would you store a password?",
+            "Why does Base64 not protect a secret?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "Chiffrement : transformation réversible avec clé appropriée ; la confidentialité dépend du mode et de la gestion des clés.",
+        "Hachage : fonction produisant une empreinte, sans mécanisme de déchiffrement ; certaines fonctions sont non adaptées aux mots de passe.",
+        "Encodage : représentation réversible sans secret (ex. Base64), qui n’apporte pas la confidentialité.",
+        "Stockage de mot de passe : KDF dédiée résistante aux attaques hors ligne (Argon2id, scrypt ou bcrypt avec paramètres adaptés), sel unique et stockage sécurisé."
+      ],
+      "acceptable_variations_fr": "Bcrypt, scrypt et Argon2id peuvent être valides selon le système ; ne pas exiger un algorithme précis pour la réponse fondamentale L1. Exemples AES/TLS, SHA-256 d’intégrité, Base64 acceptés si usage correct.",
+      "red_flags_fr": [
+        "Présenter Base64 comme chiffrement.",
+        "Proposer SHA-256 seul (sans KDF adaptative) pour stocker les mots de passe.",
+        "Affirmer qu’un hash est absolument impossible à retrouver par devinette ou dictionnaire."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Distinction hash et résistance aux attaques de dictionnaire renforcée.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence crypto_basics. Indicateurs observables : Différencier objectif et réversibilité; Exemples d’usage corrects; Protection des mots de passe (relance bonus). Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Différencier objectif et réversibilité",
+        "Exemples d’usage corrects",
+        "Protection des mots de passe (relance bonus)"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 1.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    },
+    {
+      "code": "TECH-008",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "cybersecurity",
+      "question_type": "situational",
+      "difficulty": 3,
+      "primary_competency": "security_triage",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Une alerte signale une connexion inhabituelle sur un compte privilégié. Comment menez-vous le triage ?",
+          "followup_seeds": [
+            "Quels indices renforcent la suspicion ?",
+            "Comment limiter les impacts d’une révocation de session ?"
+          ]
+        },
+        "en": {
+          "prompt": "An alert flags an unusual sign-in to a privileged account. How do you triage it?",
+          "followup_seeds": [
+            "Which indicators increase suspicion?",
+            "How do you limit the impact of revoking sessions?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "Valider l’alerte et son contexte (géolocalisation, nouvel appareil, horaires, MFA, logs).",
+        "Estimer portée et risque du compte privilégié ; corréler actions inhabituelles et signaux de compromission.",
+        "Préserver les traces utiles et suivre procédure d’escalade/notification selon le plan de réponse.",
+        "Choisir confinement proportionné (révocation de sessions, rotation secrets, désactivation ciblée) avec évaluation d’impact.",
+        "Documenter décision, horodatage, éventuel faux positif et suivi."
+      ],
+      "acceptable_variations_fr": "Un faux positif correctement établi peut entraîner absence de confinement ; le séquençage dépend des preuves et du risque. Ne pas imposer la révocation immédiate en toute situation.",
+      "red_flags_fr": [
+        "Supprimer les logs ou alerter le compte compromis sans tenir compte du protocole d’investigation.",
+        "Bloquer un compte de service critique sans plan de continuité.",
+        "Confondre anomalie avec compromission prouvée."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Confinement proportionné et vérification des faux positifs formalisés.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence security_triage. Indicateurs observables : Triage basé sur preuves; Évaluation du risque privilégié; Confinement proportionné; Traçabilité / escalade. Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Triage basé sur preuves",
+        "Évaluation du risque privilégié",
+        "Confinement proportionné",
+        "Traçabilité / escalade"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 3.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    },
+    {
+      "code": "TECH-009",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "testing_qa",
+      "question_type": "practical",
+      "difficulty": 2,
+      "primary_competency": "risk_based_testing",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Vous disposez de deux heures pour tester une nouvelle fonctionnalité avant livraison. Comment priorisez-vous ?",
+          "followup_seeds": [
+            "Quels tests automatisés utilisez-vous ?",
+            "Que communiquez-vous si le risque reste élevé ?"
+          ]
+        },
+        "en": {
+          "prompt": "You have two hours to test a new feature before release. How do you prioritize?",
+          "followup_seeds": [
+            "Which automated tests would you use?",
+            "What would you communicate if risk remains high?"
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "Identifier les parcours critiques, le changement introduit et les impacts métier/sécurité.",
+        "Choisir un ensemble de tests à valeur élevée (smoke, intégrations critiques, cas limites, exploratoires), selon le risque.",
+        "Exploiter l’automatisation disponible si utile sans supposer qu’elle existe.",
+        "Documenter cas testés/non testés, défauts connus et risques résiduels ; recommander report de livraison si risque inacceptable."
+      ],
+      "acceptable_variations_fr": "Stratégies fondées sur matrice risque/impact, historique d’incidents, tests exploratoires et couverture existante acceptées.",
+      "red_flags_fr": [
+        "Promettre une couverture exhaustive en deux heures.",
+        "Présenter une validation de qualité comme acquise en dépit de risques majeurs non traités."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Automatisation rendue facultative et possibilité de no-go explicitée.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence risk_based_testing. Indicateurs observables : Priorisation par risques; Choix de tests réalistes; Justification des arbitrages; Communication des risques de livraison. Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Priorisation par risques",
+        "Choix de tests réalistes",
+        "Justification des arbitrages",
+        "Communication des risques de livraison"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 2.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    },
+    {
+      "code": "TECH-010",
+      "status": "draft",
+      "version": 1,
+      "origin": "human_curated_pilot",
+      "family": "technical",
+      "category_code": "business_analysis",
+      "question_type": "case_study",
+      "difficulty": 2,
+      "primary_competency": "requirements_analysis",
+      "secondary_competencies": [],
+      "rubric_code": "TECH_GENERAL",
+      "localizations": {
+        "fr": {
+          "prompt": "Un sponsor demande « un tableau de bord plus intuitif ». Comment transformez-vous ce besoin en critères vérifiables ?",
+          "followup_seeds": [
+            "Quelle question poseriez-vous en premier ?",
+            "Donnez un critère d’acceptation vérifiable."
+          ]
+        },
+        "en": {
+          "prompt": "A sponsor asks for “a more intuitive dashboard.” How do you turn this into testable requirements?",
+          "followup_seeds": [
+            "What would you ask first?",
+            "Give one verifiable acceptance criterion."
+          ]
+        }
+      },
+      "expected_elements_fr": [
+        "Identifier les utilisateurs, leurs décisions, tâches et irritants actuels par questions ciblées.",
+        "Définir avec les parties prenantes ce que signifie « intuitif » dans un contexte observable.",
+        "Proposer scénario, maquette ou prototype et critères testables (ex. trouver un KPI en quelques étapes ou temps à mesurer).",
+        "Définir critères d’acceptation et méthode d’évaluation réaliste ; valider priorités et compromis avec le sponsor."
+      ],
+      "acceptable_variations_fr": "User stories, BDD/Gherkin, tests utilisateurs, prototypage et indicateurs qualitatifs ou quantitatifs recevables ; éviter de prescrire un seuil arbitraire sans découverte.",
+      "red_flags_fr": [
+        "Accepter « intuitif » comme critère d’acceptation non mesurable.",
+        "Imposer sans exploration un objectif de temps ou de clics universel."
+      ],
+      "review": {
+        "editorial": "ai_reviewed",
+        "domain_expert": "pending",
+        "approved_for_publication": false,
+        "ai_review_date": "2026-10-22",
+        "ai_review_action": "Seuils de test contextualisés, pas de métriques arbitraires.",
+        "ai_review_version": "pilot-tech-audit-1"
+      },
+      "evaluation_notes_fr": "Évaluer avec TECH_GENERAL en privilégiant la compétence requirements_analysis. Indicateurs observables : Découverte du besoin et des utilisateurs; Définition d’un critère vérifiable; Validation par parties prenantes; Pragmatisme des mesures. Adapter les critères inapplicables sans pénaliser l’absence de vocabulaire/outils imposés. Ne pas attribuer une note sur mots-clés seuls. Utiliser N/E pour tout critère non démontré.",
+      "competency_indicators_fr": [
+        "Découverte du besoin et des utilisateurs",
+        "Définition d’un critère vérifiable",
+        "Validation par parties prenantes",
+        "Pragmatisme des mesures"
+      ],
+      "review_examples_fr": {
+        "satisfactory": "Couvre correctement les attendus de base et justifie les choix adaptés au niveau 2.",
+        "strong": "Analyse contextualisée, alternatives adaptées et limites explicitées, sans réponse unique requise.",
+        "insufficient": "Confusion majeure ou réponse non justifiée sur le concept principal ; ne pas assimiler manque de jargon et erreur technique."
+      }
+    }
+  ]
+}
