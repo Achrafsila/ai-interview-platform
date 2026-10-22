@@ -62,3 +62,14 @@ Les 100 questions complémentaires ont été rédigées et ajoutées au dépôt 
 - La liste ci-dessus indique **6 éléments cochés sur 11 dans le registre GitHub** après réconciliation, mais le taux d'avancement n'est pas une mesure d'effort. Les actions liées à la qualité et au développement peuvent être plus importantes que les livrables documentaires.
 - **Synchronisation ClickUp impossible lors de cet audit : limite API atteinte** ; ne pas confondre ces cases du document avec le statut réel dans ClickUp.
 - Aucun nouveau ticket parent n'est recommandé. Utiliser la checklist existante sous « Implémentation & validation » et intégrer les trois éléments qualité complémentaires dans la description de cette action.
+
+
+## Livraison technique — 22/10/2026 (PR #39 intégrée)
+
+La [PR #39](https://github.com/Achrafsila/ai-interview-platform/pull/39) a été **fusionnée sur main** (squash commit `32b5a17`) après validation GitHub Actions des tests Python et du scénario PostgreSQL 16 sur base éphémère.
+
+**Livré dans le dépôt :** catalogue Python en lecture avec séparation candidat/évaluateur, migrations PostgreSQL de référence, contrôles de publication/immutabilité, journalisation, tests automatisés et [contrat OpenAPI interne proposé](api/question-bank.openapi.yaml).
+
+**Non livré :** projet Supabase dédié, application des migrations dans un environnement AI Interview, API HTTP effective, authentification et habilitations opérationnelles, intégration S2-04, approbation humaine complète du corpus. Les actions ClickUp sur ces sujets restent **ouvertes**, malgré la fusion de la PR.
+
+[Conditions de clôture de S2-03](S2-03_Closure_Gates.md). Aucun statut ClickUp n'a été modifié par la fusion GitHub.
