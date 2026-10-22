@@ -145,3 +145,18 @@ test("S2-04 adapter surfaces unauthorized HTTP denial",async()=>{
   await assert.rejects(api.createSession({candidate_user_id:candidateId}),
     e=>e instanceof QuestionBankApiError && e.status===401);
 });
+
+test("S2-04 closes an interview through authenticated POST",async()=>{
+  let request;
+  const api=createQuestionBankClient({
+    baseUrl:"https://example.supabase.co/functions/v1/question-bank",
+    tokenProvider:async()=>"jwt",
+    fetchImpl:async(url,init)=>{
+      request={url,init};return {ok:true,json:async()=>({session_id:sessionId,status:"completed"})};
+    },
+  });
+  const result=await api.completeSession(sessionId);
+  assert.equal(result.status,"completed");
+  assert.equal(request.init.method,"POST");
+  assert.match(request.url,/engine\/sessions\/.*\/complete$/);
+});
