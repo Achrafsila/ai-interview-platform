@@ -12,7 +12,7 @@ Le projet est au stade **POC technique**, avec banque de questions Supabase dép
 - Validation structurelle JSON et tests de non-régression sur le corpus.
 
 - Migrations PostgreSQL 0001–0006 sur projet Supabase dédié, 120 questions importées sous statut draft.
-- Edge Function Auth question-bank v3, séparation candidat / moteur / évaluateur et API de sessions sécurisées.
+- Edge Function Auth question-bank v4, séparation candidat / moteur / évaluateur et API de sessions sécurisées.
 - Snapshots immuables de questions, sélection dynamique sans doublons et clôture contrôlée des sessions.
 - Adaptateur et orchestrateur S2-04, tests PostgreSQL sur base réelle/éphémère, tests Node/Deno.
 - Script de recette HTTP avec comptes Supabase Auth de test à provisionner.
