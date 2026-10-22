@@ -23,8 +23,8 @@
 - [x] Rédiger et versionner en brouillon les 100 questions restantes pour atteindre 50 RH/transverses + 70 techniques (revue qualité en attente).
 - [ ] Faire la validation métier finale des questions techniques et du corpus complet (inclut **harmonisation des catégories**, **personnalisation des relances génériques**, **validation des attendus et variantes**, **localisation complète si nécessaire**).
 - [x] Implémenter la structure, migrations, historique des versions et import initial des 120 questions dans le projet Supabase dédié (publication contrôlée et workflow applicatif à finaliser séparément).
-- [ ] Appliquer RLS/autorisations, séparation attendus internes / données candidats, et journalisation.
-- [ ] Intégrer catalogue publié au moteur S2-04 par contrat API et tests d'intégration.
+- [x] Appliquer RLS, bloquer l'accès direct client aux attendus, authentifier les routes serveur et tracer les versions/snapshots (périmètre POC ; test HTTP Auth réel restant en recette).
+- [x] Connecter S2-03 à l'orchestrateur de sessions S2-04 : API Auth, sélection de versions publiées, snapshot immuable, relecture et clôture de session, tests automatisés SQL/Node.
 - [ ] Exécuter la recette AC-01 à AC-10 et documenter l'exploitation avant clôture de S2-03.
 
 ## Frontières avec les autres tâches
@@ -104,4 +104,17 @@ La [PR #41](https://github.com/Achrafsila/ai-interview-platform/pull/41) a été
 
 **Supabase en service :** Edge Function `question-bank` `ACTIVE`, `verify_jwt=true`. Contrôle `auth.getUser`, routes de lecture du catalogue `published` uniquement, accès aux snapshots limité aux rôles `interview_engine/admin`, réponses d'évaluation limitées aux rôles `evaluator/admin`, tous définis dans `app_metadata` (serveur). Un adaptateur serveur est désormais versionné sous `src/integrations/s2-04/question-bank-client.mjs` et [documenté](S2-03_S2-04_Integration.md).
 
-**À ne pas confondre avec une recette E2E complète :** le moteur de simulation S2-04, la création contrôlée des identités de test, la persistance des snapshots de sessions et les essais avec vrais JWT/rôles sont encore manquants. Aucun utilisateur n'a été promu administrateur ou évaluateur et aucune question n'a été publiée. Les éléments « connecter au moteur » et « recette fonctionnelle complète » restent **ouverts**. La sécurité et les droits sont en place pour les données et pour les routes, mais doivent encore subir des tests réels multirôles.
+**À ne pas confondre avec une recette E2E complète :** le moteur de simulation S2-04, la création contrôlée des identités de test, la persistance des snapshots de sessions est maintenant livrée dans la PR #42 ; les essais avec vrais JWT/rôles restent manquants. Aucun utilisateur n'a été promu administrateur ou évaluateur et aucune question n'a été publiée. Le **raccordement technique S2-03 → orchestrateur S2-04** est maintenant livré par la PR #42 ; la **recette HTTP multirôle / parcours conversationnel** reste ouverte. La sécurité et les droits sont en place pour les données et pour les routes, mais doivent encore subir des tests réels multirôles.
+
+
+## Réconciliation à la livraison PR #42
+
+**9 actions sur 11** peuvent être considérées comme réalisées dans la checklist GitHub au titre du périmètre technique S2-03. Les deux actions restantes concernent la **validation métier humaine du corpus** et la **recette applicative complète avec de vrais JWT et le moteur conversationnel**.
+
+- PostgreSQL : migration 0005 (sessions, snapshots immuables, sélection des seules questions publiées) et 0006 (clôture propriétaire de session) **appliquées sur Supabase** ; test SQL transactionnel positif sur la base réelle exécuté avec `ROLLBACK`.
+- Edge Function `question-bank` : **version 3 ACTIVE**, vérification JWT activée, séparation rôle engine/evaluator/candidate, méthodes de démarrage/choix/relecture/clôture.
+- S2-04 : client et orchestrateur déterministe versionnés et testés. **Ne pas confondre avec l'implémentation du moteur conversationnel IA de la tâche S2-04.**
+- Base Supabase vérifiée : 120 questions draft, 0 publiée, 0 session fictive persistée, 12 tables avec RLS. Aucun compte Supabase Auth créé dans ce projet lors de la vérification.
+- Références de test et limites : [bilan technique](S2-03_Technical_Closure_2026-10-22.md), [intégration S2-04](S2-03_S2-04_Integration.md).
+
+**ClickUp non synchronisé automatiquement** ; ses statuts doivent refléter les mêmes restrictions de périmètre et preuves.
