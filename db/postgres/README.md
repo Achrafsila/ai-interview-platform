@@ -1,6 +1,6 @@
 # PostgreSQL reference migrations — S2-03
 
-**Status: proposed and NOT applied.** This is a PostgreSQL-specific implementation candidate, **not a declaration that Supabase or PostgreSQL has been approved**.
+**Status: proposed; executed successfully only in GitHub Actions against a disposable PostgreSQL 16 test database. NOT applied to a product environment.** This is a PostgreSQL-specific implementation candidate, **not a declaration that Supabase or PostgreSQL has been approved**.
 
 ## Ordered migrations
 
@@ -37,3 +37,10 @@ Use `scripts/question_bank_catalog.py` for current prototype filtering. The futu
 - FR/EN expected elements and criteria locality; rubrics versioning and coverage calibration at Sprint 3.
 
 **Never mark these migrations “deployed” until a real PostgreSQL execution log and integration tests exist.**
+
+
+## CI verification — 22/10/2026
+
+The `postgres-integration` job in `.github/workflows/question-bank-validation.yml` now provisions PostgreSQL 16, applies both migrations and executes `db/postgres/tests/0001_publication_contract.sql` in a disposable database. The test checks missing approval/reviewer, FR/EN, primary competency, version immutability, publication pointer and audit. The workflow passed at commit `d71d9d7` in PR #39.
+
+**Scope:** the test runs with a database owner in CI and does not prove permissions for a production authentication service, Supabase grants/policies, disaster recovery, or safe migration on an existing schema. Those remain open.
