@@ -63,6 +63,7 @@ La migration `0005_interview_session_snapshots.sql` ajoute les deux tables priv�
 | `POST /engine/sessions` | `interview_engine/admin` | Initialise une session avec `candidate_user_id` et `locale` |
 | `POST /engine/sessions/:id/questions` | moteur propriétaire | Assigne explicitement le code d'une question publiée et crée son snapshot |
 | `POST /engine/sessions/:id/questions/next` | moteur propriétaire | Choisit la suivante selon famille/catégorie/difficulté, sans répéter un code |
+| `POST /engine/sessions/:id/complete` | moteur propriétaire | Clôture une session, enregistre `completed_at` et refuse la suite |
 | `GET /engine/sessions/:id/questions` | moteur propriétaire | Relit les identifiants de version et les prompts persistés |
 | `GET /candidate/sessions/:id/questions` | candidat propriétaire de la session | Renvoie uniquement le prompt et l'ordre ; pas de critères internes |
 
@@ -79,6 +80,7 @@ const first = await engine.start({
 });
 const next = await engine.next(first.sessionId, {family:"rh", difficulty:2});
 const history = await engine.replay(first.sessionId);
+const closed = await engine.finish(first.sessionId);
 ```
 
 **Aucun entretien ne peut démarrer via l'orchestrateur lorsqu'aucune question n'est publiée.** Les 120 questions du corpus sont encore en brouillon.
