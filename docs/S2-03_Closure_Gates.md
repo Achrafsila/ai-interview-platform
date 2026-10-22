@@ -59,8 +59,11 @@ Le test SQL transactionnel `db/postgres/tests/0003_published_projection_contract
 
 ## Jalon de fin d'implémentation POC — PR #42
 
-- **Supabase :** migrations 0005/0006, 12 tables avec RLS, sélection dynamique vérifiée sur PostgreSQL réel, fonction `question-bank` version 3 active avec vérification JWT.
+- **Supabase :** migrations 0005/0006, 12 tables avec RLS, sélection dynamique vérifiée sur PostgreSQL réel, fonction `question-bank` version 4 active avec vérification JWT.
 - **Version conservée :** `question_version_id`, `rubric_version_id`, langue et prompt figés à chaque tour. Aucune réécriture silencieuse possible après publication d'une nouvelle version.
 - **Raccordement S2-04 :** création de session / prochaine question / historique / clôture, avec contrôles du moteur propriétaire et accès candidat restreint.
 - **Recette différée :** 0 utilisateur Auth projet et 0 question publiée. [Procédure de test HTTP](S2-03_Technical_Closure_2026-10-22.md) documentée. Ne pas attribuer des permissions admin fictives ni modifier le corpus pour forcer une démonstration.
 - **Décision de pilotage :** 9/11 cases techniques S2-03 vérifiables dans GitHub ; dernière recette et validation humaine restent ouvertes. Voir [le tracker](S2-03_Implementation_Tracker.md).
+
+
+**Durcissement supplémentaire livré :** PR #43, accès `GET /questions` limité à `interview_engine/admin`. Un simple compte candidat Auth ne peut plus énumérer le catalogue. Toujours aucun compte de test Auth ni question du corpus publiée : ne pas marquer la recette HTTP multirôle comme achevée.
