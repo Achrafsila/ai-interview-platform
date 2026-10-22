@@ -14,7 +14,7 @@
 
 | Route | Identité nécessaire | Réponse |
 |---|---|---|
-| `GET /questions?locale=fr&family=rh&limit=20` | utilisateur Supabase Auth connecté (JWT) | questions courantes publiées uniquement, sans attendus |
+| `GET /questions?locale=fr&family=rh&limit=20` | **rôle serveur interview_engine/admin avec JWT** | questions courantes publiées uniquement, sans attendus ; les candidats ne peuvent pas énumérer le catalogue |
 | `GET /engine/snapshot/RH-004?locale=fr` | rôle serveur `interview_engine` ou `admin` dans `app_metadata.ai_interview_role` | identifiants immuables version de question/grille et formulation |
 | `GET /evaluator/questions/RH-004?locale=fr` | rôle `evaluator` ou `admin` dans `app_metadata.ai_interview_role` | références internes d'évaluation ; jamais à communiquer au navigateur |
 
@@ -90,3 +90,8 @@ const closed = await engine.finish(first.sessionId);
 Cette extension prouve une sélection déterministe selon des contraintes métier et la persistance du handoff S2-03 → S2-04. **Elle n'est pas la boucle IA conversationnelle finale** : suivi des réponses, relances sémantiques, avatar/voix, moteur de scoring et coaching restent dans leurs sprints respectifs.
 
 La recette de vraie session HTTP avec utilisateurs de test et rôles vérifiés est décrite dans [le bilan technique](S2-03_Technical_Closure_2026-10-22.md).
+
+
+### Durcissement final : anti-énumération
+
+La route `GET /questions` exige maintenant `app_metadata.ai_interview_role = interview_engine` ou `admin`. Un candidat authentifié ne peut **pas** lister les questions susceptibles d'être posées plus tard. Il peut uniquement consulter les prompts d'une session dont il est propriétaire via `GET /candidate/sessions/:id/questions`. Une authentification seule n'accorde aucun accès au catalogue global. Les tests HTTP sont mis à jour dans `scripts/smoke_question_bank_http.mjs`.
