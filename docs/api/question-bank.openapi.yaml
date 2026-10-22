@@ -1,0 +1,113 @@
+openapi: 3.1.0
+info:
+  title: AI Interview Platform — Question Bank internal contract
+  version: 0.1.0-proposed
+  description: >
+    Design contract only, not an implemented HTTP service. Internal server-to-server
+    API. Do not expose evaluator endpoints to browsers. Auth integration and role
+    mappings must be approved before implementation.
+servers:
+  - url: https://internal.example.invalid
+    description: Documentation placeholder, not a deployment
+security:
+  - InternalServiceToken: []
+paths:
+  /internal/question-bank/questions:
+    get:
+      summary: List published questions for S2-04
+      operationId: listPublishedQuestions
+      parameters:
+        - {name: locale, in: query, schema: {type: string, enum: [fr, en], default: fr}}
+        - {name: family, in: query, schema: {type: string, enum: [rh, transversal, technical]}}
+        - {name: category, in: query, schema: {type: string}}
+        - {name: competency, in: query, schema: {type: string}}
+        - {name: difficulty, in: query, schema: {type: integer, minimum: 1, maximum: 4}}
+        - {name: limit, in: query, schema: {type: integer, minimum: 1, maximum: 100, default: 20}}
+        - {name: cursor, in: query, schema: {type: string}}
+      responses:
+        '200':
+          description: Published candidate-safe questions
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, next_cursor]
+                properties:
+                  items: {type: array, items: {$ref: '#/components/schemas/PublishedQuestion'}}
+                  next_cursor: {type: [string, 'null']}
+        '400': {description: Invalid filters or locale}
+        '401': {description: Missing or invalid server token}
+        '403': {description: Not authorized for catalog reads}
+  /internal/question-bank/questions/{code}:
+    get:
+      summary: Retrieve one published candidate-safe question
+      operationId: getPublishedQuestion
+      parameters:
+        - {name: code, in: path, required: true, schema: {type: string}}
+        - {name: locale, in: query, schema: {type: string, enum: [fr, en], default: fr}}
+      responses:
+        '200':
+          description: Published question
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PublishedQuestion'}
+        '401': {description: Unauthorized}
+        '404': {description: Not found or not published}
+  /internal/question-bank/evaluator/questions/{code}:
+    get:
+      summary: Evaluator-only internal reference, never exposed to candidate clients
+      operationId: getEvaluatorReference
+      description: >
+        Must verify authenticated service identity and server-side evaluator permission.
+        Never trust a role label supplied by the HTTP caller.
+      parameters:
+        - {name: code, in: path, required: true, schema: {type: string}}
+        - {name: locale, in: query, schema: {type: string, enum: [fr, en], default: fr}}
+      responses:
+        '200':
+          description: Internal evaluator reference
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/EvaluatorQuestion'}
+        '401': {description: Unauthorized}
+        '403': {description: Evaluator privilege required}
+        '404': {description: Not found or not published}
+components:
+  securitySchemes:
+    InternalServiceToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque service credential (design only)
+  schemas:
+    PublishedQuestion:
+      type: object
+      additionalProperties: false
+      required: [code, version, family, category_code, question_type, difficulty, primary_competency, locale, prompt]
+      properties:
+        code: {type: string}
+        version: {type: integer, minimum: 1}
+        family: {type: string, enum: [rh, transversal, technical]}
+        category_code: {type: string}
+        question_type: {type: string}
+        difficulty: {type: integer, minimum: 1, maximum: 4}
+        primary_competency: {type: string}
+        locale: {type: string, enum: [fr, en]}
+        prompt: {type: string}
+    EvaluatorQuestion:
+      allOf:
+        - {$ref: '#/components/schemas/PublishedQuestion'}
+        - type: object
+          required: [expected_elements_fr, acceptable_variations_fr, red_flags_fr, evaluation_notes_fr, rubric]
+          properties:
+            expected_elements_fr: {type: array, items: {type: string}}
+            acceptable_variations_fr: {type: string}
+            red_flags_fr: {type: array, items: {type: string}}
+            evaluation_notes_fr: {type: string}
+            rubric:
+              type: object
+              required: [code, version, weights, scale]
+              properties:
+                code: {type: string}
+                version: {type: integer}
+                weights: {type: object, additionalProperties: {type: number}}
+                scale: {type: object, additionalProperties: {type: string}}
