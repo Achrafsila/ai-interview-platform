@@ -9,7 +9,7 @@
 | Gestion de dépôt | Documentation, templates et CI du corpus présents | Confirmer exécution des workflows et gouvernance future |
 | S1-01/S1-02 | Fondations documentaires et architecture conceptuelle disponibles | Choix de stack, sécurité, données et POC technique |
 | S2-01 | Invariants produit formalisés dans les décisions / guide agent | Intégration et test du parcours non vérifiés |
-| S2-03 | 120 questions : 50 RH / 70 techniques, toutes `draft` ; 10 RH approuvées éditorialement ; 10 techniques pré-auditées IA | Revue humaine des 100 autres, expertise technique, versioning, stockage et intégration |
+| S2-03 | 120 questions `draft`, catalogue Python, schéma PostgreSQL versionné et tests sur base CI éphémère ; [PR #39 fusionnée](https://github.com/Achrafsila/ai-interview-platform/pull/39) | Revue humaine du corpus, environnement propre au projet, API authentifiée et intégration S2-04 |
 | Calibration S2-03 | 12 cas synthétiques étudiés sur grilles provisoires | Valider ancrages/limites ; rejouer avec moteur réel au Sprint 3 |
 | S2-04 et suites | Contrats et travaux prévus | Développement et tests d'intégration non démontrés |
 
@@ -31,3 +31,8 @@
 ## Règle de clôture
 
 Une tâche de *conception* peut être achevée quand décisions et documents sont approuvés ; une tâche de *fonctionnalité* n'est achevée que lorsque son comportement et ses critères d'acceptation sont démontrés.
+
+
+## Livraison technique intégrée le 22/10/2026
+
+La PR #39 a été fusionnée dans `main` après contrôles Python et PostgreSQL 16 CI réussis. Ce jalon clôture **la tranche prototype et persistance de référence**, mais **pas S2-03** : base dédiée et migrations déployées, rôles d'application, revue qualité métier, API réelle et tests S2-04 restent à produire. Voir [les conditions de clôture](S2-03_Closure_Gates.md).
