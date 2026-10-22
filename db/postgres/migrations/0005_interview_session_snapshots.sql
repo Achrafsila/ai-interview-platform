@@ -26,7 +26,8 @@ CREATE TABLE question_bank.interview_question_snapshots (
  selected_by uuid NOT NULL,
  selected_at timestamptz NOT NULL DEFAULT now(),
  UNIQUE(session_id,turn_index),
- UNIQUE(session_id,question_version_id)
+ UNIQUE(session_id,question_version_id),
+ UNIQUE(session_id,question_code)
 );
 CREATE INDEX idx_qb_snapshots_question_version ON question_bank.interview_question_snapshots(question_version_id);
 CREATE INDEX idx_qb_snapshots_rubric_version ON question_bank.interview_question_snapshots(rubric_version_id);
@@ -93,6 +94,45 @@ BEGIN
         source_record.locale::text,source_record.prompt::text;
 END $fn$;
 
+-- Deterministic S2-04 selection: choose one not-yet-asked published question.
+-- Lock session to serialize concurrent next-question requests.
+CREATE FUNCTION question_bank.next_interview_question(
+ p_session uuid, p_engine_actor uuid,
+ p_family text DEFAULT NULL, p_category text DEFAULT NULL,
+ p_difficulty smallint DEFAULT NULL
+) RETURNS TABLE(
+ snapshot_id uuid, turn_index integer, question_code text,
+ question_version_id uuid, rubric_version_id uuid,
+ locale text, prompt_text text
+) LANGUAGE plpgsql SET search_path=pg_catalog AS $fn$
+DECLARE sr question_bank.interview_sessions%ROWTYPE;
+DECLARE selected_code text;
+BEGIN
+ SELECT * INTO sr FROM question_bank.interview_sessions i
+ WHERE i.id=p_session FOR UPDATE;
+ IF NOT FOUND OR sr.status<>'active' OR sr.engine_actor_id<>p_engine_actor
+ THEN RAISE EXCEPTION 'Active interview session not owned by engine'; END IF;
+ IF p_family IS NOT NULL AND p_family NOT IN ('rh','transversal','technical')
+ THEN RAISE EXCEPTION 'Invalid family filter'; END IF;
+ IF p_difficulty IS NOT NULL AND p_difficulty NOT BETWEEN 1 AND 4
+ THEN RAISE EXCEPTION 'Invalid difficulty filter'; END IF;
+ SELECT s.code INTO selected_code
+ FROM question_bank.published_questions_safe s
+ WHERE s.locale=sr.locale
+   AND (p_family IS NULL OR s.family=p_family)
+   AND (p_category IS NULL OR s.category_code=p_category)
+   AND (p_difficulty IS NULL OR s.difficulty=p_difficulty)
+   AND NOT EXISTS (
+     SELECT 1 FROM question_bank.interview_question_snapshots prior
+     WHERE prior.session_id=p_session AND prior.question_code=s.code
+   )
+ ORDER BY s.difficulty, s.code LIMIT 1;
+ IF NOT FOUND THEN RAISE EXCEPTION 'No eligible published question'; END IF;
+ RETURN QUERY SELECT * FROM question_bank.append_published_question(
+   p_session,selected_code,p_engine_actor
+ );
+END $fn$;
+
 -- All session/snapshot content is private; no browser access or PUBLIC EXECUTE.
 ALTER TABLE question_bank.interview_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE question_bank.interview_question_snapshots ENABLE ROW LEVEL SECURITY;
@@ -101,6 +141,8 @@ REVOKE ALL ON question_bank.interview_question_snapshots FROM PUBLIC,anon,authen
 REVOKE ALL ON FUNCTION question_bank.open_interview_session(uuid,uuid,text)
   FROM PUBLIC,anon,authenticated;
 REVOKE ALL ON FUNCTION question_bank.append_published_question(uuid,text,uuid)
+  FROM PUBLIC,anon,authenticated;
+REVOKE ALL ON FUNCTION question_bank.next_interview_question(uuid,uuid,text,text,smallint)
   FROM PUBLIC,anon,authenticated;
 REVOKE ALL ON FUNCTION question_bank.immutable_interview_snapshot()
   FROM PUBLIC,anon,authenticated;
