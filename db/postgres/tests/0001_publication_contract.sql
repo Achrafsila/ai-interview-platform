@@ -108,7 +108,7 @@ BEGIN
   IF NOT v_rejected THEN RAISE EXCEPTION 'Published prompt mutable'; END IF;
   v_rejected := false;
   BEGIN INSERT INTO question_bank.localizations(question_version_id,locale,prompt)
-        VALUES(v_version,'en','Changed');
+        VALUES(v_version,'fr','New duplicate prompt');
   EXCEPTION WHEN raise_exception THEN v_rejected := true;
   END;
   IF NOT v_rejected THEN RAISE EXCEPTION 'Published localization insertion accepted'; END IF;
@@ -119,7 +119,11 @@ BEGIN
   IF NOT v_rejected THEN RAISE EXCEPTION 'Published competency deletion accepted'; END IF;
 
   -- No client grants are installed.
-  IF has_schema_privilege('public', 'question_bank', 'USAGE') THEN
+  IF EXISTS (
+    SELECT 1 FROM pg_namespace n
+    CROSS JOIN LATERAL aclexplode(coalesce(n.nspacl,acldefault('n', n.nspowner))) acl
+    WHERE n.nspname='question_bank' AND acl.grantee=0 AND acl.privilege_type='USAGE'
+  ) THEN
     RAISE EXCEPTION 'PUBLIC has USAGE on question_bank';
   END IF;
 END $$;
