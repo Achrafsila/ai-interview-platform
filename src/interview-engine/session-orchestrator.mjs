@@ -12,7 +12,7 @@ export class NoPublishedQuestionsError extends Error {
 
 export function createInterviewSessionOrchestrator(questionBank) {
   if (!questionBank ||
-      !["listPublished", "createSession", "nextQuestion", "getSessionQuestions"].every(
+      !["listPublished", "createSession", "nextQuestion", "getSessionQuestions", "completeSession"].every(
         name => typeof questionBank[name] === "function")) {
     throw new TypeError("A connected and authenticated S2-03 question-bank adapter is required");
   }
@@ -45,6 +45,9 @@ export function createInterviewSessionOrchestrator(questionBank) {
     async next(sessionId,selection={}) {
       const next=await questionBank.nextQuestion(sessionId,validateSelection(selection));
       return next.snapshot;
+    },
+    async finish(sessionId) {
+      return questionBank.completeSession(sessionId);
     },
     async replay(sessionId) {
       const result=await questionBank.getSessionQuestions(sessionId);
