@@ -3,6 +3,7 @@
 // No writes, no dynamic SQL, no secret material in responses.
 import { createClient } from "npm:@supabase/supabase-js@2.76.1";
 import postgres from "npm:postgres@3.4.7";
+import { canEngine, canEvaluate, roleFromVerifiedUser, validUuid, validCode, validLocale, safeQuestion, safeCandidateTurn } from "./policy.ts";
 
 const projectUrl = Deno.env.get("SUPABASE_URL") ?? "";
 const publishable = (() => {
@@ -17,11 +18,6 @@ const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), {
     status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
   });
-const canEngine = (role: unknown) => role === "interview_engine" || role === "admin";
-const canEvaluate = (role: unknown) => role === "evaluator" || role === "admin";
-const validLocale = (s: string | null) => s === null || s === "fr" || s === "en";
-const validCode = (s: string) => /^(RH|TECH)-[0-9]{3}$/.test(s);
-const validUuid = (s: unknown): s is string => typeof s === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(s);
 async function readSmallJson(req: Request): Promise<Record<string, unknown> | null> {
   const body = await req.text();
   if (body.length > 2048) return null;
@@ -41,7 +37,7 @@ Deno.serve(async (req: Request) => {
   const { data, error } = await auth.auth.getUser(match[1]);
   if (error || !data.user) return json({ error: "unauthorized" }, 401);
   // app_metadata is server-managed. Do not inspect mutable user_metadata for roles.
-  const role = data.user.app_metadata?.ai_interview_role;
+  const role = roleFromVerifiedUser(data.user);
   const url = new URL(req.url);
   const path = url.pathname.split("/").filter(Boolean);
   // Supabase routes /functions/v1/question-bank/...; only trailing path matters.
@@ -78,7 +74,7 @@ Deno.serve(async (req: Request) => {
         ORDER BY code ASC LIMIT ${limit + 1}
       `;
       const more = rows.length > limit;
-      const items = rows.slice(0, limit);
+      const items = rows.slice(0, limit).map(safeQuestion);
       return json({ items, next_cursor: more ? items[items.length - 1].code : null });
     }
     if (req.method === "GET" && endpoint.length === 3 && endpoint[0] === "engine" && endpoint[1] === "snapshot") {
