@@ -322,6 +322,7 @@ async function startSimulation(event){
   }
   state.selection={
     family:$("simFamily").value,
+    simulationMode:type,
     domain:$("simFamily").value==="technical"?$("simDomain").value:null,
     difficulty:$("simDifficulty").value?Number($("simDifficulty").value):null,
     locale:state.profile.preferred_locale,
@@ -439,7 +440,7 @@ async function completeStep(){
   else{showCurrentQuestion();}
 }
 function renderRecap(){
-  text("recapCount",state.answers.length+" réponse(s)");
+  text("recapCount",state.answers.length+(state.selection?.simulationMode==="ai"?" réponse(s)":" question(s)"));
   $("aiRecapFeedback").classList.toggle("hidden",!state.aiFeedback);
   text("aiRecapFeedback",state.aiFeedback?"Bilan qualitatif de l'IA (sans notation) :\n"+state.aiFeedback:"");
   text("recapPersistentGoals",names(state.profile.preparation_goals));
