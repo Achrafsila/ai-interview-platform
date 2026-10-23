@@ -39,16 +39,19 @@ export default function InterviewPage(){
  const [muted,setMuted]=useState(false);
  const [elapsed,setElapsed]=useState(0);
  const [stopOpen,setStopOpen]=useState(false);
- const [introStage,setIntroStage]=useState<"none"|"welcome"|"countdown">("none");
- const [introWords,setIntroWords]=useState(0);
+ const [introStage,setIntroStage]=useState<"none"|"welcome"|"breathing"|"countdown"|"transition">("none");
+ const [introReveal,setIntroReveal]=useState(0);
  const [introNotice,setIntroNotice]=useState("");
  const introAudio=useRef<HTMLAudioElement|null>(null);
  const introInterval=useRef<ReturnType<typeof setInterval>|null>(null);
+ const introTransitionTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  const introFinished=useRef(false);
  const introLine=config?.locale==="en"
   ?"I hope you're ready! Your interview will begin in five seconds. Good luck!"
   :"J’espère que vous êtes prêt ! Votre entretien commencera dans cinq secondes. Bonne chance !";
- const words=introLine.split(/\s+/);
+ const introPhrases=config?.locale==="en"
+  ?["I hope you’re ready.","Your interview will begin in five seconds.","Good luck!"]
+  :["J’espère que vous êtes prêt !","Votre entretien commencera dans cinq secondes.","Bonne chance !"];
  const recognition=useRef<Recognizer|null>(null);
  const questionAudio=useRef<HTMLAudioElement|null>(null);
  const questionAudioUrl=useRef<string|null>(null);
@@ -77,7 +80,7 @@ export default function InterviewPage(){
 
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
- useEffect(()=>()=>{recognition.current?.stop();questionAudio.current?.pause();if(questionAudioUrl.current)URL.revokeObjectURL(questionAudioUrl.current);window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);introAudio.current?.pause();if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
+ useEffect(()=>()=>{recognition.current?.stop();questionAudio.current?.pause();if(questionAudioUrl.current)URL.revokeObjectURL(questionAudioUrl.current);window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(introTransitionTimer.current)clearTimeout(introTransitionTimer.current);introAudio.current?.pause();if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
  function speak(text:string,locale:string){
   stopDictation();stopQuestionAudio();
   if(muted){setState("listening");setVoiceNotice("Le son est coupé.");return;}
@@ -108,7 +111,7 @@ export default function InterviewPage(){
  }
  function start(){
   if(!config){setError("Configuration introuvable. Revenez à la préparation.");return;}
-  setError("");setIntroWords(0);setIntroNotice("");
+  setError("");setIntroReveal(0);setIntroNotice("");
   introFinished.current=false;
   if(introInterval.current)clearInterval(introInterval.current);
   setIntroStage("welcome");
@@ -119,8 +122,10 @@ export default function InterviewPage(){
   introAudio.current?.pause();
   if(introInterval.current)clearInterval(introInterval.current);
   setIntroNotice("");
-  setIntroWords(words.length);
-  setIntroStage("countdown");
+  setIntroReveal(introPhrases.length);
+  setIntroStage("breathing");
+  if(introTransitionTimer.current)clearTimeout(introTransitionTimer.current);
+  introTransitionTimer.current=setTimeout(()=>setIntroStage("countdown"),650);
  }
  function playIntro(){
   const audio=introAudio.current;
@@ -146,6 +151,11 @@ export default function InterviewPage(){
   // start intentionally depends on the loaded configuration, not on each render.
   // eslint-disable-next-line react-hooks/exhaustive-deps
  },[config]);
+ function finishCountdown(){
+  setIntroStage("transition");
+  if(introTransitionTimer.current)clearTimeout(introTransitionTimer.current);
+  introTransitionTimer.current=setTimeout(()=>void startInterview(),500);
+ }
  async function startInterview(){
   setIntroStage("none");
   if(!config)return;
@@ -242,27 +252,36 @@ export default function InterviewPage(){
   <div className="pointer-events-none absolute -right-20 bottom-8 size-80 rounded-full bg-[#36BCA8]/10 blur-[95px]"/>
   <div className="relative z-10 flex w-full max-w-3xl flex-col items-center text-center">
    <p className="text-xs font-semibold uppercase tracking-[.26em] text-[#AEBEF8]">AI Interview Platform</p>
-   <p className="mt-3 text-sm text-[#B8C8E8]">{introStage==="welcome"?"Préparons votre entretien":"Vous entrez dans votre entretien"}</p>
-   <div className="my-8 size-64 sm:size-80"><VoicePoweredOrb state={introStage==="welcome"?"speaking":"thinking"} voiceLevel={introStage==="welcome"?.42+.28*Math.sin(introWords*1.6):.05} className="h-full w-full"/></div>
+   <p className="mt-3 text-sm text-[#B8C8E8]">{introStage==="welcome"||introStage==="breathing"?"Préparons votre entretien":"Vous entrez dans votre entretien"}</p>
+   <div className="my-8 size-64 sm:size-80"><VoicePoweredOrb state={introStage==="welcome"?"speaking":"thinking"} voiceLevel={introStage==="welcome"?.25+.13*Math.sin(introReveal*1.6):.05} className="h-full w-full"/></div>
    {introStage==="welcome"&&<audio ref={introAudio} preload="auto" src={config?.locale==="en"?"/audio/interview-intro-en.mp3":"/audio/interview-intro-fr.mp3"}
     onPlay={()=>{
-     setIntroNotice("");if(introInterval.current)clearInterval(introInterval.current);
-     introInterval.current=setInterval(()=>setIntroWords(current=>Math.min(words.length,current+1)),430);
+     setIntroNotice("");
+     if(introInterval.current)clearInterval(introInterval.current);
+     setIntroReveal(1);
+     const audio=introAudio.current;
+     introInterval.current=setInterval(()=>{
+      if(!audio||audio.paused)return;
+      const portion=audio.duration>0&&Number.isFinite(audio.duration)?audio.currentTime/audio.duration:0;
+      setIntroReveal(Math.max(1,Math.min(introPhrases.length,1+Math.floor(portion*introPhrases.length))));
+     },120);
     }}
     onEnded={finishIntroduction}
     onError={()=>setIntroNotice("Le fichier audio n’a pas pu être chargé. Vérifiez le navigateur ou continuez sans audio.")}/>}
-   {introStage==="welcome"?
-    <h1 aria-live="off" className="min-h-32 max-w-2xl text-balance text-2xl font-semibold leading-relaxed tracking-tight sm:text-4xl">
-     {words.slice(0,introWords).map((word,index)=><span key={index} className="inline-block animate-[fade-in_.3s_ease-out]">{word}{" "}</span>)}
-     <span className="sr-only">{introLine}</span>
-    </h1>:
-    <div className="min-h-32"><CountdownTimer onComplete={()=>void startInterview()}/></div>}
+   <div className={`relative flex min-h-36 w-full items-center justify-center transition-all duration-500 ${introStage==="transition"?"translate-y-3 opacity-0":"translate-y-0 opacity-100"}`}>
+    {(introStage==="welcome"||introStage==="breathing")?
+     <h1 aria-label={introLine} className="flex max-w-3xl flex-col items-center gap-3 text-balance text-center text-2xl font-semibold leading-snug tracking-[-.035em] sm:text-4xl">
+      {introPhrases.map((phrase,index)=><span key={index} aria-hidden="true"
+       className={`block transform-gpu transition-[opacity,transform,filter] duration-700 ease-out motion-reduce:transition-none ${introReveal>index?"translate-y-0 opacity-100 blur-none":"translate-y-3 opacity-0 blur-[6px]"} ${index===2?"text-[#D5DBFF]":"text-white"}`}>{phrase}</span>)}
+     </h1>:
+     introStage==="countdown"?<div key="countdown" className="animate-[fade-in_.5s_ease-out]"><CountdownTimer onComplete={finishCountdown}/></div>:null}
+   </div>
    {introStage==="welcome"&&<div className="mt-5 flex flex-col items-center gap-3">
     {introNotice&&<p role="status" className="max-w-sm text-sm leading-6 text-[#CFDAF9]">{introNotice}</p>}
     <button type="button" onClick={playIntro} className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20"><Volume2 size={17}/> Écouter le message</button>
     {introNotice&&<button type="button" onClick={finishIntroduction} className="text-xs text-[#C4D0F4] underline underline-offset-4">Continuer sans audio</button>}
    </div>}
-   <p className="mt-8 text-xs font-medium tracking-[.12em] text-[#9CAED6]">{introStage==="welcome"?"UN INSTANT POUR VOUS METTRE À L’AISE":"L’INTERVIEWEUR PREND LA PAROLE DANS QUELQUES SECONDES"}</p>
+   <p className="mt-8 text-xs font-medium tracking-[.12em] text-[#9CAED6]">{introStage==="welcome"||introStage==="breathing"?"UN INSTANT POUR VOUS METTRE À L’AISE":"L’INTERVIEWEUR PREND LA PAROLE DANS QUELQUES SECONDES"}</p>
   </div>
  </main>;
  return <main className="min-h-dvh bg-[#F5F7FC] px-4 py-8 text-[#18233D] sm:px-8">
