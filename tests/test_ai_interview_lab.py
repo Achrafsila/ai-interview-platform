@@ -8,7 +8,7 @@ import unittest
 
 DIR = Path(__file__).resolve().parents[1] / "dev" / "local-preview"
 sys.path.insert(0, str(DIR))
-from ai_interview import InterviewLab, OpenAIRehearsalProvider, LabValidationError, AIUnavailableError
+from ai_interview import InterviewLab, OpenAIRehearsalProvider, GroqRehearsalProvider, configure_ai_provider, LabValidationError, AIUnavailableError
 from server import load_questions
 
 
@@ -133,6 +133,104 @@ class InterviewLabTests(unittest.TestCase):
         self.assertFalse(captured["body"]["store"])
         self.assertNotIn("test-key-local-only", json.dumps(captured["body"]))
         self.assertIn("J'ai choisi Python", captured["body"]["input"])
+
+
+    def test_groq_provider_uses_correct_api_and_never_sends_api_key_in_json(self):
+        captured = {}
+
+        class Response(io.BytesIO):
+            def __enter__(self): return self
+            def __exit__(self, *args): self.close()
+
+        def opener(request, timeout=None):
+            captured["url"] = request.full_url
+            captured["token"] = request.get_header("Authorization")
+            captured["body"] = json.loads(request.data.decode("utf-8"))
+            captured["timeout"] = timeout
+            return Response(json.dumps({
+                "choices": [{"message": {"role": "assistant",
+                                          "content": "Quel exemple précis pouvez-vous donner ?"}}]
+            }).encode())
+
+        provider = GroqRehearsalProvider(api_key="gsk_mock-secret", opener=opener)
+        answer = provider.followup(
+            question={"fr": "Décrivez votre parcours."},
+            answer="J'ai piloté un projet agile.",
+            family="rh", domain=None, locale="fr",
+            goals=["rh_parcours"], job_description=""
+        )
+        self.assertEqual(answer, "Quel exemple précis pouvez-vous donner ?")
+        self.assertEqual(captured["url"],
+                         "https://api.groq.com/openai/v1/chat/completions")
+        self.assertEqual(captured["token"], "Bearer gsk_mock-secret")
+        self.assertEqual(captured["body"]["model"], "llama-3.3-70b-versatile")
+        self.assertEqual(captured["body"]["messages"][0]["role"], "system")
+        self.assertEqual(captured["body"]["messages"][1]["role"], "user")
+        self.assertIn("J'ai piloté", captured["body"]["messages"][1]["content"])
+        self.assertNotIn("gsk_mock-secret", json.dumps(captured["body"]))
+        self.assertNotIn("store", captured["body"])
+
+    def test_groq_feedback_uses_same_provider(self):
+        captured = []
+        class Response(io.BytesIO):
+            def __enter__(self): return self
+            def __exit__(self, *args): self.close()
+        def opener(request, timeout=None):
+            body = json.loads(request.data.decode("utf-8"))
+            captured.append(body)
+            return Response(json.dumps({
+                "choices": [{"message": {"content": "Un exemple plus précis renforcerait votre réponse."}}]
+            }).encode())
+        provider = GroqRehearsalProvider(api_key="gsk_mock", opener=opener)
+        feedback = provider.feedback(transcript=[
+            {"question": "Comment gérez-vous un incident ?",
+             "answer": "En observant les logs."}
+        ], locale="fr", family="technical", goals=["tech_incident"])
+        self.assertIn("exemple", feedback)
+        self.assertEqual(captured[0]["max_completion_tokens"], 280)
+        self.assertIn("logs", captured[0]["messages"][1]["content"])
+
+    def test_groq_invalid_credentials_return_safe_error(self):
+        import urllib.error
+
+        def opener(request, timeout=None):
+            raise urllib.error.HTTPError(
+                request.full_url, 401, "Unauthorized", None, io.BytesIO(b'{"secret":"dont-leak"}')
+            )
+        provider = GroqRehearsalProvider(api_key="gsk_private", opener=opener)
+        with self.assertRaises(AIUnavailableError) as caught:
+            provider._complete("test", {"answer": "test"})
+        self.assertIn("Groq", str(caught.exception))
+        self.assertIn("401", str(caught.exception))
+        self.assertNotIn("gsk_private", str(caught.exception))
+        self.assertNotIn("dont-leak", str(caught.exception))
+
+    def test_provider_auto_prefers_groq_and_supports_explicit_override(self):
+        both = {"GROQ_API_KEY": "gsk_test",
+                "OPENAI_API_KEY": "sk-test"}
+        provider, name = configure_ai_provider(both)
+        self.assertEqual(name, "groq")
+        self.assertIsInstance(provider, GroqRehearsalProvider)
+        self.assertEqual(provider.api_key, "gsk_test")
+
+        provider, name = configure_ai_provider({**both, "AI_PROVIDER": "openai"})
+        self.assertEqual(name, "openai")
+        self.assertIsInstance(provider, OpenAIRehearsalProvider)
+        self.assertNotIsInstance(provider, GroqRehearsalProvider)
+
+        provider, name = configure_ai_provider({"GROQ_API_KEY": "gsk_test",
+                                                 "AI_PROVIDER": "groq",
+                                                 "GROQ_MODEL": "llama-3.1-8b-instant"})
+        self.assertEqual(provider.model, "llama-3.1-8b-instant")
+        self.assertEqual(name, "groq")
+
+        provider, name = configure_ai_provider({"AI_PROVIDER": "groq"})
+        self.assertEqual(name, "groq")
+        self.assertFalse(provider.api_key)
+        with self.assertRaises(AIUnavailableError):
+            provider._complete("test", {"text": "anything"})
+        with self.assertRaises(ValueError):
+            configure_ai_provider({"AI_PROVIDER": "unsupported"})
 
 if __name__ == "__main__":
     unittest.main()

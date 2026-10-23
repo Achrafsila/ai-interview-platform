@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 NEW_USER = HERE.parent / "new-user-e2e"
 sys.path.insert(0, str(HERE))
-from ai_interview import InterviewLab, OpenAIRehearsalProvider, LabValidationError, AIUnavailableError
+from ai_interview import InterviewLab, configure_ai_provider, LabValidationError, AIUnavailableError
 
 BANK = ROOT / "data" / "question-bank"
 FILES = (
@@ -100,10 +100,7 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
     html = (HERE / "index.html").read_bytes()
     e2e_html = (NEW_USER / "index.html").read_bytes()
     e2e_js = (NEW_USER / "app.js").read_bytes()
-    ai_provider = OpenAIRehearsalProvider(
-        api_key=os.environ.get("OPENAI_API_KEY", ""),
-        model=os.environ.get("OPENAI_MODEL", "gpt-4.1-mini"),
-    )
+    ai_provider, ai_provider_name = configure_ai_provider(os.environ)
     ai_lab = InterviewLab(questions, ai_provider)
 
     class Handler(BaseHTTPRequestHandler):
@@ -158,7 +155,7 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
             elif url.path == "/api/ai/status":
                 self._send({
                     "available": bool(ai_provider.api_key),
-                    "provider": "openai" if ai_provider.api_key else "not_configured",
+                    "provider": ai_provider_name if ai_provider.api_key else "not_configured",
                     "draft_preview": True,
                     "persistent": False,
                 })
@@ -215,7 +212,7 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
             url = urlsplit(self.path)
             if url.path == "/api/ai/session/start":
                 if not ai_provider.api_key:
-                    return self._send({"error": "OPENAI_API_KEY non configurée sur ce serveur local."}, 503)
+                    return self._send({"error": "Clé API du fournisseur sélectionné non configurée (GROQ_API_KEY ou OPENAI_API_KEY)."}, 503)
                 try:
                     response = ai_lab.start(body)
                     return self._send(response, 201)

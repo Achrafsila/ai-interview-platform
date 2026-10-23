@@ -2,7 +2,7 @@
 
 This module is a DEV LAB. It intentionally never reads/writes Supabase,
 never changes review or publication flags, and never exposes private rubrics.
-For a real model response set OPENAI_API_KEY on the localhost server process.
+For a real model response set GROQ_API_KEY or OPENAI_API_KEY on the localhost server process.
 """
 from __future__ import annotations
 
@@ -148,6 +148,88 @@ class OpenAIRehearsalProvider:
             "responses_untrusted": transcript[-10:],
         }, max_tokens=280)
 
+
+
+@dataclass
+class GroqRehearsalProvider(OpenAIRehearsalProvider):
+    """Groq Chat Completions adapter; same RH/technical prompts as OpenAI.
+
+    Groq API credentials must stay on the Python server; never expose in HTTP
+    status/config responses or commit them to the repository.
+    """
+    model: str = "llama-3.3-70b-versatile"
+
+    def _complete(self, instructions: str, user_context: dict, max_tokens: int = 220) -> str:
+        if not self.api_key:
+            raise AIUnavailableError("GROQ_API_KEY n'est pas configurée dans le serveur local.")
+        request_body = json.dumps({
+            "model": self.model,
+            "messages": [
+                {"role": "system", "content": instructions},
+                {"role": "user", "content": json.dumps(user_context, ensure_ascii=False)},
+            ],
+            "temperature": 0.6,
+            "max_completion_tokens": max_tokens,
+        }, ensure_ascii=False).encode("utf-8")
+        request = urllib.request.Request(
+            "https://api.groq.com/openai/v1/chat/completions",
+            data=request_body,
+            headers={
+                "authorization": "Bearer " + self.api_key,
+                "content-type": "application/json",
+            },
+            method="POST",
+        )
+        try:
+            with self.opener(request, timeout=self.timeout) as response:
+                result = json.load(response)
+        except urllib.error.HTTPError as exc:
+            details = {
+                400: "Requête refusée par Groq (HTTP 400) : vérifiez le modèle et les paramètres.",
+                401: "Groq a refusé la clé API (HTTP 401). Vérifiez GROQ_API_KEY.",
+                403: "Accès au modèle Groq refusé (HTTP 403).",
+                429: "Limite de requêtes ou de crédits Groq atteinte (HTTP 429).",
+            }
+            raise AIUnavailableError(
+                details.get(exc.code, "Groq a refusé la requête (HTTP %s)." % exc.code)
+            ) from None
+        except (urllib.error.URLError, TimeoutError, OSError):
+            raise AIUnavailableError("Impossible de joindre Groq pour le moment.") from None
+        except (json.JSONDecodeError, TypeError, ValueError):
+            raise AIUnavailableError("Groq a renvoyé une réponse illisible.") from None
+
+        try:
+            message = result["choices"][0]["message"]["content"]
+        except (KeyError, TypeError, IndexError):
+            raise AIUnavailableError("Groq n'a renvoyé aucun message exploitable.") from None
+        if not isinstance(message, str) or not message.strip():
+            raise AIUnavailableError("Groq n'a renvoyé aucun texte exploitable.")
+        return message.strip()[:1200]
+
+
+def configure_ai_provider(environ):
+    """Explicit AI_PROVIDER override; otherwise prefer GROQ_API_KEY to OpenAI.
+
+    This prevents passing a Groq key to api.openai.com, which produces HTTP 401.
+    """
+    choice = environ.get("AI_PROVIDER", "auto").strip().lower()
+    if choice not in ("auto", "groq", "openai"):
+        raise ValueError("AI_PROVIDER doit être auto, groq ou openai")
+    if choice == "groq" or (choice == "auto" and environ.get("GROQ_API_KEY")):
+        return (
+            GroqRehearsalProvider(
+                api_key=environ.get("GROQ_API_KEY", "").strip(),
+                model=environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+            ),
+            "groq",
+        )
+    return (
+        OpenAIRehearsalProvider(
+            api_key=environ.get("OPENAI_API_KEY", "").strip(),
+            model=environ.get("OPENAI_MODEL", "gpt-4.1-mini"),
+        ),
+        "openai",
+    )
 
 def preview_question(item: dict, locale: str) -> dict:
     return {
