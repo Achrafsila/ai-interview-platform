@@ -232,5 +232,24 @@ class InterviewLabTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             configure_ai_provider({"AI_PROVIDER": "unsupported"})
 
+    def test_misplaced_groq_key_fails_at_startup_before_network(self):
+        for settings in (
+            {"OPENAI_API_KEY": "gsk_fake-groq-key"},
+            {"AI_PROVIDER": "openai", "OPENAI_API_KEY": "gsk_fake-groq-key"},
+            {"AI_PROVIDER": "groq", "GROQ_API_KEY": "sk-fake-openai-key"},
+        ):
+            with self.subTest(settings=list(settings)):
+                with self.assertRaisesRegex(ValueError, "Groq"):
+                    configure_ai_provider(settings)
+        provider, name = configure_ai_provider({
+            "AI_PROVIDER": "groq",
+            "GROQ_API_KEY": "gsk_valid-looking-test-value",
+            "OPENAI_API_KEY": "sk_other-provider",
+        })
+        self.assertEqual(name, "groq")
+        self.assertIsInstance(provider, GroqRehearsalProvider)
+        self.assertTrue(provider.api_key.startswith("gsk_"))
+
+
 if __name__ == "__main__":
     unittest.main()
