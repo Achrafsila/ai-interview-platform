@@ -41,6 +41,8 @@ export default function InterviewPage(){
  const [stopOpen,setStopOpen]=useState(false);
  const [introStage,setIntroStage]=useState<"none"|"welcome"|"countdown">("none");
  const [introWords,setIntroWords]=useState(0);
+ const [introNotice,setIntroNotice]=useState("");
+ const introWatchdog=useRef<ReturnType<typeof setTimeout>|null>(null);
  const introInterval=useRef<ReturnType<typeof setInterval>|null>(null);
  const introFinished=useRef(false);
  const introLine=config?.locale==="en"
@@ -67,7 +69,7 @@ export default function InterviewPage(){
 
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
- useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
+ useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(introWatchdog.current)clearTimeout(introWatchdog.current);if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
  function speak(text:string,locale:string){
   stopDictation();
   const synth=window.speechSynthesis;
@@ -106,20 +108,30 @@ export default function InterviewPage(){
   if(!config){setError("Configuration introuvable. Revenez à la préparation.");return;}
   setError("");
   setIntroWords(0);
+  setIntroNotice("");
   setIntroStage("welcome");
   introFinished.current=false;
   if(introInterval.current)clearInterval(introInterval.current);
+  if(introWatchdog.current)clearTimeout(introWatchdog.current);
   const finish=()=>{
    if(introFinished.current)return;
    introFinished.current=true;
    if(introInterval.current)clearInterval(introInterval.current);
+   if(introWatchdog.current)clearTimeout(introWatchdog.current);
+   setIntroNotice("");
    setIntroWords(words.length);
    setIntroStage("countdown");
   };
-  if(muted||!("speechSynthesis" in window)){finish();return;}
+  if(muted||!("speechSynthesis" in window)){
+   setIntroNotice("La lecture vocale n’est pas disponible. Activez le son ou poursuivez sans audio.");
+   return;
+  }
   window.speechSynthesis.cancel();
   const announcement=new SpeechSynthesisUtterance(introLine);
   announcement.lang=config.locale==="en"?"en-US":"fr-FR";
+  const matching=window.speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(config.locale)&&v.localService)
+   ||window.speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(config.locale));
+  if(matching)announcement.voice=matching;
   announcement.rate=.89;
   announcement.pitch=1.07;
   // Speech boundary events synchronize the reveal when supported by the browser.
@@ -128,9 +140,21 @@ export default function InterviewPage(){
    const spoken=introLine.slice(0,event.charIndex+Math.max(1,event.charLength||1)).trim();
    setIntroWords(Math.min(words.length,spoken.split(/\s+/).length));
   };
+  announcement.onstart=()=>{
+   if(introWatchdog.current)clearTimeout(introWatchdog.current);
+   setIntroNotice("");
+  };
   announcement.onend=finish;
-  announcement.onerror=finish;
-  window.speechSynthesis.speak(announcement);
+  announcement.onerror=()=>{
+   if(introWatchdog.current)clearTimeout(introWatchdog.current);
+   setIntroNotice("La voix n’a pas pu démarrer. Cliquez sur « Écouter le message ».");
+  };
+  try{window.speechSynthesis.speak(announcement);}catch{
+   setIntroNotice("Lecture audio bloquée. Cliquez sur « Écouter le message ».");
+  }
+  introWatchdog.current=setTimeout(()=>{
+   if(!introFinished.current)setIntroNotice("Si vous n’entendez rien, cliquez sur « Écouter le message » pour activer le son.");
+  },3000);
   // Some browser voices do not emit word boundaries; provide progressive visual fallback.
   introInterval.current=setInterval(()=>setIntroWords(current=>Math.min(words.length,current+1)),430);
  }
@@ -244,6 +268,11 @@ export default function InterviewPage(){
      <span className="sr-only">{introLine}</span>
     </h1>:
     <div className="min-h-32"><CountdownTimer onComplete={()=>void startInterview()}/></div>}
+   {introStage==="welcome"&&<div className="mt-5 flex flex-col items-center gap-3">
+    {introNotice&&<p role="status" className="max-w-sm text-sm leading-6 text-[#CFDAF9]">{introNotice}</p>}
+    <button type="button" onClick={start} className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20"><Volume2 size={17}/> Écouter le message</button>
+    {introNotice&&<button type="button" onClick={()=>{window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(introWatchdog.current)clearTimeout(introWatchdog.current);setIntroStage("countdown");}} className="text-xs text-[#C4D0F4] underline underline-offset-4">Continuer sans audio</button>}
+   </div>}
    <p className="mt-8 text-xs font-medium tracking-[.12em] text-[#9CAED6]">{introStage==="welcome"?"UN INSTANT POUR VOUS METTRE À L’AISE":"L’INTERVIEWEUR PREND LA PAROLE DANS QUELQUES SECONDES"}</p>
   </div>
  </main>;
