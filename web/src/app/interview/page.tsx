@@ -25,6 +25,7 @@ export default function InterviewPage(){
  const recognition=useRef<Recognizer|null>(null);
  const voice=useRef<SpeechSynthesisUtterance|null>(null);
  const sessionRef=useRef(false);
+ const pausedFrom=useRef<"speaking"|"listening">("listening");
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
  useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();},[]);
@@ -68,7 +69,19 @@ export default function InterviewPage(){
   r.onerror=e=>setError("Microphone : "+e.error+". Vous pouvez aussi utiliser le champ texte.");
   try{r.start();setState("listening");}catch{setError("Impossible de démarrer le microphone.");}
  }
- function togglePause(){if(state==="paused"){setState("listening");return;}recognition.current?.stop();window.speechSynthesis?.cancel();setState("paused");}
+ function togglePause(){
+  if(state==="paused"){
+   if(pausedFrom.current==="speaking"&&"speechSynthesis" in window&&window.speechSynthesis.paused){
+    window.speechSynthesis.resume();setState("speaking");
+   }else{setState("listening");}
+   return;
+  }
+  if(state!=="speaking"&&state!=="listening")return;
+  pausedFrom.current=state;
+  recognition.current?.stop();
+  if(state==="speaking"&&"speechSynthesis" in window)window.speechSynthesis.pause();
+  setState("paused");
+ }
  function interrupt(){window.speechSynthesis?.cancel();setState("listening");}
  const question=result?.question?.prompt;
  return <main className="min-h-dvh bg-[#F5F7FC] px-4 py-8 text-[#18233D] sm:px-8">
@@ -96,11 +109,11 @@ export default function InterviewPage(){
     </div>
    </section>
    {["speaking","listening","paused"].includes(state)&&<div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-    <button onClick={()=>setMuted(x=>!x)} className="flex items-center gap-2 rounded-xl border border-[#D4DEEE] bg-white px-4 py-3 text-sm">{muted?<VolumeX size={18}/>:<Volume2 size={18}/>} {muted?"Son coupé":"Son activé"}</button>
+    <button onClick={()=>{setMuted(x=>!x);if(!muted&&state==="speaking"){window.speechSynthesis?.cancel();setState("listening");}}} className="flex items-center gap-2 rounded-xl border border-[#D4DEEE] bg-white px-4 py-3 text-sm">{muted?<VolumeX size={18}/>:<Volume2 size={18}/>} {muted?"Son coupé":"Son activé"}</button>
     <button onClick={togglePause} className="flex items-center gap-2 rounded-xl border border-[#D4DEEE] bg-white px-4 py-3 text-sm">{state==="paused"?<Play size={18}/>:<Pause size={18}/>} {state==="paused"?"Reprendre":"Pause"}</button>
     <button onClick={()=>setStopOpen(true)} className="rounded-xl border border-[#F0CCD0] bg-white px-4 py-3 text-sm font-medium text-[#AA4050]">Terminer</button>
    </div>}
-   {stopOpen&&<div role="dialog" aria-modal="true" aria-label="Terminer l’entretien" className="mx-auto mt-5 max-w-md rounded-2xl border border-[#F0CCD0] bg-white p-6"><h3 className="font-bold">Terminer cette séance ?</h3><p className="mt-2 text-sm text-[#6C7890]">Le bilan partiel ne peut pas encore être sauvegardé dans le laboratoire actuel.</p><div className="mt-5 flex gap-3"><button onClick={()=>setStopOpen(false)} className="rounded-xl border px-4 py-2">Continuer</button><button onClick={()=>{recognition.current?.stop();window.speechSynthesis?.cancel();setStopOpen(false);setState("done");}} className="rounded-xl bg-[#A64D58] px-4 py-2 font-bold text-white">Terminer</button></div></div>}
+   {stopOpen&&<div role="dialog" aria-modal="true" aria-label="Terminer l’entretien" className="mx-auto mt-5 max-w-md rounded-2xl border border-[#F0CCD0] bg-white p-6"><h3 className="font-bold">Terminer cette séance ?</h3><p className="mt-2 text-sm text-[#6C7890]">Les réponses en cours ne pourront pas être conservées et aucun bilan partiel ne sera produit par le laboratoire actuel.</p><div className="mt-5 flex gap-3"><button onClick={()=>setStopOpen(false)} className="rounded-xl border px-4 py-2">Continuer</button><button onClick={()=>{recognition.current?.stop();window.speechSynthesis?.cancel();setStopOpen(false);setResult({completed:true,feedback:"Séance interrompue volontairement. Le laboratoire ne permet pas encore de produire ni de conserver un bilan partiel."});setState("done");}} className="rounded-xl bg-[#A64D58] px-4 py-2 font-bold text-white">Terminer</button></div></div>}
    <p className="mt-7 text-center text-xs leading-6 text-[#7786A0]">Prototype local : questions issues du corpus brouillon ; reconnaissance vocale selon le navigateur ; aucune évaluation chiffrée.</p>
   </div>
  </main>;
