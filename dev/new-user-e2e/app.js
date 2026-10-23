@@ -4,14 +4,66 @@ const GOALS = {
   first_job:"Premier emploi", job_change:"Changer de poste", career_growth:"Évoluer",
 };
 const PREP = {
-  confidence:"Confiance en soi", answer_structure:"Structurer mes réponses",
-  communication:"Communication", domain_knowledge:"Connaissances métier",
-  stress_management:"Gestion du stress",
+  confidence:"Confiance en soi", answer_structure:"Structurer mes réponses comportementales",
+  communication:"Communication en entretien RH", domain_knowledge:"Connaissances métier",
+  stress_management:"Gérer les questions RH difficiles",
+  rh_motivation:"Motivations et projet professionnel",
+  rh_parcours:"Présenter et valoriser mon parcours",
+  rh_teamwork:"Collaboration et travail en équipe",
+  rh_leadership:"Leadership et influence",
+  rh_behavioral:"Situations vécues et méthode STAR",
+  rh_conflict:"Gestion des désaccords et conflits",
+  tech_fundamentals:"Fondamentaux techniques",
+  tech_problem_solving:"Résolution de problèmes techniques",
+  tech_architecture:"Architecture et conception",
+  tech_debugging:"Débogage et investigation",
+  tech_practices:"Qualité et bonnes pratiques",
+  tech_reasoning:"Structuration du raisonnement",
+  tech_explain:"Expliquer clairement mes choix techniques",
+  tech_incident:"Diagnostic et gestion d'incident",
+  tech_sql:"SQL, requêtes et optimisation",
+  tech_data_pipelines:"ETL, pipelines et qualité des données",
+  tech_ml:"Machine learning et IA",
+  tech_api:"API, backend et intégrations",
+  tech_system_design:"Conception et scalabilité des systèmes",
+  tech_cloud:"Cloud, infrastructure et conteneurs",
+  tech_cicd:"CI/CD et déploiements",
+  tech_observability:"Monitoring et observabilité",
+  tech_security:"Sécurité applicative et vulnérabilités",
+  tech_threat_model:"Analyse de risques et menaces",
+  tech_iam:"Identités, accès et IAM",
+  tech_automation:"Automatisation des tests",
+  tech_quality:"Qualité, anomalies et stratégie QA",
+  tech_test_strategy:"Conception de scénarios de test",
+  tech_requirements:"Analyse et cadrage des besoins",
+  tech_user_stories:"User stories et critères d'acceptation",
+  tech_stakeholders:"Ateliers et gestion des parties prenantes",
+};
+const RH_SIM_GOALS = [
+  "rh_motivation","rh_parcours","communication","answer_structure",
+  "rh_teamwork","rh_leadership","rh_behavioral","rh_conflict",
+  "confidence","stress_management",
+];
+const TECH_SIM_GOALS = [
+  "tech_fundamentals","tech_problem_solving","tech_architecture",
+  "tech_debugging","tech_practices","tech_reasoning",
+  "tech_explain","tech_incident",
+];
+const TECH_DOMAIN_GOALS = {
+  software:["tech_api","tech_system_design"],
+  data_ai:["tech_sql","tech_data_pipelines","tech_ml"],
+  cloud_devops:["tech_cloud","tech_cicd","tech_observability"],
+  cybersecurity:["tech_security","tech_threat_model","tech_iam"],
+  testing_qa:["tech_automation","tech_quality","tech_test_strategy"],
+  business_analysis:["tech_requirements","tech_user_stories","tech_stakeholders"],
 };
 const state = {
   mode:"demo", liveConfig:null, page:"welcome", authMode:"signup",
   user:null, accessToken:null, profile:null, selectedGoals:[],
   selection:null, questions:[], answers:[], index:0,
+  aiReady:false, aiSession:null, aiTotal:0, aiPhase:"primary",
+  aiCurrentQuestion:null, aiFeedback:null,
+  simGoalSelections:{}, lastRenderedFamily:null,
 };
 function show(page) {
   state.page = page;
