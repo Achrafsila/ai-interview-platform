@@ -66,3 +66,8 @@ Tester 375, 768, 1024 et 1440px ; aucun scroll horizontal, contenu qui se réorg
 ## Étapes ClickUp
 
 `UX-01` : relire et valider cette cartographie ; `UX-02` : détailler le nouvel onboarding ; `UX-03` : polir les textes ; `UX-07` : wireframes desktop/mobile et prototype Figma ; `PRD-05` : valider charte visuelle. **Aucune de ces tâches n'est automatiquement marquée terminée par ce document.**
+
+
+### Addendum UX V3 — contexte professionnel (23 octobre 2026)
+
+L'inspiration externe a motivé une **étape supplémentaire ciblée** dans le parcours candidat : « Notre point de départ ». Elle recueille la situation actuelle et une tranche d'expérience facultative. Aucun autre champ de recherche d'emploi ne fait partie du produit. La structure cible est désormais : identité → point de départ → ambition → priorités → langue → récapitulatif. Les cinq segments de progression reprennent ces étapes, et une animation existante conserve la continuité visuelle. Les objectifs de préparation restent des préférences, distinctes des axes RH/techniques à choisir lors d'une simulation. Persistance Supabase et adaptation du moteur IA : à faire.

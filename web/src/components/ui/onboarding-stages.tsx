@@ -9,10 +9,14 @@ import { cn } from "@/lib/utils";
 export type ProfessionalGoal = "first_job" | "job_change" | "career_growth";
 export type PreparationGoal = "confidence" | "answer_structure" | "communication" | "domain_knowledge" | "stress_management";
 export type Locale = "fr" | "en";
+export type EmploymentStatus = "student" | "employed" | "looking" | "independent";
+export type ExperienceLevel = "starting" | "junior" | "experienced" | "senior";
 export type OnboardingProfile = {
   firstName: string;
   lastName: string;
   professionalGoal: ProfessionalGoal;
+  employmentStatus?: EmploymentStatus;
+  experienceLevel?: ExperienceLevel;
   preparationGoals: PreparationGoal[];
   preferredLocale: Locale;
 };
@@ -30,6 +34,20 @@ const professionalOptions: { value: ProfessionalGoal; title: string; detail: str
   { value: "career_growth", title: "Évoluer professionnellement", detail: "Prendre confiance pour accéder à un nouveau niveau de responsabilités.", icon: TrendingUp },
 ];
 
+export const employmentOptions: { value: EmploymentStatus; title: string; detail: string }[] = [
+  { value: "student", title: "Je termine mes études ou je débute", detail: "Un premier poste, un stage ou le début de notre parcours." },
+  { value: "employed", title: "Je suis en poste", detail: "On prépare le prochain défi à partir de votre expérience." },
+  { value: "looking", title: "Je recherche un emploi", detail: "On va s'entraîner pour aborder les prochains échanges avec confiance." },
+  { value: "independent", title: "Je travaille à mon compte", detail: "On mettra en valeur votre autonomie et vos projets." },
+];
+
+export const experienceOptions: { value: ExperienceLevel; title: string }[] = [
+  { value: "starting", title: "Je débute" },
+  { value: "junior", title: "1 à 3 ans" },
+  { value: "experienced", title: "4 à 7 ans" },
+  { value: "senior", title: "8 ans et plus" },
+];
+
 const preparationOptions: { value: PreparationGoal; title: string; detail: string }[] = [
   { value: "confidence", title: "Prendre confiance", detail: "Être plus à l’aise pour parler de moi et de mes réalisations." },
   { value: "answer_structure", title: "Donner des réponses plus claires", detail: "Organiser mes idées et illustrer mes réponses avec des exemples." },
@@ -40,6 +58,7 @@ const preparationOptions: { value: PreparationGoal; title: string; detail: strin
 
 const steps = [
   { label: "Faisons connaissance", icon: UserRound },
+  { label: "Notre point de départ", icon: Compass },
   { label: "Notre objectif", icon: Target },
   { label: "Nos priorités", icon: Sparkles },
   { label: "Notre langue", icon: Languages },
@@ -49,6 +68,8 @@ const defaultProfile: OnboardingProfile = {
   firstName: "",
   lastName: "",
   professionalGoal: "job_change",
+  employmentStatus: undefined,
+  experienceLevel: undefined,
   preparationGoals: [],
   preferredLocale: "fr",
 };
@@ -73,15 +94,16 @@ export function OnboardingStages({
 
   const canProceed = useMemo(() => {
     if (step === 0) return firstName.length > 0 && profile.lastName.trim().length > 0;
-    if (step === 2) return profile.preparationGoals.length > 0;
+    if (step === 1) return Boolean(profile.employmentStatus);
+    if (step === 3) return profile.preparationGoals.length > 0;
     return true;
-  }, [step, firstName, profile.lastName, profile.preparationGoals.length]);
+  }, [step, firstName, profile.lastName, profile.employmentStatus, profile.preparationGoals.length]);
 
   function next() {
     if (!canProceed) {
       setFieldError(step === 0
         ? "Indiquez votre prénom et votre nom pour continuer."
-        : "Sélectionnez au moins un axe de progression.");
+        : step === 1 ? "Choisissez la situation qui vous correspond le mieux." : "Sélectionnez au moins un axe de progression.");
       return;
     }
     if (step === steps.length - 1) {
@@ -142,6 +164,8 @@ export function OnboardingStages({
     }
   }
 
+  const situationLabel = employmentOptions.find((option) => option.value === profile.employmentStatus)?.title ?? "";
+  const experienceLabel = experienceOptions.find((option) => option.value === profile.experienceLevel)?.title ?? "À préciser plus tard";
   const professionalLabel = professionalOptions.find((option) => option.value === profile.professionalGoal)?.title ?? "";
   const preparationLabels = profile.preparationGoals.map((value) => preparationOptions.find((option) => option.value === value)?.title ?? value);
 
@@ -198,9 +222,14 @@ export function OnboardingStages({
                 <span className="text-sm font-medium text-[#526079]">Étape {step + 1} sur {steps.length}</span>
                 <span className="text-sm font-semibold tabular-nums text-[#2947A3]">{percent}%</span>
               </div>
-              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#E8EDF5]" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label="Progression de l'onboarding">
-                <motion.div className="h-full rounded-full bg-[#2947A3]" initial={false}
-                  animate={{ width: `${percent}%` }} transition={animated ? { duration: 0.35, ease: "easeOut" } : { duration: 0 }} />
+              <div className="mt-4 flex items-center gap-2" role="progressbar" aria-valuenow={step + 1} aria-valuemin={1} aria-valuemax={steps.length} aria-label="Progression de notre parcours">
+                {steps.map((item, index) => (
+                  <div key={item.label} className="relative h-[7px] min-w-0 flex-1 overflow-hidden rounded-full bg-[#DFE5F5]" aria-hidden="true">
+                    <motion.div className="absolute inset-y-0 left-0 rounded-full bg-[#4762DB]" initial={false}
+                      animate={{ width: index < step ? "100%" : index === step ? "34%" : "0%" }}
+                      transition={{ duration: animated ? 0.35 : 0, ease: "easeOut" }} />
+                  </div>
+                ))}
               </div>
               <div className="mt-9 flex-1 sm:mt-12">
                 <AnimatePresence mode="wait" initial={false}>
@@ -229,6 +258,37 @@ export function OnboardingStages({
                     )}
                     {step === 1 && (
                       <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Notre point de départ</p>
+                        <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">Aujourd’hui, où en êtes-vous ?</h1>
+                        <p className="mt-3 text-sm leading-7 text-[#526079]">Pas de mauvaise réponse. On veut simplement adapter nos entretiens à votre réalité.</p>
+                        <div role="radiogroup" aria-label="Situation professionnelle actuelle" className="mt-6 grid gap-2 sm:grid-cols-2">
+                          {employmentOptions.map(({ value, title, detail }) => {
+                            const selected = profile.employmentStatus === value;
+                            return <button key={value} type="button" role="radio" aria-checked={selected}
+                              onClick={() => setProfile((current) => ({ ...current, employmentStatus: value }))}
+                              className={cn("rounded-2xl border p-4 text-left transition hover:border-[#7590D1] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]", selected ? "border-[#2947A3] bg-[#F3F6FE]" : "border-[#E0E6EF] bg-white/65")}>
+                              <span className="flex items-start justify-between gap-2 text-sm font-semibold text-[#172033]">{title}{selected && <Check size={17} className="shrink-0 text-[#2947A3]" aria-hidden="true" />}</span>
+                              <span className="mt-2 block text-xs leading-5 text-[#526079]">{detail}</span>
+                            </button>;
+                          })}
+                        </div>
+                        <div className="mt-7 border-t border-[#E6EBF3] pt-5">
+                          <h2 className="text-base font-semibold text-[#172033]">Et côté expérience ? <span className="text-sm font-normal text-[#6B7890]">(facultatif)</span></h2>
+                          <p className="mt-1 text-sm text-[#526079]">Pour ajuster la difficulté. On peut aussi voir ça plus tard.</p>
+                          <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4" role="radiogroup" aria-label="Expérience professionnelle">
+                            {experienceOptions.map(({ value, title }) => {
+                              const selected = profile.experienceLevel === value;
+                              return <button type="button" role="radio" aria-checked={selected} key={value}
+                                onClick={() => setProfile((p) => ({ ...p, experienceLevel: value }))}
+                                className={cn("min-h-12 rounded-xl border px-2 py-3 text-xs font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]", selected ? "border-[#2947A3] bg-[#F3F6FE] text-[#2947A3]" : "border-[#E0E6EF] bg-white/65 text-[#526079] hover:border-[#7590D1]")}>{title}</button>;
+                            })}
+                          </div>
+                          {profile.experienceLevel && <button type="button" onClick={() => setProfile((p) => ({ ...p, experienceLevel: undefined }))} className="mt-2 min-h-9 text-xs font-medium text-[#526079] underline-offset-2 hover:underline">Je préfère préciser plus tard</button>}
+                        </div>
+                      </div>
+                    )}
+                    {step === 2 && (
+                      <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Notre prochaine étape</p>
                         <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">{firstName ? `${firstName}, on vise quoi ensuite ?` : "On vise quoi ensuite ?"}</h1>
                         <p className="mt-4 text-base leading-7 text-[#526079]">Premier emploi, nouveau poste ou évolution : dites-nous où vous voulez aller. On prépare la suite ensemble.</p>
@@ -246,7 +306,7 @@ export function OnboardingStages({
                         </div>
                       </div>
                     )}
-                    {step === 2 && (
+                    {step === 3 && (
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Ce qu’on va travailler ensemble</p>
                         <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">Qu’est-ce qu’on peut améliorer ensemble ?</h1>
@@ -266,7 +326,7 @@ export function OnboardingStages({
                         <p className="mt-4 text-sm text-[#526079]">{profile.preparationGoals.length}/3 priorités sélectionnées</p>
                       </div>
                     )}
-                    {step === 3 && (
+                    {step === 4 && (
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">On y est presque</p>
                         <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">Dans quelle langue on s’entraîne ?</h1>
@@ -317,17 +377,17 @@ export function OnboardingStages({
               <motion.div initial={animated ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: animated ? 0.48 : 0, delay: animated ? 0.15 : 0 }}
                 className="mt-6 grid gap-3 sm:grid-cols-2">
-                <button type="button" onClick={() => editStep(1)}
+                <button type="button" onClick={() => editStep(2)}
                   className="rounded-2xl border border-white/90 bg-white/70 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]">
                   <span className="flex items-center justify-between text-xs font-semibold text-[#66748A]">NOTRE OBJECTIF <ArrowRight size={15}/></span>
                   <span className="mt-2 block text-sm font-semibold text-[#172033]">{professionalLabel}</span>
                 </button>
-                <button type="button" onClick={() => editStep(3)}
+                <button type="button" onClick={() => editStep(4)}
                   className="rounded-2xl border border-white/90 bg-white/70 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]">
                   <span className="flex items-center justify-between text-xs font-semibold text-[#66748A]">ON S’ENTRAÎNE EN <ArrowRight size={15}/></span>
                   <span className="mt-2 block text-sm font-semibold text-[#172033]">{profile.preferredLocale === "fr" ? "Français" : "English"}</span>
                 </button>
-                <button type="button" onClick={() => editStep(2)}
+                <button type="button" onClick={() => editStep(3)}
                   className="rounded-2xl border border-white/90 bg-white/70 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3] sm:col-span-2">
                   <span className="flex items-center justify-between text-xs font-semibold text-[#66748A]">CE QU’ON VA TRAVAILLER <ArrowRight size={15}/></span>
                   <span className="mt-3 flex flex-wrap gap-2">{preparationLabels.map((label) =>
@@ -335,6 +395,12 @@ export function OnboardingStages({
                   )}</span>
                 </button>
               </motion.div>
+              <button type="button" onClick={() => editStep(1)}
+                className="mt-3 flex w-full items-center justify-between gap-3 rounded-2xl border border-white/90 bg-white/70 p-4 text-left transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]">
+                <span className="min-w-0"><span className="block text-xs font-semibold text-[#66748A]">NOTRE POINT DE DÉPART</span>
+                <span className="mt-1 block text-sm font-semibold text-[#172033]">{situationLabel}{profile.experienceLevel ? ` · ${experienceLabel}` : ""}</span></span>
+                <ArrowRight size={16} className="shrink-0 text-[#2947A3]" />
+              </button>
               <motion.div initial={animated ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: animated ? 0.45 : 0, delay: animated ? 0.28 : 0 }}
                 className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#DDE5F2] bg-white/55 p-4">

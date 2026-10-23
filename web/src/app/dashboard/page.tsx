@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight, BookOpen, ChevronRight, Compass, GraduationCap, MessageCircle, Sparkles, Target, TrendingUp, UserRound } from "lucide-react";
-import type { OnboardingProfile, ProfessionalGoal, PreparationGoal } from "@/components/ui/onboarding-stages";
+import { employmentOptions, experienceOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal, type EmploymentStatus, type ExperienceLevel } from "@/components/ui/onboarding-stages";
 
 const profileKey = "ai-interview-preview-profile";
 const subscribeNoop = () => () => {};
@@ -22,6 +22,8 @@ const priorities: Record<PreparationGoal, string> = {
   stress_management: "Gérer la pression",
 };
 const validGoal = (v: unknown): v is ProfessionalGoal => v === "first_job" || v === "job_change" || v === "career_growth";
+const validEmploymentStatus = (v: unknown): v is EmploymentStatus => employmentOptions.some((x) => x.value === v);
+const validExperience = (v: unknown): v is ExperienceLevel => experienceOptions.some((x) => x.value === v);
 const validPriority = (v: unknown): v is PreparationGoal => typeof v === "string" && v in priorities;
 
 function loadPreviewProfile(raw: string | null): OnboardingProfile | null {
@@ -35,6 +37,8 @@ function loadPreviewProfile(raw: string | null): OnboardingProfile | null {
       firstName: p.firstName.slice(0, 80),
       lastName: p.lastName.slice(0, 80),
       professionalGoal: p.professionalGoal,
+      employmentStatus: validEmploymentStatus(p.employmentStatus) ? p.employmentStatus : undefined,
+      experienceLevel: validExperience(p.experienceLevel) ? p.experienceLevel : undefined,
       preparationGoals: Array.isArray(p.preparationGoals) ? p.preparationGoals.filter(validPriority).slice(0, 3) : [],
       preferredLocale: p.preferredLocale === "en" ? "en" : "fr",
     };
@@ -49,6 +53,8 @@ export default function DashboardPage() {
   const reducedMotion = useReducedMotion();
   const goal = profile && goals[profile.professionalGoal];
   const GoalIcon = goal?.icon ?? Target;
+  const situation = profile?.employmentStatus ? employmentOptions.find((option) => option.value === profile.employmentStatus)?.title : null;
+  const experience = profile?.experienceLevel ? experienceOptions.find((option) => option.value === profile.experienceLevel)?.title : null;
 
   return (
     <main className="onboarding-atmosphere relative isolate min-h-screen overflow-hidden text-[#172033]">
@@ -113,7 +119,16 @@ export default function DashboardPage() {
               </motion.section>
             </div>
 
-            <section className="mt-9 grid gap-5 lg:grid-cols-[1.28fr_0.72fr]" aria-label="Notre programme">
+            {situation && <section className="onboarding-glass mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/80 px-5 py-4" aria-label="Notre point de départ">
+              <div className="flex items-start gap-3">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#ECF1FD] text-[#2947A3]"><Compass size={18}/></span>
+                <div><h2 className="text-xs font-bold uppercase tracking-[0.12em] text-[#64748F]">Notre point de départ</h2>
+                  <p className="mt-1 text-sm font-semibold text-[#172033]">{situation}{experience ? ` · ${experience}` : ""}</p>
+                  <p className="mt-1 text-xs text-[#526079]">On adaptera les exemples et le niveau de difficulté à votre parcours.</p></div>
+              </div>
+              <Link href="/onboarding" className="inline-flex min-h-10 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-[#2947A3] hover:bg-white/70">Ajuster <ChevronRight size={16}/></Link>
+            </section>}
+            <section className="mt-5 grid gap-5 lg:grid-cols-[1.28fr_0.72fr]" aria-label="Notre programme">
               <div className="onboarding-glass rounded-[30px] border border-white/80 p-7 sm:p-9">
                 <div className="flex items-center gap-3"><span className="grid h-11 w-11 place-items-center rounded-xl bg-[#ECF1FD] text-[#2947A3]"><Target size={20}/></span><h2 className="text-xl font-semibold tracking-tight">Ce qu’on va travailler ensemble</h2></div>
                 <p className="mt-3 text-sm leading-7 text-[#526079]">Voici les points que vous avez choisis. On pourra les adapter à chaque entretien.</p>

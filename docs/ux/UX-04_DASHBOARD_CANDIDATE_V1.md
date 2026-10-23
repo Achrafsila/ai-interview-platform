@@ -39,3 +39,8 @@ La page `/preparation` offre un premier choix interactif RH/technique, mais elle
 ## Réserves de sécurité
 
 Les dépendances npm signalent des vulnérabilités à corriger avant exposition publique. `sessionStorage` ici est une aide à la démonstration, **pas** une forme d'authentification ou de stockage sécurisé de données candidats. L'application de production devra lire/écrire via un serveur Supabase authentifié, avec droits RLS contrôlés et politique de conservation explicite.
+
+
+## Évolution UX V3 (inspiration aiApply, sans reprendre son périmètre)
+
+L'onboarding permet désormais de connaître le **point de départ** du candidat : situation professionnelle, tranche d'expérience facultative. Le dashboard affiche une ligne dédiée au contexte seulement si le candidat l'a renseigné. Cette donnée ne devient pas un scoring automatique ou un jugement d'adéquation. La progression est segmentée en cinq étapes. Pas d'import de CV, pas de salaire ou de préférence de travail, pas de chiffre non vérifié.

@@ -15,6 +15,11 @@ def run():
             page.get_by_label("Prénom", exact=True).fill("Camille")
             page.get_by_label("Nom", exact=True).fill("Martin")
             page.get_by_role("button", name="Continuer").click()
+            expect(page.get_by_role("heading", name="Aujourd’hui, où en êtes-vous ?")).to_be_visible()
+            expect(page.get_by_role("progressbar", name="Progression de notre parcours")).to_have_attribute("aria-valuemax", "5")
+            page.get_by_role("radio", name="Je suis en poste").click()
+            page.get_by_role("radio", name="4 à 7 ans").click()
+            page.get_by_role("button", name="Continuer").click()
             expect(page.get_by_role("heading", name="Camille, on vise quoi ensuite ?")).to_be_visible()
             page.get_by_role("radio", name="Évoluer professionnellement").click()
             page.get_by_role("button", name="Continuer").click()
@@ -28,6 +33,7 @@ def run():
             expect(page.get_by_role("heading", name="Bienvenue, Camille !")).to_be_visible()
             expect(page.get_by_text("Évoluer professionnellement")).to_be_visible()
             expect(page.get_by_text("Mieux communiquer")).to_be_visible()
+            expect(page.get_by_text("Je suis en poste · 4 à 7 ans")).to_be_visible()
             # Targeted edit of a completed profile retains all other answers.
             page.get_by_role("button", name="ON S’ENTRAÎNE EN English").click()
             expect(page.get_by_role("radio", name="English")).to_have_attribute("aria-checked", "true")
@@ -56,6 +62,7 @@ def run():
             page.get_by_role("button", name="Découvrir mon espace").click()
             expect(page.get_by_role("heading", name="Bonjour, Camille. On prépare la suite ?")).to_be_visible()
             expect(page.get_by_role("heading", name="Évoluer professionnellement")).to_be_visible()
+            expect(page.locator('section[aria-label="Notre point de départ"]').get_by_text("Je suis en poste", exact=False)).to_be_visible()
             expect(page.locator('section[aria-label="Notre programme"]').get_by_text("Mieux communiquer")).to_be_visible()
             expect(page.get_by_text("Nous n’avons pas encore d’entraînement enregistré.", exact=False)).to_be_visible()
             assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), viewport
@@ -75,7 +82,7 @@ def run():
                 page.get_by_role("button", name="Modifier : Faisons connaissance").click()
             else:
                 page.get_by_role("button", name="Précédent").click()
-                for _ in range(3):
+                for _ in range(4):
                     page.get_by_role("button", name="Retour", exact=True).click()
             expect(page.get_by_label("Prénom", exact=True)).to_have_value("Camille")
             expect(page.get_by_label("Nom", exact=True)).to_have_value("Martin")

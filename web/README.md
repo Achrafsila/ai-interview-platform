@@ -18,10 +18,11 @@ Aucun autre service ni compte n'est requis pour le prototype UX.
 ## Parcours du prototype
 
 1. Prénom et nom : identification personnalisée, pas de CV.
-2. Objectif professionnel : premier emploi / changer de poste / évoluer.
-3. Préparation : 1 à 3 priorités parmi cinq, chacune avec explication.
-4. Langue de préparation : français / anglais.
-5. Écran de confirmation personnalisé.
+2. Point de départ : situation professionnelle (en poste, recherche, indépendant, études/début de carrière) ; expérience professionnelle facultative.
+3. Objectif professionnel : premier emploi / changer de poste / évoluer.
+4. Préparation : 1 à 3 priorités parmi cinq, chacune avec explication.
+5. Langue de préparation : français / anglais.
+6. Écran de confirmation personnalisé avec récapitulatif éditable.
 
 La progression est calculée sur les étapes réelles ; les choix ne sont pas considérés « terminés » par défaut. Le champ `onComplete(profile)` reçoit les données validées, typées et prêtes à être transmises ultérieurement à un service de profil authentifié.
 
@@ -52,3 +53,8 @@ Le test Chromium reproductible est `python3 web/tests/test_onboarding_v2_browser
 Après l'onboarding, « Découvrir mon espace » ouvre `/dashboard` avec le prénom, l'objectif commun, les préférences de préparation et un état vide honnête pour l'historique. Le profil est transmis temporairement dans la mémoire `sessionStorage` du même onglet ; il n'y a pas encore d'authentification ou de persistance Supabase. Le CTA ouvre `/preparation`, un premier écran RH/technique. Le laboratoire Groq demeure séparé sur `127.0.0.1:8765/e2e` et sa sélection doit y être reconfirmée.
 
 Document détaillé : `docs/ux/UX-04_DASHBOARD_CANDIDATE_V1.md`. Les tests Chromium du parcours sont étendus au dashboard, à la préparation et au retour au profil en desktop et mobile.
+
+
+## Onboarding V3 — point de départ contextualisé
+
+Suite à une revue de parcours inspirants (dont aiApply), **une seule étape de contexte** a été ajoutée : situation professionnelle actuelle, obligatoire pour adapter la simulation, et tranche d'expérience, facultative et effaçable. Le parcours compte maintenant 5 étapes de progression segmentées, sans CV, salaire, localisation, préférences de contrat ni promesse statistique de placement. Le ton de coaching et les transitions restent inchangés. Le récapitulatif et le dashboard affichent ces réponses. À ce stade, ces informations sont **uniquement transitoires dans la mémoire du navigateur** pour tester l'UX : elles ne sont pas enregistrées dans Supabase et n'influencent pas encore le moteur Groq. Le futur backend devra ajouter des colonnes validées, RLS et tests de non-régression.
