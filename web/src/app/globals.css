@@ -341,3 +341,13 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 @media(max-width:640px){
  .landing-liquid-header { -webkit-backdrop-filter:blur(15px) saturate(150%); backdrop-filter:blur(15px) saturate(150%); }
 }
+
+
+/* V2.4 proportions: readable line length, deliberate desktop scale, no oversized empty gutters. */
+.landing-v2 { font-family:var(--font-geist-sans,Inter,ui-sans-serif,system-ui,sans-serif); }
+.landing-v2 .landing-step-card { display:flex;flex-direction:column; }
+.landing-v2 .landing-step-card h3 {text-wrap:balance;}
+.landing-v2 h1,.landing-v2 h2 {text-wrap:balance;}
+@media(min-width:1600px) {
+  .landing-v2 .landing-coach-card { box-shadow:0 32px 105px rgba(90,82,175,.17),inset 0 2px 0 rgba(255,255,255,.9); }
+}
