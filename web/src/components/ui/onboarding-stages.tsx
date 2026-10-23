@@ -216,9 +216,9 @@ export function OnboardingStages({
 
 
   return (
-    <div className={cn("mx-auto w-full max-w-[1100px]", className)}>
-      <div className="onboarding-glass grid min-h-[660px] grid-cols-1 overflow-hidden rounded-[32px] border border-white/70 shadow-[0_34px_110px_rgba(28,47,100,0.14)] lg:grid-cols-[330px_1fr]">
-        <aside className="relative overflow-hidden border-b border-white/10 bg-[linear-gradient(155deg,rgba(14,26,56,0.93),rgba(24,35,78,0.86)_62%,rgba(36,51,99,0.82))] p-7 text-white backdrop-blur-2xl sm:p-9 lg:border-b-0 lg:border-r">
+    <div className={cn("mx-auto w-full max-w-[1500px]", className)}>
+      <div className="grid min-h-[calc(100vh-105px)] grid-cols-1 overflow-hidden border-y border-[#263A61] bg-[#101C34] lg:grid-cols-[320px_minmax(0,1fr)]">
+        <aside className="relative overflow-hidden border-b border-[#3E5076] bg-[linear-gradient(160deg,#16284D,#1E315B_62%,#263C6B)] p-7 text-white backdrop-blur-2xl sm:p-9 lg:border-b-0 lg:border-r">
           <div aria-hidden="true" className="pointer-events-none absolute -right-32 top-24 h-80 w-80 rounded-full bg-[#5474CF]/15 blur-[85px]" />
           <div className="relative flex h-full flex-col">
             <div className="flex items-center gap-3">
@@ -261,7 +261,7 @@ export function OnboardingStages({
           </div>
         </aside>
 
-        <section className="relative flex min-w-0 flex-col bg-white/58 px-6 py-7 backdrop-blur-[22px] sm:px-10 sm:py-10 lg:px-12" aria-label="Onboarding personnalisé">
+        <section className="relative flex min-w-0 flex-col bg-[#EFF3FC] px-6 py-9 text-[#172033] sm:px-12 sm:py-12 lg:px-16" aria-label="Onboarding personnalisé">
           {!finished ? (
             <>
               <div className="flex items-center justify-between gap-5">
