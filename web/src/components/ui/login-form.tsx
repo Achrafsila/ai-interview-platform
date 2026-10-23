@@ -64,8 +64,16 @@ export function LoginForm() {
           router.replace(saved?.completed ? "/dashboard" : "/onboarding");
         }
       }
-    } catch {
-      setMessage({ type: "error", text: "Nous n'avons pas pu finaliser cette opération. Vérifiez vos informations ou réessayez." });
+    } catch (caught) {
+      const failure = caught as { code?: string; status?: number; message?: string };
+      const isCredentialError = failure.code === "invalid_credentials" || /invalid login credentials/i.test(failure.message ?? "");
+      const isNetworkError = /fetch failed|failed to fetch|network/i.test(failure.message ?? "");
+      setMessage({ type: "error", text: isCredentialError
+        ? "L’adresse e-mail ou le mot de passe ne correspond pas. Vérifiez les identifiants de votre compte."
+        : isNetworkError ? "Impossible de joindre le service de connexion. Vérifiez votre réseau et réessayez."
+        : failure.status === 429 ? "Trop de tentatives. Réessayez dans quelques minutes."
+        : "Connexion impossible pour le moment. Réessayez ou contactez l’assistance si le problème persiste." });
+      if (process.env.NODE_ENV === "development") console.warn("Supabase Auth failed", { code: failure.code, status: failure.status, message: failure.message });
     } finally {
       setBusy(false);
     }
@@ -104,15 +112,15 @@ export function LoginForm() {
       <section className="relative z-10 mx-auto grid w-full max-w-[1160px] flex-1 items-center gap-12 px-5 pb-14 pt-4 lg:grid-cols-[1.06fr_0.94fr] lg:gap-20 lg:px-10">
         <motion.div initial={reducedMotion ? false : { opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reducedMotion ? 0 : 0.65 }} className="hidden max-w-xl lg:block">
-          <span className="text-xs font-bold uppercase tracking-[0.19em] text-[#B7CBFF]">Notre prochain chapitre</span>
+          <span className="text-xs font-bold uppercase tracking-[0.19em] text-[#B7CBFF]">Votre préparation commence ici</span>
           <h1 className="mt-6 text-[clamp(2.9rem,5vw,5.1rem)] font-semibold leading-[1.07] tracking-[-0.052em]">
-            Chaque entretien nous rapproche un peu plus de <span className="text-[#A5BEFF]">notre objectif.</span>
+            Votre prochain entretien commence par une <span className="text-[#A5BEFF]">bonne préparation.</span>
           </h1>
           <p className="mt-7 max-w-md text-base leading-8 text-[#CAD6EB]">
-            Retrouvez votre espace, vos entraînements et les pistes sur lesquelles on avance ensemble.
+            Créez votre espace, précisez votre objectif et entraînez-vous avec des simulations adaptées à votre parcours.
           </p>
           <div className="mt-10 flex items-center gap-3 text-sm text-[#B8C9E6]">
-            <ShieldCheck className="text-[#BDD0FF]" size={20}/> Votre parcours reste le vôtre.
+            <ShieldCheck className="text-[#BDD0FF]" size={20}/> Un parcours personnalisé, à votre rythme.
           </div>
         </motion.div>
 
@@ -125,11 +133,11 @@ export function LoginForm() {
               <LockKeyhole className="text-[#C1D2FF]" size={21}/>
             </span>
             <h2 className="text-[31px] font-semibold leading-tight tracking-[-0.04em] text-white">
-              {mode === "signin" ? "Bon retour parmi nous." : mode === "signup" ? "On commence ensemble ?" : "Retrouvons votre accès."}
+              {mode === "signin" ? "Prêt à vous préparer ?" : mode === "signup" ? "Créons votre espace." : "Retrouvons votre accès."}
             </h2>
             <p className="mt-3 text-sm leading-7 text-[#D6E1F4]">
-              {mode === "signin" ? "Prêt à reprendre là où nous nous sommes arrêtés ?" :
-                mode === "signup" ? "Un compte, puis quelques étapes pour préparer notre parcours." :
+              {mode === "signin" ? "Connectez-vous pour commencer votre parcours ou poursuivre votre préparation." :
+                mode === "signup" ? "Quelques informations suffisent pour personnaliser votre préparation." :
                 "Indiquez votre e-mail. On vous aidera à retrouver votre compte."}
             </p>
           </div>
@@ -170,7 +178,7 @@ export function LoginForm() {
               className={message.type === "error" ? "rounded-xl border border-rose-300/40 bg-rose-900/35 p-3 text-sm leading-6 text-rose-100" : "rounded-xl border border-emerald-300/40 bg-emerald-950/40 p-3 text-sm leading-6 text-emerald-100"}>{message.text}</p>}
             <button type="submit" disabled={busy || !ready}
               className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-[#5069E7] px-5 text-sm font-bold text-white shadow-[0_10px_30px_rgba(23,44,128,.25)] transition hover:bg-[#6480F7] disabled:cursor-not-allowed disabled:opacity-55">
-              {busy ? "Un instant…" : mode === "signin" ? "Reprendre notre parcours" : mode === "signup" ? "Créer mon compte" : "Envoyer le lien"}
+              {busy ? "Un instant…" : mode === "signin" ? "Se connecter" : mode === "signup" ? "Créer mon compte" : "Envoyer le lien"}
               {!busy && <ArrowRight size={18}/>}
             </button>
           </form>
@@ -184,7 +192,7 @@ export function LoginForm() {
             </button>
           </>}
           <p className="mt-7 text-center text-sm text-[#DAE3F3]">
-            {mode === "signin" ? "Pas encore de compte ?" : mode === "signup" ? "Déjà parmi nous ?" : "Vous avez retrouvé vos accès ?"}
+            {mode === "signin" ? "Pas encore de compte ?" : mode === "signup" ? "Vous avez déjà un compte ?" : "Vous avez retrouvé vos accès ?"}
             {" "}
             <button type="button" onClick={()=>switchMode(mode === "signin" ? "signup" : "signin")} className="min-h-10 font-bold text-white underline underline-offset-4">
               {mode === "signin" ? "S’inscrire" : "Se connecter"}

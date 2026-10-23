@@ -3,7 +3,7 @@ import { LoginForm } from "@/components/ui/login-form";
 
 export const metadata: Metadata = {
   title: "Connexion | Interview Platform",
-  description: "Retrouvons votre espace de préparation aux entretiens.",
+  description: "Créez votre espace ou connectez-vous pour préparer vos entretiens.",
 };
 
 export default function LoginPage() {
