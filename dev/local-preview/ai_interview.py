@@ -157,11 +157,12 @@ class GroqRehearsalProvider(OpenAIRehearsalProvider):
     Groq API credentials must stay on the Python server; never expose in HTTP
     status/config responses or commit them to the repository.
     """
-    model: str = "llama-3.3-70b-versatile"
+    model: str = "openai/gpt-oss-120b"
 
     def _complete(self, instructions: str, user_context: dict, max_tokens: int = 220) -> str:
         if not self.api_key:
             raise AIUnavailableError("GROQ_API_KEY n'est pas configurée dans le serveur local.")
+        is_gpt_oss = self.model.startswith("openai/gpt-oss-")
         request_body = json.dumps({
             "model": self.model,
             "messages": [
@@ -169,7 +170,9 @@ class GroqRehearsalProvider(OpenAIRehearsalProvider):
                 {"role": "user", "content": json.dumps(user_context, ensure_ascii=False)},
             ],
             "temperature": 0.6,
-            "max_completion_tokens": max_tokens,
+            # GPT-OSS reasoning consumes completion tokens even if hidden.
+            "max_completion_tokens": max(512, max_tokens + 256) if is_gpt_oss else max_tokens,
+            **({"reasoning_effort": "low", "include_reasoning": False} if is_gpt_oss else {}),
         }, ensure_ascii=False).encode("utf-8")
         request = urllib.request.Request(
             "https://api.groq.com/openai/v1/chat/completions",
@@ -191,6 +194,7 @@ class GroqRehearsalProvider(OpenAIRehearsalProvider):
                 400: "Requête refusée par Groq (HTTP 400) : vérifiez le modèle et les paramètres.",
                 401: "Groq a refusé la clé API (HTTP 401). Vérifiez GROQ_API_KEY.",
                 403: "Accès au modèle Groq refusé (HTTP 403).",
+                404: "Modèle Groq introuvable ou retiré (HTTP 404). Essayez openai/gpt-oss-120b.",
                 429: "Limite de requêtes ou de crédits Groq atteinte (HTTP 429).",
             }
             raise AIUnavailableError(
@@ -241,7 +245,7 @@ def configure_ai_provider(environ):
         return (
             GroqRehearsalProvider(
                 api_key=environ.get("GROQ_API_KEY", "").strip(),
-                model=environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                model=environ.get("GROQ_MODEL", "openai/gpt-oss-120b"),
             ),
             "groq",
         )
