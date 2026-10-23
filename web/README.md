@@ -63,3 +63,11 @@ Suite à une revue de parcours inspirants (dont aiApply), **une seule étape de 
 ## Parcours cohérent V3.1 — retour utilisateur
 
 On maintient **« Faisons connaissance »** comme premier écran, avec prénom et nom, puis 4 autres étapes : point de départ, objectif adapté, priorités, langue. La phrase « Pas de mauvaise réponse » est supprimée. L'objectif proposé dépend de la situation professionnelle : étudiant/débutant → premier emploi ou stage ; en poste → changement ou évolution ; en recherche → premier emploi si débutant, sinon retour à l'emploi ou changement ; indépendant → transition vers un poste ou présentation de son activité. Un retour en arrière et un changement de situation remettent à jour les options sans garder d'objectif contradictoire. Les scénarios complets sont testés sur desktop/mobile. **Il ne s'agit pas encore d'une personnalisation du moteur IA ni d'une persistance Supabase.**
+
+## Bienvenue V4 (Motion) et retour des utilisateurs
+
+Après « C'est parti ! », le formulaire est remplacé dans la même page par une scène animée : salutation par prénom, message mot-par-mot, résumé contextuel de notre objectif, des axes de progrès et de la langue, puis un unique bouton « Découvrir notre espace » qui ouvre le dashboard. « Précédent » permet de corriger les réponses. L'animation est passable et respecte `prefers-reduced-motion`.
+
+`motion/react` est notre bibliothèque d'animation unique. Scroll Craft est installé localement pour inspirer la profondeur et la narration mais n'est pas exécuté comme moteur de scrolling dans l'onboarding. Voir `docs/ux/UX-06_WELCOME_MOTION_AND_RETURNING_USER.md` pour l'installation des outils et la règle future de reconnexion, **non implémentée sans Supabase Auth**.
+
+Tests : `python3 web/tests/test_welcome_motion_browser.py` en plus du test de parcours complet.

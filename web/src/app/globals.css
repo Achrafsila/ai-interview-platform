@@ -77,3 +77,42 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .onboarding-atmosphere, .atmosphere-orb { animation: none !important; }
 }
+
+/* The post-onboarding welcome moment is a single cinematic surface.
+   Layered depth without scroll-jacking: Scroll Craft art direction + Motion choreography. */
+.welcome-stage {
+  background: radial-gradient(ellipse 75% 70% at 85% 18%, rgba(89,114,222,.28), transparent 72%),
+    linear-gradient(130deg, rgba(10,19,42,.97), rgba(16,32,72,.95) 58%, rgba(21,42,83,.97));
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+.welcome-aura {
+  position:absolute;
+  pointer-events:none;
+  z-index:0;
+  border-radius:9999px;
+  filter:blur(70px);
+  animation: welcome-float 18s ease-in-out infinite alternate;
+}
+.welcome-aura-a {
+  width:min(70vw,600px);height:min(70vw,600px);
+  background:rgba(70,105,213,.22);
+  top:-33%;right:-13%;
+}
+.welcome-aura-b {
+  width:min(55vw,480px);height:min(55vw,480px);
+  background:rgba(125,119,206,.17);
+  bottom:-37%;left:-18%;
+  animation-delay:-8s;
+}
+.welcome-card {
+  background: linear-gradient(140deg,rgba(255,255,255,.125),rgba(255,255,255,.045));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 12px 42px rgba(5,12,30,.16);
+}
+@keyframes welcome-float {
+  from { transform:translate3d(0,0,0) scale(1); }
+  to { transform:translate3d(35px,-45px,0) scale(1.12); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .welcome-aura {animation:none!important;}
+}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight, ArrowUpRight, BookOpen, ChevronRight, Compass, MessageCircle, Sparkles, Target, UserRound } from "lucide-react";
 import { employmentOptions, experienceOptions, goalsForContext, professionalOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal, type EmploymentStatus, type ExperienceLevel } from "@/components/ui/onboarding-stages";
 
