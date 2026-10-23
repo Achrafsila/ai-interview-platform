@@ -25,13 +25,20 @@ def run():
             journey(page)
             expect(page.get_by_role("button", name="Passer l’animation")).to_have_count(0)
             expect(page.get_by_test_id("welcome-sequence")).to_have_css("position", "fixed")
-            expect(page.get_by_test_id("welcome-sequence")).to_have_css("background-color", "rgb(8, 15, 35)")
+            expect(page.get_by_test_id("welcome-sequence")).to_have_css("background-color", "rgb(237, 243, 254)")
             if motion == "no-preference":
                 expect(page.get_by_test_id("welcome-cta")).to_have_count(0)
                 expect(page.get_by_test_id("welcome-cta")).to_be_visible(timeout=6500)
             else:
                 expect(page.get_by_test_id("welcome-cta")).to_be_visible()
             expect(page.get_by_role("button", name="Découvrir notre espace")).to_be_visible()
+            expect(page.get_by_test_id("welcome-cta")).to_have_css("color", "rgb(255, 255, 255)")
+            assert page.get_by_test_id("welcome-cta").evaluate("""
+              el => {
+                const styles = getComputedStyle(el);
+                return styles.backgroundImage.includes("rgb(41, 71, 163)") &&
+                  styles.color === "rgb(255, 255, 255)";
+              }"""), "CTA must show white text on a saturated blue gradient"
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
             page.get_by_role("button", name="Découvrir notre espace").click()
             page.wait_for_url("**/dashboard")

@@ -75,3 +75,7 @@ Tests : `python3 web/tests/test_welcome_motion_browser.py` en plus du test de pa
 ## Welcome V5 plein écran
 
 Sur l'écran final, la scène cinématique occupe maintenant tout le viewport avec fond dark navy opaque (pas de frame ni transparence claire), animations plus affirmées et 3 cartes de récapitulatif plus contrastées. Le CTA « Découvrir notre espace » n'est rendu qu'à la fin de l'animation ; « Passer l'animation » n'existe plus. Respect de `prefers-reduced-motion` (affichage immédiat).
+
+## Welcome V6 — continuité visuelle & CTA robuste
+
+Le welcome reste plein écran et animé mais reprend l'univers bleu glacé/lavande de l'onboarding. Titre encre sombre, texte lisible, cartes glass claires et CTA final bleu intense à libellé blanc. Pour protéger le contraste en conditions réelles, les couleurs essentielles du CTA et du background sont également mises dans le style du composant. Validation : `python3 web/tests/test_welcome_motion_browser.py`.
