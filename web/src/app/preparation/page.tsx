@@ -32,7 +32,6 @@ export default function PreparationPage() {
  const [duration,setDuration]=useState<Duration>(20);
  const [error,setError]=useState("");
  const [complete,setComplete]=useState(false);
- const [saving,setSaving]=useState(false);
  const currentRef=useRef<HTMLDivElement>(null);
 
  useEffect(()=>{let mounted=true;async function load(){
@@ -47,18 +46,6 @@ export default function PreparationPage() {
  const valid=step===0?kind!==null:step===1?description.length<=12000 && job.length<=120 && (!file||file.size<=5*1024*1024):priorities.length>=1&&priorities.length<=3;
  function advance(){if(!valid){setError("Vérifiez les informations de cette étape.");return;}setError("");if(step<2){setStep(s=>s+1);return;}setComplete(true);}
  function toggleGoal(v:PreparationGoal){setPriorities(prev=>prev.includes(v)?prev.filter(x=>x!==v):prev.length<3?[...prev,v]:prev);}
- async function stageDraft(){
-  if(!kind||!profile||priorities.length===0)return;
-  setSaving(true);setError("");
-  try {
-   const client=getAuthClient();if(!client)throw new Error();
-   const {data:{user}}=await client.auth.getUser();if(!user)throw new Error();
-   // Draft settings are session-scoped and do not change candidate_profiles.
-   const draft={kind,jobTitle:job.trim(),jobDescription:description.trim(),experienceLevel:experience||null,locale:language,preparationGoals:priorities,durationMinutes:duration,jobFileName:file?.name??null,createdAt:new Date().toISOString()};
-   sessionStorage.setItem(`interview-config:${user.id}`,JSON.stringify(draft));
-   setSaving(false);
-  }catch{setSaving(false);setError("Impossible de préparer cette session. Réessayez.");}
- }
  const summary=[kind==="rh"?"Entretien RH":kind==="technical"?"Entretien technique":"",job.trim()||"Poste non précisé",`${language==="fr"?"Français":"Anglais"} · ${duration} min · ${priorities.length} priorité(s)`];
  return <main className="min-h-screen bg-[#F5F7FC] text-[#172033]">
  <div className="mx-auto flex min-h-screen max-w-[1640px]">
@@ -72,11 +59,11 @@ export default function PreparationPage() {
   </nav>
  </aside>
  <div className="min-w-0 flex-1">
-  <header className="flex min-h-[78px] items-center justify-between border-b border-[#E1E6F1] bg-white/55 px-5 sm:px-8 lg:px-9">
-   <span className="flex items-center gap-2 text-xs text-[#6A7A97]"><CirclePlay size={17} className="text-[#3456D7]"/> Simulation <ChevronRight size={14}/> <strong className="text-[#172033]">Configuration</strong></span>
+  <header className="flex min-h-[92px] flex-wrap items-center justify-between gap-3 border-b border-[#E1E6F1] bg-white/75 px-5 py-4 sm:px-8 lg:px-10">
+   <div className="flex items-center gap-3"><span className="grid size-11 place-items-center rounded-2xl bg-[#E6ECFF] text-[#3456D7]"><CirclePlay size={22}/></span><div><p className="text-xs font-semibold text-[#6A7A97]">Simulation <ChevronRight size={13} className="inline"/> Configuration</p><p className="mt-0.5 text-base font-bold tracking-tight text-[#172033]">Préparer mon entretien</p></div></div>
    <Link href="/dashboard" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[#405AB7] hover:bg-white"><ArrowLeft size={16}/> Mon espace</Link>
   </header>
-  <div className="mx-auto max-w-[1070px] px-5 pb-20 pt-10 sm:px-8">
+  <div className="mx-auto w-full max-w-[1290px] px-5 pb-20 pt-10 sm:px-8 lg:px-11">
    <div className="mb-9"><p className="text-xs font-bold uppercase tracking-[.16em] text-[#4B64B6]">PERSONNALISONS VOTRE ENTRAÎNEMENT</p><h1 className="mt-3 text-[clamp(2.1rem,4vw,3.5rem)] font-bold leading-[1.1] tracking-[-.055em]">Votre entretien, vos objectifs.</h1><p className="mt-4 max-w-2xl text-sm leading-7 text-[#677792]">Trois étapes pour une préparation qui vous ressemble. Chaque choix validé reste visible et modifiable.</p>
     <div className="mt-7 flex items-center gap-2">{[0,1,2].map(i=><div key={i} className={cn("h-1.5 flex-1 rounded-full",i<=step?"bg-[#4A67DC]":"bg-[#D8E0F0]")}/>)}</div>
    </div>
@@ -111,9 +98,9 @@ export default function PreparationPage() {
       <motion.section key="recap" initial={reduced?false:{opacity:0,y:20}} animate={{opacity:1,y:0}} className={surface+" mt-4"}>
        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.15em] text-[#21856A]"><Check size={17}/> Configuration terminée</div><h2 className="mt-4 text-2xl font-bold">Tout est prêt pour votre simulation.</h2>
        <div className="mt-6 space-y-3 rounded-2xl bg-[#F2F5FD] p-5 text-sm"><p><strong>Format :</strong> {summary[0]}</p><p><strong>Poste :</strong> {summary[1]}</p><p><strong>Expérience :</strong> {experienceOptions.find(x=>x.value===experience)?.title??"Non précisée"}</p><p><strong>Langue et durée :</strong> {language==="fr"?"Français":"English"} · {duration} minutes</p><p><strong>Priorités :</strong> {priorities.map(x=>goalLabels[x]).join(", ")}</p>{file&&<p><strong>Fiche sélectionnée :</strong> {file.name} (non transmise)</p>}</div>
-       <p className="mt-6 rounded-xl border border-[#E7D6B5] bg-[#FFF7E8] p-4 text-sm leading-6 text-[#80602D]">Le nouveau configurateur est opérationnel, mais le moteur d’entretien n’est pas encore relié à cette interface. L’enregistrement du brouillon dans cette session ne lance pas de simulation et n’envoie pas de fichier.</p>
+       <p className="mt-6 rounded-xl border border-[#DBE3F1] bg-[#F6F8FC] p-4 text-sm leading-6 text-[#586A88]">Votre préparation est configurée. Le lancement sera activé lorsque le moteur de simulation sera connecté à ce parcours.</p>
        {error&&<p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
-       <div className="mt-6 flex flex-wrap gap-3"><button type="button" onClick={()=>{setComplete(false);setStep(2)}} className="rounded-xl border border-[#C8D4EA] px-5 py-3 text-sm font-semibold"><ArrowLeft size={16} className="mr-2 inline"/>Modifier</button><button type="button" onClick={stageDraft} disabled={saving} className="rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white disabled:opacity-50">{saving?"Enregistrement…":"Conserver cette configuration"}<Check size={16} className="ml-2 inline"/></button><a href="http://127.0.0.1:8765/e2e" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-[#C8D4EA] px-5 py-3 text-sm font-semibold text-[#48609E]"><Play size={16}/> Tester le moteur séparément</a></div>
+       <div className="mt-6 flex flex-wrap items-center justify-between gap-3"><button type="button" onClick={()=>{setComplete(false);setStep(2)}} className="inline-flex items-center gap-2 rounded-xl border border-[#C8D4EA] px-5 py-3 text-sm font-semibold text-[#48609E]"><Pencil size={16}/> Modifier mes choix</button><button type="button" disabled aria-describedby="simulation-unavailable" className="inline-flex min-h-12 items-center gap-3 rounded-xl bg-[#3456D7] px-6 text-sm font-bold text-white opacity-55 disabled:cursor-not-allowed"><Play size={17}/> Lancer mon entretien</button></div><p id="simulation-unavailable" className="mt-3 text-right text-xs text-[#6F7D98]">Bientôt disponible : connexion au moteur d’entretien en cours.</p>
       </motion.section>}
      </AnimatePresence></div>
    </>}
