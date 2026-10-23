@@ -13,7 +13,7 @@ const stages = [
 
 export default function Home() {
   return (
-    <main className="landing-v2 relative min-h-screen overflow-hidden bg-[#F9FAFF] text-[#172041]">
+    <main className="landing-v2 relative min-h-screen overflow-x-clip bg-[#F9FAFF] text-[#172041]">
       <div aria-hidden="true" className="landing-ambient pointer-events-none absolute inset-x-0 top-0 h-[960px] overflow-hidden">
         <div className="landing-ambient-a absolute -left-40 -top-32 h-[680px] w-[680px] rounded-full bg-[#DCE3FF]/75 blur-[100px]" />
         <div className="landing-ambient-b absolute -right-40 top-20 h-[650px] w-[650px] rounded-full bg-[#F5C9F6]/50 blur-[110px]" />
@@ -122,14 +122,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="landing-scroll-section landing-bottom-section relative overflow-hidden px-5 py-20 text-white sm:px-10 lg:py-24">
+      <section className="landing-scroll-section landing-bottom-section relative isolate overflow-hidden bg-[#11183B] px-5 py-20 text-white sm:px-10 lg:py-24">
         <div aria-hidden="true" className="pointer-events-none absolute -right-28 -top-40 h-[500px] w-[500px] rounded-full bg-[#8458F5]/25 blur-[100px]"/>
         <div className="relative mx-auto flex max-w-[1160px] flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           <div className="max-w-2xl"><span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.2em] text-[#BDA7FF]"><Sparkles size={16}/> Votre prochain pas</span><h2 className="mt-5 text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-tight tracking-[-.06em]">Votre meilleur entretien<br/>se prépare <span className="text-[#ECA0EF]">aujourd’hui.</span></h2><p className="mt-5 text-base leading-7 text-[#B5BFDF]">Un espace pour essayer, apprendre, recommencer. Sans pression.</p></div>
           <Link href="/login" className="landing-primary-btn inline-flex min-h-[58px] shrink-0 items-center gap-3 rounded-2xl px-7 text-sm font-bold text-white">C’est parti <MoveUpRight size={19}/></Link>
         </div>
       </section>
-      <footer className="landing-footer relative px-5 py-8 text-[#C4CEEB] sm:px-10">
+      <footer className="landing-footer relative bg-[#11183B] px-5 py-8 text-[#C4CEEB] sm:px-10">
         <div className="mx-auto flex max-w-[1160px] flex-col justify-between gap-4 text-xs sm:flex-row sm:items-center">
           <span className="font-medium">© 2026 <span className="font-bold text-white">InterviewLab</span> · Votre coach d’entretien IA</span>
           <span className="text-[#A6B2D4]">Un outil d’entraînement, pas une décision de recrutement.</span>

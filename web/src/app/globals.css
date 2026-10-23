@@ -309,7 +309,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.98),transparent);
   pointer-events:none;
 }
-.landing-scroll-section { content-visibility:auto; contain-intrinsic-size:auto 600px; }
+.landing-scroll-section { position:relative; }
 @supports (animation-timeline:view()) {
   .landing-scroll-section > div {
     animation:landing-scroll-in both ease-out;
@@ -329,9 +329,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 
 /* Landing V2.2 — reliable fixed liquid header and one continuous closing surface. */
-.landing-header-shell { position:fixed; left:0; right:0; top:0; z-index:50; }
+.landing-header-shell { position:fixed; left:0; right:0; top:0; z-index:50; transform:none; }
 .landing-bottom-section {
-  background: radial-gradient(ellipse 56% 110% at 90% 44%,rgba(104,73,204,.30),transparent 78%),#11183B;
+  background-color:#11183B;
+  background-image:radial-gradient(ellipse 56% 110% at 90% 44%,rgba(104,73,204,.30),transparent 78%);
 }
 .landing-footer {
   background: #11183B;
