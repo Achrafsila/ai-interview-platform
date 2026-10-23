@@ -326,3 +326,20 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 @media(prefers-reduced-motion:reduce){
  .landing-scroll-section > div {animation:none!important;}
 }
+
+
+/* Landing V2.2 — reliable fixed liquid header and one continuous closing surface. */
+.landing-header-shell { position:fixed; left:0; right:0; top:0; z-index:50; }
+.landing-bottom-section {
+  background: radial-gradient(ellipse 56% 110% at 90% 44%,rgba(104,73,204,.30),transparent 78%),#11183B;
+}
+.landing-footer {
+  background: #11183B;
+}
+.landing-footer::before {
+  content:"";position:absolute;inset:0 0 auto;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(177,157,255,.18),transparent);
+}
+@media(max-width:640px){
+ .landing-liquid-header { -webkit-backdrop-filter:blur(15px) saturate(150%); backdrop-filter:blur(15px) saturate(150%); }
+}

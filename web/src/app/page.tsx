@@ -20,7 +20,7 @@ export default function Home() {
         <div className="landing-ambient-c absolute left-[35%] top-[370px] h-[520px] w-[520px] rounded-full bg-[#DAD0FF]/40 blur-[110px]" />
       </div>
 
-      <div className="landing-header-shell sticky top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
+      <div className="landing-header-shell fixed inset-x-0 top-0 z-50 px-3 pt-[max(12px,env(safe-area-inset-top))] sm:px-6 sm:pt-5">
         <header className="landing-liquid-header relative mx-auto flex max-w-[1160px] items-center justify-between gap-2 rounded-[23px] px-3 py-2.5 sm:gap-4 sm:rounded-[27px] sm:px-5 sm:py-3">
           <Link href="/" aria-label="InterviewLab, accueil" className="flex min-w-0 items-center gap-2 sm:gap-3">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[14px] bg-gradient-to-br from-[#5268FF] via-[#8A57FF] to-[#E454D5] text-white shadow-[0_8px_24px_rgba(128,92,255,.2)] sm:h-11 sm:w-11"><Sparkles size={20} strokeWidth={2.1}/></span>
@@ -36,7 +36,7 @@ export default function Home() {
         </header>
       </div>
 
-      <section className="relative z-10 mx-auto grid max-w-[1240px] items-center gap-7 px-5 pb-16 pt-14 sm:gap-12 sm:px-10 sm:pt-20 md:pt-24 lg:grid-cols-[1.04fr_.96fr] lg:gap-8 lg:pb-32 lg:pt-28">
+      <section className="relative z-10 mx-auto grid max-w-[1240px] items-center gap-7 px-5 pb-16 pt-36 sm:gap-12 sm:px-10 sm:pt-40 md:pt-44 lg:grid-cols-[1.04fr_.96fr] lg:gap-8 lg:pb-32 lg:pt-28">
         <div className="landing-enter relative z-10 max-w-[690px]">
           <div className="mb-6 inline-flex max-w-full items-center gap-2 rounded-full border border-[#CFC9FF]/70 bg-white/80 px-3 py-2 text-[11px] font-bold sm:px-4 sm:text-xs text-[#7859D9] shadow-[0_8px_30px_rgba(100,87,190,.08)] backdrop-blur-xl">
             <span className="relative flex h-2 w-2"><span className="absolute inset-0 animate-ping rounded-full bg-[#B66CFC]/45"/><span className="relative h-2 w-2 rounded-full bg-[#9B69FD]"/></span>
@@ -122,14 +122,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="landing-scroll-section relative overflow-hidden bg-[#11183B] px-5 py-20 text-white sm:px-10 lg:py-24">
+      <section className="landing-scroll-section landing-bottom-section relative overflow-hidden px-5 py-20 text-white sm:px-10 lg:py-24">
         <div aria-hidden="true" className="pointer-events-none absolute -right-28 -top-40 h-[500px] w-[500px] rounded-full bg-[#8458F5]/25 blur-[100px]"/>
         <div className="relative mx-auto flex max-w-[1160px] flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           <div className="max-w-2xl"><span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.2em] text-[#BDA7FF]"><Sparkles size={16}/> Votre prochain pas</span><h2 className="mt-5 text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-tight tracking-[-.06em]">Votre meilleur entretien<br/>se prépare <span className="text-[#ECA0EF]">aujourd’hui.</span></h2><p className="mt-5 text-base leading-7 text-[#B5BFDF]">Un espace pour essayer, apprendre, recommencer. Sans pression.</p></div>
           <Link href="/login" className="landing-primary-btn inline-flex min-h-[58px] shrink-0 items-center gap-3 rounded-2xl px-7 text-sm font-bold text-white">C’est parti <MoveUpRight size={19}/></Link>
         </div>
       </section>
-      <footer className="relative border-t border-white/10 bg-[#11183B] px-5 py-8 text-[#B9C2E0] sm:px-10">
+      <footer className="landing-footer relative px-5 py-8 text-[#C4CEEB] sm:px-10">
         <div className="mx-auto flex max-w-[1160px] flex-col justify-between gap-4 text-xs sm:flex-row sm:items-center">
           <span className="font-medium">© 2026 <span className="font-bold text-white">InterviewLab</span> · Votre coach d’entretien IA</span>
           <span className="text-[#A6B2D4]">Un outil d’entraînement, pas une décision de recrutement.</span>
