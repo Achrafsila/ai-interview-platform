@@ -40,6 +40,13 @@ export default function InterviewPage(){
  const [elapsed,setElapsed]=useState(0);
  const [stopOpen,setStopOpen]=useState(false);
  const [introStage,setIntroStage]=useState<"none"|"welcome"|"countdown">("none");
+ const [introWords,setIntroWords]=useState(0);
+ const introInterval=useRef<ReturnType<typeof setInterval>|null>(null);
+ const introFinished=useRef(false);
+ const introLine=config?.locale==="en"
+  ?"I hope you're ready! Your interview will begin in five seconds. Good luck!"
+  :"J’espère que vous êtes prêt ! Votre entretien commencera dans cinq secondes. Bonne chance !";
+ const words=introLine.split(/\s+/);
  const recognition=useRef<Recognizer|null>(null);
  const voice=useRef<SpeechSynthesisUtterance|null>(null);
  const sessionRef=useRef(false);
@@ -48,7 +55,7 @@ export default function InterviewPage(){
  const dictationBase=useRef("");
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
- useEffect(()=>()=>{recognition.current?.stop();setDictating(false);window.speechSynthesis?.cancel();},[]);
+ useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);},[]);
  function speak(text:string,locale:string){
   recognition.current?.stop();
   if(!("speechSynthesis" in window)||muted){setState("listening");return;}
@@ -63,19 +70,34 @@ export default function InterviewPage(){
  function start(){
   if(!config){setError("Configuration introuvable. Revenez à la préparation.");return;}
   setError("");
+  setIntroWords(0);
   setIntroStage("welcome");
-  const line=config.locale==="en"
-   ?"I hope you're ready! Your interview will begin in five seconds. Good luck!"
-   :"J’espère que vous êtes prêt ! Votre entretien commencera dans cinq secondes. Bonne chance !";
-  if(muted||!("speechSynthesis" in window)){setIntroStage("countdown");return;}
+  introFinished.current=false;
+  if(introInterval.current)clearInterval(introInterval.current);
+  const finish=()=>{
+   if(introFinished.current)return;
+   introFinished.current=true;
+   if(introInterval.current)clearInterval(introInterval.current);
+   setIntroWords(words.length);
+   setIntroStage("countdown");
+  };
+  if(muted||!("speechSynthesis" in window)){finish();return;}
   window.speechSynthesis.cancel();
-  const announcement=new SpeechSynthesisUtterance(line);
+  const announcement=new SpeechSynthesisUtterance(introLine);
   announcement.lang=config.locale==="en"?"en-US":"fr-FR";
-  announcement.rate=.94;
-  let ended=false;
-  const finish=()=>{if(ended)return;ended=true;setIntroStage("countdown");};
-  announcement.onend=finish;announcement.onerror=finish;
+  announcement.rate=.89;
+  announcement.pitch=1.07;
+  // Speech boundary events synchronize the reveal when supported by the browser.
+  announcement.onboundary=(event)=>{
+   if(event.name!=="word")return;
+   const spoken=introLine.slice(0,event.charIndex+Math.max(1,event.charLength||1)).trim();
+   setIntroWords(Math.min(words.length,spoken.split(/\s+/).length));
+  };
+  announcement.onend=finish;
+  announcement.onerror=finish;
   window.speechSynthesis.speak(announcement);
+  // Some browser voices do not emit word boundaries; provide progressive visual fallback.
+  introInterval.current=setInterval(()=>setIntroWords(current=>Math.min(words.length,current+1)),430);
  }
  async function startInterview(){
   setIntroStage("none");
@@ -130,6 +152,23 @@ export default function InterviewPage(){
  }
  function interrupt(){window.speechSynthesis?.cancel();setState("listening");}
  const question=result?.question?.prompt;
+ if(introStage!=="none")return <main className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[#0C1436] px-5 py-12 text-white">
+  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,#334A96_0%,#18275A_36%,#0C1436_76%)]"/>
+  <div className="pointer-events-none absolute -left-28 top-12 size-80 rounded-full bg-[#7669DF]/15 blur-[95px]"/>
+  <div className="pointer-events-none absolute -right-20 bottom-8 size-80 rounded-full bg-[#36BCA8]/10 blur-[95px]"/>
+  <div className="relative z-10 flex w-full max-w-3xl flex-col items-center text-center">
+   <p className="text-xs font-semibold uppercase tracking-[.26em] text-[#AEBEF8]">AI Interview Platform</p>
+   <p className="mt-3 text-sm text-[#B8C8E8]">{introStage==="welcome"?"Préparons votre entretien":"Vous entrez dans votre entretien"}</p>
+   <div className="my-8 size-64 sm:size-80"><VoicePoweredOrb state={introStage==="welcome"?"speaking":"thinking"} voiceLevel={introStage==="welcome"?.42+.28*Math.sin(introWords*1.6):.05} className="h-full w-full"/></div>
+   {introStage==="welcome"?
+    <h1 aria-live="off" className="min-h-32 max-w-2xl text-balance text-2xl font-semibold leading-relaxed tracking-tight sm:text-4xl">
+     {words.slice(0,introWords).map((word,index)=><span key={index} className="inline-block animate-[fade-in_.3s_ease-out]">{word}{" "}</span>)}
+     <span className="sr-only">{introLine}</span>
+    </h1>:
+    <div className="min-h-32"><CountdownTimer onComplete={()=>void startInterview()}/></div>}
+   <p className="mt-8 text-xs font-medium tracking-[.12em] text-[#9CAED6]">{introStage==="welcome"?"UN INSTANT POUR VOUS METTRE À L’AISE":"L’INTERVIEWEUR PREND LA PAROLE DANS QUELQUES SECONDES"}</p>
+  </div>
+ </main>;
  return <main className="min-h-dvh bg-[#F5F7FC] px-4 py-8 text-[#18233D] sm:px-8">
   <div className="mx-auto max-w-5xl">
    <header className="flex flex-wrap items-center justify-between gap-4"><Link href="/preparation" className="inline-flex items-center gap-2 text-sm font-bold text-[#4965BC]"><ArrowLeft size={17}/> Configuration</Link><span className="rounded-full bg-[#E8ECFD] px-4 py-2 text-xs font-bold text-[#4D61AD]">Laboratoire vocal · Non noté</span></header>
@@ -139,8 +178,6 @@ export default function InterviewPage(){
      <div className="relative size-48 sm:size-56"><VoicePoweredOrb state={state} voiceLevel={dictating ? .55 : 0} className="h-full w-full"/><span className="sr-only">{state==="speaking"?"L’intervieweur parle":dictating?"Microphone actif":state==="listening"?"À vous de répondre":"Orbe d’entretien"}</span></div>
      <p className="mt-5 text-sm font-bold text-[#5266A6]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",done:"Séance terminée",error:"Connexion indisponible"})[state]}</p>
      <h2 className="mt-6 text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{introStage!=="none"?"":state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":question||"Préparation de la prochaine question…"}</h2>
-     {introStage==="welcome"&&<p role="status" className="mt-4 max-w-md text-base leading-7 text-[#566A91]">{config?.locale==="en"?"I hope you're ready! Your interview will begin in five seconds. Good luck!":"J’espère que vous êtes prêt ! Votre entretien commencera dans cinq secondes. Bonne chance !"}</p>}
-     {introStage==="countdown"&&<div className="mt-4"><CountdownTimer onComplete={()=>void startInterview()}/></div>}
      {state==="ready"&&introStage==="none"&&config&&<button onClick={start} className="mt-8 rounded-xl bg-[#3456D7] px-7 py-4 font-bold text-white"><Play size={17} className="mr-2 inline"/> Commencer l’entretien</button>}
      {state==="ready"&&introStage==="none"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
      {state==="error"&&<button onClick={start} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
