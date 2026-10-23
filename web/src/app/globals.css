@@ -351,3 +351,16 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 @media(min-width:1600px) {
   .landing-v2 .landing-coach-card { box-shadow:0 32px 105px rgba(90,82,175,.17),inset 0 2px 0 rgba(255,255,255,.9); }
 }
+
+
+/* Auth V2: same warm identity as the public landing, with stronger cyan and coral accents. */
+.auth-gradient-text{background:linear-gradient(95deg,#5268FF,#9153F2 56%,#F34CD4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.auth-v2-card{box-shadow:inset 0 1px 0 #fff,0 30px 95px rgba(92,82,166,.14),0 25px 60px rgba(207,96,224,.10)}
+.auth-v2-primary{background:linear-gradient(105deg,#5365FF,#8755F4 57%,#E054C9);box-shadow:0 12px 32px rgba(113,89,233,.27),inset 0 1px 0 rgba(255,255,255,.34);transition:transform .2s ease,box-shadow .2s ease}
+.auth-v2-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 15px 37px rgba(113,89,233,.38)}
+.auth-v2-primary:active:not(:disabled){transform:scale(.985)}
+.auth-perk{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,.88);background:rgba(255,255,255,.68);padding:10px 13px;border-radius:999px;font-size:12px;font-weight:700;color:#566181;backdrop-filter:blur(15px)}
+.auth-perk:nth-child(2){color:#1F8E98;background:#E5FCFA;border-color:#D5F7F4}
+.auth-perk:nth-child(3){color:#C65D81;background:#FFECF0;border-color:#FFDFE9}
+.auth-pulse-orb{animation:landing-breathe 4s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.auth-pulse-orb{animation:none}.auth-v2-primary{transition:none}}
