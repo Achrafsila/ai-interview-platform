@@ -23,13 +23,19 @@ Fondamentaux, résolution de problèmes, architecture, débogage, bonnes pratiqu
 
 Les objectifs RH n'apparaissent pas dans un entretien technique et inversement. Chaque sélection vaut **pour une simulation** et ne modifie jamais les préférences de l'onboarding.
 
+## Modèle Groq recommandé depuis août 2026
+
+Le modèle `llama-3.3-70b-versatile` a été retiré le **16 août 2026** pour les abonnements Free et Developer. Il provoque désormais un `HTTP 404 model_not_found` sur ces comptes. La version actuelle utilise `openai/gpt-oss-120b`, proposé par Groq : **l'API et la clé restent celles de Groq**. Pour cette famille de modèles, le client active le mode de raisonnement `low` et réserve suffisamment de jetons pour garantir une réponse visible.
+
+Source : [Groq — Model Deprecation](https://console.groq.com/docs/deprecations) et [GPT-OSS 120B](https://console.groq.com/docs/model/openai/gpt-oss-120b).
+
 ## Démarrage sur Mac avec Groq (recommandé si vous possédez une clé Groq)
 
-Le fournisseur **Groq** est pris en charge sans installer le SDK : le backend utilise l'API officielle Groq Chat Completions et le modèle \`llama-3.3-70b-versatile\`.
+Le fournisseur **Groq** est pris en charge sans installer le SDK : le backend utilise l'API officielle Groq Chat Completions et le modèle `openai/gpt-oss-120b`.
 
 Dans le dossier GitHub du projet :
 
-\`\`\`bash
+```bash
 git pull origin main
 # macOS / zsh : saisie masquée (la clé ne figure pas dans l'historique)
 read -s "GROQ_API_KEY?Collez votre clé Groq : "
@@ -37,33 +43,33 @@ echo
 export GROQ_API_KEY
 export AI_PROVIDER=groq
 python3 dev/local-preview/server.py
-\`\`\`
+```
 
 Ouvrez <http://127.0.0.1:8765/e2e> → **Tester le parcours complet**, terminez l'onboarding démo puis choisissez **Entretien avec relances IA · Groq**. Acceptez l'envoi des réponses à Groq avant de commencer.
 
 Vous pouvez vérifier votre clé sans l'afficher :
 
-\`\`\`bash
+```bash
 curl -sS -o /dev/null -w "Groq HTTP %{http_code}\n" \
   https://api.groq.com/openai/v1/models \
   -H "Authorization: Bearer $GROQ_API_KEY"
-\`\`\`
+```
 
 HTTP 200 = clé reconnue, HTTP 401 = clé Groq invalide/révoquée, HTTP 403 = permission insuffisante. Les comptes et quotas Groq sont distincts des comptes OpenAI. Ne partagez jamais la valeur de votre clé dans ChatGPT, GitHub ou le navigateur.
 
 ### Choix du fournisseur
 
-Le serveur choisit automatiquement **Groq lorsque \`GROQ_API_KEY\` est définie** ; sinon il tente OpenAI si \`OPENAI_API_KEY\` est définie. Vous pouvez forcer le choix :
+Le serveur choisit automatiquement **Groq lorsque `GROQ_API_KEY` est définie** ; sinon il tente OpenAI si `OPENAI_API_KEY` est définie. Vous pouvez forcer le choix :
 
 | Variable | Groq | OpenAI |
 |---|---|---|
-| \`AI_PROVIDER\` | \`groq\` | \`openai\` |
-| Clé API | \`GROQ_API_KEY\` | \`OPENAI_API_KEY\` |
-| Modèle par défaut | \`llama-3.3-70b-versatile\` | \`gpt-4.1-mini\` |
-| Modifier le modèle | \`GROQ_MODEL\` | \`OPENAI_MODEL\` |
-| Point de terminaison | \`https://api.groq.com/openai/v1/chat/completions\` | \`https://api.openai.com/v1/responses\` |
+| `AI_PROVIDER` | `groq` | `openai` |
+| Clé API | `GROQ_API_KEY` | `OPENAI_API_KEY` |
+| Modèle par défaut | `openai/gpt-oss-120b` | `gpt-4.1-mini` |
+| Modifier le modèle | `GROQ_MODEL` | `OPENAI_MODEL` |
+| Point de terminaison | `https://api.groq.com/openai/v1/chat/completions` | `https://api.openai.com/v1/responses` |
 
-**Important :** une clé Groq envoyée à \`api.openai.com\` provoque un 401 ; elle doit être envoyée à \`api.groq.com\`. Le même moteur local assure les relances et le bilan qualitatif quel que soit le fournisseur.
+**Important :** une clé Groq envoyée à `api.openai.com` provoque un 401 ; elle doit être envoyée à `api.groq.com`. Le même moteur local assure les relances et le bilan qualitatif quel que soit le fournisseur.
 
 **Sans clé API reconnue** : l'option IA est désactivée ; la simulation guidée sans IA continue de fonctionner. Chaque fournisseur gère sa propre facturation, ses limites et ses règles de conservation.
 
@@ -75,24 +81,24 @@ Le serveur choisit automatiquement **Groq lorsque \`GROQ_API_KEY\` est définie*
 4. Affiche une **relance générée par un modèle** à partir de la réponse et permet de répondre.
 5. Passe à la question suivante ; en fin d'entretien, génère un **bilan qualitatif prudent**, sans barème, décision de recrutement ni note automatisée.
 
-Le navigateur ne reçoit jamais la clé API. Le serveur ne transmet aucun attendu de réponse ou barème interne au modèle ni au candidat. Les requêtes OpenAI utilisent \`store: false\` ; pour Groq, les paramètres Chat Completions et les règles de conservation du fournisseur s'appliquent. Les réponses de la simulation ne sont conservées qu'en mémoire locale du serveur Python. Quitter le serveur supprime cette mémoire.
+Le navigateur ne reçoit jamais la clé API. Le serveur ne transmet aucun attendu de réponse ou barème interne au modèle ni au candidat. Les requêtes OpenAI utilisent `store: false` ; pour Groq, les paramètres Chat Completions et les règles de conservation du fournisseur s'appliquent. Les réponses de la simulation ne sont conservées qu'en mémoire locale du serveur Python. Quitter le serveur supprime cette mémoire.
 
 Pour respecter la confidentialité, **ne pas utiliser de données personnelles sensibles ou de vraies réponses de candidats** dans le laboratoire. Une case de consentement à l'envoi des réponses doit être cochée pour démarrer le mode IA.
 
 ## Statut du référentiel : disponible en test, non publié officiellement
 
-Les **120 questions** sont utilisables dans le laboratoire local à partir des fichiers JSON GitHub, avec un badge \`draft_preview\`. Cela ne modifie pas leurs statuts dans le projet Supabase.
+Les **120 questions** sont utilisables dans le laboratoire local à partir des fichiers JSON GitHub, avec un badge `draft_preview`. Cela ne modifie pas leurs statuts dans le projet Supabase.
 
-Dans Supabase, les 120 restent **\`draft\`**, \`approved_for_publication=false\`. La publication officielle est conditionnée à la validation humaine de chaque question et des grilles ; on ne déclare pas fictivement un expert relecteur ou une approbation globale. Le service sécurisé de production reste inaccessible aux questions non publiées.
+Dans Supabase, les 120 restent **`draft`**, `approved_for_publication=false`. La publication officielle est conditionnée à la validation humaine de chaque question et des grilles ; on ne déclare pas fictivement un expert relecteur ou une approbation globale. Le service sécurisé de production reste inaccessible aux questions non publiées.
 
 Cette distinction est intentionnelle : l'utilisateur peut commencer **tout de suite** à tester la qualité d'un entretien IA et demander des corrections, avant d'autoriser une publication finale du corpus.
 
 ## Vérifications
 
-\`\`\`bash
+```bash
 python3 -m unittest discover -s tests -p 'test_ai_interview_lab.py' -v
 python3 -m unittest discover -s tests/e2e -v
-\`\`\`
+```
 
 Les tests du mode IA utilisent un **faux fournisseur** (aucun coût, aucune requête externe) : validation RH/tech, isolation des familles, générateur de relance, conformité des arguments au contrat OpenAI, refus d'une simulation sans clé, consentement et parcours navigateur. La **vraie génération Groq ou OpenAI** exige une clé valide et une connexion depuis le Mac et n'est pas revendiquée par la CI.
 
@@ -147,8 +153,8 @@ Un `401` avec **une véritable clé** nécessite encore de vérifier l'authentif
 
 ## Problèmes courants
 
-- **Option IA grisée** : arrêter le serveur, définir \`GROQ_API_KEY\` (ou \`OPENAI_API_KEY\`) dans le Terminal qui le lance, puis redémarrer.
+- **Option IA grisée** : arrêter le serveur, définir `GROQ_API_KEY` (ou `OPENAI_API_KEY`) dans le Terminal qui le lance, puis redémarrer.
 - **HTTP 401 du fournisseur** : confirmer que la clé correspond au bon domaine API (Groq ≠ OpenAI) puis vérifier sa validité.
 - **Réponse HTTP 429** : vérifier les quotas API. Ne pas relancer en boucle.
-- **Le domaine ne change pas** : la spécialité est visible uniquement quand \`Entretien technique\` est sélectionné.
+- **Le domaine ne change pas** : la spécialité est visible uniquement quand `Entretien technique` est sélectionné.
 - **Aucun résultat** : choisir une difficulté plus large. Toutes les catégories n'ont pas des questions à chaque niveau.
