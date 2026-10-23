@@ -53,17 +53,31 @@ export default function InterviewPage(){
  const pausedFrom=useRef<"speaking"|"listening">("listening");
  const [dictating,setDictating]=useState(false);
  const dictationBase=useRef("");
+ const answerRef=useRef("");
+ const submittingRef=useRef(false);
+ const silenceTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+ const autoListenRef=useRef<()=>void>(()=>{});
+ const submitRef=useRef<(value:string)=>void>(()=>{});
+ const [handsFree,setHandsFree]=useState(true);
+ const handsFreeRef=useRef(true);
+ const [speechHint,setSpeechHint]=useState("");
+ function clearSilence(){if(silenceTimer.current){clearTimeout(silenceTimer.current);silenceTimer.current=null;}}
+ function stopDictation(){clearSilence();const current=recognition.current;recognition.current=null;current?.stop();setDictating(false);}
+
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
- useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);},[]);
+ useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
  function speak(text:string,locale:string){
-  recognition.current?.stop();
-  if(!("speechSynthesis" in window)||muted){setState("listening");return;}
+  stopDictation();
+  if(!("speechSynthesis" in window)||muted){setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());return;}
   window.speechSynthesis.cancel();
   const utter=new SpeechSynthesisUtterance(text);
   utter.lang=locale==="en"?"en-US":"fr-FR";utter.rate=.96;
-  utter.onend=()=>setState(s=>s==="speaking"?"listening":s);
-  utter.onerror=()=>setState(s=>s==="speaking"?"listening":s);
+  const completed=()=>setState(s=>{
+   if(s==="speaking"&&handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());
+   return s==="speaking"?"listening":s;
+  });
+  utter.onend=completed;utter.onerror=completed;
   voice.current=utter;
   setState("speaking");window.speechSynthesis.speak(utter);
  }
@@ -114,36 +128,71 @@ export default function InterviewPage(){
    setSession(data.session_id||"");setResult(data);speak(data.question?.prompt||"",config.locale);
   }catch(e){setError(e instanceof Error?e.message:"Impossible de lancer la simulation");setState("error");}
  }
- async function submit(){
-  if(!session||!answer.trim()||state==="thinking")return;
-  recognition.current?.stop();window.speechSynthesis?.cancel();
-  setState("thinking");setError("");
+ async function submitValue(value:string){
+  if(!session||!value.trim()||submittingRef.current)return;
+  submittingRef.current=true;
+  stopDictation();
+  window.speechSynthesis?.cancel();
+  setState("thinking");setError("");setSpeechHint("");
   try{
-   const data=await send("answer",{session_id:session,answer:answer.trim()});
-   setResult(data);setAnswer("");
+   const data=await send("answer",{session_id:session,answer:value.trim()});
+   setResult(data);setAnswer("");answerRef.current="";
    if(data.completed){setState("done");return;}
    speak(data.question?.prompt||"",config?.locale||"fr");
-  }catch(e){setState("listening");setError(e instanceof Error?e.message:"Impossible de traiter votre réponse");}
+  }catch(e){
+   setState("listening");setError(e instanceof Error?e.message:"Impossible de traiter votre réponse");
+  }finally{submittingRef.current=false;}
  }
- function listen(){
+
+ function submit(){void submitValue(answerRef.current||answer);}
+ function listen(automatic=false){
   const w=window as SpeechWindow;
   const C=w.SpeechRecognition||w.webkitSpeechRecognition;
-  if(!C){setError("Reconnaissance vocale non disponible dans ce navigateur. Vous pouvez répondre par écrit.");return;}
-  if(dictating){recognition.current?.stop();setDictating(false);return;}
-  recognition.current?.stop();
-  dictationBase.current=answer.trim();
+  if(!C){
+   if(!automatic)setError("Reconnaissance vocale non disponible dans ce navigateur. Vous pouvez répondre par écrit.");
+   setSpeechHint("Dictée non disponible : utilisez le champ texte.");
+   return;
+  }
+  if(recognition.current){
+   if(!automatic)stopDictation();
+   return;
+  }
+  dictationBase.current=answerRef.current.trim();
   const r=new C();recognition.current=r;
   r.lang=config?.locale==="en"?"en-US":"fr-FR";r.continuous=true;r.interimResults=true;
   r.onresult=e=>{
    if(recognition.current!==r)return;
-   const spoken=Array.from(e.results).map(x=>x[0]?.transcript||"").join(" ").trim();
-   const combined=[dictationBase.current,spoken].filter(Boolean).join(" ");
-   setAnswer(combined.slice(0,8000));
+   const results=Array.from(e.results);
+   const spoken=results.map(x=>x[0]?.transcript||"").join(" ").trim();
+   const combined=[dictationBase.current,spoken].filter(Boolean).join(" ").slice(0,8000);
+   answerRef.current=combined;setAnswer(combined);clearSilence();
+   const final=results.length>0&&results.every(x=>x.isFinal);
+   // Wait for a completed recognition hypothesis and a meaningful silence.
+   // Browser speech recognition is not a reliable VAD; the manual button remains available.
+   if(automatic&&handsFreeRef.current&&final&&combined.trim().split(/\s+/).length>=4){
+    setSpeechHint("Pause détectée : je vous laisse terminer votre idée…");
+    silenceTimer.current=setTimeout(()=>{
+     if(recognition.current===r&&!submittingRef.current&&handsFreeRef.current)
+      submitRef.current(answerRef.current);
+    },3200);
+   }else if(automatic)setSpeechHint("Je vous écoute…");
   };
-  r.onerror=e=>{setDictating(false);setError("Microphone : "+e.error+". Vous pouvez aussi utiliser le champ texte.");};
-  r.onend=()=>{if(recognition.current===r)setDictating(false);};
-  try{r.start();setDictating(true);setError("");setState("listening");}catch{setDictating(false);setError("Impossible de démarrer le microphone.");}
+  r.onerror=e=>{
+   clearSilence();if(recognition.current===r)recognition.current=null;
+   setDictating(false);setSpeechHint("");
+   setError("Microphone : "+e.error+". Vous pouvez aussi utiliser le champ texte.");
+  };
+  r.onend=()=>{
+   clearSilence();
+   if(recognition.current===r){recognition.current=null;setDictating(false);setSpeechHint("La dictée s’est arrêtée. Relancez-la si nécessaire.");}
+  };
+  try{r.start();setDictating(true);setError("");setSpeechHint(automatic?"Je vous écoute…":"Dictée active");setState("listening");}
+  catch{recognition.current=null;setDictating(false);if(!automatic)setError("Impossible de démarrer le microphone.");}
  }
+ useEffect(()=>{
+  submitRef.current=(value)=>{void submitValue(value);};
+  autoListenRef.current=()=>{if(handsFreeRef.current&&!recognition.current)listen(true);};
+ });
  function togglePause(){
   if(state==="paused"){
    if(pausedFrom.current==="speaking"&&"speechSynthesis" in window&&window.speechSynthesis.paused){
@@ -153,11 +202,11 @@ export default function InterviewPage(){
   }
   if(state!=="speaking"&&state!=="listening")return;
   pausedFrom.current=state;
-  recognition.current?.stop();setDictating(false);
+  stopDictation();
   if(state==="speaking"&&"speechSynthesis" in window)window.speechSynthesis.pause();
   setState("paused");
  }
- function interrupt(){window.speechSynthesis?.cancel();setState("listening");}
+ function interrupt(){window.speechSynthesis?.cancel();setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}
  const question=result?.question?.prompt;
  if(!configChecked || (config&&state==="ready"&&introStage==="none"))return <main role="status" className="flex min-h-dvh items-center justify-center bg-[#0C1436] text-sm font-semibold text-[#B8C8E8]">Préparation de votre entretien…</main>;
  if(introStage!=="none")return <main className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[#0C1436] px-5 py-12 text-white">
@@ -190,10 +239,17 @@ export default function InterviewPage(){
      {state==="error"&&<button onClick={()=>void startInterview()} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
      {state==="speaking"&&<button onClick={interrupt} className="mt-7 rounded-xl border border-[#C8D4F0] px-5 py-3 text-sm font-semibold">Prendre la parole</button>}
      {(state==="listening"||state==="paused")&&<div className="mt-7 w-full text-left">
+       <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#F0F4FF] px-4 py-3 text-xs text-[#405BA8]">
+        <span>{handsFree?"Mode mains libres actif":"Mode manuel actif"} · {speechHint||"Vous gardez le contrôle de votre réponse."}</span>
+        <button type="button" className="font-bold underline underline-offset-4" onClick={()=>{
+         const next=!handsFree;setHandsFree(next);handsFreeRef.current=next;clearSilence();
+         if(next&&state==="listening"&&!recognition.current)listen(true);
+        }}>{handsFree?"Passer en manuel":"Activer le mains libres"}</button>
+       </div>
        <label htmlFor="spoken-answer" className="mb-2 block text-sm font-semibold">Votre réponse {dictating&&<span role="status" className="ml-2 text-[#21866F]">● Transcription en direct…</span>}</label>
-       <textarea id="spoken-answer" value={answer} onChange={e=>setAnswer(e.target.value)} disabled={state==="paused"} rows={4} maxLength={8000} placeholder="Parlez avec le microphone ou saisissez votre réponse…" className="w-full resize-y rounded-xl border border-[#D2DBEC] bg-[#FBFCFF] p-4 text-sm leading-7 outline-none focus:border-[#5E77DA] disabled:opacity-60"/>
+       <textarea id="spoken-answer" value={answer} onChange={e=>{answerRef.current=e.target.value;setAnswer(e.target.value);clearSilence();}} disabled={state==="paused"} rows={4} maxLength={8000} placeholder="Parlez avec le microphone ou saisissez votre réponse…" className="w-full resize-y rounded-xl border border-[#D2DBEC] bg-[#FBFCFF] p-4 text-sm leading-7 outline-none focus:border-[#5E77DA] disabled:opacity-60"/>
        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <button disabled={state==="paused"} onClick={listen} className="flex items-center gap-2 rounded-xl border border-[#C9D9ED] px-4 py-3 text-sm font-semibold disabled:opacity-50"><Mic size={18}/> {dictating?"Arrêter la dictée":"Dicter ma réponse"}</button>
+        <button disabled={state==="paused"} onClick={()=>listen(false)} className="flex items-center gap-2 rounded-xl border border-[#C9D9ED] px-4 py-3 text-sm font-semibold disabled:opacity-50"><Mic size={18}/> {dictating?"Arrêter la dictée":"Dicter ma réponse"}</button>
         <button disabled={!answer.trim()||state==="paused"} onClick={submit} className="flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white disabled:opacity-40">J’ai terminé <Send size={17}/></button>
        </div>
       </div>}
