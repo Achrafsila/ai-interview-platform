@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, BookOpen, BrainCircuit, Check, ChevronRight, CirclePlay, GraduationCap, LayoutDashboard, LogOut, MessageSquareText, Play, Sparkles, Target, TrendingUp, UserRound, WandSparkles, CalendarDays } from "lucide-react";
+import { ArrowRight, BookOpen, BrainCircuit, Check, ChevronRight, CirclePlay, GraduationCap, LayoutDashboard, LogOut, MessageSquareText, Play, Sparkles, Target, TrendingUp, UserRound, WandSparkles } from "lucide-react";
 import { getAuthClient } from "@/lib/supabase-auth";
 import { getAppRole, readProfile } from "@/lib/profile";
 import { employmentOptions, professionalOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal } from "@/components/ui/onboarding-stages";
 import { InterviewScoreGauge } from "@/components/ui/interview-score-gauge";
+import { readInterviewResults, comparableProgress, type InterviewResult } from "@/lib/interview-results";
 
 const goalNames = Object.fromEntries(professionalOptions.map(item => [item.value,item.title])) as Record<ProfessionalGoal,string>;
 const priorityNames: Record<PreparationGoal,string> = { confidence:"Confiance en soi", answer_structure:"Structure des réponses", communication:"Communication",domain_knowledge:"Connaissances métier",stress_management:"Gestion du stress" };
@@ -23,6 +24,7 @@ export default function DashboardPage() {
  const reducedMotion=useReducedMotion();
  const [profile,setProfile]=useState<OnboardingProfile | null | undefined>(undefined);
  const [loadError,setLoadError]=useState("");
+ const [results,setResults]=useState<InterviewResult[]>([]);
  useEffect(()=>{
    let active=true;
    async function load(){
@@ -36,13 +38,20 @@ export default function DashboardPage() {
        if(role!=="user"){router.replace("/role-preview");return;}
        const saved=await readProfile(client,user.id);
        if(!saved?.completed){router.replace("/onboarding");return;}
-       if(active)setProfile(saved.profile);
+       const interviews=await readInterviewResults(client,user.id);
+       if(active){setResults(interviews);setProfile(saved.profile);}
      }catch{if(active)setLoadError("Impossible de charger votre espace. Veuillez réessayer.");}
    }
    void load();return ()=>{active=false;};
  },[router]);
  async function signOut(){const client=getAuthClient();await client?.auth.signOut();router.replace("/login");router.refresh();}
  const motionIn=(delay:number)=>({initial:reducedMotion?false as const:{opacity:0,y:24},animate:{opacity:1,y:0},transition:{duration:.56,delay,ease:"easeOut" as const}});
+ const trend=comparableProgress(results);
+ const coach=results.find(r=>r.coach_priority&&r.coach_recommendation);
+ const hasHistory=results.length>0;
+ const hasSeveral=results.length>1;
+ const actionTitle=!hasHistory?"Votre premier entretien commence ici.":hasSeveral&&coach?"Travaillez votre prochain objectif.":"Continuez votre préparation.";
+ const actionBody=!hasHistory?"Entraînez-vous en entretien RH ou technique, avec des questions adaptées à votre objectif.":coach?`Votre prochain défi : ${coach.coach_priority}. Retrouvez vos objectifs dans une nouvelle simulation.`:"Chaque entretien est une occasion de progresser. Configurez votre prochaine séance.";
  const situation=profile?.employmentStatus?employmentOptions.find(x=>x.value===profile.employmentStatus)?.title:null;
  return <main className="relative min-h-screen overflow-hidden bg-[#F5F7FC] text-[#172033]">
    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_65%_60%_at_88%_2%,rgba(199,213,255,.43),transparent_75%)]" aria-hidden/>
@@ -81,27 +90,27 @@ export default function DashboardPage() {
           <motion.section {...motionIn(.08)} className="relative overflow-hidden rounded-[25px] border border-[#CBD4FA] bg-[linear-gradient(125deg,#EEF2FF,#E6EAFD_62%,#EDE7FF)] p-7 shadow-[0_12px_35px_rgba(76,93,158,.10)] sm:p-8">
            <div className="pointer-events-none absolute -right-24 -top-32 size-80 rounded-full bg-[#A69DFC]/22 blur-3xl" aria-hidden/>
            <div className="relative"><span className="inline-flex items-center gap-2 rounded-full border border-[#C1C8F6] bg-white/75 px-3 py-1.5 text-xs font-bold text-[#4D57B0]"><WandSparkles size={15}/> Votre prochaine étape</span>
-            <h2 className="mt-5 max-w-xl text-[clamp(1.7rem,2.5vw,2.5rem)] font-bold leading-[1.13] tracking-[-.04em]">Votre premier entretien commence ici.</h2>
-            <p className="mt-4 max-w-lg text-sm leading-7 text-[#5B6887]">Entraînez-vous en entretien RH ou technique, avec des questions adaptées à votre objectif.</p>
-            <div className="mt-7 flex flex-wrap items-center gap-3"><Link href="/preparation" className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#3456D7] px-5 text-sm font-bold text-white transition hover:bg-[#2644B9]"><Play size={17} fill="currentColor"/> Démarrer ma première simulation</Link><span className="text-xs font-medium text-[#687799]">Une préparation à votre rythme</span></div>
+            <h2 className="mt-5 max-w-xl text-[clamp(1.7rem,2.5vw,2.5rem)] font-bold leading-[1.13] tracking-[-.04em]">{actionTitle}</h2>
+            <p className="mt-4 max-w-lg text-sm leading-7 text-[#5B6887]">{actionBody}</p>
+            <div className="mt-7 flex flex-wrap items-center gap-3"><Link href="/preparation" className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#3456D7] px-5 text-sm font-bold text-white transition hover:bg-[#2644B9]"><Play size={17} fill="currentColor"/> {hasHistory?"Configurer ma prochaine simulation":"Configurer ma première simulation"}</Link><span className="text-xs font-medium text-[#687799]">Une préparation à votre rythme</span></div>
            </div>
           </motion.section>
 
           <motion.section {...motionIn(.15)} aria-label="Votre progression" className="grid gap-3 sm:grid-cols-3">
            {[
-            {label:"Simulations",value:"0",note:"Aucune séance réalisée",icon:MessageSquareText,tone:"border-[#C9D8F9] bg-[#EDF3FF] text-[#315EC0]"},
-            {label:"Score moyen",value:"—",note:"Après votre premier entretien",icon:Target,tone:"border-[#BFE6D8] bg-[#E9F9F2] text-[#17836C]"},
-            {label:"Progression",value:"—",note:"À suivre dans le temps",icon:TrendingUp,tone:"border-[#EDD9B8] bg-[#FFF5E7] text-[#A77025]"}
+            {label:"Simulations",value:String(results.length),note:hasHistory?"Séances enregistrées":"Aucune séance réalisée",icon:MessageSquareText,tone:"border-[#C9D8F9] bg-[#EDF3FF] text-[#315EC0]"},
+            {label:"Dernier score",value:trend.score===null?"—":String(trend.score),note:trend.score===null?"Pas encore de bilan noté":"Dernière évaluation disponible",icon:Target,tone:"border-[#BFE6D8] bg-[#E9F9F2] text-[#17836C]"},
+            {label:"Progression",value:trend.delta===null?"—":`${trend.delta>0?"+":""}${trend.delta} pt`,note:trend.delta===null?"En attente de bilans comparables":"Même type d’entretien",icon:TrendingUp,tone:"border-[#EDD9B8] bg-[#FFF5E7] text-[#A77025]"}
            ].map(({label,value,note,icon:Icon,tone})=><div key={label} className={`rounded-[20px] border p-5 transition duration-300 hover:-translate-y-1 ${tone}`}><div className="flex items-center justify-between gap-2"><p className="text-xs font-bold">{label}</p><Icon size={20}/></div><div className="mt-5 text-4xl font-bold leading-none text-[#172033]">{value}</div><p className="mt-3 text-xs leading-5 text-[#66748E]">{note}</p></div>)}
           </motion.section>
 
           <motion.section {...motionIn(.22)} className={panel+" p-6 sm:p-7"}>
-           <div className="flex flex-wrap items-center justify-between gap-2"><div><h2 className="text-lg font-bold">Votre parcours de préparation</h2><p className="mt-1 text-xs text-[#73819A]">Un plan adapté à votre profil, étape par étape.</p></div><span className="rounded-full bg-[#E8F6EE] px-3 py-1.5 text-xs font-semibold text-[#218268]">Première étape</span></div>
+           <div className="flex flex-wrap items-center justify-between gap-2"><div><h2 className="text-lg font-bold">Votre parcours de préparation</h2><p className="mt-1 text-xs text-[#73819A]">Un plan adapté à votre profil, étape par étape.</p></div><span className="rounded-full bg-[#E8F6EE] px-3 py-1.5 text-xs font-semibold text-[#218268]">{!hasHistory?"Première étape":hasSeveral?"Parcours en cours":"Premier bilan"}</span></div>
            <div className="mt-6 grid gap-3 md:grid-cols-3">
             {[
               {label:"Profil créé",detail:"Vos objectifs sont enregistrés",icon:Check,state:"done"},
-              {label:"Première simulation",detail:"Choisissez votre type d’entretien",icon:CirclePlay,state:"next"},
-              {label:"Analyse et conseils",detail:"Disponible après votre entretien",icon:BrainCircuit,state:"later"}
+              {label:"Première simulation",detail:hasHistory?"Votre premier entretien est enregistré":"Choisissez votre type d’entretien",icon:CirclePlay,state:hasHistory?"done":"next"},
+              {label:"Analyse et conseils",detail:coach?"Une recommandation est disponible":"Disponible après analyse d’une séance",icon:BrainCircuit,state:coach?"done":hasHistory?"next":"later"}
             ].map(({label,detail,icon:Icon,state},i)=><div key={label} className={`relative rounded-2xl border p-4 ${state==="done"?"border-[#BFE3D5] bg-[#EEF9F3]":state==="next"?"border-[#C3D0FC] bg-[#F1F4FF]":"border-[#E4E8F0] bg-[#F8F9FC]"}`}><div className="mb-4 flex items-center justify-between"><span className="text-xs font-bold text-[#8898B2]">0{i+1}</span><Icon size={19} className={state==="done"?"text-[#229676]":state==="next"?"text-[#3C5BCA]":"text-[#A2ADC1]"}/></div><h3 className="text-sm font-bold">{label}</h3><p className="mt-2 text-xs leading-5 text-[#6A7992]">{detail}</p></div>)}
            </div>
           </motion.section>
@@ -116,11 +125,11 @@ export default function DashboardPage() {
          <div className="space-y-4">
           <motion.section {...motionIn(.12)} className={panel+" p-6"}>
            <div className="flex items-center gap-2"><span className="grid size-9 place-items-center rounded-xl bg-[#E5DFFF] text-[#7258C4]"><BrainCircuit size={19}/></span><div><h2 className="text-base font-bold">Votre coach IA</h2><p className="text-[11px] text-[#8B91A5]">Accompagnement personnalisé</p></div></div>
-           <div className="mt-5 rounded-2xl bg-[linear-gradient(135deg,#F4EDFF,#EDF1FF)] p-5"><div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/85 px-3 py-1.5 text-[11px] font-bold text-[#7456BA]"><Sparkles size={14}/> Première recommandation</div><h3 className="text-base font-bold leading-6">Commencez par une simulation.</h3><p className="mt-3 text-xs leading-6 text-[#626D8A]">Votre coach analysera vos réponses pour identifier vos points forts et les compétences à développer.</p></div>
+           <div className="mt-5 rounded-2xl bg-[linear-gradient(135deg,#F4EDFF,#EDF1FF)] p-5"><div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/85 px-3 py-1.5 text-[11px] font-bold text-[#7456BA]"><Sparkles size={14}/> {coach?"Recommandation personnalisée":"Votre prochaine étape"}</div><h3 className="text-base font-bold leading-6">{coach?.coach_priority??"Commencez par une simulation."}</h3><p className="mt-3 text-xs leading-6 text-[#626D8A]">{coach?.coach_recommendation??(hasHistory?"Vos conseils personnalisés apparaîtront après l’analyse de vos réponses.":"Votre coach analysera vos réponses pour identifier vos points forts et les compétences à développer.")}</p></div>
           </motion.section>
           <motion.section {...motionIn(.2)} className={panel+" p-6"}>
            <div className="flex items-center justify-between"><h2 className="text-base font-bold">Score de préparation</h2><Target size={19} className="text-[#3C68C9]"/></div>
-           <div className="mt-5"><InterviewScoreGauge score={null}/></div>
+           <div className="mt-5"><InterviewScoreGauge score={trend.score}/></div>
           </motion.section>
           <motion.section {...motionIn(.27)} className={panel+" p-6"}>
            <div className="flex items-center justify-between"><h2 className="text-base font-bold">Votre profil</h2><UserRound size={19} className="text-[#5971C7]"/></div>
@@ -129,9 +138,14 @@ export default function DashboardPage() {
            <div className="mt-5 rounded-xl bg-[#F2F5FF] p-4"><p className="text-[10px] font-bold uppercase tracking-[.12em] text-[#6D78B0]">Objectif principal</p><p className="mt-2 text-sm font-semibold leading-6">{goalNames[profile.professionalGoal]}</p></div>
            <Link href="/onboarding" className="mt-5 inline-flex min-h-10 items-center gap-2 text-sm font-bold text-[#3656C3] hover:underline">Consulter mon profil <ArrowRight size={16}/></Link>
           </motion.section>
-          <motion.section {...motionIn(.33)} className="rounded-[24px] border border-[#F1DCB8] bg-[#FFF6E9] p-6"><div className="flex items-center gap-2 font-bold text-[#99651B]"><CalendarDays size={20}/> Vos prochaines séances</div><p className="mt-3 text-xs leading-6 text-[#77684E]">Aucune simulation planifiée pour le moment.</p><p className="mt-2 text-xs text-[#99836A]">Vous pourrez consulter votre historique ici après votre première session.</p></motion.section>
+          
          </div>
         </div>
+        {hasHistory&&<motion.section {...motionIn(.34)} className={panel+" mt-5 p-6 sm:p-7"}>
+         <h2 className="text-lg font-bold">Historique des entretiens</h2>
+         <p className="mt-1 text-xs leading-6 text-[#73819A]">Vos dernières séances, sans notes inventées.</p>
+         <div className="mt-4 divide-y divide-[#E5EAF4]">{results.slice(0,5).map(r=><div key={r.id} className="flex flex-wrap items-center justify-between gap-3 py-4"><div><p className="text-sm font-bold">{r.interview_kind==="rh"?"Entretien RH":"Entretien technique"}{r.job_title?` · ${r.job_title}`:""}</p><p className="mt-1 text-xs text-[#6D7D98]">{new Date(r.completed_at).toLocaleDateString("fr-FR")} · {r.status==="partial"?"Bilan partiel":"Terminé"}</p></div><span className="rounded-xl bg-[#EFF3FC] px-3 py-2 text-xs font-semibold text-[#5267A0]">{r.score===null?"Non noté":`${r.score}/100`}</span></div>)}</div>
+        </motion.section>}
         <p className="mt-8 flex items-center gap-2 text-xs leading-6 text-[#8390A6]"><BookOpen size={15}/> Données réelles uniquement : les résultats et l’historique apparaîtront après intégration des simulations.</p>
        </>}
      </div>
