@@ -4,7 +4,7 @@ import {useEffect,useRef,useState} from "react";
 import {ArrowLeft,Mic,Volume2,VolumeX,Pause,Play,Send,Check,AlertTriangle} from "lucide-react";
 type Config={family:"rh"|"technical";locale:"fr"|"en";jobTitle:string;job_description:string;goals:string[];count:number};
 type Response={session_id?:string;question?:{prompt:string};phase?:string;index?:number;total?:number;completed?:boolean;feedback?:string;transcript?:{question:string;answer:string}[];error?:string};
-type Recognizer={lang:string;continuous:boolean;interimResults:boolean;onresult:((e:{results:ArrayLike<ArrayLike<{transcript:string}>>})=>void)|null;onerror:((e:{error:string})=>void)|null;onend:(()=>void)|null;start:()=>void;stop:()=>void};
+type Recognizer={lang:string;continuous:boolean;interimResults:boolean;onresult:((e:{results:ArrayLike<(ArrayLike<{transcript:string}> & {isFinal:boolean})>})=>void)|null;onerror:((e:{error:string})=>void)|null;onend:(()=>void)|null;start:()=>void;stop:()=>void};
 type SpeechWindow=Window & {SpeechRecognition?:new()=>Recognizer;webkitSpeechRecognition?:new()=>Recognizer};
 async function send(action:"start"|"answer",payload:object):Promise<Response>{
  const r=await fetch("/api/interview/"+action,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
@@ -41,9 +41,11 @@ export default function InterviewPage(){
  const voice=useRef<SpeechSynthesisUtterance|null>(null);
  const sessionRef=useRef(false);
  const pausedFrom=useRef<"speaking"|"listening">("listening");
+ const [dictating,setDictating]=useState(false);
+ const dictationBase=useRef("");
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
- useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();},[]);
+ useEffect(()=>()=>{recognition.current?.stop();setDictating(false);window.speechSynthesis?.cancel();},[]);
  function speak(text:string,locale:string){
   recognition.current?.stop();
   if(!("speechSynthesis" in window)||muted){setState("listening");return;}
@@ -77,12 +79,20 @@ export default function InterviewPage(){
   const w=window as SpeechWindow;
   const C=w.SpeechRecognition||w.webkitSpeechRecognition;
   if(!C){setError("Reconnaissance vocale non disponible dans ce navigateur. Vous pouvez répondre par écrit.");return;}
+  if(dictating){recognition.current?.stop();setDictating(false);return;}
   recognition.current?.stop();
+  dictationBase.current=answer.trim();
   const r=new C();recognition.current=r;
-  r.lang=config?.locale==="en"?"en-US":"fr-FR";r.continuous=true;r.interimResults=false;
-  r.onresult=e=>{const pieces=Array.from(e.results).map(x=>x[0]?.transcript||"").join(" ").trim();if(pieces)setAnswer(pieces);};
-  r.onerror=e=>setError("Microphone : "+e.error+". Vous pouvez aussi utiliser le champ texte.");
-  try{r.start();setState("listening");}catch{setError("Impossible de démarrer le microphone.");}
+  r.lang=config?.locale==="en"?"en-US":"fr-FR";r.continuous=true;r.interimResults=true;
+  r.onresult=e=>{
+   if(recognition.current!==r)return;
+   const spoken=Array.from(e.results).map(x=>x[0]?.transcript||"").join(" ").trim();
+   const combined=[dictationBase.current,spoken].filter(Boolean).join(" ");
+   setAnswer(combined.slice(0,8000));
+  };
+  r.onerror=e=>{setDictating(false);setError("Microphone : "+e.error+". Vous pouvez aussi utiliser le champ texte.");};
+  r.onend=()=>{if(recognition.current===r)setDictating(false);};
+  try{r.start();setDictating(true);setError("");setState("listening");}catch{setDictating(false);setError("Impossible de démarrer le microphone.");}
  }
  function togglePause(){
   if(state==="paused"){
@@ -93,7 +103,7 @@ export default function InterviewPage(){
   }
   if(state!=="speaking"&&state!=="listening")return;
   pausedFrom.current=state;
-  recognition.current?.stop();
+  recognition.current?.stop();setDictating(false);
   if(state==="speaking"&&"speechSynthesis" in window)window.speechSynthesis.pause();
   setState("paused");
  }
@@ -113,10 +123,10 @@ export default function InterviewPage(){
      {state==="error"&&<button onClick={start} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
      {state==="speaking"&&<button onClick={interrupt} className="mt-7 rounded-xl border border-[#C8D4F0] px-5 py-3 text-sm font-semibold">Prendre la parole</button>}
      {(state==="listening"||state==="paused")&&<div className="mt-7 w-full text-left">
-       <label htmlFor="spoken-answer" className="mb-2 block text-sm font-semibold">Votre réponse</label>
+       <label htmlFor="spoken-answer" className="mb-2 block text-sm font-semibold">Votre réponse {dictating&&<span role="status" className="ml-2 text-[#21866F]">● Transcription en direct…</span>}</label>
        <textarea id="spoken-answer" value={answer} onChange={e=>setAnswer(e.target.value)} disabled={state==="paused"} rows={4} maxLength={8000} placeholder="Parlez avec le microphone ou saisissez votre réponse…" className="w-full resize-y rounded-xl border border-[#D2DBEC] bg-[#FBFCFF] p-4 text-sm leading-7 outline-none focus:border-[#5E77DA] disabled:opacity-60"/>
        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <button disabled={state==="paused"} onClick={listen} className="flex items-center gap-2 rounded-xl border border-[#C9D9ED] px-4 py-3 text-sm font-semibold disabled:opacity-50"><Mic size={18}/> Dicter ma réponse</button>
+        <button disabled={state==="paused"} onClick={listen} className="flex items-center gap-2 rounded-xl border border-[#C9D9ED] px-4 py-3 text-sm font-semibold disabled:opacity-50"><Mic size={18}/> {dictating?"Arrêter la dictée":"Dicter ma réponse"}</button>
         <button disabled={!answer.trim()||state==="paused"} onClick={submit} className="flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white disabled:opacity-40">J’ai terminé <Send size={17}/></button>
        </div>
       </div>}
