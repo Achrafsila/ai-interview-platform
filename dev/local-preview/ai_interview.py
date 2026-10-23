@@ -177,6 +177,9 @@ class GroqRehearsalProvider(OpenAIRehearsalProvider):
             headers={
                 "authorization": "Bearer " + self.api_key,
                 "content-type": "application/json",
+                # Groq's CDN may block urllib's default Python-urllib User-Agent
+                # before checking the API key. Use a descriptive client identity.
+                "user-agent": "AIInterviewPlatform/0.1",
             },
             method="POST",
         )
