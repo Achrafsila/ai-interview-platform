@@ -108,7 +108,8 @@ class OpenAIRehearsalProvider:
         return message[:1200]
 
     def followup(self, *, question: dict, answer: str, locale: str,
-                 family: str, goals: list[str], domain: str | None) -> str:
+                 family: str, goals: list[str], domain: str | None,
+                 job_description: str = "") -> str:
         language = "français" if locale == "fr" else "anglais"
         instructions = (
             "Tu joues un recruteur d'entraînement, pas un employeur qui décide "
@@ -125,6 +126,7 @@ class OpenAIRehearsalProvider:
         return self._complete(instructions, {
             "interview_family": family, "technical_domain": domain,
             "preparation_goals": goals,
+            "job_description_for_this_simulation": job_description,
             "initial_question": question[locale],
             "candidate_answer_untrusted": answer[:4000],
         })
@@ -209,6 +211,8 @@ class InterviewLab:
             desired = set().union(*(RH_CATEGORIES.get(g, set()) for g in goals))
             if desired:
                 selected.sort(key=lambda q: (q["category"] not in desired, q["code"]))
+        if family == "technical":
+            secrets.SystemRandom().shuffle(selected)
         selected = selected[:count]
         sid = secrets.token_urlsafe(24)
         with self.lock:
@@ -218,6 +222,7 @@ class InterviewLab:
             self.sessions[sid] = {
                 "family": family, "locale": locale, "domain": domain,
                 "goals": goals, "selected": selected, "position": 0,
+                "job_description": description,
                 "phase": "primary", "transcript": [], "created_at": self._now(),
             }
         return {
@@ -243,13 +248,15 @@ class InterviewLab:
             if s["phase"] == "primary":
                 followup = self.provider.followup(
                     question=current, answer=answer, locale=s["locale"],
-                    family=s["family"], goals=s["goals"], domain=s["domain"]
+                    family=s["family"], goals=s["goals"], domain=s["domain"],
+                    job_description=s["job_description"]
                 )
                 s["transcript"].append({
                     "code": current["code"], "kind": "main",
                     "question": current[s["locale"]], "answer": answer.strip(),
                 })
                 s["phase"] = "followup"
+                s["followup_prompt"] = followup
                 return {
                     "completed": False, "phase": "followup", "index": index + 1,
                     "total": len(s["selected"]), "question": {
@@ -259,7 +266,7 @@ class InterviewLab:
                 }
             s["transcript"].append({
                 "code": current["code"], "kind": "followup",
-                "answer": answer.strip(), "question": payload.get("visible_prompt", "")[:400],
+                "answer": answer.strip(), "question": s["followup_prompt"],
             })
             if index + 1 < len(s["selected"]):
                 s["position"] += 1
