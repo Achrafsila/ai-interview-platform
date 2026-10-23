@@ -145,6 +145,7 @@ class InterviewLabTests(unittest.TestCase):
         def opener(request, timeout=None):
             captured["url"] = request.full_url
             captured["token"] = request.get_header("Authorization")
+            captured["user_agent"] = request.get_header("User-agent")
             captured["body"] = json.loads(request.data.decode("utf-8"))
             captured["timeout"] = timeout
             return Response(json.dumps({
@@ -163,6 +164,7 @@ class InterviewLabTests(unittest.TestCase):
         self.assertEqual(captured["url"],
                          "https://api.groq.com/openai/v1/chat/completions")
         self.assertEqual(captured["token"], "Bearer gsk_mock-secret")
+        self.assertEqual(captured["user_agent"], "AIInterviewPlatform/0.1")
         self.assertEqual(captured["body"]["model"], "llama-3.3-70b-versatile")
         self.assertEqual(captured["body"]["messages"][0]["role"], "system")
         self.assertEqual(captured["body"]["messages"][1]["role"], "user")
