@@ -156,6 +156,7 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
                 self._send({
                     "available": bool(ai_provider.api_key),
                     "provider": ai_provider_name if ai_provider.api_key else "not_configured",
+                    "model": ai_provider.model if ai_provider.api_key else None,
                     "draft_preview": True,
                     "persistent": False,
                 })
@@ -298,9 +299,13 @@ def main():
     sessions = {}
     lock = threading.RLock()
     address = f"http://127.0.0.1:{args.port}"
+    provider, provider_name = configure_ai_provider(os.environ)
     server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(questions, sessions, lock))
+    key_status = "configurée" if provider.api_key else "absente"
     print(f"\nAI Interview Platform — LOCAL DRAFT PREVIEW\n{address}\n"
           f"{len(questions)} draft questions ready. No Supabase, AI scoring or production data.\n"
+          f"IA active : {provider_name.upper()} | modèle : {provider.model} | clé : {key_status}\n"
+          f"Diagnostic sans secret : {address}/api/ai/status\n"
           "Press Ctrl+C to stop.\n", flush=True)
     if not args.no_open:
         threading.Timer(0.5, webbrowser.open, args=(address,)).start()

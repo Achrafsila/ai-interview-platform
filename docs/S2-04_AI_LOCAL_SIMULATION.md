@@ -103,6 +103,37 @@ Les tests du mode IA utilisent un **faux fournisseur** (aucun coût, aucune requ
 - Aucune note/scoring automatique n'est attribuée.
 - Aucune question n'est officiellement publiée dans le référentiel privé sans validation humaine.
 
+## Diagnostiquer un ancien serveur et l'erreur HTTP 401
+
+Depuis un nouveau Terminal, consulter l'endpoint de diagnostic **sans aucune clé** :
+
+```bash
+curl -s http://127.0.0.1:8765/api/ai/status
+```
+
+Le champ `provider` doit être `groq`. Si la réponse indique `openai` et que vous avez une clé Groq, le processus Python écoute encore avec l'ancienne configuration (ou `AI_PROVIDER=openai`).
+
+1. Dans le Terminal qui héberge le serveur, faire `Ctrl+C`.
+2. Exécuter `git pull origin main`, `unset OPENAI_API_KEY`, `export AI_PROVIDER=groq`.
+3. Saisir la clé Groq dans `GROQ_API_KEY`, puis relancer `python3 dev/local-preview/server.py`.
+4. Le message de démarrage doit maintenant indiquer **`IA active : GROQ`** et le modèle choisi.
+
+Si l'ancien processus occupe encore le port 8765, utiliser `lsof -nP -iTCP:8765 -sTCP:LISTEN` pour identifier son PID et terminer ce processus après vérification.
+
+Pour valider une clé Groq indépendamment de Python :
+
+```bash
+curl -sS -o /dev/null -w "Groq HTTP %{http_code}\n" \\
+  https://api.groq.com/openai/v1/models \\
+  -H "Authorization: Bearer $GROQ_API_KEY"
+```
+
+- **Groq HTTP 200** : Groq accepte la clé ; vérifier ensuite le fournisseur actif dans localhost.
+- **Groq HTTP 401** : la clé Groq est invalide ou révoquée ; recréer une clé dans Groq.
+- **Groq HTTP 403** : le compte ou la clé manque d'autorisation.
+
+Le serveur refuse désormais dès son démarrage une configuration `OPENAI_API_KEY=gsk_...` : il affiche une explication au lieu d'attendre un 401 pendant une simulation.
+
 ## Problèmes courants
 
 - **Option IA grisée** : arrêter le serveur, définir \`GROQ_API_KEY\` (ou \`OPENAI_API_KEY\`) dans le Terminal qui le lance, puis redémarrer.
