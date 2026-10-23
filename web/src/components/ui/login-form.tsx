@@ -149,7 +149,7 @@ export function LoginForm() {
           <form onSubmit={submit} className="space-y-5">
             <div>
               <label htmlFor="auth-email" className="mb-2 block text-sm font-semibold text-[#EFF3FF]">Adresse e-mail</label>
-              <div className="flex min-h-12 items-center gap-3 rounded-xl border border-white/30 bg-[#091B3D]/65 px-4 transition-colors focus-within:border-[#B5C8FF] focus-within:ring-2 focus-within:ring-[#91B0FF]/20">
+              <div className="flex min-h-12 items-center gap-3 rounded-xl border border-white/30 bg-transparent px-4 transition-colors focus-within:border-[#B5C8FF] focus-within:ring-2 focus-within:ring-[#91B0FF]/20">
                 <Mail size={18} className="shrink-0 text-[#B6C6E6]" aria-hidden="true"/>
                 <input id="auth-email" type="email" required autoComplete="email" value={email}
                   onChange={(e)=>setEmail(e.target.value)} placeholder="vous@exemple.com"
@@ -162,7 +162,7 @@ export function LoginForm() {
                   <label htmlFor="auth-password" className="text-sm font-semibold text-[#EFF3FF]">Mot de passe</label>
                   {mode === "signin" && <button type="button" onClick={()=>switchMode("reset")} className="rounded-lg text-xs font-medium text-[#C1D4FF] underline-offset-4 hover:underline">Mot de passe oublié ?</button>}
                 </div>
-                <div className="flex min-h-12 items-center gap-3 rounded-xl border border-white/30 bg-[#091B3D]/65 px-4 transition-colors focus-within:border-[#B5C8FF] focus-within:ring-2 focus-within:ring-[#91B0FF]/20">
+                <div className="flex min-h-12 items-center gap-3 rounded-xl border border-white/30 bg-transparent px-4 transition-colors focus-within:border-[#B5C8FF] focus-within:ring-2 focus-within:ring-[#91B0FF]/20">
                   <LockKeyhole size={18} className="shrink-0 text-[#B6C6E6]" aria-hidden="true"/>
                   <input id="auth-password" type={showPassword ? "text" : "password"} minLength={6} required autoComplete={mode === "signup" ? "new-password" : "current-password"}
                     value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Votre mot de passe"

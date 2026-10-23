@@ -241,44 +241,30 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 
-/* Keep credential fields visually consistent when Chrome/Safari autofill them. */
-.auth-dark-input,
-.auth-dark-input:focus {
-  color: #f8faff;
-  background: transparent;
-  caret-color: #f8faff;
-  color-scheme: dark;
-}
-.auth-dark-input:-webkit-autofill,
-.auth-dark-input:-webkit-autofill:hover,
-.auth-dark-input:-webkit-autofill:focus,
-.auth-dark-input:-webkit-autofill:active {
-  -webkit-text-fill-color: #f8faff !important;
-  caret-color: #f8faff;
-  -webkit-box-shadow: 0 0 0 1000px #0b1c3d inset !important;
-  box-shadow: 0 0 0 1000px #0b1c3d inset !important;
-  transition: background-color 9999s ease-out 0s;
-}
-
-/* Autofill V2: override Chromium's internal -internal-light-dark autofill paint. */
+/* Auth input fields stay transparent even when Chromium autofills credentials. */
 .auth-glass { color-scheme: dark; }
-.auth-glass input.auth-dark-input {
+.auth-glass input.auth-dark-input,
+.auth-glass input.auth-dark-input:focus {
   appearance: none;
   -webkit-appearance: none;
+  background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: #f8faff !important;
   color: #f8faff !important;
-  caret-color: #f8faff !important;
+  -webkit-text-fill-color: #f8faff !important;
+  caret-color: #f8faff;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
 }
-.auth-glass input.auth-dark-input:is(:autofill, :-webkit-autofill, :focus, :hover) {
-  background-color: transparent !important;
-  background-image: none !important;
+.auth-glass input.auth-dark-input:is(:-webkit-autofill, :autofill),
+.auth-glass input.auth-dark-input:is(:-webkit-autofill, :autofill):is(:hover, :focus, :active) {
+  /* Clip autofill's user-agent background to the text, not its input box. */
   -webkit-background-clip: text !important;
   background-clip: text !important;
+  background-color: transparent !important;
+  background-image: none !important;
   -webkit-text-fill-color: #f8faff !important;
-  -webkit-box-shadow: 0 0 0 1000px #0b1c3d inset !important;
-  box-shadow: 0 0 0 1000px #0b1c3d inset !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  transition: background-color 9999s ease-out 0s;
 }
