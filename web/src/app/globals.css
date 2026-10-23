@@ -26,3 +26,54 @@ button:focus-visible, a:focus-visible, input:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Immersive ambient gradient; slow ambient movement, no flashy effects. */
+.onboarding-atmosphere {
+  background: linear-gradient(128deg, #f5f8ff 0%, #eef3fb 24%, #f7f4fc 49%, #e7f0fc 74%, #f7f9ff 100%);
+  background-size: 280% 280%;
+  animation: ambient-gradient 24s ease-in-out infinite alternate;
+}
+.atmosphere-orb {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(65px);
+  opacity: .47;
+  mix-blend-mode: multiply;
+  animation: float-orb 21s ease-in-out infinite alternate;
+}
+.atmosphere-orb-one {
+  width: min(46vw, 650px); height: min(46vw, 650px);
+  background: #b1c7fa; top: -180px; left: -10%;
+}
+.atmosphere-orb-two {
+  width: min(52vw, 720px); height: min(52vw, 720px);
+  background: #dbd3fa; right: -12%; top: 12%;
+  animation-delay: -8s;
+}
+.atmosphere-orb-three {
+  width: min(42vw, 550px); height: min(42vw, 550px);
+  background: #c3e8ed; bottom: -210px; left: 26%;
+  animation-delay: -13s;
+}
+.onboarding-glass {
+  background: rgba(255, 255, 255, .53);
+  -webkit-backdrop-filter: blur(26px) saturate(140%);
+  backdrop-filter: blur(26px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 25px 90px rgba(20, 40, 85, .12);
+}
+@keyframes ambient-gradient {
+  0% { background-position: 0% 40%; }
+  100% { background-position: 100% 60%; }
+}
+@keyframes float-orb {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(40px, -48px, 0) scale(1.12); }
+}
+@media (max-width: 767px) {
+  .atmosphere-orb { filter: blur(45px); opacity: .35; }
+  .atmosphere-orb-one, .atmosphere-orb-two, .atmosphere-orb-three { width: 350px; height: 350px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-atmosphere, .atmosphere-orb { animation: none !important; }
+}

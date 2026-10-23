@@ -38,3 +38,11 @@ Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn et structure `src/compo
 L'installation initiale de packages a affiché **5 vulnérabilités signalées par npm audit**. Elles sont à trier et corriger avant toute mise en production ; ne pas exécuter `npm audit fix --force` sans revue des changements majeurs.
 
 Le composant de référence fourni par l'utilisateur est adapté et non copié à l'identique, car son contenu métier concernait un onboarding e-commerce. La confidentialité, la logique de profil et la personnalisation candidat prennent le pas sur cette démonstration.
+
+## Onboarding V2 — liquid glass / transitions immersives
+
+Après les retours utilisateur, le parcours inclut un fond gradient animé (désactivé sous prefers-reduced-motion), des halos ambiants, un panneau translucide, des transitions directionnelles, un wording plus chaleureux et un récapitulatif en cartes éditables.
+
+**Modification directe :** cliquer dans l'écran de confirmation sur « Votre cap », « Votre langue », « Vos axes de progrès », « Modifier mon identité » ou « Modifier mes priorités » revient à l'étape choisie avec toutes les données préremplies. « Enregistrer et revenir » ou « Retour » ramène ensuite au récapitulatif sans refaire les quatre étapes. Pendant l'onboarding, « Retour » revient normalement à l'étape précédente.
+
+Le test Chromium reproductible est `python3 web/tests/test_onboarding_v2_browser.py` (requiert Playwright Python et Google Chrome installé). Il valide la navigation, les modifications ciblées et l'absence de scroll horizontal à 1440/390 px. Ce test n'authentifie pas d'utilisateur et n'écrit rien dans Supabase.

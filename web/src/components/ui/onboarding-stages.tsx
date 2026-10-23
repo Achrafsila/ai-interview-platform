@@ -66,7 +66,9 @@ export function OnboardingStages({
   const [step, setStep] = useState(0);
   const [fieldError, setFieldError] = useState("");
   const [finished, setFinished] = useState(false);
-  const percent = Math.round(((step + 1) / steps.length) * 100);
+  const [returnToRecap, setReturnToRecap] = useState(false);
+  const [direction, setDirection] = useState(1);
+  const percent = finished ? 100 : Math.round(((step + 1) / steps.length) * 100);
   const firstName = profile.firstName.trim();
 
   const canProceed = useMemo(() => {
@@ -86,10 +88,17 @@ export function OnboardingStages({
       const completed = { ...profile, firstName, lastName: profile.lastName.trim() };
       onComplete?.(completed);
       setFinished(true);
+      setReturnToRecap(false);
       return;
     }
     setFieldError("");
-    setStep((current) => current + 1);
+    if (returnToRecap) {
+      setFinished(true);
+      setReturnToRecap(false);
+    } else {
+      setDirection(1);
+      setStep((current) => current + 1);
+    }
   }
 
   function toggleGoal(value: PreparationGoal) {
@@ -104,16 +113,32 @@ export function OnboardingStages({
     setFieldError("");
   }
 
-  function restart() {
+  function editStep(index: number) {
+    setStep(index);
+    setDirection(index < step ? -1 : 1);
     setFinished(false);
-    setStep(0);
+    setReturnToRecap(true);
     setFieldError("");
   }
 
+  function previous() {
+    setDirection(-1);
+    setFieldError("");
+    if (returnToRecap) {
+      setFinished(true);
+      setReturnToRecap(false);
+    } else {
+      setStep((current) => Math.max(0, current - 1));
+    }
+  }
+
+  const professionalLabel = professionalOptions.find((option) => option.value === profile.professionalGoal)?.title ?? "";
+  const preparationLabels = profile.preparationGoals.map((value) => preparationOptions.find((option) => option.value === value)?.title ?? value);
+
   return (
     <div className={cn("mx-auto w-full max-w-[1100px]", className)}>
-      <div className="grid min-h-[660px] grid-cols-1 overflow-hidden rounded-[28px] border border-[#E0E6EF] bg-white shadow-[0_28px_90px_rgba(22,35,68,0.10)] lg:grid-cols-[330px_1fr]">
-        <aside className="relative overflow-hidden bg-[#0B1222] p-7 text-white sm:p-9">
+      <div className="onboarding-glass grid min-h-[660px] grid-cols-1 overflow-hidden rounded-[32px] border border-white/70 shadow-[0_34px_110px_rgba(28,47,100,0.14)] lg:grid-cols-[330px_1fr]">
+        <aside className="relative overflow-hidden border-b border-white/10 bg-[linear-gradient(155deg,rgba(14,26,56,0.93),rgba(24,35,78,0.86)_62%,rgba(36,51,99,0.82))] p-7 text-white backdrop-blur-2xl sm:p-9 lg:border-b-0 lg:border-r">
           <div aria-hidden="true" className="pointer-events-none absolute -right-32 top-24 h-80 w-80 rounded-full bg-[#5474CF]/15 blur-[85px]" />
           <div className="relative flex h-full flex-col">
             <div className="flex items-center gap-3">
@@ -125,10 +150,10 @@ export function OnboardingStages({
             <div className="mt-12 lg:mt-20">
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#A6B8E4]">Votre parcours</p>
               <h2 className="mt-4 max-w-[260px] text-3xl font-semibold leading-tight tracking-[-0.04em]">
-                Un entraînement qui vous ressemble.
+                Ça commence avec vous.
               </h2>
               <p className="mt-4 max-w-[260px] text-sm leading-7 text-[#BAC4D6]">
-                Quelques réponses suffisent pour adapter vos prochains entretiens à vos ambitions.
+                Quatre petites étapes pour des entraînements qui voient plus loin que votre CV.
               </p>
             </div>
             <ol className="mt-10 hidden space-y-1 lg:block" aria-label="Étapes de création du profil">
@@ -136,12 +161,15 @@ export function OnboardingStages({
                 const complete = finished || index < step;
                 const active = !finished && index === step;
                 return (
-                  <li key={label} aria-current={active ? "step" : undefined}
-                    className={cn("flex items-center gap-3 rounded-xl px-3 py-3 text-sm", active ? "bg-white/10 text-white" : "text-[#AEB8CC]")}>
-                    <span className={cn("grid h-8 w-8 place-items-center rounded-full border", complete ? "border-[#6DBEA8] bg-[#356D65] text-white" : active ? "border-white/50 bg-white/10" : "border-white/20")}>
-                      {complete ? <Check size={16} aria-hidden="true" /> : <Icon size={16} aria-hidden="true" />}
-                    </span>
-                    {label}
+                  <li key={label} aria-current={active ? "step" : undefined}>
+                    <button type="button" disabled={!finished && index > step} onClick={() => editStep(index)}
+                      aria-label={`Modifier : ${label}`}
+                      className={cn("flex min-h-12 w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition-colors", active ? "bg-white/15 text-white" : "text-[#D1DAEE] hover:bg-white/10", !finished && index > step && "cursor-not-allowed opacity-50")}>
+                      <span className={cn("grid h-8 w-8 shrink-0 place-items-center rounded-full border", complete ? "border-[#6DBEA8] bg-[#356D65] text-white" : active ? "border-white/50 bg-white/10" : "border-white/20")}>
+                        {complete ? <Check size={16} aria-hidden="true" /> : <Icon size={16} aria-hidden="true" />}
+                      </span>
+                      {label}
+                    </button>
                   </li>
                 );
               })}
@@ -153,7 +181,7 @@ export function OnboardingStages({
           </div>
         </aside>
 
-        <section className="flex min-w-0 flex-col px-6 py-7 sm:px-10 sm:py-10 lg:px-14" aria-label="Onboarding personnalisé">
+        <section className="relative flex min-w-0 flex-col bg-white/58 px-6 py-7 backdrop-blur-[22px] sm:px-10 sm:py-10 lg:px-12" aria-label="Onboarding personnalisé">
           {!finished ? (
             <>
               <div className="flex items-center justify-between gap-5">
@@ -164,16 +192,17 @@ export function OnboardingStages({
                 <motion.div className="h-full rounded-full bg-[#2947A3]" initial={false}
                   animate={{ width: `${percent}%` }} transition={animated ? { duration: 0.35, ease: "easeOut" } : { duration: 0 }} />
               </div>
-              <div className="mt-12 flex-1 sm:mt-16">
+              <div className="mt-9 flex-1 sm:mt-12">
                 <AnimatePresence mode="wait" initial={false}>
-                  <motion.div key={step} initial={animated ? { opacity: 0, y: 12 } : false}
-                    animate={{ opacity: 1, y: 0 }} exit={animated ? { opacity: 0, y: -8 } : { opacity: 1 }}
-                    transition={{ duration: animated ? 0.22 : 0 }}>
+                  <motion.div key={step} initial={animated ? { opacity: 0, x: direction * 38, filter: "blur(5px)" } : false}
+                    animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                    exit={animated ? { opacity: 0, x: direction * -28, filter: "blur(5px)" } : { opacity: 1 }}
+                    transition={{ duration: animated ? 0.4 : 0, ease: [0.2, 0.8, 0.2, 1] }}>
                     {step === 0 && (
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Commençons par faire connaissance</p>
-                        <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">Comment souhaitez-vous qu’on vous appelle ?</h1>
-                        <p className="mt-4 max-w-xl text-base leading-7 text-[#526079]">Votre prénom nous permettra de rendre l’expérience plus personnelle, dès votre premier entretien.</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">On fait connaissance ?</p>
+                        <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">D’abord, vous.</h1>
+                        <p className="mt-4 max-w-xl text-base leading-7 text-[#526079]">On va passer un peu de temps ensemble. Autant commencer par votre prénom, non ?</p>
                         <div className="mt-9 grid gap-5 sm:grid-cols-2">
                           <label className="block text-sm font-medium text-[#172033]">Prénom
                             <input autoComplete="given-name" value={profile.firstName} maxLength={80}
@@ -190,9 +219,9 @@ export function OnboardingStages({
                     )}
                     {step === 1 && (
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Votre objectif professionnel</p>
-                        <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">{firstName ? `${firstName}, quelle est votre prochaine étape ?` : "Quelle est votre prochaine étape ?"}</h1>
-                        <p className="mt-4 text-base leading-7 text-[#526079]">Choisissez ce qui décrit le mieux votre situation. Votre parcours s’adaptera à cet objectif.</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">La suite de votre histoire</p>
+                        <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">{firstName ? `${firstName}, on vise quoi ensuite ?` : "On vise quoi ensuite ?"}</h1>
+                        <p className="mt-4 text-base leading-7 text-[#526079]">Premier job, nouveau défi ou prochain palier ? À vous de tracer la suite.</p>
                         <div className="mt-8 space-y-3" role="radiogroup" aria-label="Objectif professionnel principal">
                           {professionalOptions.map(({ value, title, detail, icon: Icon }) => {
                             const selected = profile.professionalGoal === value;
@@ -209,9 +238,9 @@ export function OnboardingStages({
                     )}
                     {step === 2 && (
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Un accompagnement sur mesure</p>
-                        <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">Sur quoi aimeriez-vous progresser ?</h1>
-                        <p className="mt-4 text-base leading-7 text-[#526079]">Sélectionnez jusqu’à trois priorités. Vous pourrez les modifier à tout moment.</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">On affine le programme</p>
+                        <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">Quel est votre prochain déclic ?</h1>
+                        <p className="mt-4 text-base leading-7 text-[#526079]">Choisissez vos trois priorités du moment. Aucun choix n’est gravé dans le marbre.</p>
                         <div className="mt-8 grid gap-3 sm:grid-cols-2">
                           {preparationOptions.map(({ value, title, detail }) => {
                             const selected = profile.preparationGoals.includes(value);
@@ -229,9 +258,9 @@ export function OnboardingStages({
                     )}
                     {step === 3 && (
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Dernière étape</p>
-                        <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">Dans quelle langue souhaitez-vous vous entraîner ?</h1>
-                        <p className="mt-4 max-w-lg text-base leading-7 text-[#526079]">Choisissez votre langue de préparation. Vous pourrez la changer avant chaque entretien.</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Dernier petit réglage</p>
+                        <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">On se parle dans quelle langue ?</h1>
+                        <p className="mt-4 max-w-lg text-base leading-7 text-[#526079]">Français ou anglais ? À vous de choisir le terrain de jeu. Vous pourrez changer avant chaque entretien.</p>
                         <div className="mt-10 grid gap-4 sm:grid-cols-2" role="radiogroup" aria-label="Langue préférée">
                           {([{ value: "fr", title: "Français", subtitle: "Préparer mes entretiens en français" }, { value: "en", title: "English", subtitle: "Practice my interviews in English" }] as const).map((item) => {
                             const selected = profile.preferredLocale === item.value;
@@ -251,13 +280,13 @@ export function OnboardingStages({
               <div className="mt-10 border-t border-[#E8EDF5] pt-6">
                 {fieldError && <p role="alert" className="mb-4 text-sm text-[#B42318]">{fieldError}</p>}
                 <div className="flex items-center justify-between gap-4">
-                  <button type="button" onClick={() => { setFieldError(""); setStep((current) => Math.max(0, current - 1)); }}
-                    disabled={step === 0} className="inline-flex min-h-12 items-center gap-2 rounded-xl px-4 text-sm font-semibold text-[#526079] transition hover:bg-[#F1F4F9] disabled:cursor-not-allowed disabled:opacity-30">
+                  <button type="button" onClick={previous}
+                    disabled={step === 0 && !returnToRecap} className="inline-flex min-h-12 items-center gap-2 rounded-xl px-4 text-sm font-semibold text-[#526079] transition hover:bg-[#F1F4F9] disabled:cursor-not-allowed disabled:opacity-30">
                     <ArrowLeft size={17} aria-hidden="true" /> Retour
                   </button>
                   <button type="button" onClick={next} disabled={!canProceed}
                     className="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl bg-[#2947A3] px-6 text-sm font-semibold text-white transition hover:bg-[#1E3586] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3] disabled:cursor-not-allowed disabled:opacity-50">
-                    {step === steps.length - 1 ? "Terminer mon profil" : "Continuer"}
+                    {returnToRecap ? "Enregistrer et revenir" : step === steps.length - 1 ? "C’est parti !" : "Continuer"}
                     {step === steps.length - 1 ? <Check size={17} aria-hidden="true" /> : <ChevronRight size={17} aria-hidden="true" />}
                   </button>
                 </div>
@@ -265,19 +294,54 @@ export function OnboardingStages({
             </>
           ) : (
             <motion.div initial={animated ? { opacity: 0, scale: 0.96 } : false} animate={{ opacity: 1, scale: 1 }}
-              className="flex flex-1 flex-col justify-center py-14">
-              <div className="grid h-16 w-16 place-items-center rounded-2xl bg-[#E9F5F0] text-[#19715B]"><Check size={30} aria-hidden="true" /></div>
-              <p className="mt-9 text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Votre espace est prêt</p>
-              <h1 className="mt-4 text-[34px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[43px]">Bienvenue, {firstName}.</h1>
-              <p className="mt-5 max-w-lg text-base leading-8 text-[#526079]">Nous avons maintenant une meilleure idée de ce que vous souhaitez accomplir. Place à la pratique, à votre rythme.</p>
-              <div className="mt-10 flex flex-wrap gap-3">
+              className="flex flex-1 flex-col justify-center py-8">
+              <motion.div initial={animated ? { scale: 0.72, rotate: -10, opacity: 0 } : false}
+                animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 230, damping: 18 }}
+                className="grid h-14 w-14 place-items-center rounded-[20px] bg-[#E7F5EF] text-[#19715B] shadow-[0_10px_30px_rgba(25,113,91,0.12)]">
+                <Check size={28} aria-hidden="true" />
+              </motion.div>
+              <p className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Et voilà, c’est dans la boîte.</p>
+              <h1 className="mt-3 text-[34px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[43px]">Bienvenue, {firstName} !</h1>
+              <p className="mt-3 max-w-xl text-base leading-7 text-[#526079]">On a déjà de quoi préparer la suite. Voici votre point de départ.</p>
+              <motion.div initial={animated ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: animated ? 0.48 : 0, delay: animated ? 0.15 : 0 }}
+                className="mt-6 grid gap-3 sm:grid-cols-2">
+                <button type="button" onClick={() => editStep(1)}
+                  className="rounded-2xl border border-white/90 bg-white/70 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]">
+                  <span className="flex items-center justify-between text-xs font-semibold text-[#66748A]">VOTRE CAP <ArrowRight size={15}/></span>
+                  <span className="mt-2 block text-sm font-semibold text-[#172033]">{professionalLabel}</span>
+                </button>
+                <button type="button" onClick={() => editStep(3)}
+                  className="rounded-2xl border border-white/90 bg-white/70 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]">
+                  <span className="flex items-center justify-between text-xs font-semibold text-[#66748A]">VOTRE LANGUE <ArrowRight size={15}/></span>
+                  <span className="mt-2 block text-sm font-semibold text-[#172033]">{profile.preferredLocale === "fr" ? "Français" : "English"}</span>
+                </button>
+                <button type="button" onClick={() => editStep(2)}
+                  className="rounded-2xl border border-white/90 bg-white/70 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3] sm:col-span-2">
+                  <span className="flex items-center justify-between text-xs font-semibold text-[#66748A]">VOS AXES DE PROGRÈS <ArrowRight size={15}/></span>
+                  <span className="mt-3 flex flex-wrap gap-2">{preparationLabels.map((label) =>
+                    <span key={label} className="rounded-full border border-[#DCE5F7] bg-[#F2F6FD] px-3 py-1.5 text-xs font-medium text-[#2947A3]">{label}</span>
+                  )}</span>
+                </button>
+              </motion.div>
+              <motion.div initial={animated ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: animated ? 0.45 : 0, delay: animated ? 0.28 : 0 }}
+                className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#DDE5F2] bg-white/55 p-4">
+                <div>
+                  <p className="text-sm font-semibold text-[#172033]">Prêt à passer à la pratique ?</p>
+                  <p className="mt-1 text-xs leading-5 text-[#526079]">Le prochain écran sera votre espace personnel.</p>
+                </div>
                 <button type="button" onClick={() => router.push("/")}
-                  className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#2947A3] px-6 text-sm font-semibold text-white hover:bg-[#1E3586]">
+                  className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#2947A3] px-5 text-sm font-semibold text-white transition hover:bg-[#1E3586]">
                   Découvrir mon espace <ArrowRight size={17} aria-hidden="true" />
                 </button>
-                <button type="button" onClick={restart} className="min-h-12 rounded-xl px-5 text-sm font-semibold text-[#526079] hover:bg-[#F1F4F9]">Modifier mes réponses</button>
+              </motion.div>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button type="button" onClick={() => editStep(0)} className="min-h-10 rounded-xl px-3 text-sm font-semibold text-[#526079] hover:bg-white/80">Modifier mon identité</button>
+                <button type="button" onClick={() => editStep(2)} className="min-h-10 rounded-xl px-3 text-sm font-semibold text-[#526079] hover:bg-white/80">Modifier mes priorités</button>
               </div>
-              <p className="mt-6 text-xs leading-6 text-[#78859B]">Aperçu UX : vos réponses ne sont pas encore enregistrées dans Supabase.</p>
+              <p className="mt-2 text-xs leading-5 text-[#78859B]">Aperçu UX : ces informations ne sont pas encore enregistrées dans Supabase.</p>
             </motion.div>
           )}
         </section>
