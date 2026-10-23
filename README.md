@@ -23,6 +23,22 @@ python3 dev/local-preview/server.py
 
 Ouvrir **http://127.0.0.1:8765/e2e** pour suivre le parcours inscription → onboarding → profil → configuration RH/technique → entretien guidé ou IA → récapitulatif. Le mode démo est intégralement local ; une connexion facultative à Supabase Auth permet de tester l'enregistrement réel du profil (mais pas encore une simulation IA, puisque les 120 questions restent en brouillon). Voir [guide E2E](docs/NEW_USER_E2E.md) et [démarrage IA locale](docs/S2-04_AI_LOCAL_SIMULATION.md).
 
+### Simulation IA avec Groq
+
+Si vous disposez d'une clé Groq, le simulateur sait maintenant utiliser Groq directement :
+
+\`\`\`bash
+git pull origin main
+read -s "GROQ_API_KEY?Clé Groq : "
+echo
+export GROQ_API_KEY
+export AI_PROVIDER=groq
+python3 dev/local-preview/server.py
+\`\`\`
+
+Ouvrir <http://127.0.0.1:8765/e2e>. Le parcours offre des relances IA et un bilan qualitatif avec \`llama-3.3-70b-versatile\` après consentement. La clé reste sur le serveur local et les 120 questions demeurent en brouillon dans Supabase. [Guide Groq / OpenAI](docs/S2-04_AI_LOCAL_SIMULATION.md).
+
+
 ## Tester en local sur Mac
 
 Un **aperçu fonctionnel du corpus S2-03 et du parcours de questions S2-04** est disponible sans dépendances externes :
