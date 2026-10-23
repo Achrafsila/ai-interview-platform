@@ -61,7 +61,7 @@ export default function InterviewPage(){
  async function start(){
   if(!config){setError("Configuration introuvable. Revenez à la préparation pour choisir votre entretien.");return;}
   setError("");setState("thinking");
-  try{const data=await send("start",{family:config.family,locale:config.locale,goals:config.goals,count:config.count,job_description:config.job_description});
+  try{const data=await send("start",{family:config.family,locale:config.locale,goals:config.goals,count:config.count,warm_opening:true,job_description:config.job_description});
    setSession(data.session_id||"");setResult(data);speak(data.question?.prompt||"",config.locale);
   }catch(e){setError(e instanceof Error?e.message:"Impossible de lancer la simulation");setState("error");}
  }
