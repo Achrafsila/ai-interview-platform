@@ -4,165 +4,138 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
-import { Activity, ArrowRight, ArrowUpRight, BookOpen, BrainCircuit, Check, ChevronRight, CirclePlay, Compass, GraduationCap, LayoutDashboard, LogOut, MessageSquareText, Sparkles, Target, TrendingUp, UserRound } from "lucide-react";
+import { ArrowRight, BookOpen, BrainCircuit, Check, ChevronRight, CirclePlay, GraduationCap, LayoutDashboard, LogOut, MessageSquareText, Play, Sparkles, Target, TrendingUp, UserRound, WandSparkles, CalendarDays } from "lucide-react";
 import { getAuthClient } from "@/lib/supabase-auth";
 import { getAppRole, readProfile } from "@/lib/profile";
-import { employmentOptions, experienceOptions, professionalOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal } from "@/components/ui/onboarding-stages";
+import { employmentOptions, professionalOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal } from "@/components/ui/onboarding-stages";
+import { InterviewScoreGauge } from "@/components/ui/interview-score-gauge";
 
-const goalNames: Record<ProfessionalGoal, string> = Object.fromEntries(professionalOptions.map((item) => [item.value, item.title])) as Record<ProfessionalGoal, string>;
-const priorityNames: Record<PreparationGoal, string> = {
-  confidence: "Confiance en soi",
-  answer_structure: "Structure des réponses",
-  communication: "Communication",
-  domain_knowledge: "Connaissances métier",
-  stress_management: "Gestion du stress",
-};
-const card = "rounded-[24px] border border-[#CDD8F1] bg-white/75 shadow-[0_16px_45px_rgba(77,102,153,.08)] backdrop-blur-xl";
-
+const goalNames = Object.fromEntries(professionalOptions.map(item => [item.value,item.title])) as Record<ProfessionalGoal,string>;
+const priorityNames: Record<PreparationGoal,string> = { confidence:"Confiance en soi", answer_structure:"Structure des réponses", communication:"Communication",domain_knowledge:"Connaissances métier",stress_management:"Gestion du stress" };
+const panel = "rounded-[24px] border border-[#E0E5F1] bg-white/90 shadow-[0_12px_36px_rgba(51,76,133,.055)]";
+const skillTones = [
+  {bg:"bg-[#E4F6F1]",ink:"text-[#17836C]",border:"border-[#C4E9DD]"},
+  {bg:"bg-[#F2EAFE]",ink:"text-[#7153B9]",border:"border-[#DED1F7]"},
+  {bg:"bg-[#E8F2FF]",ink:"text-[#315EC0]",border:"border-[#CFE0FA]"},
+];
 export default function DashboardPage() {
-  const router = useRouter();
-  const reducedMotion = useReducedMotion();
-  const [profile, setProfile] = useState<OnboardingProfile | null | undefined>(undefined);
-  const [loadError, setLoadError] = useState("");
-
-  useEffect(() => {
-    let active = true;
-    async function load() {
-      try {
-        const client = getAuthClient();
-        if (!client) throw new Error("Supabase n’est pas configuré.");
-        const { data: { user }, error } = await client.auth.getUser();
-        if (error) throw error;
-        if (!user) { router.replace("/login"); return; }
-        const role = await getAppRole(client, user.id);
-        if (role !== "user") { router.replace("/role-preview"); return; }
-        const saved = await readProfile(client, user.id);
-        if (!saved?.completed) { router.replace("/onboarding"); return; }
-        if (active) setProfile(saved.profile);
-      } catch {
-        if (active) setLoadError("Impossible de charger votre espace. Veuillez réessayer.");
-      }
-    }
-    void load();
-    return () => { active = false; };
-  }, [router]);
-
-  async function signOut() {
-    const client = getAuthClient();
-    await client?.auth.signOut();
-    router.replace("/login");
-    router.refresh();
-  }
-
-  const appear = (delay = 0) => ({
-    initial: reducedMotion ? false as const : { opacity: 0, y: 22 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: .52, delay, ease: "easeOut" as const },
-  });
-  const situation = profile?.employmentStatus ? employmentOptions.find((x) => x.value === profile.employmentStatus)?.title : null;
-  const experience = profile?.experienceLevel ? experienceOptions.find((x) => x.value === profile.experienceLevel)?.title : null;
-
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-[#EDF3FE] text-[#172033] [color-scheme:light]">
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_56%_70%_at_92%_10%,rgba(156,174,246,.32),transparent_75%),radial-gradient(ellipse_65%_75%_at_5%_90%,rgba(189,211,254,.33),transparent_72%)]" />
-      <div className="relative mx-auto flex min-h-screen max-w-[1600px]">
-        <aside className="sticky top-0 hidden h-screen w-[246px] shrink-0 flex-col border-r border-[#BFCEEA] bg-[#F8FAFF]/80 px-4 py-7 lg:flex">
-          <Link href="/" className="flex items-center gap-3 px-3 text-base font-bold tracking-tight">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#E1E9FF] shadow-[0_8px_24px_rgba(55,99,219,.3)]"><Sparkles size={19}/></span>
-            <span>Interview<span className="block text-xs font-medium tracking-[.14em] text-[#4B64A7]">PLATFORM</span></span>
-          </Link>
-          <p className="mt-12 px-3 text-[10px] font-bold uppercase tracking-[.2em] text-[#52678C]">Espace candidat</p>
-          <nav aria-label="Navigation candidat" className="mt-4 space-y-1.5">
-            <Link href="/dashboard" aria-current="page" className="flex min-h-12 items-center gap-3 rounded-xl border border-[#8C9FEE] bg-[#E4EAFE] px-4 text-sm font-semibold text-[#2947A3]"><LayoutDashboard size={18}/> Vue d’ensemble</Link>
-            <Link href="/preparation" className="flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm text-[#52678C] transition hover:bg-white/75 hover:text-[#2947A3]"><CirclePlay size={18}/> Simulation</Link>
-            <Link href="/onboarding" className="flex min-h-12 items-center gap-3 rounded-xl px-4 text-sm text-[#52678C] transition hover:bg-white/75 hover:text-[#2947A3]"><UserRound size={18}/> Mon profil</Link>
-          </nav>
-          <div className="mt-auto rounded-2xl border border-[#CFC6FA] bg-[#F0EBFF] p-4">
-            <div className="mb-2 flex items-center gap-2 text-xs font-bold text-[#6550AD]"><BrainCircuit size={16}/> Votre coach IA</div>
-            <p className="text-xs leading-6 text-[#465F84]">Votre premier conseil personnalisé arrivera après votre simulation.</p>
-          </div>
-          <button onClick={signOut} className="mt-5 flex min-h-11 items-center gap-3 rounded-xl px-4 text-sm text-[#52678C] transition hover:bg-[#E1E9FA] hover:text-[#2947A3]"><LogOut size={17}/> Se déconnecter</button>
-        </aside>
-
-        <div className="min-w-0 flex-1">
-          <header className="flex min-h-[82px] items-center justify-between gap-3 border-b border-[#B9C8E6] px-5 sm:px-9 lg:px-12">
-            <div className="flex items-center gap-3 text-sm font-semibold lg:hidden"><Sparkles className="text-[#3656A1]" size={20}/> Interview Platform</div>
-            <div className="hidden items-center gap-2 text-sm text-[#52678C] lg:flex"><LayoutDashboard size={15}/> Espace candidat <ChevronRight size={14}/> <span className="text-[#172033]">Vue d’ensemble</span></div>
-            <div className="flex items-center gap-3">
-              <span className="hidden rounded-full border border-[#B7C9EA] bg-white/60 px-3 py-1.5 text-xs font-medium text-[#52678C] sm:inline-flex"><span className="mr-2 h-2 w-2 rounded-full bg-[#67C8AF]"/> Espace personnel</span>
-              <Link href="/onboarding" aria-label="Ouvrir mon profil" className="grid h-10 w-10 place-items-center rounded-full border border-[#B9CAEC] bg-[#DFE8FA] text-[#2947A3] transition hover:bg-white"><UserRound size={18}/></Link>
-              <button onClick={signOut} aria-label="Se déconnecter" className="grid h-10 w-10 place-items-center rounded-full border border-[#B9C9E6] text-[#52678C] transition hover:bg-white lg:hidden"><LogOut size={17}/></button>
-            </div>
-          </header>
-
-          <div className="w-full px-5 pb-20 pt-9 sm:px-9 lg:px-10 lg:pt-12">
-            {loadError ? <div role="alert" className={card + " p-8"}>{loadError} <button onClick={() => window.location.reload()} className="ml-3 font-semibold text-[#9CB9FF] underline">Réessayer</button></div> :
-              profile === undefined ? <div role="status" className="space-y-5 animate-pulse"><div className="h-10 w-2/3 rounded-xl bg-[#DCE6F6]"/><div className="h-56 rounded-3xl bg-[#DCE6F6]"/><div className="h-36 rounded-3xl bg-[#DCE6F6]"/></div> :
-              profile === null ? <section className={card + " p-10"}><h1 className="text-3xl font-bold">Bienvenue dans votre espace</h1><p className="mt-4 text-[#526688]">Complétez votre profil pour personnaliser votre première simulation.</p><Link className="mt-8 inline-flex rounded-xl bg-[#5278ED] px-6 py-3 font-semibold text-white" href="/onboarding">Compléter mon profil <ArrowRight className="ml-2"/></Link></section> :
-              <>
-                <motion.section {...appear()} className="mb-8">
-                  <div className="mb-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[.17em] text-[#3656A1]"><span className="h-1.5 w-1.5 rounded-full bg-[#7AA6FF]"/> Votre espace de préparation</div>
-                  <h1 className="text-[clamp(2rem,3.7vw,3.55rem)] font-bold leading-[1.1] tracking-[-.055em]">{profile.firstName ? `Bonjour, ${profile.firstName}.` : "Bienvenue."} <span className="block bg-gradient-to-r from-[#172033] via-[#2947A3] to-[#637CDF] bg-clip-text text-transparent">Votre prochain entretien commence ici.</span></h1>
-                  <p className="mt-5 max-w-2xl text-sm leading-7 text-[#405574] sm:text-base">Un espace pour vous entraîner, progresser et aborder chaque entretien avec plus de confiance.</p>
-                </motion.section>
-
-                <div className="grid gap-5 xl:grid-cols-[1.56fr_.84fr]">
-                  <motion.section {...appear(.08)} className="group relative flex min-h-[340px] flex-col overflow-hidden rounded-[28px] border border-[#BBC8F7] bg-[linear-gradient(132deg,#EDF1FF_0%,#E2E8FF_58%,#EDE6FF_100%)] p-7 shadow-[0_18px_55px_rgba(76,100,155,.14)] sm:p-9">
-                    <div aria-hidden className="pointer-events-none absolute -right-20 -top-32 h-[390px] w-[390px] rounded-full bg-[#8C79EE]/25 blur-[72px] transition duration-700 group-hover:scale-125"/>
-                    <div aria-hidden className="pointer-events-none absolute bottom-[-110px] right-[-40px] h-[260px] w-[260px] rounded-full border border-[#7290E8]/15 shadow-[0_0_0_38px_rgba(104,129,223,.04),0_0_0_80px_rgba(104,129,223,.03)]"/>
-                    <div className="relative z-10">
-                      <span className="inline-flex items-center gap-2 rounded-full border border-[#B1C5EE] bg-white/55 px-3 py-1.5 text-xs font-bold text-[#3656A1]"><Sparkles size={14}/> Votre première action</span>
-                      <h2 className="mt-6 max-w-[520px] text-[clamp(1.9rem,3.1vw,2.8rem)] font-semibold leading-[1.14] tracking-[-.04em]">Passez de la théorie à la pratique.</h2>
-                      <p className="mt-4 max-w-[470px] text-sm leading-7 text-[#465A7C]">Choisissez un entretien RH ou technique. Nous adapterons votre préparation à votre objectif et à vos priorités.</p>
-                    </div>
-                    <div className="relative z-10 mt-auto flex flex-wrap items-center gap-4 pt-9">
-                      <Link href="/preparation" className="group/cta inline-flex min-h-14 items-center justify-center gap-3 rounded-2xl bg-[#2947A3] px-6 text-sm font-extrabold text-white shadow-[0_10px_30px_rgba(2,8,28,.22)] transition duration-300 hover:-translate-y-1 hover:bg-[#3D5AC3] hover:shadow-[0_16px_35px_rgba(107,147,255,.30)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">Préparer mon premier entretien <ArrowUpRight size={19} className="transition group-hover/cta:translate-x-1 group-hover/cta:-translate-y-1"/></Link>
-                      <span className="rounded-full bg-white/65 px-3 py-2 text-xs font-medium text-[#566C95]">À votre rythme · Sans pression</span>
-                    </div>
-                  </motion.section>
-
-                  <motion.section {...appear(.15)} className="flex flex-col rounded-[24px] border border-[#C8BEF3] bg-[#F4F0FF]/85 p-7 shadow-[0_16px_45px_rgba(110,90,170,.07)] sm:p-8">
-                    <div className="flex items-center justify-between"><span className="text-xs font-bold uppercase tracking-[.15em] text-[#52678C]">Votre objectif</span><span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#E1D9FF] text-[#7254CA]"><Target size={21}/></span></div>
-                    <h2 className="mt-7 text-2xl font-semibold tracking-tight">{goalNames[profile.professionalGoal]}</h2>
-                    <p className="mt-4 text-sm leading-7 text-[#526688]">Chaque séance sera adaptée à votre situation et aux compétences que vous souhaitez renforcer.</p>
-                    {(situation || experience) && <div className="mt-6 flex flex-wrap gap-2">{situation && <span className="rounded-lg border border-[#B6C7E9] bg-white/75 px-3 py-2 text-xs text-[#526688]">{situation}</span>}{experience && <span className="rounded-lg border border-[#B6C7E9] bg-white/75 px-3 py-2 text-xs text-[#526688]">{experience}</span>}</div>}
-                    <p className="mt-auto pt-6 text-xs leading-6 text-[#52678C]">Objectif enregistré dans votre profil candidat.</p>
-                  </motion.section>
-                </div>
-
-                <motion.section {...appear(.22)} aria-label="Tableau de bord de progression" className="mt-7">
-                  <div className="mb-4 flex items-center justify-between gap-3"><h2 className="text-xl font-semibold tracking-[-.02em]">Votre progression</h2><span className="text-xs text-[#52678C]">Votre point de départ</span></div>
-                  <div className="grid gap-4 sm:grid-cols-3">
-                    {[
-                      { label: "Simulations réalisées", value: "0", detail: "Votre parcours commence ici", icon: MessageSquareText, tone: "blue" },
-                      { label: "Score de préparation", value: "—", detail: "Disponible après votre 1er entretien", icon: Activity, tone: "mint" },
-                      { label: "Évolution", value: "—", detail: "Suivez vos progrès au fil des séances", icon: TrendingUp, tone: "amber" },
-                    ].map(({label,value,detail,icon:Icon,tone}) => <div key={label} className={`group rounded-[24px] border p-6 shadow-[0_12px_30px_rgba(65,85,140,.06)] transition duration-300 hover:-translate-y-1 ${tone === "mint" ? "border-[#A8DFD2] bg-[#E8F9F3] hover:bg-[#DBF5EB]" : tone === "amber" ? "border-[#F2D5A4] bg-[#FFF5E5] hover:bg-[#FCEFD9]" : "border-[#B8C9F7] bg-[#EDF2FF] hover:bg-[#E5EDFF]"}`}><div className="flex items-center justify-between"><span className="text-xs font-semibold uppercase tracking-[.08em] text-[#52678C]">{label}</span><span className={`grid h-10 w-10 place-items-center rounded-2xl ${tone === "mint" ? "bg-[#C9EEE1] text-[#197F68]" : tone === "amber" ? "bg-[#FBE4BF] text-[#A56C17]" : "bg-[#DBE4FF] text-[#3456D7]"}`}><Icon size={20}/></span></div><div className="mt-6 text-[40px] font-bold leading-none tracking-[-.05em] text-[#172033]">{value}</div><p className="mt-3 text-xs leading-5 text-[#52678C]">{detail}</p></div>)}
-                  </div>
-                </motion.section>
-
-                <div className="mt-7 grid gap-5 xl:grid-cols-[1.15fr_.85fr]">
-                  <motion.section {...appear(.29)} className="rounded-[24px] border border-[#B7DFD5] bg-[#F2FCF8]/85 p-7 shadow-[0_16px_45px_rgba(77,153,129,.06)] sm:p-8">
-                    <div className="flex items-center justify-between gap-3"><h2 className="flex items-center gap-3 text-lg font-semibold"><Target className="text-[#21866F]" size={21}/> Vos priorités</h2><span className="text-xs font-medium text-[#52678C]">Préférences enregistrées</span></div>
-                    <p className="mt-3 text-sm leading-6 text-[#526688]">Ces objectifs seront préremplis lors de votre simulation. Vous pourrez les ajuster pour chaque séance.</p>
-                    <div className="mt-6 space-y-3">{profile.preparationGoals.map((key,index) => <div key={key} className="flex items-center gap-3 rounded-xl border border-[#C6E6DD] bg-white/70 px-4 py-3.5"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[#D9F4EA] text-xs font-bold text-[#21866F]">{String(index+1).padStart(2,"0")}</span><span className="flex-1 text-sm font-medium text-[#172033]">{priorityNames[key]}</span><Check size={16} className="text-[#269D81]"/></div>)}</div>
-                  </motion.section>
-                  <motion.section {...appear(.36)} className="flex flex-col rounded-[24px] border border-[#D5C9FA] bg-[#F6F2FF]/90 p-7 shadow-[0_16px_45px_rgba(124,94,176,.07)] sm:p-8">
-                    <h2 className="flex items-center gap-3 text-lg font-semibold"><BrainCircuit className="text-[#7254CA]" size={22}/> Votre coach IA</h2>
-                    <div className="mt-7 flex flex-1 flex-col justify-center rounded-2xl border border-dashed border-[#CEC0F7] bg-white/60 px-5 py-7">
-                      <span className="grid h-11 w-11 place-items-center rounded-xl bg-[#E4DBFF] text-[#7254CA]"><Compass size={22}/></span>
-                      <h3 className="mt-5 text-lg font-semibold">Vos premiers conseils arrivent bientôt.</h3>
-                      <p className="mt-3 text-sm leading-7 text-[#526688]">Après votre première simulation, votre coach pourra identifier vos points forts et vous proposer une prochaine action.</p>
-                    </div>
-                    <p className="mt-6 text-xs leading-6 text-[#52678C]">Votre analyse sera disponible dans cet espace.</p>
-                  </motion.section>
-                </div>
-
-                <div className="mt-9 flex flex-wrap items-center justify-between gap-3 border-t border-[#B9C8E6] pt-6 text-xs leading-6 text-[#52678C]"><span className="flex items-center gap-2"><BookOpen size={15}/> Aucun score fictif : votre suivi apparaîtra après la connexion des simulations.</span><span className="flex items-center gap-2"><GraduationCap size={15}/> Un espace qui évolue avec vous</span></div>
-              </>}
-          </div>
-        </div>
+ const router=useRouter();
+ const reducedMotion=useReducedMotion();
+ const [profile,setProfile]=useState<OnboardingProfile | null | undefined>(undefined);
+ const [loadError,setLoadError]=useState("");
+ useEffect(()=>{
+   let active=true;
+   async function load(){
+     try {
+       const client=getAuthClient();
+       if(!client) throw new Error("Supabase n’est pas configuré.");
+       const {data:{user},error}=await client.auth.getUser();
+       if(error) throw error;
+       if(!user){router.replace("/login");return;}
+       const role=await getAppRole(client,user.id);
+       if(role!=="user"){router.replace("/role-preview");return;}
+       const saved=await readProfile(client,user.id);
+       if(!saved?.completed){router.replace("/onboarding");return;}
+       if(active)setProfile(saved.profile);
+     }catch{if(active)setLoadError("Impossible de charger votre espace. Veuillez réessayer.");}
+   }
+   void load();return ()=>{active=false;};
+ },[router]);
+ async function signOut(){const client=getAuthClient();await client?.auth.signOut();router.replace("/login");router.refresh();}
+ const motionIn=(delay:number)=>({initial:reducedMotion?false as const:{opacity:0,y:24},animate:{opacity:1,y:0},transition:{duration:.56,delay,ease:"easeOut" as const}});
+ const situation=profile?.employmentStatus?employmentOptions.find(x=>x.value===profile.employmentStatus)?.title:null;
+ return <main className="relative min-h-screen overflow-hidden bg-[#F5F7FC] text-[#172033]">
+   <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_65%_60%_at_88%_2%,rgba(199,213,255,.43),transparent_75%)]" aria-hidden/>
+   <div className="relative mx-auto flex min-h-screen max-w-[1640px]">
+    <aside className="sticky top-0 hidden h-screen w-[212px] shrink-0 flex-col border-r border-[#E0E6F1] bg-white/75 px-4 py-6 lg:flex">
+      <Link href="/" className="flex items-center gap-2.5 px-2 text-[14px] font-extrabold tracking-tight"><span className="grid size-10 place-items-center rounded-[13px] bg-[#E2E9FF] text-[#3E56C1]"><Sparkles size={21}/></span><span>Interview<span className="block text-[10px] font-semibold tracking-[.15em] text-[#6779A2]">PLATFORM</span></span></Link>
+      <p className="mb-3 mt-12 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-[#8593AF]">Espace candidat</p>
+      <nav aria-label="Navigation candidat" className="space-y-1.5">
+       <Link href="/dashboard" aria-current="page" className="flex min-h-12 items-center gap-3 rounded-xl bg-[#E8EDFF] px-3.5 text-sm font-bold text-[#3A55B9]"><LayoutDashboard size={18}/> Vue d’ensemble</Link>
+       <Link href="/preparation" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-medium text-[#62718D] transition hover:bg-[#F0F4FE] hover:text-[#3A55B9]"><CirclePlay size={18}/> Simulation</Link>
+       <Link href="/onboarding" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-medium text-[#62718D] transition hover:bg-[#F0F4FE] hover:text-[#3A55B9]"><UserRound size={18}/> Mon profil</Link>
+      </nav>
+      <div className="mt-auto rounded-2xl border border-[#E4D9FA] bg-[#F5EFFD] p-4"><div className="flex items-center gap-2 text-xs font-bold text-[#7055B3]"><BrainCircuit size={17}/> Coach IA</div><p className="mt-2 text-xs leading-6 text-[#695F83]">Des conseils personnalisés après votre premier entretien.</p></div>
+      <button onClick={signOut} className="mt-4 flex min-h-11 items-center gap-3 rounded-xl px-3.5 text-sm text-[#71809A] transition hover:bg-[#F0F4FE]"><LogOut size={17}/> Se déconnecter</button>
+    </aside>
+    <div className="min-w-0 flex-1">
+     <header className="flex min-h-[78px] items-center justify-between gap-4 border-b border-[#E1E6F1] bg-white/55 px-5 sm:px-8 lg:px-9">
+      <div className="flex items-center gap-2 text-xs font-semibold text-[#70819F]"><LayoutDashboard size={17} className="text-[#4770D8]"/><span className="hidden sm:inline">Espace candidat</span><ChevronRight size={13} className="hidden sm:inline"/><span className="text-[#172033]">Vue d’ensemble</span></div>
+      <div className="flex items-center gap-3">
+       <span className="hidden rounded-full bg-[#E5F6EF] px-3 py-2 text-xs font-semibold text-[#237B65] sm:inline-flex"><span className="mr-2 h-2 w-2 rounded-full bg-[#33B996]"/> Mon espace</span>
+       <Link href="/onboarding" aria-label="Accéder à mon profil" className="grid size-10 place-items-center rounded-full border border-[#CFDAF5] bg-white text-[#4665BD] transition hover:bg-[#EEF2FF]"><UserRound size={18}/></Link>
+       <button onClick={signOut} aria-label="Se déconnecter" className="grid size-10 place-items-center rounded-full border border-[#CFDAF5] text-[#4665BD] lg:hidden"><LogOut size={18}/></button>
       </div>
-    </main>
-  );
+     </header>
+     <div className="w-full px-5 pb-16 pt-9 sm:px-8 lg:px-9">
+      {loadError?<div role="alert" className={panel+" p-8"}>{loadError}<button onClick={()=>window.location.reload()} className="ml-3 font-semibold text-[#3456D7] underline">Réessayer</button></div>:
+       profile===undefined?<div role="status" className="space-y-4 animate-pulse"><div className="h-14 w-2/3 rounded-xl bg-[#E3E9F7]"/><div className="h-56 rounded-2xl bg-[#E3E9F7]"/><div className="h-40 rounded-2xl bg-[#E3E9F7]"/></div>:
+       profile===null?<section className={panel+" p-10"}><h1 className="text-3xl font-bold">Bienvenue dans votre espace</h1><p className="mt-3 text-[#61718F]">Complétez votre profil pour personnaliser votre préparation.</p><Link href="/onboarding" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-6 py-3 font-bold text-white">Compléter mon profil <ArrowRight size={17}/></Link></section>:
+       <>
+        <motion.section {...motionIn(0)} className="mb-7 flex flex-wrap items-end justify-between gap-5">
+         <div><p className="mb-2 text-[11px] font-extrabold uppercase tracking-[.18em] text-[#4D65BC]">Votre espace de préparation</p><h1 className="text-[clamp(2.2rem,3.6vw,3.6rem)] font-bold leading-[1.09] tracking-[-.055em]">Bonjour, {profile.firstName || "vous"}<span className="text-[#5272DF]">.</span></h1><p className="mt-3 max-w-2xl text-sm leading-7 text-[#60718F]">Une étape à la fois, développez vos compétences et préparez vos prochains entretiens.</p></div>
+        </motion.section>
+
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.65fr)_minmax(285px,.85fr)]">
+         <div className="space-y-4">
+          <motion.section {...motionIn(.08)} className="relative overflow-hidden rounded-[25px] border border-[#CBD4FA] bg-[linear-gradient(125deg,#EEF2FF,#E6EAFD_62%,#EDE7FF)] p-7 shadow-[0_12px_35px_rgba(76,93,158,.10)] sm:p-8">
+           <div className="pointer-events-none absolute -right-24 -top-32 size-80 rounded-full bg-[#A69DFC]/22 blur-3xl" aria-hidden/>
+           <div className="relative"><span className="inline-flex items-center gap-2 rounded-full border border-[#C1C8F6] bg-white/75 px-3 py-1.5 text-xs font-bold text-[#4D57B0]"><WandSparkles size={15}/> Votre prochaine étape</span>
+            <h2 className="mt-5 max-w-xl text-[clamp(1.7rem,2.5vw,2.5rem)] font-bold leading-[1.13] tracking-[-.04em]">Votre premier entretien commence ici.</h2>
+            <p className="mt-4 max-w-lg text-sm leading-7 text-[#5B6887]">Entraînez-vous en entretien RH ou technique, avec des questions adaptées à votre objectif.</p>
+            <div className="mt-7 flex flex-wrap items-center gap-3"><Link href="/preparation" className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#3456D7] px-5 text-sm font-bold text-white transition hover:bg-[#2644B9]"><Play size={17} fill="currentColor"/> Démarrer ma première simulation</Link><span className="text-xs font-medium text-[#687799]">Une préparation à votre rythme</span></div>
+           </div>
+          </motion.section>
+
+          <motion.section {...motionIn(.15)} aria-label="Votre progression" className="grid gap-3 sm:grid-cols-3">
+           {[
+            {label:"Simulations",value:"0",note:"Aucune séance réalisée",icon:MessageSquareText,tone:"border-[#C9D8F9] bg-[#EDF3FF] text-[#315EC0]"},
+            {label:"Score moyen",value:"—",note:"Après votre premier entretien",icon:Target,tone:"border-[#BFE6D8] bg-[#E9F9F2] text-[#17836C]"},
+            {label:"Progression",value:"—",note:"À suivre dans le temps",icon:TrendingUp,tone:"border-[#EDD9B8] bg-[#FFF5E7] text-[#A77025]"}
+           ].map(({label,value,note,icon:Icon,tone})=><div key={label} className={`rounded-[20px] border p-5 transition duration-300 hover:-translate-y-1 ${tone}`}><div className="flex items-center justify-between gap-2"><p className="text-xs font-bold">{label}</p><Icon size={20}/></div><div className="mt-5 text-4xl font-bold leading-none text-[#172033]">{value}</div><p className="mt-3 text-xs leading-5 text-[#66748E]">{note}</p></div>)}
+          </motion.section>
+
+          <motion.section {...motionIn(.22)} className={panel+" p-6 sm:p-7"}>
+           <div className="flex flex-wrap items-center justify-between gap-2"><div><h2 className="text-lg font-bold">Votre parcours de préparation</h2><p className="mt-1 text-xs text-[#73819A]">Un plan adapté à votre profil, étape par étape.</p></div><span className="rounded-full bg-[#E8F6EE] px-3 py-1.5 text-xs font-semibold text-[#218268]">Première étape</span></div>
+           <div className="mt-6 grid gap-3 md:grid-cols-3">
+            {[
+              {label:"Profil créé",detail:"Vos objectifs sont enregistrés",icon:Check,state:"done"},
+              {label:"Première simulation",detail:"Choisissez votre type d’entretien",icon:CirclePlay,state:"next"},
+              {label:"Analyse et conseils",detail:"Disponible après votre entretien",icon:BrainCircuit,state:"later"}
+            ].map(({label,detail,icon:Icon,state},i)=><div key={label} className={`relative rounded-2xl border p-4 ${state==="done"?"border-[#BFE3D5] bg-[#EEF9F3]":state==="next"?"border-[#C3D0FC] bg-[#F1F4FF]":"border-[#E4E8F0] bg-[#F8F9FC]"}`}><div className="mb-4 flex items-center justify-between"><span className="text-xs font-bold text-[#8898B2]">0{i+1}</span><Icon size={19} className={state==="done"?"text-[#229676]":state==="next"?"text-[#3C5BCA]":"text-[#A2ADC1]"}/></div><h3 className="text-sm font-bold">{label}</h3><p className="mt-2 text-xs leading-5 text-[#6A7992]">{detail}</p></div>)}
+           </div>
+          </motion.section>
+
+          <motion.section {...motionIn(.29)} className={panel+" p-6 sm:p-7"}>
+           <div className="flex items-center justify-between"><h2 className="text-lg font-bold">Vos axes de progression</h2><GraduationCap size={21} className="text-[#6E60C9]"/></div>
+           <p className="mt-2 text-xs leading-6 text-[#687993]">Choisis lors de votre onboarding, ils seront proposés par défaut dans vos simulations.</p>
+           <div className="mt-5 grid gap-3 sm:grid-cols-2">{profile.preparationGoals.map((key,i)=>{const tone=skillTones[i%skillTones.length];return <div key={key} className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 ${tone.border} ${tone.bg}`}><span className={`grid size-9 place-items-center rounded-xl bg-white/75 text-sm font-bold ${tone.ink}`}>{String(i+1).padStart(2,"0")}</span><span className="flex-1 text-sm font-semibold text-[#26334E]">{priorityNames[key]}</span><Check size={16} className={tone.ink}/></div>;})}</div>
+          </motion.section>
+         </div>
+
+         <div className="space-y-4">
+          <motion.section {...motionIn(.12)} className={panel+" p-6"}>
+           <div className="flex items-center gap-2"><span className="grid size-9 place-items-center rounded-xl bg-[#E5DFFF] text-[#7258C4]"><BrainCircuit size={19}/></span><div><h2 className="text-base font-bold">Votre coach IA</h2><p className="text-[11px] text-[#8B91A5]">Accompagnement personnalisé</p></div></div>
+           <div className="mt-5 rounded-2xl bg-[linear-gradient(135deg,#F4EDFF,#EDF1FF)] p-5"><div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/85 px-3 py-1.5 text-[11px] font-bold text-[#7456BA]"><Sparkles size={14}/> Première recommandation</div><h3 className="text-base font-bold leading-6">Commencez par une simulation.</h3><p className="mt-3 text-xs leading-6 text-[#626D8A]">Votre coach analysera vos réponses pour identifier vos points forts et les compétences à développer.</p></div>
+          </motion.section>
+          <motion.section {...motionIn(.2)} className={panel+" p-6"}>
+           <div className="flex items-center justify-between"><h2 className="text-base font-bold">Score de préparation</h2><Target size={19} className="text-[#3C68C9]"/></div>
+           <div className="mt-5"><InterviewScoreGauge score={null}/></div>
+          </motion.section>
+          <motion.section {...motionIn(.27)} className={panel+" p-6"}>
+           <div className="flex items-center justify-between"><h2 className="text-base font-bold">Votre profil</h2><UserRound size={19} className="text-[#5971C7]"/></div>
+           <p className="mt-4 text-lg font-bold">{profile.firstName} {profile.lastName}</p>
+           {situation&&<p className="mt-1 text-xs leading-5 text-[#76849C]">{situation}</p>}
+           <div className="mt-5 rounded-xl bg-[#F2F5FF] p-4"><p className="text-[10px] font-bold uppercase tracking-[.12em] text-[#6D78B0]">Objectif principal</p><p className="mt-2 text-sm font-semibold leading-6">{goalNames[profile.professionalGoal]}</p></div>
+           <Link href="/onboarding" className="mt-5 inline-flex min-h-10 items-center gap-2 text-sm font-bold text-[#3656C3] hover:underline">Consulter mon profil <ArrowRight size={16}/></Link>
+          </motion.section>
+          <motion.section {...motionIn(.33)} className="rounded-[24px] border border-[#F1DCB8] bg-[#FFF6E9] p-6"><div className="flex items-center gap-2 font-bold text-[#99651B]"><CalendarDays size={20}/> Vos prochaines séances</div><p className="mt-3 text-xs leading-6 text-[#77684E]">Aucune simulation planifiée pour le moment.</p><p className="mt-2 text-xs text-[#99836A]">Vous pourrez consulter votre historique ici après votre première session.</p></motion.section>
+         </div>
+        </div>
+        <p className="mt-8 flex items-center gap-2 text-xs leading-6 text-[#8390A6]"><BookOpen size={15}/> Données réelles uniquement : les résultats et l’historique apparaîtront après intégration des simulations.</p>
+       </>}
+     </div>
+    </div>
+   </div>
+ </main>;
 }
