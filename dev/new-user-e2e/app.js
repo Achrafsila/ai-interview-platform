@@ -61,7 +61,7 @@ const state = {
   mode:"demo", liveConfig:null, page:"welcome", authMode:"signup",
   user:null, accessToken:null, profile:null, selectedGoals:[],
   selection:null, questions:[], answers:[], index:0,
-  aiReady:false, aiSession:null, aiTotal:0, aiPhase:"primary",
+  aiReady:false, aiProvider:null, aiSession:null, aiTotal:0, aiPhase:"primary",
   aiCurrentQuestion:null, aiFeedback:null,
   simGoalSelections:{}, lastRenderedFamily:null,
 };
@@ -287,8 +287,9 @@ function renderSimulationGoals(){
 function renderAIMode(){
   const ai=$("simMode").value==="ai";
   $("aiPrivacyWrap").classList.toggle("hidden",!ai);
+  const providerLabel=state.aiProvider==="groq"?"Groq":state.aiProvider==="openai"?"OpenAI":"fournisseur IA";
   text("aiModeHint",ai
-    ?"Mode IA actif : réponses envoyées au fournisseur IA depuis le serveur local. Les questions brouillon restent non publiées."
+    ?"Mode IA actif avec "+providerLabel+" : les réponses sont envoyées au fournisseur depuis le serveur local, avec votre accord. Les questions brouillon restent non publiées."
     :"Démo guidée sans IA. Les questions brouillon sont visibles uniquement dans ce laboratoire local.");
 }
 function renderConfiguration(){
@@ -480,7 +481,12 @@ async function init(){
   try{
     const status=await jsonResponse("/api/ai/status");
     state.aiReady=Boolean(status.available);
-    $("simMode").querySelector('option[value="ai"]').disabled=!state.aiReady;
+    state.aiProvider=status.provider||null;
+    const aiOption=$("simMode").querySelector('option[value="ai"]');
+    aiOption.disabled=!state.aiReady;
+    aiOption.textContent=state.aiReady
+      ? "Entretien avec relances IA · "+(state.aiProvider==="groq"?"Groq":"OpenAI")
+      : "Entretien avec relances IA (clé API nécessaire)";
     if(state.aiReady){
       text("aiModeHint","L'IA est disponible. Vos réponses de test seront envoyées au fournisseur IA seulement avec votre accord.");
     }
