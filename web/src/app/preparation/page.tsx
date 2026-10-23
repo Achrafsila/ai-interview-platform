@@ -46,6 +46,16 @@ export default function PreparationPage() {
  const valid=step===0?kind!==null:step===1?description.length<=12000 && job.trim().length>0 && job.length<=120 && (!file||file.size<=5*1024*1024):priorities.length>=1&&priorities.length<=3;
  function advance(){if(!valid){setError("Vérifiez les informations de cette étape.");return;}setError("");if(step<2){setStep(s=>s+1);return;}setComplete(true);}
  function toggleGoal(v:PreparationGoal){setPriorities(prev=>prev.includes(v)?prev.filter(x=>x!==v):prev.length<3?[...prev,v]:prev);}
+ function launchLab(){
+  if(!kind||!job.trim()||priorities.length===0)return;
+  sessionStorage.setItem("interview-lab-config",JSON.stringify({
+   family:kind,locale:language,jobTitle:job.trim(),
+   job_description:[job.trim(),description.trim()].filter(Boolean).join(" — ").slice(0,3000),
+   goals:kind==="rh"?(priorities.includes("communication")?["communication"]:priorities.includes("answer_structure")?["answer_structure"]:["rh_parcours"]):["tech_reasoning"],
+   count:duration===10?1:duration===20?2:3
+  }));
+  router.push("/interview");
+ }
  const summary=[kind==="rh"?"Entretien RH":kind==="technical"?"Entretien technique":"",job.trim(),`${language==="fr"?"Français":"Anglais"} · ${duration} min · ${priorities.length} priorité(s)`];
  return <main className="min-h-screen bg-[#F5F7FC] text-[#172033]">
  <div className="mx-auto flex min-h-screen max-w-[1640px]">
@@ -108,9 +118,9 @@ export default function PreparationPage() {
       <motion.section key="recap" initial={reduced?false:{opacity:0,y:20}} animate={{opacity:1,y:0}} className={surface+" mt-4"}>
        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.15em] text-[#21856A]"><Check size={17}/> Configuration terminée</div><h2 className="mt-4 text-2xl font-bold">Tout est prêt pour votre simulation.</h2>
        <div className="mt-6 space-y-3 rounded-2xl bg-[#F2F5FD] p-5 text-sm"><p><strong>Format :</strong> {summary[0]}</p><p><strong>Poste :</strong> {summary[1]}</p><p><strong>Expérience :</strong> {experienceOptions.find(x=>x.value===experience)?.title??"Non précisée"}</p><p><strong>Langue et durée :</strong> {language==="fr"?"Français":"English"} · {duration} minutes</p><p><strong>Priorités :</strong> {priorities.map(x=>goalLabels[x]).join(", ")}</p>{description.trim()&&<p><strong>Fiche de poste :</strong> description saisie ({description.trim().length} caractères)</p>}{file&&<p><strong>Document :</strong> {file.name} (non analysé)</p>}</div>
-       <p className="mt-6 rounded-xl border border-[#DBE3F1] bg-[#F6F8FC] p-4 text-sm leading-6 text-[#586A88]">Votre préparation est configurée. Le lancement sera activé lorsque le moteur de simulation sera connecté à ce parcours.</p>
+       <p className="mt-6 rounded-xl border border-[#DBE3F1] bg-[#F6F8FC] p-4 text-sm leading-6 text-[#586A88]">Votre configuration peut être utilisée dans le laboratoire vocal local. Le mode de production et les évaluations enregistrées dans Supabase restent à développer.</p>
        {error&&<p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
-       <div className="mt-6 flex flex-wrap items-center justify-between gap-3"><button type="button" onClick={()=>{setComplete(false);setStep(2)}} className="inline-flex items-center gap-2 rounded-xl border border-[#C8D4EA] px-5 py-3 text-sm font-semibold text-[#48609E]"><Pencil size={16}/> Modifier mes choix</button><button type="button" disabled aria-describedby="simulation-unavailable" className="inline-flex min-h-12 items-center gap-3 rounded-xl bg-[#3456D7] px-6 text-sm font-bold text-white opacity-55 disabled:cursor-not-allowed"><Play size={17}/> Lancer mon entretien</button></div><p id="simulation-unavailable" className="mt-3 text-right text-xs text-[#6F7D98]">Bientôt disponible : connexion au moteur d’entretien en cours.</p>
+       <div className="mt-6 flex flex-wrap items-center justify-between gap-3"><button type="button" onClick={()=>{setComplete(false);setStep(2)}} className="inline-flex items-center gap-2 rounded-xl border border-[#C8D4EA] px-5 py-3 text-sm font-semibold text-[#48609E]"><Pencil size={16}/> Modifier mes choix</button><button type="button" onClick={launchLab} className="inline-flex min-h-12 items-center gap-3 rounded-xl bg-[#3456D7] px-6 text-sm font-bold text-white hover:bg-[#2644B9]"><Play size={17}/> Tester mon entretien vocal</button></div><p id="simulation-unavailable" className="mt-3 text-right text-xs text-[#6F7D98]">Laboratoire local : questions en brouillon, aucun score ni sauvegarde en base.</p>
       </motion.section>}
      </AnimatePresence></div>
    </>}
