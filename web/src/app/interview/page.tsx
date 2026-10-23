@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { VoicePoweredOrb } from "@/components/ui/voice-powered-orb";
 import {useEffect,useRef,useState} from "react";
 import {ArrowLeft,Mic,Volume2,VolumeX,Pause,Play,Send,Check,AlertTriangle} from "lucide-react";
 type Config={family:"rh"|"technical";locale:"fr"|"en";jobTitle:string;job_description:string;goals:string[];count:number};
@@ -115,7 +116,7 @@ export default function InterviewPage(){
    <div className="mt-9 flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[.14em] text-[#6479B7]">Simulation {config?.family==="technical"?"technique":"RH"}</p><h1 className="mt-2 text-3xl font-bold tracking-tight">Votre entretien IA</h1><p className="mt-2 text-sm text-[#657691]">{config?.jobTitle||(configChecked?"Configuration manquante":"Chargement de la configuration…")}</p></div><span className="text-sm font-semibold tabular-nums text-[#637493]">{Math.floor(elapsed/60).toString().padStart(2,"0")}:{(elapsed%60).toString().padStart(2,"0")}</span></div>
    <section className="mt-7 rounded-[28px] border border-[#DCE4F4] bg-white p-6 shadow-[0_18px_45px_rgba(43,67,128,.07)] sm:p-10">
     <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-     <div className={`grid size-36 place-items-center rounded-full border-[15px] transition-all duration-500 ${state==="speaking"?"border-[#DCDDFD] bg-[#A39CF2]":state==="listening"?"border-[#DCF2EA] bg-[#56BFA4]":"border-[#E4EBFD] bg-[#A5B5E7]"}`}><Volume2 size={45} className="text-white"/></div>
+     <div className="relative size-48 sm:size-56"><VoicePoweredOrb state={state} voiceLevel={dictating ? .55 : 0} className="h-full w-full"/><span className="sr-only">{state==="speaking"?"L’intervieweur parle":dictating?"Microphone actif":state==="listening"?"À vous de répondre":"Orbe d’entretien"}</span></div>
      <p className="mt-5 text-sm font-bold text-[#5266A6]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",done:"Séance terminée",error:"Connexion indisponible"})[state]}</p>
      <h2 className="mt-6 text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":question||"Préparation de la prochaine question…"}</h2>
      {state==="ready"&&config&&<button onClick={start} className="mt-8 rounded-xl bg-[#3456D7] px-7 py-4 font-bold text-white"><Play size={17} className="mr-2 inline"/> Commencer l’entretien</button>}
