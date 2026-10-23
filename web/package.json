@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ark-ui/react": "^5.39.3",
     "@base-ui/react": "^1.9.0",
     "@supabase/ssr": "0.7.0",
     "@supabase/supabase-js": "^2.78.0",

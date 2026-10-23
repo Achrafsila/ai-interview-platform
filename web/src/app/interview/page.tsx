@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { VoicePoweredOrb } from "@/components/ui/voice-powered-orb";
+import { CountdownTimer } from "@/components/ui/countdown-timer";
 import {useEffect,useRef,useState} from "react";
 import {ArrowLeft,Mic,Volume2,VolumeX,Pause,Play,Send,Check,AlertTriangle} from "lucide-react";
 type Config={family:"rh"|"technical";locale:"fr"|"en";jobTitle:string;job_description:string;goals:string[];count:number};
@@ -38,6 +39,7 @@ export default function InterviewPage(){
  const [muted,setMuted]=useState(false);
  const [elapsed,setElapsed]=useState(0);
  const [stopOpen,setStopOpen]=useState(false);
+ const [introStage,setIntroStage]=useState<"none"|"welcome"|"countdown">("none");
  const recognition=useRef<Recognizer|null>(null);
  const voice=useRef<SpeechSynthesisUtterance|null>(null);
  const sessionRef=useRef(false);
@@ -58,8 +60,26 @@ export default function InterviewPage(){
   voice.current=utter;
   setState("speaking");window.speechSynthesis.speak(utter);
  }
- async function start(){
-  if(!config){setError("Configuration introuvable. Revenez à la préparation pour choisir votre entretien.");return;}
+ function start(){
+  if(!config){setError("Configuration introuvable. Revenez à la préparation.");return;}
+  setError("");
+  setIntroStage("welcome");
+  const line=config.locale==="en"
+   ?"I hope you're ready! Your interview will begin in five seconds. Good luck!"
+   :"J’espère que vous êtes prêt ! Votre entretien commencera dans cinq secondes. Bonne chance !";
+  if(muted||!("speechSynthesis" in window)){setIntroStage("countdown");return;}
+  window.speechSynthesis.cancel();
+  const announcement=new SpeechSynthesisUtterance(line);
+  announcement.lang=config.locale==="en"?"en-US":"fr-FR";
+  announcement.rate=.94;
+  let ended=false;
+  const finish=()=>{if(ended)return;ended=true;setIntroStage("countdown");};
+  announcement.onend=finish;announcement.onerror=finish;
+  window.speechSynthesis.speak(announcement);
+ }
+ async function startInterview(){
+  setIntroStage("none");
+  if(!config)return;
   setError("");setState("thinking");
   try{const data=await send("start",{family:config.family,locale:config.locale,goals:config.goals,count:config.count,warm_opening:true,job_description:config.job_description});
    setSession(data.session_id||"");setResult(data);speak(data.question?.prompt||"",config.locale);
@@ -118,9 +138,11 @@ export default function InterviewPage(){
     <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
      <div className="relative size-48 sm:size-56"><VoicePoweredOrb state={state} voiceLevel={dictating ? .55 : 0} className="h-full w-full"/><span className="sr-only">{state==="speaking"?"L’intervieweur parle":dictating?"Microphone actif":state==="listening"?"À vous de répondre":"Orbe d’entretien"}</span></div>
      <p className="mt-5 text-sm font-bold text-[#5266A6]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",done:"Séance terminée",error:"Connexion indisponible"})[state]}</p>
-     <h2 className="mt-6 text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":question||"Préparation de la prochaine question…"}</h2>
-     {state==="ready"&&config&&<button onClick={start} className="mt-8 rounded-xl bg-[#3456D7] px-7 py-4 font-bold text-white"><Play size={17} className="mr-2 inline"/> Commencer l’entretien</button>}
-     {state==="ready"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
+     <h2 className="mt-6 text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{introStage!=="none"?"":state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":question||"Préparation de la prochaine question…"}</h2>
+     {introStage==="welcome"&&<p role="status" className="mt-4 max-w-md text-base leading-7 text-[#566A91]">{config?.locale==="en"?"I hope you're ready! Your interview will begin in five seconds. Good luck!":"J’espère que vous êtes prêt ! Votre entretien commencera dans cinq secondes. Bonne chance !"}</p>}
+     {introStage==="countdown"&&<div className="mt-4"><CountdownTimer onComplete={()=>void startInterview()}/></div>}
+     {state==="ready"&&introStage==="none"&&config&&<button onClick={start} className="mt-8 rounded-xl bg-[#3456D7] px-7 py-4 font-bold text-white"><Play size={17} className="mr-2 inline"/> Commencer l’entretien</button>}
+     {state==="ready"&&introStage==="none"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
      {state==="error"&&<button onClick={start} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
      {state==="speaking"&&<button onClick={interrupt} className="mt-7 rounded-xl border border-[#C8D4F0] px-5 py-3 text-sm font-semibold">Prendre la parole</button>}
      {(state==="listening"||state==="paused")&&<div className="mt-7 w-full text-left">
