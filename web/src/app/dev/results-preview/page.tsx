@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BadgeCheck, BrainCircuit, CheckCircle2, MessageSquareQuote, Sparkles, Target, TrendingUp, TriangleAlert } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgeCheck, BrainCircuit, CalendarDays, CheckCircle2, Dumbbell, MessageSquareQuote, Sparkles, Target, TrendingUp, TriangleAlert } from "lucide-react";
 
 const skills = [
   {name:"Clarté et communication", score:86,detail:"Un discours facile à suivre, avec des exemples concrets."},
@@ -58,6 +58,33 @@ export default function ResultsPreviewPage() {
         <div className="mt-5 grid gap-4 lg:grid-cols-2"><div className="rounded-2xl bg-[#F6F7FD] p-5"><p className="text-xs font-bold text-[#75819E]">Extrait de réponse simulée</p><p className="mt-3 text-sm leading-7 text-[#586681]">« J’ai rencontré des résistances sur un nouveau processus de recrutement. J’ai organisé des échanges et accompagné les managers pour faciliter son adoption. »</p></div><div className="rounded-2xl bg-[#F2EDFF] p-5"><p className="text-xs font-bold text-[#8050D9]">Comment l’améliorer</p><p className="mt-3 text-sm leading-7 text-[#63557B]">Précisez le problème initial, les actions personnelles et surtout l’impact : délai réduit, taux d’adoption ou satisfaction des managers.</p></div></div>
       </section>
       <section className="mt-6 rounded-[30px] border border-[#DAD4FB] bg-gradient-to-r from-[#EFEDFF] via-[#F6ECFF] to-[#FCEAF7] p-7 sm:p-9"><h2 className="flex items-center gap-2 text-xl font-extrabold"><TrendingUp size={22} className="text-[#8255DF]"/> Votre plan de progression</h2><div className="mt-6 grid gap-3 md:grid-cols-3">{[{n:"01",t:"Préparer vos exemples",d:"Deux réussites concrètes avec un résultat mesurable."},{n:"02",t:"Structurer avec STAR",d:"Situation, tâche, action, résultat : entraînez-vous à suivre ce fil."},{n:"03",t:"Refaire une simulation",d:"Concentrez-vous sur la structure et l’impact de vos réponses."}].map(i=><div key={i.n} className="rounded-2xl border border-white bg-white/75 p-5"><span className="text-xs font-extrabold text-[#8856E5]">{i.n}</span><h3 className="mt-3 text-sm font-extrabold">{i.t}</h3><p className="mt-2 text-xs leading-6 text-[#65718A]">{i.d}</p></div>)}</div></section>
+      <section aria-labelledby="next-steps-title" className="relative mt-7 overflow-hidden rounded-[32px] border border-[#DFD5FC] bg-white/85 p-6 shadow-[0_18px_65px_rgba(105,85,190,.11)] sm:p-9">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-36 size-80 rounded-full bg-[#F3D7FF]/55 blur-[80px]"/>
+        <div className="relative">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[#F1EBFF] px-4 py-2 text-xs font-extrabold text-[#8256E5]"><Sparkles size={15}/> La suite de votre parcours</span>
+          <h2 id="next-steps-title" className="mt-5 text-[clamp(1.6rem,3.5vw,2.3rem)] font-extrabold tracking-[-.045em]">Votre progression ne s’arrête pas au bilan.</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#64718D]">Transformez vos axes d’amélioration en actions. Vous pourrez choisir un accompagnement humain ou travailler à votre rythme avec des exercices ciblés.</p>
+          <div className="mt-7 grid gap-4 md:grid-cols-2">
+            <article className="flex flex-col rounded-[25px] border border-[#DED4F8] bg-gradient-to-br from-[#F0ECFF] to-[#FCEFFC] p-6 sm:p-7">
+              <span className="grid size-12 place-items-center rounded-2xl bg-white/85 text-[#8053DA] shadow-[0_6px_25px_rgba(110,84,187,.1)]"><CalendarDays size={23}/></span>
+              <p className="mt-5 text-[11px] font-extrabold uppercase tracking-[.14em] text-[#8156D6]">Accompagnement individuel</p>
+              <h3 className="mt-2 text-xl font-extrabold">Échangez avec un expert</h3>
+              <p className="mt-3 flex-1 text-sm leading-7 text-[#655D80]">Un entretien en one-to-one pour revenir sur vos réponses, obtenir des conseils personnalisés et préparer votre prochaine échéance.</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold text-[#8465B2]"><span className="size-2 rounded-full bg-[#A280DA]"/> Réservation bientôt disponible</span>
+              <span aria-disabled="true" className="mt-4 inline-flex min-h-12 cursor-not-allowed items-center justify-center gap-2 rounded-2xl border border-[#DED2F5] bg-white/75 px-5 text-sm font-bold text-[#8265AF]">Réserver un one-to-one <ArrowRight size={17}/></span>
+            </article>
+            <article className="flex flex-col rounded-[25px] border border-[#CCE5F4] bg-gradient-to-br from-[#E9F8FF] to-[#F1F0FF] p-6 sm:p-7">
+              <span className="grid size-12 place-items-center rounded-2xl bg-white/85 text-[#4A75DB] shadow-[0_6px_25px_rgba(94,128,204,.1)]"><Dumbbell size={23}/></span>
+              <p className="mt-5 text-[11px] font-extrabold uppercase tracking-[.14em] text-[#4E6CCA]">Entraînement personnalisé</p>
+              <h3 className="mt-2 text-xl font-extrabold">Travaillez vos compétences</h3>
+              <p className="mt-3 flex-1 text-sm leading-7 text-[#5E6E8D]">Retrouvez bientôt des exercices courts par rubrique : méthode STAR, exemples chiffrés, communication et argumentation métier.</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold text-[#5879B0]"><span className="size-2 rounded-full bg-[#68A6D9]"/> Rubriques d’entraînement à venir</span>
+              <span aria-disabled="true" className="mt-4 inline-flex min-h-12 cursor-not-allowed items-center justify-center gap-2 rounded-2xl border border-[#CDDEEF] bg-white/75 px-5 text-sm font-bold text-[#577EAD]">Explorer mes entraînements <ArrowRight size={17}/></span>
+            </article>
+          </div>
+          <p className="mt-5 text-xs leading-6 text-[#8A8FAA]">Ces deux parcours sont présentés ici pour valider l’expérience. Ils ne permettent pas encore de réserver ni de démarrer un exercice.</p>
+        </div>
+      </section>
       <div className="mt-8 flex flex-wrap items-center justify-between gap-4"><p className="max-w-xl text-xs leading-6 text-[#9B6C84]">Prototype UX uniquement. Ce bilan fictif ne provient pas du moteur IA, n’est pas enregistré dans Supabase et ne doit pas être présenté comme une évaluation réelle.</p><Link href="/dev/analysis-preview" className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-gradient-to-r from-[#5365FF] via-[#8755F4] to-[#DF4DC5] px-6 text-sm font-bold text-white shadow-[0_12px_26px_rgba(113,89,233,.24)]">Revoir la transition <ArrowRight size={17}/></Link></div>
     </div>
   </main>;
