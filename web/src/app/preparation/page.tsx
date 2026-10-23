@@ -97,13 +97,11 @@ export default function PreparationPage() {
        </>}
       {step===1&&<><h2 className="mt-3 text-2xl font-bold">Parlons du contexte professionnel.</h2><p className="mt-3 text-sm leading-7 text-[#65748D]">Précisez le poste que vous visez. Une fiche de poste peut affiner les questions de votre futur entretien.</p>
        <label className="mt-7 block text-sm font-semibold">Poste ciblé <span className="text-[#BD3858]">*</span><input required value={job} maxLength={120} onChange={e=>setJob(e.target.value)} placeholder="Ex. Data Analyst, Chargé de recrutement…" className="mt-2 block w-full rounded-xl border border-[#CBD7EE] bg-white px-4 py-3 outline-none focus:border-[#8855EF]"/></label>
-       <div className="mt-5 grid gap-4 sm:grid-cols-2">
+       <div className="mt-5 grid gap-4">
         <label className="block text-sm font-semibold">Situation professionnelle <span className="text-[#BD3858]">*</span>
          <select value={situation} onChange={e=>{const next=e.target.value as EmploymentStatus|"";setSituation(next);const nextExp=next==="student"?"starting":experience;setExperience(nextExp);const available=goalsForContext(next||undefined,nextExp||undefined);setProfessionalGoal(current=>available.includes(current as ProfessionalGoal)?current:available[0]??"");}} className="mt-2 block min-h-12 w-full rounded-xl border border-[#CBD7EE] bg-white px-4 py-3"><option value="">Choisir ma situation</option>{employmentOptions.map(x=><option value={x.value} key={x.value}>{x.title}</option>)}</select>
         </label>
-        <label className="block text-sm font-semibold">Niveau d’expérience <span className="font-normal text-[#7B8AA2]">(facultatif)</span>
-         <select value={experience} disabled={situation==="student"} onChange={e=>{const next=e.target.value as ExperienceLevel|"";setExperience(next);const available=goalsForContext(situation||undefined,next||undefined);setProfessionalGoal(current=>available.includes(current as ProfessionalGoal)?current:available[0]??"");}} className="mt-2 block min-h-12 w-full rounded-xl border border-[#CBD7EE] bg-white px-4 py-3 disabled:bg-[#F0F0F7]"><option value="">Ne pas préciser</option>{experienceOptions.filter(x=>situation!=="student"||x.value==="starting").map(x=><option value={x.value} key={x.value}>{x.title}</option>)}</select>
-        </label>
+
        </div>
        <div className="mt-6">
         <p className="text-sm font-semibold">Votre objectif professionnel pour cette simulation <span className="text-[#BD3858]">*</span></p>
@@ -132,7 +130,7 @@ export default function PreparationPage() {
        <div className="mt-7"><p className="mb-3 flex items-center gap-2 text-sm font-semibold"><Clock3 size={17}/> Durée cible</p><div className="grid grid-cols-3 gap-3">{([10,20,35] as Duration[]).map(min=><button key={min} onClick={()=>setDuration(min)} className={cn("rounded-xl border px-2 py-4 text-sm font-bold",duration===min?"border-[#9565ED] bg-[#F2EAFE] text-[#754BCC]":"border-[#DAE2F0] bg-white")}>{min} min{min===20&&<span className="mt-1 block text-[10px] font-medium">Standard</span>}</button>)}</div></div>
        </>}
        {error&&<p role="alert" className="mt-5 text-sm font-medium text-red-700">{error}</p>}
-       <div className="mt-9 flex flex-wrap items-center justify-between gap-3 border-t border-[#E1E7F3] pt-6"><button type="button" onClick={()=>{if(step===0)router.push("/dashboard");else setStep(s=>s-1);setError("");}} className="preparation-glass-secondary inline-flex min-h-12 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold"><ArrowLeft size={17}/> Retour</button><button type="button" onClick={advance} disabled={!valid} className="preparation-glass-primary inline-flex min-h-12 items-center gap-2 rounded-2xl px-6 text-sm font-bold text-white disabled:opacity-60">{step===2?"Vérifier ma configuration":"Valider et continuer"}<ArrowRight size={17}/></button></div>
+       <div className="mt-9 flex flex-wrap items-center justify-between gap-3 border-t border-[#E1E7F3] pt-6"><button type="button" onClick={()=>{if(step===0)router.push("/dashboard");else setStep(s=>s-1);setError("");}} className="preparation-glass-secondary inline-flex min-h-12 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold"><ArrowLeft size={17}/> Retour</button><button type="button" onClick={advance} disabled={!valid} className="preparation-glass-primary inline-flex min-h-12 items-center gap-2 rounded-2xl px-6 text-sm font-bold text-white ">{step===2?"Vérifier ma configuration":"Valider et continuer"}<ArrowRight size={17}/></button></div>
       </motion.section>:
       <motion.section key="recap" initial={reduced?false:{opacity:0,y:20}} animate={{opacity:1,y:0}} className={surface+" mt-4"}>
        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.15em] text-[#21856A]"><Check size={17}/> Configuration terminée</div><h2 className="mt-4 text-2xl font-bold">Tout est prêt pour votre simulation.</h2>
