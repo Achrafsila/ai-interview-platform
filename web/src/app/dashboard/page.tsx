@@ -3,17 +3,16 @@
 import Link from "next/link";
 import { useSyncExternalStore } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, BookOpen, ChevronRight, Compass, GraduationCap, MessageCircle, Sparkles, Target, TrendingUp, UserRound } from "lucide-react";
-import { employmentOptions, experienceOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal, type EmploymentStatus, type ExperienceLevel } from "@/components/ui/onboarding-stages";
+import { ArrowRight, ArrowUpRight, BookOpen, ChevronRight, Compass, MessageCircle, Sparkles, Target, UserRound } from "lucide-react";
+import { employmentOptions, experienceOptions, goalsForContext, professionalOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal, type EmploymentStatus, type ExperienceLevel } from "@/components/ui/onboarding-stages";
 
 const profileKey = "ai-interview-preview-profile";
 const subscribeNoop = () => () => {};
 
-const goals: Record<ProfessionalGoal, { label: string; detail: string; icon: typeof Target }> = {
-  first_job: { label: "Décrocher un premier emploi", detail: "On va transformer votre potentiel et vos expériences en réponses convaincantes.", icon: GraduationCap },
-  job_change: { label: "Changer de poste", detail: "On va préparer ensemble la façon de raconter votre parcours et vos envies.", icon: Compass },
-  career_growth: { label: "Évoluer professionnellement", detail: "On va mettre en lumière vos réussites et préparer votre prochaine étape.", icon: TrendingUp },
-};
+const goals: Record<ProfessionalGoal, { label: string; detail: string; icon: typeof Target }> =
+  Object.fromEntries(professionalOptions.map((item) => [
+    item.value, { label: item.title, detail: item.detail, icon: item.icon }
+  ])) as Record<ProfessionalGoal, { label: string; detail: string; icon: typeof Target }>;
 const priorities: Record<PreparationGoal, string> = {
   confidence: "Prendre confiance",
   answer_structure: "Structurer nos réponses",
@@ -21,7 +20,7 @@ const priorities: Record<PreparationGoal, string> = {
   domain_knowledge: "Renforcer les connaissances métier",
   stress_management: "Gérer la pression",
 };
-const validGoal = (v: unknown): v is ProfessionalGoal => v === "first_job" || v === "job_change" || v === "career_growth";
+const validGoal = (v: unknown): v is ProfessionalGoal => professionalOptions.some((goal) => goal.value === v);
 const validEmploymentStatus = (v: unknown): v is EmploymentStatus => employmentOptions.some((x) => x.value === v);
 const validExperience = (v: unknown): v is ExperienceLevel => experienceOptions.some((x) => x.value === v);
 const validPriority = (v: unknown): v is PreparationGoal => typeof v === "string" && v in priorities;
@@ -32,10 +31,11 @@ function loadPreviewProfile(raw: string | null): OnboardingProfile | null {
     const value: unknown = JSON.parse(raw);
     if (!value || typeof value !== "object") return null;
     const p = value as Partial<OnboardingProfile>;
-    if (typeof p.firstName !== "string" || !p.firstName.trim() || typeof p.lastName !== "string" || !validGoal(p.professionalGoal)) return null;
+    if (!validEmploymentStatus(p.employmentStatus) || !validGoal(p.professionalGoal)) return null;
+    if (!goalsForContext(p.employmentStatus, validExperience(p.experienceLevel) ? p.experienceLevel : undefined).includes(p.professionalGoal)) return null;
     return {
-      firstName: p.firstName.slice(0, 80),
-      lastName: p.lastName.slice(0, 80),
+      firstName: typeof p.firstName === "string" ? p.firstName.slice(0, 80) : "",
+      lastName: typeof p.lastName === "string" ? p.lastName.slice(0, 80) : "",
       professionalGoal: p.professionalGoal,
       employmentStatus: validEmploymentStatus(p.employmentStatus) ? p.employmentStatus : undefined,
       experienceLevel: validExperience(p.experienceLevel) ? p.experienceLevel : undefined,
@@ -78,7 +78,7 @@ export default function DashboardPage() {
         ) : profile === null ? (
           <section className="onboarding-glass mx-auto mt-16 max-w-2xl rounded-[30px] border border-white/80 p-8 text-center shadow-xl sm:p-14">
             <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-[#E9EEFA] text-[#2947A3]"><UserRound size={28}/></span>
-            <h1 className="mt-7 text-[32px] font-semibold tracking-tight sm:text-[43px]">On fait connaissance ?</h1>
+            <h1 className="mt-7 text-[32px] font-semibold tracking-tight sm:text-[43px]">On prépare notre parcours ?</h1>
             <p className="mx-auto mt-4 max-w-md leading-8 text-[#526079]">Pour préparer notre premier entretien, on commence par comprendre ce que vous souhaitez accomplir.</p>
             <Link href="/onboarding" className="mt-8 inline-flex min-h-12 items-center gap-3 rounded-xl bg-[#2947A3] px-6 text-sm font-semibold text-white hover:bg-[#1E3586]">Commencer mon parcours <ArrowRight size={17}/></Link>
             <p className="mt-6 text-xs text-[#78859B]">Ce prototype ne conserve les réponses que dans cet onglet.</p>
@@ -87,7 +87,7 @@ export default function DashboardPage() {
           <>
             <motion.section initial={reducedMotion ? false : {opacity:0,y:18}} animate={{opacity:1,y:0}} transition={{duration:.48}} className="pt-12 sm:pt-16">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/75 bg-white/65 px-4 py-2 text-xs font-semibold text-[#2947A3] backdrop-blur-xl"><Sparkles size={14}/> Notre espace d’entraînement</span>
-              <h1 className="mt-6 max-w-3xl text-[clamp(2.35rem,5vw,4.2rem)] font-semibold leading-[1.08] tracking-[-0.052em]">Bonjour, {profile.firstName}.<span className="block text-[#3755A5]">On prépare la suite ?</span></h1>
+              <h1 className="mt-6 max-w-3xl text-[clamp(2.35rem,5vw,4.2rem)] font-semibold leading-[1.08] tracking-[-0.052em]">{profile.firstName ? `Bonjour, ${profile.firstName}.` : "Bienvenue."}<span className="block text-[#3755A5]">On prépare la suite ?</span></h1>
               <p className="mt-5 max-w-2xl text-[16px] leading-8 text-[#526079]">On connaît maintenant notre direction. À chaque entraînement, on avancera un peu plus vers votre objectif.</p>
             </motion.section>
 

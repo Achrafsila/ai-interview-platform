@@ -71,3 +71,8 @@ Tester 375, 768, 1024 et 1440px ; aucun scroll horizontal, contenu qui se réorg
 ### Addendum UX V3 — contexte professionnel (23 octobre 2026)
 
 L'inspiration externe a motivé une **étape supplémentaire ciblée** dans le parcours candidat : « Notre point de départ ». Elle recueille la situation actuelle et une tranche d'expérience facultative. Aucun autre champ de recherche d'emploi ne fait partie du produit. La structure cible est désormais : identité → point de départ → ambition → priorités → langue → récapitulatif. Les cinq segments de progression reprennent ces étapes, et une animation existante conserve la continuité visuelle. Les objectifs de préparation restent des préférences, distinctes des axes RH/techniques à choisir lors d'une simulation. Persistance Supabase et adaptation du moteur IA : à faire.
+
+
+### Rectificatif produit — prénom et nom conservés (23 octobre 2026)
+
+La remarque de l'utilisateur portait sur les incohérences entre les étapes, **pas** sur la suppression de « Faisons connaissance ». Le parcours conserve donc l'identité en premier écran, puis situation/expérience, objectif professionnel conditionnel, préparation et langue (5 étapes). L'objectif reste un choix de l'utilisateur, mais la liste des options est cohérente avec la situation et éventuellement l'expérience. Retour en arrière possible, données intactes, et invalidation de l'ancien objectif lorsqu'il n'est plus pertinent. Phrase « Pas de mauvaise réponse » retirée.

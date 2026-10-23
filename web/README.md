@@ -58,3 +58,8 @@ Document détaillé : `docs/ux/UX-04_DASHBOARD_CANDIDATE_V1.md`. Les tests Chrom
 ## Onboarding V3 — point de départ contextualisé
 
 Suite à une revue de parcours inspirants (dont aiApply), **une seule étape de contexte** a été ajoutée : situation professionnelle actuelle, obligatoire pour adapter la simulation, et tranche d'expérience, facultative et effaçable. Le parcours compte maintenant 5 étapes de progression segmentées, sans CV, salaire, localisation, préférences de contrat ni promesse statistique de placement. Le ton de coaching et les transitions restent inchangés. Le récapitulatif et le dashboard affichent ces réponses. À ce stade, ces informations sont **uniquement transitoires dans la mémoire du navigateur** pour tester l'UX : elles ne sont pas enregistrées dans Supabase et n'influencent pas encore le moteur Groq. Le futur backend devra ajouter des colonnes validées, RLS et tests de non-régression.
+
+
+## Parcours cohérent V3.1 — retour utilisateur
+
+On maintient **« Faisons connaissance »** comme premier écran, avec prénom et nom, puis 4 autres étapes : point de départ, objectif adapté, priorités, langue. La phrase « Pas de mauvaise réponse » est supprimée. L'objectif proposé dépend de la situation professionnelle : étudiant/débutant → premier emploi ou stage ; en poste → changement ou évolution ; en recherche → premier emploi si débutant, sinon retour à l'emploi ou changement ; indépendant → transition vers un poste ou présentation de son activité. Un retour en arrière et un changement de situation remettent à jour les options sans garder d'objectif contradictoire. Les scénarios complets sont testés sur desktop/mobile. **Il ne s'agit pas encore d'une personnalisation du moteur IA ni d'une persistance Supabase.**

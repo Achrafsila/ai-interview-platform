@@ -12,7 +12,7 @@ function readPreview(raw: string): Partial<OnboardingProfile> | undefined {
   try {
     if (!raw) return undefined;
     const p = JSON.parse(raw) as Partial<OnboardingProfile>;
-    if (typeof p.firstName !== "string" || typeof p.lastName !== "string") return undefined;
+    if (!p || typeof p !== "object") return undefined;
     return p;
   } catch {
     return undefined;
@@ -42,8 +42,8 @@ export default function OnboardingPage() {
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#0B1222] text-white"><Sparkles size={18}/></span>
           Interview Platform
         </Link>
-        <Link href={initialProfile?.firstName ? "/dashboard" : "/"} className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-[#526079] hover:bg-[#E8EDF5]">
-          <ArrowLeft size={16}/> {initialProfile?.firstName ? "Mon espace" : "Retour à l’accueil"}
+        <Link href={initialProfile?.employmentStatus ? "/dashboard" : "/"} className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-[#526079] hover:bg-[#E8EDF5]">
+          <ArrowLeft size={16}/> {initialProfile?.employmentStatus ? "Mon espace" : "Retour à l’accueil"}
         </Link>
       </nav>
       <div className="relative z-10 px-4 sm:px-6">

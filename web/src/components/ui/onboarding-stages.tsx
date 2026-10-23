@@ -2,11 +2,11 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight, BriefcaseBusiness, Check, ChevronRight, Compass, Languages, ShieldCheck, Sparkles, Target, TrendingUp, UserRound } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-export type ProfessionalGoal = "first_job" | "job_change" | "career_growth";
+export type ProfessionalGoal = "first_job" | "internship" | "job_change" | "career_growth" | "return_to_work" | "employment_transition" | "client_pitches";
 export type PreparationGoal = "confidence" | "answer_structure" | "communication" | "domain_knowledge" | "stress_management";
 export type Locale = "fr" | "en";
 export type EmploymentStatus = "student" | "employed" | "looking" | "independent";
@@ -28,11 +28,25 @@ type Props = {
   enableAnimations?: boolean;
 };
 
-const professionalOptions: { value: ProfessionalGoal; title: string; detail: string; icon: typeof Target }[] = [
-  { value: "first_job", title: "Décrocher mon premier emploi", detail: "Présenter mon potentiel, mes projets et convaincre dès le premier entretien.", icon: Compass },
-  { value: "job_change", title: "Changer de poste", detail: "Mettre en valeur mon expérience et expliquer la suite que je veux donner à ma carrière.", icon: BriefcaseBusiness },
-  { value: "career_growth", title: "Évoluer professionnellement", detail: "Prendre confiance pour accéder à un nouveau niveau de responsabilités.", icon: TrendingUp },
+export const professionalOptions: { value: ProfessionalGoal; title: string; detail: string; icon: typeof Target }[] = [
+  { value: "first_job", title: "Préparer mon premier emploi", detail: "On va valoriser votre potentiel, vos projets et vos premières expériences.", icon: Compass },
+  { value: "internship", title: "Réussir un entretien de stage ou d’alternance", detail: "On va apprendre à présenter vos projets, vos motivations et vos envies.", icon: Compass },
+  { value: "job_change", title: "Changer de poste", detail: "On prépare la manière de raconter votre expérience et vos nouvelles ambitions.", icon: BriefcaseBusiness },
+  { value: "career_growth", title: "Évoluer dans ma carrière", detail: "On va mettre en valeur votre parcours pour préparer plus de responsabilités.", icon: TrendingUp },
+  { value: "return_to_work", title: "Retrouver un emploi", detail: "On va préparer les entretiens et expliquer votre parcours avec confiance.", icon: Target },
+  { value: "employment_transition", title: "Rejoindre une entreprise", detail: "On va présenter vos projets indépendants comme une vraie force.", icon: BriefcaseBusiness },
+  { value: "client_pitches", title: "Convaincre de nouveaux clients", detail: "On s’entraîne à présenter votre expertise et à défendre vos propositions.", icon: Target },
 ];
+
+export function goalsForContext(status?: EmploymentStatus, experience?: ExperienceLevel): ProfessionalGoal[] {
+  switch (status) {
+    case "student": return ["first_job", "internship"];
+    case "employed": return ["job_change", "career_growth"];
+    case "looking": return experience === "starting" ? ["first_job", "return_to_work"] : ["return_to_work", "job_change"];
+    case "independent": return ["employment_transition", "client_pitches"];
+    default: return [];
+  }
+}
 
 export const employmentOptions: { value: EmploymentStatus; title: string; detail: string }[] = [
   { value: "student", title: "Je termine mes études ou je débute", detail: "Un premier poste, un stage ou le début de notre parcours." },
@@ -67,7 +81,7 @@ const steps = [
 const defaultProfile: OnboardingProfile = {
   firstName: "",
   lastName: "",
-  professionalGoal: "job_change",
+  professionalGoal: "first_job",
   employmentStatus: undefined,
   experienceLevel: undefined,
   preparationGoals: [],
@@ -91,22 +105,24 @@ export function OnboardingStages({
   const [direction, setDirection] = useState(1);
   const percent = finished ? 100 : Math.round(((step + 1) / steps.length) * 100);
   const firstName = profile.firstName.trim();
+  const allowedGoals = goalsForContext(profile.employmentStatus, profile.experienceLevel);
+  const selectedGoalValid = allowedGoals.includes(profile.professionalGoal);
 
-  const canProceed = useMemo(() => {
-    if (step === 0) return firstName.length > 0 && profile.lastName.trim().length > 0;
-    if (step === 1) return Boolean(profile.employmentStatus);
-    if (step === 3) return profile.preparationGoals.length > 0;
-    return true;
-  }, [step, firstName, profile.lastName, profile.employmentStatus, profile.preparationGoals.length]);
+  const canProceed = (step === 0 && firstName.length > 0 && profile.lastName.trim().length > 0) ||
+    (step === 1 && Boolean(profile.employmentStatus)) ||
+    (step === 2 && selectedGoalValid) ||
+    (step === 3 && profile.preparationGoals.length > 0) ||
+    step === 4;
 
   function next() {
     if (!canProceed) {
-      setFieldError(step === 0
-        ? "Indiquez votre prénom et votre nom pour continuer."
-        : step === 1 ? "Choisissez la situation qui vous correspond le mieux." : "Sélectionnez au moins un axe de progression.");
+      setFieldError(step === 0 ? "Indiquez votre prénom et votre nom pour continuer." :
+        step === 1 ? "Choisissez votre situation actuelle." :
+        step === 2 ? "Choisissez l’objectif qui correspond à votre situation." : "Sélectionnez au moins un axe de progression.");
       return;
     }
     if (step === steps.length - 1) {
+      if (!selectedGoalValid) { setFieldError("Choisissez d’abord un objectif compatible avec votre situation."); return; }
       const completed = { ...profile, firstName, lastName: profile.lastName.trim() };
       onComplete?.(completed);
       setFinished(true);
@@ -166,7 +182,7 @@ export function OnboardingStages({
 
   const situationLabel = employmentOptions.find((option) => option.value === profile.employmentStatus)?.title ?? "";
   const experienceLabel = experienceOptions.find((option) => option.value === profile.experienceLevel)?.title ?? "À préciser plus tard";
-  const professionalLabel = professionalOptions.find((option) => option.value === profile.professionalGoal)?.title ?? "";
+  const professionalLabel = professionalOptions.find((option) => option.value === profile.professionalGoal && selectedGoalValid)?.title ?? "";
   const preparationLabels = profile.preparationGoals.map((value) => preparationOptions.find((option) => option.value === value)?.title ?? value);
 
   return (
@@ -260,12 +276,17 @@ export function OnboardingStages({
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Notre point de départ</p>
                         <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">Aujourd’hui, où en êtes-vous ?</h1>
-                        <p className="mt-3 text-sm leading-7 text-[#526079]">Pas de mauvaise réponse. On veut simplement adapter nos entretiens à votre réalité.</p>
+                        <p className="mt-3 text-sm leading-7 text-[#526079]">On va adapter les entretiens à votre situation et à votre expérience.</p>
                         <div role="radiogroup" aria-label="Situation professionnelle actuelle" className="mt-6 grid gap-2 sm:grid-cols-2">
                           {employmentOptions.map(({ value, title, detail }) => {
                             const selected = profile.employmentStatus === value;
                             return <button key={value} type="button" role="radio" aria-checked={selected}
-                              onClick={() => setProfile((current) => ({ ...current, employmentStatus: value }))}
+                              onClick={() => setProfile((current) => ({
+                                ...current, employmentStatus: value,
+                                experienceLevel: value === "student" ? "starting" : current.employmentStatus === "student" ? undefined : current.experienceLevel,
+                                professionalGoal: goalsForContext(value, value === "student" ? "starting" : current.experienceLevel).includes(current.professionalGoal)
+                                  ? current.professionalGoal : goalsForContext(value, value === "student" ? "starting" : current.experienceLevel)[0],
+                              }))}
                               className={cn("rounded-2xl border p-4 text-left transition hover:border-[#7590D1] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]", selected ? "border-[#2947A3] bg-[#F3F6FE]" : "border-[#E0E6EF] bg-white/65")}>
                               <span className="flex items-start justify-between gap-2 text-sm font-semibold text-[#172033]">{title}{selected && <Check size={17} className="shrink-0 text-[#2947A3]" aria-hidden="true" />}</span>
                               <span className="mt-2 block text-xs leading-5 text-[#526079]">{detail}</span>
@@ -276,14 +297,18 @@ export function OnboardingStages({
                           <h2 className="text-base font-semibold text-[#172033]">Et côté expérience ? <span className="text-sm font-normal text-[#6B7890]">(facultatif)</span></h2>
                           <p className="mt-1 text-sm text-[#526079]">Pour ajuster la difficulté. On peut aussi voir ça plus tard.</p>
                           <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4" role="radiogroup" aria-label="Expérience professionnelle">
-                            {experienceOptions.map(({ value, title }) => {
+                            {experienceOptions.filter(({ value }) => profile.employmentStatus !== "student" || value === "starting").map(({ value, title }) => {
                               const selected = profile.experienceLevel === value;
                               return <button type="button" role="radio" aria-checked={selected} key={value}
-                                onClick={() => setProfile((p) => ({ ...p, experienceLevel: value }))}
+                                onClick={() => setProfile((p) => ({
+                                  ...p, experienceLevel: value,
+                                  professionalGoal: goalsForContext(p.employmentStatus, value).includes(p.professionalGoal)
+                                    ? p.professionalGoal : goalsForContext(p.employmentStatus, value)[0],
+                                }))}
                                 className={cn("min-h-12 rounded-xl border px-2 py-3 text-xs font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]", selected ? "border-[#2947A3] bg-[#F3F6FE] text-[#2947A3]" : "border-[#E0E6EF] bg-white/65 text-[#526079] hover:border-[#7590D1]")}>{title}</button>;
                             })}
                           </div>
-                          {profile.experienceLevel && <button type="button" onClick={() => setProfile((p) => ({ ...p, experienceLevel: undefined }))} className="mt-2 min-h-9 text-xs font-medium text-[#526079] underline-offset-2 hover:underline">Je préfère préciser plus tard</button>}
+                          {profile.experienceLevel && profile.employmentStatus !== "student" && <button type="button" onClick={() => setProfile((p) => ({ ...p, experienceLevel: undefined }))} className="mt-2 min-h-9 text-xs font-medium text-[#526079] underline-offset-2 hover:underline">Je préfère préciser plus tard</button>}
                         </div>
                       </div>
                     )}
@@ -291,9 +316,9 @@ export function OnboardingStages({
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Notre prochaine étape</p>
                         <h1 className="mt-4 text-[30px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[39px]">{firstName ? `${firstName}, on vise quoi ensuite ?` : "On vise quoi ensuite ?"}</h1>
-                        <p className="mt-4 text-base leading-7 text-[#526079]">Premier emploi, nouveau poste ou évolution : dites-nous où vous voulez aller. On prépare la suite ensemble.</p>
+                        <p className="mt-4 text-base leading-7 text-[#526079]">Selon votre point de départ, voici les objectifs qu’on peut préparer ensemble.</p>
                         <div className="mt-8 space-y-3" role="radiogroup" aria-label="Objectif professionnel principal">
-                          {professionalOptions.map(({ value, title, detail, icon: Icon }) => {
+                          {professionalOptions.filter(({ value }) => allowedGoals.includes(value)).map(({ value, title, detail, icon: Icon }) => {
                             const selected = profile.professionalGoal === value;
                             return <button key={value} type="button" role="radio" aria-checked={selected}
                               onClick={() => setProfile((p) => ({ ...p, professionalGoal: value }))}
@@ -372,7 +397,7 @@ export function OnboardingStages({
                 <Check size={28} aria-hidden="true" />
               </motion.div>
               <p className="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-[#2947A3]">Notre point de départ est prêt</p>
-              <h1 className="mt-3 text-[34px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[43px]">Bienvenue, {firstName} !</h1>
+              <h1 className="mt-3 text-[34px] font-semibold leading-tight tracking-[-0.04em] text-[#172033] sm:text-[43px]">{firstName ? `Bienvenue, ${firstName} !` : "On est prêts pour la suite !"}</h1>
               <p className="mt-3 max-w-xl text-base leading-7 text-[#526079]">Votre objectif est clair, et nous avons identifié les points à travailler ensemble. Voici notre plan pour commencer.</p>
               <motion.div initial={animated ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: animated ? 0.48 : 0, delay: animated ? 0.15 : 0 }}
