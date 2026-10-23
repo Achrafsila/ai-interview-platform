@@ -157,6 +157,12 @@ footer{margin-top:45px;color:#8198b6;font-size:12px;text-align:center}a{color:#9
     <div class="muted" id="aiModeHint" style="margin-top:12px">Les questions brouillon sont disponibles uniquement dans ce laboratoire local.</div>
     <div class="field"><label for="simJobDescription">Fiche de poste (facultatif, uniquement à cette étape)</label><textarea id="simJobDescription" maxlength="3000" placeholder="Collez la description du poste ciblé..."></textarea><div class="muted">Cette description n'est pas enregistrée dans le profil.</div></div>
     <div class="field"><label for="simCount">Nombre de questions</label><select id="simCount"><option value="3">3 questions — test rapide</option><option value="5">5 questions</option></select></div>
+    <div id="aiPrivacyWrap" class="alert hidden">
+      <label class="inline-check"><input type="checkbox" id="aiPrivacyConsent">
+        J'accepte que mes réponses de test soient transmises au fournisseur IA pour générer des relances et un bilan qualitatif.
+      </label>
+      <div class="muted" style="margin-top:6px">Ne renseignez aucune donnée personnelle sensible. Le mode IA est uniquement local et n'écrit rien dans Supabase.</div>
+    </div>
     <div class="flow"><button class="primary" type="submit" id="launchInterview">Démarrer mon entretien →</button><button class="ghost" type="button" id="backDashboard">Retour au profil</button></div>
     <div class="error" id="configurationError" role="alert"></div>
   </form>
