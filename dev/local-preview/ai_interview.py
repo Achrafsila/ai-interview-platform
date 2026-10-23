@@ -215,6 +215,25 @@ def configure_ai_provider(environ):
     choice = environ.get("AI_PROVIDER", "auto").strip().lower()
     if choice not in ("auto", "groq", "openai"):
         raise ValueError("AI_PROVIDER doit être auto, groq ou openai")
+    # Fail early with a useful diagnostic instead of silently sending a
+    # Groq credential to api.openai.com and returning a generic HTTP 401.
+    groq_key = environ.get("GROQ_API_KEY", "").strip()
+    openai_key = environ.get("OPENAI_API_KEY", "").strip()
+    if choice == "openai" and openai_key.startswith("gsk_"):
+        raise ValueError(
+            "Clé Groq placée dans OPENAI_API_KEY. Utilisez GROQ_API_KEY "
+            "et AI_PROVIDER=groq, puis redémarrez le serveur."
+        )
+    if choice in ("auto", "openai") and not groq_key and openai_key.startswith("gsk_"):
+        raise ValueError(
+            "Clé Groq détectée dans OPENAI_API_KEY. Définissez GROQ_API_KEY, "
+            "choisissez AI_PROVIDER=groq et redémarrez le serveur."
+        )
+    if choice == "groq" and groq_key.startswith("sk-"):
+        raise ValueError(
+            "La clé placée dans GROQ_API_KEY ressemble à une clé OpenAI. "
+            "Utilisez une vraie clé Groq."
+        )
     if choice == "groq" or (choice == "auto" and environ.get("GROQ_API_KEY")):
         return (
             GroqRehearsalProvider(
