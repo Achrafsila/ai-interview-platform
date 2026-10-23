@@ -7,7 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, BriefcaseBusiness, Check, ChevronRight, CirclePlay, Code2, FileText, LayoutDashboard, Sparkles, UserRound, Languages, Clock3, Target, Pencil, Play } from "lucide-react";
 import { getAuthClient } from "@/lib/supabase-auth";
 import { getAppRole, readProfile } from "@/lib/profile";
-import { experienceOptions, type OnboardingProfile, type PreparationGoal, type ExperienceLevel } from "@/components/ui/onboarding-stages";
+import { experienceOptions, employmentOptions, professionalOptions, goalsForContext, type OnboardingProfile, type PreparationGoal, type ExperienceLevel, type EmploymentStatus, type ProfessionalGoal } from "@/components/ui/onboarding-stages";
 import { cn } from "@/lib/utils";
 
 type Kind = "rh" | "technical";
@@ -27,6 +27,8 @@ export default function PreparationPage() {
  const [description,setDescription]=useState("");
  const [file,setFile]=useState<File|null>(null);
  const [experience,setExperience]=useState<ExperienceLevel|"">("");
+ const [situation,setSituation]=useState<EmploymentStatus|"">("");
+ const [professionalGoal,setProfessionalGoal]=useState<ProfessionalGoal|"">("");
  const [language,setLanguage]=useState<"fr"|"en">("fr");
  const [priorities,setPriorities]=useState<PreparationGoal[]>([]);
  const [duration,setDuration]=useState<Duration>(20);
@@ -39,17 +41,19 @@ export default function PreparationPage() {
    const {data:{user}}=await client.auth.getUser();if(!user){router.replace("/login");return;}
    const role=await getAppRole(client,user.id);if(role!=="user"){router.replace("/role-preview");return;}
    const saved=await readProfile(client,user.id);if(!saved?.completed){router.replace("/onboarding");return;}
-   if(mounted){setProfile(saved.profile);setExperience(saved.profile.experienceLevel??"");setLanguage(saved.profile.preferredLocale);setPriorities(saved.profile.preparationGoals);}
+   if(mounted){setProfile(saved.profile);setExperience(saved.profile.experienceLevel??"");setSituation(saved.profile.employmentStatus??"");setProfessionalGoal(saved.profile.professionalGoal);setLanguage(saved.profile.preferredLocale);setPriorities(saved.profile.preparationGoals);}
   }catch{if(mounted)setLoadError("Impossible de récupérer votre profil. Réessayez.");}
  }void load();return()=>{mounted=false};},[router]);
  useEffect(()=>{if(step>0 && !reduced)currentRef.current?.scrollIntoView({behavior:"smooth",block:"start"});},[step,reduced]);
- const valid=step===0?kind!==null:step===1?description.length<=12000 && job.trim().length>0 && job.length<=120 && (!file||file.size<=5*1024*1024):priorities.length>=1&&priorities.length<=3;
+ const allowedGoals=goalsForContext(situation||undefined,experience||undefined);
+ const selectedProfessionalGoal=professionalGoal&&allowedGoals.includes(professionalGoal)?professionalGoal:"";
+ const valid=step===0?kind!==null:step===1?description.length<=12000 && job.trim().length>0 && job.length<=120 && Boolean(situation) && Boolean(selectedProfessionalGoal) && (!file||file.size<=5*1024*1024):priorities.length>=1&&priorities.length<=3;
  function advance(){if(!valid){setError("Vérifiez les informations de cette étape.");return;}setError("");if(step<2){setStep(s=>s+1);return;}setComplete(true);}
  function toggleGoal(v:PreparationGoal){setPriorities(prev=>prev.includes(v)?prev.filter(x=>x!==v):prev.length<3?[...prev,v]:prev);}
  function launchLab(){
   if(!kind||!job.trim()||priorities.length===0)return;
   sessionStorage.setItem("interview-lab-config",JSON.stringify({
-   family:kind,locale:language,jobTitle:job.trim(),
+   family:kind,locale:language,jobTitle:job.trim(),professionalGoal:selectedProfessionalGoal,employmentStatus:situation,experienceLevel:experience,
    job_description:[job.trim(),description.trim()].filter(Boolean).join(" — ").slice(0,3000),
    goals:kind==="rh"?(priorities.includes("communication")?["communication"]:priorities.includes("answer_structure")?["answer_structure"]:["rh_parcours"]):["tech_reasoning"],
    count:duration===10?1:duration===20?2:3
@@ -93,7 +97,22 @@ export default function PreparationPage() {
        </>}
       {step===1&&<><h2 className="mt-3 text-2xl font-bold">Parlons du contexte professionnel.</h2><p className="mt-3 text-sm leading-7 text-[#65748D]">Précisez le poste que vous visez. Une fiche de poste peut affiner les questions de votre futur entretien.</p>
        <label className="mt-7 block text-sm font-semibold">Poste ciblé <span className="text-[#BD3858]">*</span><input required value={job} maxLength={120} onChange={e=>setJob(e.target.value)} placeholder="Ex. Data Analyst, Chargé de recrutement…" className="mt-2 block w-full rounded-xl border border-[#CBD7EE] bg-white px-4 py-3 outline-none focus:border-[#8855EF]"/></label>
-       <label className="mt-5 block text-sm font-semibold">Niveau d’expérience<select value={experience} onChange={e=>setExperience(e.target.value as ExperienceLevel|"")} className="mt-2 block w-full rounded-xl border border-[#CBD7EE] bg-white px-4 py-3"><option value="">Ne pas préciser</option>{experienceOptions.map(x=><option value={x.value} key={x.value}>{x.title}</option>)}</select></label>
+       <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        <label className="block text-sm font-semibold">Situation professionnelle <span className="text-[#BD3858]">*</span>
+         <select value={situation} onChange={e=>{const next=e.target.value as EmploymentStatus|"";setSituation(next);const nextExp=next==="student"?"starting":experience;setExperience(nextExp);const available=goalsForContext(next||undefined,nextExp||undefined);setProfessionalGoal(current=>available.includes(current as ProfessionalGoal)?current:available[0]??"");}} className="mt-2 block min-h-12 w-full rounded-xl border border-[#CBD7EE] bg-white px-4 py-3"><option value="">Choisir ma situation</option>{employmentOptions.map(x=><option value={x.value} key={x.value}>{x.title}</option>)}</select>
+        </label>
+        <label className="block text-sm font-semibold">Niveau d’expérience <span className="font-normal text-[#7B8AA2]">(facultatif)</span>
+         <select value={experience} disabled={situation==="student"} onChange={e=>{const next=e.target.value as ExperienceLevel|"";setExperience(next);const available=goalsForContext(situation||undefined,next||undefined);setProfessionalGoal(current=>available.includes(current as ProfessionalGoal)?current:available[0]??"");}} className="mt-2 block min-h-12 w-full rounded-xl border border-[#CBD7EE] bg-white px-4 py-3 disabled:bg-[#F0F0F7]"><option value="">Ne pas préciser</option>{experienceOptions.filter(x=>situation!=="student"||x.value==="starting").map(x=><option value={x.value} key={x.value}>{x.title}</option>)}</select>
+        </label>
+       </div>
+       <div className="mt-6">
+        <p className="text-sm font-semibold">Votre objectif professionnel pour cette simulation <span className="text-[#BD3858]">*</span></p>
+        <p className="mt-1 text-xs leading-5 text-[#687896]">Les choix s’adaptent à votre situation et votre expérience. Ils ne modifient pas votre profil général.</p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Objectif professionnel contextualisé">
+         {allowedGoals.map(value=>{const item=professionalOptions.find(x=>x.value===value);if(!item)return null;return <button key={value} type="button" role="radio" aria-checked={selectedProfessionalGoal===value} onClick={()=>setProfessionalGoal(value)} className={cn("flex min-h-20 items-start gap-3 rounded-2xl border p-4 text-left transition hover:border-[#A88BF0]",selectedProfessionalGoal===value?"border-[#8755ED] bg-[#F2EDFF]":"border-[#DAE2F0] bg-white/85")}><item.icon size={20} className="mt-0.5 shrink-0 text-[#8256E9]"/><span className="flex-1"><strong className="block text-sm">{item.title}</strong><span className="mt-1 block text-xs leading-5 text-[#687896]">{item.detail}</span></span>{selectedProfessionalGoal===value&&<Check size={17} className="shrink-0 text-[#8755ED]"/>}</button>})}
+         {!situation&&<p className="rounded-xl bg-[#F6F3FF] p-4 text-xs text-[#687896] sm:col-span-2">Sélectionnez d’abord votre situation professionnelle pour voir les objectifs correspondants.</p>}
+        </div>
+       </div>
        <div className="mt-6">
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2"><label htmlFor="job-context" className="text-sm font-semibold">Fiche de poste <span className="font-normal text-[#7B8AA2]">(facultative)</span></label><span className="text-xs text-[#7787A2]">Un seul espace, deux possibilités</span></div>
         <div className="overflow-hidden rounded-2xl border border-[#CBD7EE] bg-white focus-within:border-[#8855EF] focus-within:ring-2 focus-within:ring-[#8855EF]/15">
@@ -117,7 +136,7 @@ export default function PreparationPage() {
       </motion.section>:
       <motion.section key="recap" initial={reduced?false:{opacity:0,y:20}} animate={{opacity:1,y:0}} className={surface+" mt-4"}>
        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.15em] text-[#21856A]"><Check size={17}/> Configuration terminée</div><h2 className="mt-4 text-2xl font-bold">Tout est prêt pour votre simulation.</h2>
-       <div className="mt-6 space-y-3 rounded-2xl bg-[#F2F5FD] p-5 text-sm"><p><strong>Format :</strong> {summary[0]}</p><p><strong>Poste :</strong> {summary[1]}</p><p><strong>Expérience :</strong> {experienceOptions.find(x=>x.value===experience)?.title??"Non précisée"}</p><p><strong>Langue et durée :</strong> {language==="fr"?"Français":"English"} · {duration} minutes</p><p><strong>Priorités :</strong> {priorities.map(x=>goalLabels[x]).join(", ")}</p>{description.trim()&&<p><strong>Fiche de poste :</strong> description saisie ({description.trim().length} caractères)</p>}{file&&<p><strong>Document :</strong> {file.name} (non analysé)</p>}</div>
+       <div className="mt-6 space-y-3 rounded-2xl bg-[#F2F5FD] p-5 text-sm"><p><strong>Format :</strong> {summary[0]}</p><p><strong>Poste :</strong> {summary[1]}</p><p><strong>Situation :</strong> {employmentOptions.find(x=>x.value===situation)?.title??"Non précisée"}</p><p><strong>Objectif professionnel :</strong> {professionalOptions.find(x=>x.value===selectedProfessionalGoal)?.title??"Non précisé"}</p><p><strong>Expérience :</strong> {experienceOptions.find(x=>x.value===experience)?.title??"Non précisée"}</p><p><strong>Langue et durée :</strong> {language==="fr"?"Français":"English"} · {duration} minutes</p><p><strong>Priorités :</strong> {priorities.map(x=>goalLabels[x]).join(", ")}</p>{description.trim()&&<p><strong>Fiche de poste :</strong> description saisie ({description.trim().length} caractères)</p>}{file&&<p><strong>Document :</strong> {file.name} (non analysé)</p>}</div>
        <p className="mt-6 rounded-xl border border-[#DBE3F1] bg-[#F6F8FC] p-4 text-sm leading-6 text-[#586A88]">Votre configuration peut être utilisée dans le laboratoire vocal local. Le mode de production et les évaluations enregistrées dans Supabase restent à développer.</p>
        {error&&<p role="alert" className="mt-4 text-sm text-red-700">{error}</p>}
        <div className="mt-6 flex flex-wrap items-center justify-between gap-3"><button type="button" onClick={()=>{setComplete(false);setStep(2)}} className="preparation-glass-secondary inline-flex min-h-12 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold"><Pencil size={16}/> Modifier mes choix</button><button type="button" onClick={launchLab} className="preparation-glass-primary inline-flex min-h-12 items-center gap-3 rounded-2xl px-6 text-sm font-bold text-white"><Play size={17}/> Tester mon entretien vocal</button></div><p id="simulation-unavailable" className="mt-3 text-right text-xs text-[#6F7D98]">Laboratoire local : questions en brouillon, aucun score ni sauvegarde en base.</p>
