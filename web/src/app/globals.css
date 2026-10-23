@@ -259,3 +259,26 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   box-shadow: 0 0 0 1000px #0b1c3d inset !important;
   transition: background-color 9999s ease-out 0s;
 }
+
+/* Autofill V2: override Chromium's internal -internal-light-dark autofill paint. */
+.auth-glass { color-scheme: dark; }
+.auth-glass input.auth-dark-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: #f8faff !important;
+  color: #f8faff !important;
+  caret-color: #f8faff !important;
+}
+.auth-glass input.auth-dark-input:is(:autofill, :-webkit-autofill, :focus, :hover) {
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: #f8faff !important;
+  -webkit-box-shadow: 0 0 0 1000px #0b1c3d inset !important;
+  box-shadow: 0 0 0 1000px #0b1c3d inset !important;
+}
