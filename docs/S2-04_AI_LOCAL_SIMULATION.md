@@ -134,6 +134,17 @@ curl -sS -o /dev/null -w "Groq HTTP %{http_code}\n" \\
 
 Le serveur refuse désormais dès son démarrage une configuration `OPENAI_API_KEY=gsk_...` : il affiche une explication au lieu d'attendre un 401 pendant une simulation.
 
+## Correctif Cloudflare HTTP 403 (macOS Python)
+
+Sur macOS, le client HTTP Python standard `urllib` peut être refusé **en amont** par Cloudflare avec `HTTP 403`, même sans clé ou avec une clé volontairement invalide. Le serveur utilisait l'en-tête par défaut `Python-urllib/3.x`. Le correctif utilise explicitement `User-Agent: AIInterviewPlatform/0.1` pour toutes les requêtes Groq, sans publier la clé.
+
+La cause a été reproduite sur le Mac connecté :
+- Python `urllib` sans identité client : `HTTP 403` non-JSON, serveur Cloudflare.
+- Même URL avec un `User-Agent` personnalisé : `HTTP 401` attendu lorsque aucune clé n'est fournie.
+- Test d'intégration automatisé : l'en-tête personnalisé est systématiquement présent sur le client Groq.
+
+Un `401` avec **une véritable clé** nécessite encore de vérifier l'authentification. Un `403` provenant d'un JSON Groq (plutôt que Cloudflare) peut signaler une permission du compte.
+
 ## Problèmes courants
 
 - **Option IA grisée** : arrêter le serveur, définir \`GROQ_API_KEY\` (ou \`OPENAI_API_KEY\`) dans le Terminal qui le lance, puis redémarrer.
