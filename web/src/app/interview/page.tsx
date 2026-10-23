@@ -78,33 +78,33 @@ export default function InterviewPage(){
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
  useEffect(()=>()=>{recognition.current?.stop();questionAudio.current?.pause();if(questionAudioUrl.current)URL.revokeObjectURL(questionAudioUrl.current);window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);introAudio.current?.pause();if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
- async function speak(text:string,locale:string){
-  stopDictation();
-  stopQuestionAudio();
+ function speak(text:string,locale:string){
+  stopDictation();stopQuestionAudio();
   if(muted){setState("listening");setVoiceNotice("Le son est coupé.");return;}
   const sequence=voiceSequence.current;
-  setState("speaking");setVoiceNotice("Préparation de la voix de l’intervieweur…");
-  try{
-   const r=await fetch("/api/interview/tts",{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({text,locale})});
-   if(!r.ok)throw new Error("Le serveur vocal local n’est pas disponible.");
-   const blob=await r.blob();
+  setState("speaking");
+  setVoiceNotice("Chargement de la voix…");
+  const url="/api/interview/tts?"+new URLSearchParams({text,locale}).toString();
+  const audio=new Audio();
+  audio.preload="auto";
+  questionAudio.current=audio;
+  audio.onplaying=()=>{if(sequence===voiceSequence.current)setVoiceNotice("");};
+  audio.onended=()=>{
    if(sequence!==voiceSequence.current)return;
-   const url=URL.createObjectURL(blob);questionAudioUrl.current=url;
-   const audio=new Audio(url);questionAudio.current=audio;
-   audio.onended=()=>{
-    if(sequence!==voiceSequence.current)return;
-    stopQuestionAudio();setState("listening");setVoiceNotice("");
-    if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());
-   };
-   audio.onerror=()=>{if(sequence===voiceSequence.current){setState("listening");setVoiceNotice("Erreur de lecture de la question.");}};
-   await audio.play();
-   if(sequence===voiceSequence.current)setVoiceNotice("");
-  }catch{
+   stopQuestionAudio();setState("listening");setVoiceNotice("");
+   if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());
+  };
+  audio.onerror=()=>{
    if(sequence!==voiceSequence.current)return;
    setState("listening");
-   setVoiceNotice("Lecture audio indisponible. Vérifiez que le serveur Python a été redémarré, puis cliquez sur « Écouter la question ».");
-  }
+   setVoiceNotice("La lecture a échoué. Essayez « Écouter la question ».");
+  };
+  audio.src=url;
+  void audio.play().catch(()=>{
+   if(sequence!==voiceSequence.current)return;
+   setState("listening");
+   setVoiceNotice("Chrome a bloqué la lecture automatique. Cliquez sur « Écouter la question ».");
+  });
  }
  function start(){
   if(!config){setError("Configuration introuvable. Revenez à la préparation.");return;}
