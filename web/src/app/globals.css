@@ -462,3 +462,50 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .preparation-v2 button.preparation-glass-primary:disabled{opacity:.80!important;filter:saturate(.82);cursor:not-allowed}
 .preparation-v2 button.preparation-glass-primary svg{color:#fff!important;stroke:#fff!important}
 .preparation-v2 button.preparation-glass-secondary{background:rgba(255,255,255,.9)!important;color:#344366!important;border:1px solid #CEC4E7!important;box-shadow:0 8px 22px rgba(95,82,160,.1)!important}
+
+
+/* Interview intro V2 — focus-mode counterpart to vibrant light screens. */
+.interview-intro-v2{font-family:var(--font-geist-sans,Inter,ui-sans-serif,system-ui,sans-serif)}
+.intro-v2-pill{border:1px solid rgba(207,207,255,.2);background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.09)}
+.intro-v2-highlight{background:linear-gradient(95deg,#9FA8FF,#D0A1FF 58%,#F6A8E8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.intro-v2-orb{filter:drop-shadow(0 20px 45px rgba(109,95,235,.27));animation:landing-breathe 6s ease-in-out infinite}
+.intro-v2-glass{border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.10);-webkit-backdrop-filter:blur(20px) saturate(155%);backdrop-filter:blur(20px) saturate(155%);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 12px 30px rgba(7,8,30,.2);transition:background .2s,transform .2s}
+.intro-v2-glass:hover{background:rgba(255,255,255,.19);transform:translateY(-2px)}
+.intro-v2-primary{background:linear-gradient(110deg,#5365FF,#8755F4 60%,#D94AC8);box-shadow:0 12px 30px rgba(103,91,232,.28);transition:transform .2s,filter .2s}
+.intro-v2-primary:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.interview-intro-v2 button:focus-visible{outline:3px solid #DDA0FF;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.intro-v2-orb{animation:none}.intro-v2-glass,.intro-v2-primary{transition:none!important;transform:none!important}}
+
+
+/* Interview V2: immersive focus with legible accessible liquid-glass controls. */
+.interview-session-v2{font-family:var(--font-geist-sans,Inter,ui-sans-serif,system-ui,sans-serif)}
+.interview-v2-stage{border:1px solid rgba(194,187,255,.26);background:linear-gradient(155deg,rgba(36,48,94,.82),rgba(18,28,63,.89));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 25px 85px rgba(2,7,27,.33);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.interview-v2-orb{filter:drop-shadow(0 25px 42px rgba(126,88,255,.24))}
+.interview-v2-pill{border:1px solid rgba(191,183,255,.28);background:rgba(116,96,223,.2);color:#D6D2FF}
+.interview-v2-glass,.interview-v2-glass-danger,.interview-v2-primary{border:1px solid rgba(255,255,255,.25);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 10px 27px rgba(0,0,30,.18);transition:background .2s ease,transform .2s ease,box-shadow .2s ease;color:#F5F3FF}
+.interview-v2-glass{background:rgba(255,255,255,.11)}
+.interview-v2-glass:hover:not(:disabled){background:rgba(255,255,255,.2);transform:translateY(-1px)}
+.interview-v2-primary{background:linear-gradient(110deg,#5365FF,#8755F4 58%,#DB4CCA);color:#fff!important;-webkit-text-fill-color:#fff}
+.interview-v2-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 32px rgba(113,89,233,.32)}
+.interview-v2-primary:disabled{opacity:.72;cursor:not-allowed}
+.interview-v2-glass-danger{border-color:rgba(255,148,171,.35);background:rgba(205,79,112,.15);color:#FFD5E1}
+.interview-v2-glass-danger:hover{background:rgba(205,79,112,.28)}
+.interview-session-v2 button:focus-visible,.interview-session-v2 a:focus-visible{outline:3px solid #DDA0FF;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.interview-v2-glass,.interview-v2-primary,.interview-v2-glass-danger{transition:none!important;transform:none!important}}
+
+
+/* Screen 08 — post-interview processing, light immersive handoff. */
+.analysis-v2{font-family:var(--font-geist-sans,Inter,ui-sans-serif,system-ui,sans-serif)}
+.analysis-v2-gradient{background:linear-gradient(95deg,#5365FF,#9354F4 55%,#E65ECB);-webkit-background-clip:text;background-clip:text;color:transparent}
+.analysis-v2-card{box-shadow:inset 0 1px 0 #fff,0 30px 105px rgba(109,91,190,.15),0 14px 60px rgba(227,103,192,.1)}
+.analysis-v2-ring{animation:analysis-breathe 3.8s ease-in-out infinite}
+.analysis-v2-ring-alt{animation:analysis-breathe 3.8s ease-in-out infinite reverse}
+.analysis-v2-core{animation:analysis-float 4.5s ease-in-out infinite}
+.analysis-v2-live{animation:analysis-breathe 1.4s ease-in-out infinite}
+.analysis-v2-indeterminate{animation:analysis-indeterminate 2s cubic-bezier(.55,.15,.45,.85) infinite}
+@keyframes analysis-breathe{0%,100%{transform:scale(.96);opacity:.5}50%{transform:scale(1.06);opacity:1}}
+@keyframes analysis-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes analysis-indeterminate{from{transform:translateX(-110%)}to{transform:translateX(300%)}}
+.analysis-v2-secondary{border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 10px 32px rgba(100,88,165,.1)}
+.analysis-v2 button:focus-visible{outline:3px solid #8455E8;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.analysis-v2-ring,.analysis-v2-ring-alt,.analysis-v2-core,.analysis-v2-live,.analysis-v2-indeterminate{animation:none!important}.analysis-v2-indeterminate{width:100%;opacity:.65}}
