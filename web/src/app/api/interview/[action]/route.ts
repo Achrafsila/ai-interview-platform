@@ -23,7 +23,7 @@ export async function GET(request:NextRequest,{params}:{params:Promise<{action:s
 }
 export async function POST(request:NextRequest,{params}:{params:Promise<{action:string}>}){
  const {action}=await params;
- if(action!=="start"&&action!=="answer"&&action!=="tts")return NextResponse.json({error:"Action inconnue"},{status:404});
+ if(action!=="start"&&action!=="answer"&&action!=="tts"&&action!=="transcribe")return NextResponse.json({error:"Action inconnue"},{status:404});
  const origin=request.headers.get("origin");
  if(origin&&origin!==request.nextUrl.origin)return NextResponse.json({error:"Origine non autorisée"},{status:403});
  const client=await getServerAuthClient();

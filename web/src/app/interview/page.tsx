@@ -76,6 +76,10 @@ export default function InterviewPage(){
  const sessionRef=useRef(false);
  const pausedFrom=useRef<"speaking"|"listening">("listening");
  const [dictating,setDictating]=useState(false);
+ const [enhancedStt,setEnhancedStt]=useState(false);
+ const [enhancedRecording,setEnhancedRecording]=useState(false);
+ const recorderRef=useRef<MediaRecorder|null>(null);
+ const [transcribing,setTranscribing]=useState(false);
  const dictationBase=useRef("");
  const answerRef=useRef("");
  const submittingRef=useRef(false);
@@ -203,6 +207,47 @@ export default function InterviewPage(){
  }
 
  function submit(){void submitValue(answerRef.current||answer);}
+ async function recordEnhanced(){
+  if(enhancedRecording){recorderRef.current?.stop();setEnhancedRecording(false);return;}
+  if(!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==="undefined"){
+   setError("Enregistrement audio non disponible dans ce navigateur.");return;
+  }
+  let stream:MediaStream|null=null;
+  try{
+   stream=await navigator.mediaDevices.getUserMedia({audio:true});
+   const mime=["audio/webm","audio/mp4","audio/ogg"].find(type=>MediaRecorder.isTypeSupported(type));
+   if(!mime)throw new Error("Format audio non pris en charge");
+   const recordingStream=stream;
+   const recorder=new MediaRecorder(recordingStream,{mimeType:mime});recorderRef.current=recorder;
+   const chunks:Blob[]=[];
+   recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
+   recorder.onstop=()=>{
+    recordingStream.getTracks().forEach(track=>track.stop());
+    setEnhancedRecording(false);
+    if(!chunks.length)return;
+    setTranscribing(true);setSpeechHint("Transcription multilingue en cours…");
+    void (async()=>{
+     try{
+      const blob=new Blob(chunks,{type:mime});
+      const base64=await new Promise<string>((resolve,reject)=>{
+       const reader=new FileReader();
+       reader.onload=()=>resolve(String(reader.result).split(",")[1]||"");
+       reader.onerror=()=>reject(new Error("Lecture audio impossible"));
+       reader.readAsDataURL(blob);
+      });
+      const res=await fetch("/api/interview/transcribe",{method:"POST",headers:{"Content-Type":"application/json"},
+       body:JSON.stringify({audio:base64,mime,context:config?.jobTitle||""})});
+      const data=await res.json() as {text?:string;error?:string};
+      if(!res.ok||!data.text)throw new Error(data.error||"Transcription vide");
+      answerRef.current=[answerRef.current,data.text].filter(Boolean).join(" ").slice(0,8000);
+      setAnswer(answerRef.current);setSpeechHint("Transcription terminée : vérifiez le texte avant de répondre.");
+     }catch(e){setError("Transcription multilingue indisponible : "+(e instanceof Error?e.message:"erreur"));}
+     finally{setTranscribing(false);}
+    })();
+   };
+   recorder.start();setEnhancedRecording(true);setError("");setSpeechHint("Enregistrement en cours : cliquez pour terminer.");
+  }catch(e){stream?.getTracks().forEach(track=>track.stop());setError(e instanceof Error?e.message:"Microphone indisponible");}
+ }
  function listen(automatic=false){
   const w=window as SpeechWindow;
   const C=w.SpeechRecognition||w.webkitSpeechRecognition;
@@ -249,7 +294,7 @@ export default function InterviewPage(){
  }
  useEffect(()=>{
   submitRef.current=(value)=>{void submitValue(value);};
-  autoListenRef.current=()=>{if(handsFreeRef.current&&!recognition.current)listen(true);};
+  autoListenRef.current=()=>{if(!enhancedStt&&handsFreeRef.current&&!recognition.current)listen(true);};
  });
  function togglePause(){
   if(state==="paused"){
@@ -337,11 +382,17 @@ export default function InterviewPage(){
          if(next&&state==="listening"&&!recognition.current)listen(true);
         }}>{handsFree?"Passer en manuel":"Activer le mains libres"}</button>
        </div>
+       <div className="mb-3 flex items-center justify-between gap-3 text-xs text-[#53658B]">
+        <span>{enhancedStt?"Whisper : transcription multilingue après enregistrement":"Dictée instantanée Chrome"}</span>
+        <button type="button" className="font-semibold underline underline-offset-4" onClick={()=>{stopDictation();if(recorderRef.current?.state==="recording")recorderRef.current.stop();setEnhancedStt(v=>!v);setSpeechHint("");}}>
+         {enhancedStt?"Dictée instantanée":"Tester le STT multilingue"}
+        </button>
+       </div>
        <label htmlFor="spoken-answer" className="mb-2 block text-sm font-semibold">Votre réponse {dictating&&<span role="status" className="ml-2 text-[#21866F]">● Transcription en direct…</span>}</label>
        <textarea id="spoken-answer" value={answer} onChange={e=>{answerRef.current=e.target.value;setAnswer(e.target.value);clearSilence();}} disabled={state==="paused"} rows={4} maxLength={8000} placeholder="Parlez avec le microphone ou saisissez votre réponse…" className="w-full resize-y rounded-xl border border-[#D2DBEC] bg-[#FBFCFF] p-4 text-sm leading-7 outline-none focus:border-[#5E77DA] disabled:opacity-60"/>
        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <button disabled={state==="paused"} onClick={()=>listen(false)} className="flex items-center gap-2 rounded-xl border border-[#C9D9ED] px-4 py-3 text-sm font-semibold disabled:opacity-50"><Mic size={18}/> {dictating?"Arrêter la dictée":"Dicter ma réponse"}</button>
-        <button disabled={!answer.trim()||state==="paused"} onClick={submit} className="flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white disabled:opacity-40">J’ai terminé <Send size={17}/></button>
+        <button disabled={state==="paused"||transcribing} onClick={()=>enhancedStt?void recordEnhanced():listen(false)} className="flex items-center gap-2 rounded-xl border border-[#C9D9ED] px-4 py-3 text-sm font-semibold disabled:opacity-50"><Mic size={18}/> {enhancedStt?(transcribing?"Transcription en cours…":enhancedRecording?"Arrêter l’enregistrement":"Enregistrer ma réponse"):(dictating?"Arrêter la dictée":"Dicter ma réponse")}</button>
+        <button disabled={!answer.trim()||state==="paused"||transcribing||enhancedRecording} onClick={submit} className="flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white disabled:opacity-40">J’ai terminé <Send size={17}/></button>
        </div>
       </div>}
      {state==="done"&&<div className="mt-7 w-full rounded-2xl bg-[#EFF8F3] p-6 text-left"><div className="flex items-center gap-2 font-bold text-[#247B64]"><Check size={18}/> Bilan pédagogique non noté</div><p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-[#435C56]">{result?.feedback||"Aucun retour disponible."}</p><p className="mt-3 text-xs text-[#65766F]">Cette session locale n’est pas enregistrée dans Supabase et ne met pas encore à jour le dashboard.</p></div>}
