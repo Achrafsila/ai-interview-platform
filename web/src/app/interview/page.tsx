@@ -14,6 +14,17 @@ async function send(action:"start"|"answer",payload:object):Promise<Response>{
  if(!r.ok)throw new Error(data.error||"Le moteur est indisponible.");
  return data;
 }
+function segmentInterviewerText(text:string):string[]{
+ const sentences=text.match(/[^.!?…]+(?:[.!?…]+|$)/g)?.map(part=>part.trim()).filter(Boolean)||[];
+ if(!sentences.length)return text.trim()?[text.trim()]:[];
+ return sentences.flatMap(sentence=>{
+  const tokens=sentence.split(/\s+/);
+  if(tokens.length<=13)return [sentence];
+  const segments:string[]=[];
+  for(let index=0;index<tokens.length;index+=11)segments.push(tokens.slice(index,index+11).join(" "));
+  return segments;
+ });
+}
 export default function InterviewPage(){
  const [config,setConfig]=useState<Config|null>(null);
  const [configChecked,setConfigChecked]=useState(false);
@@ -75,6 +86,7 @@ export default function InterviewPage(){
  const handsFreeRef=useRef(true);
  const [speechHint,setSpeechHint]=useState("");
  const [voiceNotice,setVoiceNotice]=useState("");
+ const [questionReveal,setQuestionReveal]=useState(0);
  function clearSilence(){if(silenceTimer.current){clearTimeout(silenceTimer.current);silenceTimer.current=null;}}
  function stopDictation(){clearSilence();const current=recognition.current;recognition.current=null;current?.stop();setDictating(false);}
 
@@ -82,8 +94,9 @@ export default function InterviewPage(){
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
  useEffect(()=>()=>{recognition.current?.stop();questionAudio.current?.pause();if(questionAudioUrl.current)URL.revokeObjectURL(questionAudioUrl.current);window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(introTransitionTimer.current)clearTimeout(introTransitionTimer.current);introAudio.current?.pause();if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
  function speak(text:string,locale:string){
-  stopDictation();stopQuestionAudio();
-  if(muted){setState("listening");setVoiceNotice("Le son est coupé.");return;}
+  stopDictation();stopQuestionAudio();setQuestionReveal(0);
+  const total=segmentInterviewerText(text).length;
+  if(muted){setQuestionReveal(total);setState("listening");setVoiceNotice("Le son est coupé.");return;}
   const sequence=voiceSequence.current;
   setState("speaking");
   setVoiceNotice("Chargement de la voix…");
@@ -91,21 +104,30 @@ export default function InterviewPage(){
   const audio=new Audio();
   audio.preload="auto";
   questionAudio.current=audio;
-  audio.onplaying=()=>{if(sequence===voiceSequence.current)setVoiceNotice("");};
+  audio.onplaying=()=>{
+   if(sequence!==voiceSequence.current)return;
+   setVoiceNotice("");
+   setQuestionReveal(current=>Math.max(current,1));
+  };
+  audio.ontimeupdate=()=>{
+   if(sequence!==voiceSequence.current||!Number.isFinite(audio.duration)||audio.duration<=0)return;
+   const count=Math.max(1,Math.min(total,1+Math.floor((audio.currentTime/audio.duration)*total)));
+   setQuestionReveal(current=>Math.max(current,count));
+  };
   audio.onended=()=>{
    if(sequence!==voiceSequence.current)return;
-   stopQuestionAudio();setState("listening");setVoiceNotice("");
+   setQuestionReveal(total);stopQuestionAudio();setState("listening");setVoiceNotice("");
    if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());
   };
   audio.onerror=()=>{
    if(sequence!==voiceSequence.current)return;
-   setState("listening");
+   setQuestionReveal(total);setState("listening");
    setVoiceNotice("La lecture a échoué. Essayez « Écouter la question ».");
   };
   audio.src=url;
   void audio.play().catch(()=>{
    if(sequence!==voiceSequence.current)return;
-   setState("listening");
+   setQuestionReveal(total);setState("listening");
    setVoiceNotice("Chrome a bloqué la lecture automatique. Cliquez sur « Écouter la question ».");
   });
  }
@@ -243,7 +265,7 @@ export default function InterviewPage(){
   if(state==="speaking"){questionAudio.current?.pause();if("speechSynthesis" in window)window.speechSynthesis.pause();}
   setState("paused");
  }
- function interrupt(){stopQuestionAudio();window.speechSynthesis?.cancel();setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}
+ function interrupt(){setQuestionReveal(segmentInterviewerText(result?.question?.prompt||"").length);stopQuestionAudio();window.speechSynthesis?.cancel();setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}
  const question=result?.question?.prompt;
  if(!configChecked || (config&&state==="ready"&&introStage==="none"))return <main role="status" className="flex min-h-dvh items-center justify-center bg-[#0C1436] text-sm font-semibold text-[#B8C8E8]">Préparation de votre entretien…</main>;
  if(introStage!=="none")return <main className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[#0C1436] px-5 py-12 text-white">
@@ -292,7 +314,14 @@ export default function InterviewPage(){
     <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
      <div className="relative size-48 sm:size-56"><VoicePoweredOrb state={state} voiceLevel={dictating ? .55 : 0} className="h-full w-full"/><span className="sr-only">{state==="speaking"?"L’intervieweur parle":dictating?"Microphone actif":state==="listening"?"À vous de répondre":"Orbe d’entretien"}</span></div>
      <p className="mt-5 text-sm font-bold text-[#5266A6]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",done:"Séance terminée",error:"Connexion indisponible"})[state]}</p>
-     <h2 className="mt-6 text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":question||"Préparation de la prochaine question…"}</h2>
+     <div className="mt-6 flex min-h-24 w-full items-center justify-center">
+      {question&&state!=="done"&&state!=="ready"?
+       <h2 aria-label={question} className="flex max-w-2xl flex-col items-center gap-2 text-balance text-center text-xl font-semibold leading-relaxed tracking-tight sm:text-2xl">
+        {segmentInterviewerText(question).map((phrase,index)=><span key={result?.session_id+"-"+(result?.index||0)+"-"+index} aria-hidden="true"
+         className={`block transform-gpu transition-[opacity,transform,filter] duration-700 ease-out motion-reduce:transition-none ${questionReveal>index?"translate-y-0 opacity-100 blur-none":"translate-y-3 opacity-0 blur-[6px]"}`}>{phrase}</span>)}
+       </h2>:
+       <h2 className="text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":"Préparation de la prochaine question…"}</h2>}
+     </div>
      {state==="ready"&&introStage==="none"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
      {state==="error"&&<button onClick={()=>void startInterview()} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
      {(state==="speaking"||state==="listening")&&question&&<button type="button" onClick={()=>{
