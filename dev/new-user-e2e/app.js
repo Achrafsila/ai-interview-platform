@@ -234,21 +234,77 @@ function renderDashboard(){
     ? "En mode démo, vous pouvez parcourir toutes les étapes avec des questions brouillon issues de votre référentiel local. Pas de notation IA."
     : "Votre profil est enregistré dans Supabase. Aucune question n'est encore publiée dans le catalogue réel : la simulation complète reste bloquée.");
 }
-function renderConfiguration(){
-  state.selectedGoals=[...state.profile.preparation_goals];
+function defaultGoalsForFamily(family){
+  const saved=state.profile?.preparation_goals||[];
+  if(family==="rh"){
+    const selected=saved.filter(goal=>RH_SIM_GOALS.includes(goal));
+    return selected.length?selected:["rh_motivation"];
+  }
+  const mapped=[];
+  const map={
+    domain_knowledge:"tech_fundamentals",
+    communication:"tech_explain",
+    answer_structure:"tech_reasoning",
+    confidence:"tech_problem_solving",
+    stress_management:"tech_incident",
+  };
+  for(const goal of saved)if(map[goal]&&!mapped.includes(map[goal]))mapped.push(map[goal]);
+  return mapped.length?mapped:["tech_fundamentals","tech_problem_solving"];
+}
+function rememberCurrentSimulationGoals(){
+  if(state.lastRenderedFamily){
+    state.simGoalSelections[state.lastRenderedFamily]=chosenPrep("simulationGoals");
+  }
+}
+function renderSimulationGoals(){
+  const family=$("simFamily").value;
+  const technical=family==="technical";
+  const base=technical?TECH_SIM_GOALS:RH_SIM_GOALS;
+  const domainGoals=technical?(TECH_DOMAIN_GOALS[$("simDomain").value]||[]):[];
+  const allowed=[...base,...domainGoals];
+  const stored=state.simGoalSelections[family]||defaultGoalsForFamily(family);
+  let selected=stored.filter(value=>allowed.includes(value));
+  if(!selected.length){
+    const suggested=defaultGoalsForFamily(family).filter(v=>allowed.includes(v));
+    selected=suggested.length?suggested:[base[0]];
+  }
+  $("simDomainWrap").classList.toggle("hidden",!technical);
+  text("simGoalsTitle",technical?"Objectifs de préparation technique":"Objectifs de préparation RH");
+  text("simGoalsHint",technical
+    ?"Choisissez des thèmes techniques adaptés à la spécialité sélectionnée."
+    :"Travaillez les motivations, le parcours et les situations comportementales.");
   const container=$("simulationGoals");container.replaceChildren();
-  for(const [code,label] of Object.entries(PREP)){
+  for(const code of allowed){
     const item=document.createElement("label");item.className="choice";
-    const checkbox=document.createElement("input");checkbox.type="checkbox";checkbox.value=code;
-    checkbox.checked=state.selectedGoals.includes(code);
+    const checkbox=document.createElement("input");checkbox.type="checkbox";
+    checkbox.value=code;checkbox.checked=selected.includes(code);
     item.classList.toggle("selected",checkbox.checked);
-    const bold=document.createElement("b");bold.textContent=label;
+    const bold=document.createElement("b");bold.textContent=PREP[code]||code;
     item.append(checkbox,bold);container.append(item);
   }
+  state.lastRenderedFamily=family;
+}
+function renderAIMode(){
+  const ai=$("simMode").value==="ai";
+  $("aiPrivacyWrap").classList.toggle("hidden",!ai);
+  text("aiModeHint",ai
+    ?"Mode IA actif : réponses envoyées au fournisseur IA depuis le serveur local. Les questions brouillon restent non publiées."
+    :"Démo guidée sans IA. Les questions brouillon sont visibles uniquement dans ce laboratoire local.");
+}
+function renderConfiguration(){
+  state.aiSession=null;
+  state.aiFeedback=null;
+  state.simGoalSelections={};
+  state.lastRenderedFamily=null;
   $("simDifficulty").value="";
   $("simJobDescription").value="";
   $("simFamily").value="rh";
+  $("simDomain").value="software";
   $("simCount").value="3";
+  $("simMode").value=state.aiReady?"ai":"guided";
+  $("aiPrivacyConsent").checked=false;
+  renderSimulationGoals();
+  renderAIMode();
   text("configurationError","");
 }
 async function startSimulation(event){
