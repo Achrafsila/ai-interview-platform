@@ -216,8 +216,9 @@ export function OnboardingStages({
 
 
   return (
-    <div className={cn("mx-auto w-full max-w-[1500px]", className)}>
-      <div className="grid min-h-[calc(100vh-105px)] grid-cols-1 overflow-hidden border-y border-[#263A61] bg-[#101C34] lg:grid-cols-[320px_minmax(0,1fr)]">
+    <div className={cn("mx-auto w-full max-w-[1240px] px-5 pb-20 sm:px-8", className)}>
+      <div className="flex flex-col gap-5">
+        <div className="hidden">
         <aside className="relative overflow-hidden border-b border-[#3E5076] bg-[linear-gradient(160deg,#16284D,#1E315B_62%,#263C6B)] p-7 text-white backdrop-blur-2xl sm:p-9 lg:border-b-0 lg:border-r">
           <div aria-hidden="true" className="pointer-events-none absolute -right-32 top-24 h-80 w-80 rounded-full bg-[#5474CF]/15 blur-[85px]" />
           <div className="relative flex h-full flex-col">
@@ -260,8 +261,39 @@ export function OnboardingStages({
             </div>
           </div>
         </aside>
+        </div>
 
-        <section className="relative flex min-w-0 flex-col bg-[#EFF3FC] px-6 py-9 text-[#172033] sm:px-12 sm:py-12 lg:px-16" aria-label="Onboarding personnalisé">
+        <div className="pb-5 pt-4 text-white">
+          <p className="text-xs font-bold uppercase tracking-[.18em] text-[#9AB6FF]">Votre parcours prend forme</p>
+          <h1 className="mt-3 text-[clamp(2rem,4vw,3.8rem)] font-semibold leading-tight tracking-[-.055em]">
+            {firstName ? `Construisons votre profil, ${firstName}.` : "Faisons connaissance."}
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#A9BBDD]">Chaque réponse enrichit votre profil. Vous pouvez revenir sur les étapes précédentes à tout moment.</p>
+          <div className="mt-7 flex items-center gap-3 text-xs text-[#9DB2D5]">
+            <span className="font-bold text-white">{step + 1} / {steps.length}</span>
+            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#273C62]"><motion.div animate={{width:`${percent}%`}} transition={{duration:.55}} className="h-full rounded-full bg-[#779BFF]"/></div>
+            <span>{percent}%</span>
+          </div>
+        </div>
+
+        {step > 0 && <div className="relative space-y-3 border-l-2 border-[#324974] pb-1 pl-5 sm:pl-8">
+          {Array.from({length:step},(_,i) => {
+            const summaries = [
+              {title:"Faisons connaissance",text:`Bonjour ${profile.firstName} ${profile.lastName}.`},
+              {title:"Votre point de départ",text:[employmentOptions.find(x=>x.value===profile.employmentStatus)?.title,experienceOptions.find(x=>x.value===profile.experienceLevel)?.title].filter(Boolean).join(" · ")},
+              {title:"Votre objectif",text:professionalLabel},
+              {title:"Vos priorités",text:preparationLabels.join(" · ")},
+            ];
+            const item = summaries[i];
+            return <motion.div key={i} layout initial={animated?{opacity:0,y:12}:false} animate={{opacity:1,y:0}} className="relative flex items-center justify-between gap-4 rounded-2xl border border-[#304B76] bg-[#142643] px-5 py-4 text-white shadow-[0_12px_30px_rgba(3,9,29,.15)] sm:px-7">
+              <span className="absolute -left-[30px] grid h-4 w-4 place-items-center rounded-full bg-[#79C6B2] text-[#0B1B30] sm:-left-[42px]"><Check size={11}/></span>
+              <div className="min-w-0"><p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#94B0EA]">Étape {i+1} · {item.title}</p><p className="mt-2 break-words text-base font-semibold leading-6">{item.text}</p></div>
+              <button type="button" onClick={()=>{setDirection(-1);setStep(i);setFieldError("");}} className="shrink-0 rounded-xl border border-[#426092] px-3 py-2 text-xs font-semibold text-[#BCD0F5] transition hover:bg-[#25416B] hover:text-white">Modifier</button>
+            </motion.div>;
+          })}
+        </div>}
+
+        <section className="relative flex min-w-0 flex-col overflow-hidden rounded-[24px] border border-[#8DA7E7]/60 bg-[#EFF3FC] px-6 py-9 text-[#172033] shadow-[0_22px_75px_rgba(3,11,30,.25)] sm:px-12 sm:py-12 lg:px-16" aria-label="Onboarding personnalisé">
           {!finished ? (
             <>
               <div className="flex items-center justify-between gap-5">
@@ -277,7 +309,7 @@ export function OnboardingStages({
                   </div>
                 ))}
               </div>
-              <div className="mt-9 flex-1 sm:mt-12">
+              <div className="mt-8 sm:mt-9">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div key={step} initial={animated ? { opacity: 0, x: direction * 38, filter: "blur(5px)" } : false}
                     animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
