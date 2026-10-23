@@ -52,7 +52,34 @@ def run():
             expect(page.get_by_role("heading", name="Bienvenue, Camille !")).to_be_visible()
             # No horizontal scrolling at mobile width.
             assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), viewport
-            print("PASS", viewport["width"], "completion and targeted editing; no horizontal overflow")
+            # Onboarding completion must now lead to the personalized dashboard.
+            page.get_by_role("button", name="Découvrir mon espace").click()
+            expect(page.get_by_role("heading", name="Bonjour, Camille. On prépare la suite ?")).to_be_visible()
+            expect(page.get_by_role("heading", name="Évoluer professionnellement")).to_be_visible()
+            expect(page.locator('section[aria-label="Notre programme"]').get_by_text("Mieux communiquer")).to_be_visible()
+            expect(page.get_by_text("Nous n’avons pas encore d’entraînement enregistré.", exact=False)).to_be_visible()
+            assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), viewport
+            page.get_by_role("link", name="Préparer notre entretien").click()
+            expect(page.get_by_role("heading", name="On commence par quoi ?")).to_be_visible()
+            page.get_by_role("radio", name="Entretien technique").click()
+            expect(page.get_by_role("radio", name="Entretien technique")).to_have_attribute("aria-checked", "true")
+            assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), viewport
+            page.get_by_role("link", name="Mon espace").click()
+            expect(page.get_by_role("heading", name="Bonjour, Camille. On prépare la suite ?")).to_be_visible()
+            page.get_by_role("link", name="Mon profil").click()
+            page.wait_for_url("**/onboarding")
+            # Client-side navigation preserves the completed onboarding recap;
+            # edit the identity directly without restarting the whole journey.
+            expect(page.get_by_role("heading", name="Bienvenue, Camille !")).to_be_visible()
+            if viewport["width"] >= 1024:
+                page.get_by_role("button", name="Modifier : Faisons connaissance").click()
+            else:
+                page.get_by_role("button", name="Précédent").click()
+                for _ in range(3):
+                    page.get_by_role("button", name="Retour", exact=True).click()
+            expect(page.get_by_label("Prénom", exact=True)).to_have_value("Camille")
+            expect(page.get_by_label("Nom", exact=True)).to_have_value("Martin")
+            print("PASS", viewport["width"], "onboarding → dashboard → preparation → profile; no overflow")
             page.close()
         browser.close()
 

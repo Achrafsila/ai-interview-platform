@@ -121,6 +121,16 @@ export function OnboardingStages({
     setFieldError("");
   }
 
+  function openDashboard() {
+    // Tab-scoped preview only. Never replace authenticated Supabase persistence.
+    window.sessionStorage.setItem("ai-interview-preview-profile", JSON.stringify({
+      ...profile,
+      firstName: profile.firstName.trim(),
+      lastName: profile.lastName.trim(),
+    }));
+    router.push("/dashboard");
+  }
+
   function previous() {
     setDirection(-1);
     setFieldError("");
@@ -332,7 +342,7 @@ export function OnboardingStages({
                   <p className="text-sm font-semibold text-[#172033]">On passe à la pratique ?</p>
                   <p className="mt-1 text-xs leading-5 text-[#526079]">On commence avec un premier entraînement adapté à vos objectifs.</p>
                 </div>
-                <button type="button" onClick={() => router.push("/")}
+                <button type="button" onClick={openDashboard}
                   className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#2947A3] px-5 text-sm font-semibold text-white transition hover:bg-[#1E3586]">
                   Découvrir mon espace <ArrowRight size={17} aria-hidden="true" />
                 </button>

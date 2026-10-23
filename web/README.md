@@ -46,3 +46,9 @@ Après les retours utilisateur, le parcours inclut un fond gradient animé (dés
 **Modification directe :** cliquer dans l'écran de confirmation sur « Votre cap », « Votre langue », « Vos axes de progrès », « Modifier mon identité » ou « Modifier mes priorités » revient à l'étape choisie avec toutes les données préremplies. « Enregistrer et revenir » ou « Retour » ramène ensuite au récapitulatif sans refaire les quatre étapes. Pendant l'onboarding, « Retour » revient normalement à l'étape précédente.
 
 Le test Chromium reproductible est `python3 web/tests/test_onboarding_v2_browser.py` (requiert Playwright Python et Google Chrome installé). Il valide la navigation, les modifications ciblées et l'absence de scroll horizontal à 1440/390 px. Ce test n'authentifie pas d'utilisateur et n'écrit rien dans Supabase.
+
+## Dashboard candidat V1
+
+Après l'onboarding, « Découvrir mon espace » ouvre `/dashboard` avec le prénom, l'objectif commun, les préférences de préparation et un état vide honnête pour l'historique. Le profil est transmis temporairement dans la mémoire `sessionStorage` du même onglet ; il n'y a pas encore d'authentification ou de persistance Supabase. Le CTA ouvre `/preparation`, un premier écran RH/technique. Le laboratoire Groq demeure séparé sur `127.0.0.1:8765/e2e` et sa sélection doit y être reconfirmée.
+
+Document détaillé : `docs/ux/UX-04_DASHBOARD_CANDIDATE_V1.md`. Les tests Chromium du parcours sont étendus au dashboard, à la préparation et au retour au profil en desktop et mobile.
