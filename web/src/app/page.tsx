@@ -11,7 +11,7 @@ export default function Home() {
             <span className="grid h-10 w-10 place-items-center rounded-xl border border-white/20 bg-white/10"><Sparkles size={19} /></span>
             Interview Platform
           </Link>
-          <Link href="/onboarding" className="rounded-full border border-white/25 px-5 py-2.5 text-sm font-medium transition hover:bg-white/10">Commencer <ArrowUpRight className="ml-1 inline h-4 w-4" /></Link>
+          <div className="flex items-center gap-3"><Link href="/login" className="rounded-full px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">Se connecter</Link><Link href="/onboarding" className="rounded-full border border-white/25 px-5 py-2.5 text-sm font-medium transition hover:bg-white/10">Commencer <ArrowUpRight className="ml-1 inline h-4 w-4" /></Link></div>
         </header>
         <section className="relative mx-auto max-w-6xl px-5 pb-24 pt-16 sm:px-10 sm:pb-36 sm:pt-24">
           <div className="max-w-3xl">

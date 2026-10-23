@@ -79,3 +79,7 @@ Sur l'écran final, la scène cinématique occupe maintenant tout le viewport av
 ## Welcome V6 — continuité visuelle & CTA robuste
 
 Le welcome reste plein écran et animé mais reprend l'univers bleu glacé/lavande de l'onboarding. Titre encre sombre, texte lisible, cartes glass claires et CTA final bleu intense à libellé blanc. Pour protéger le contraste en conditions réelles, les couleurs essentielles du CTA et du background sont également mises dans le style du composant. Validation : `python3 web/tests/test_welcome_motion_browser.py`.
+
+## Auth UX — login Smokey WebGL
+
+Page `/login` : expérience liquid glass avec fond WebGL animé et fallback gradient, formulaires connexion/inscription/réinitialisation et Google via `@supabase/supabase-js`. Les boutons sont désactivés quand Supabase n'est pas configuré (aucune fausse connexion). Voir `web/.env.example` et `docs/ux/UX-08_AUTH_LOGIN_SMOKEY_V1.md` pour le setup, les limites et les étapes de sécurisation des routes. Test Chrome : `python3 web/tests/test_login_browser.py`.
