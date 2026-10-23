@@ -153,7 +153,7 @@ export function LoginForm() {
                 <Mail size={18} className="shrink-0 text-[#B6C6E6]" aria-hidden="true"/>
                 <input id="auth-email" type="email" required autoComplete="email" value={email}
                   onChange={(e)=>setEmail(e.target.value)} placeholder="vous@exemple.com"
-                  className="min-w-0 flex-1 bg-transparent py-3 text-base text-white outline-none placeholder:text-[#A6B6D5]"/>
+                  className="auth-dark-input min-w-0 flex-1 bg-transparent py-3 text-base text-white outline-none placeholder:text-[#A6B6D5]"/>
               </div>
             </div>
             {mode !== "reset" && (
@@ -166,7 +166,7 @@ export function LoginForm() {
                   <LockKeyhole size={18} className="shrink-0 text-[#B6C6E6]" aria-hidden="true"/>
                   <input id="auth-password" type={showPassword ? "text" : "password"} minLength={6} required autoComplete={mode === "signup" ? "new-password" : "current-password"}
                     value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="Votre mot de passe"
-                    className="min-w-0 flex-1 bg-transparent py-3 text-base text-white outline-none placeholder:text-[#A6B6D5]"/>
+                    className="auth-dark-input min-w-0 flex-1 bg-transparent py-3 text-base text-white outline-none placeholder:text-[#A6B6D5]"/>
                   <button type="button" onClick={()=>setShowPassword(p=>!p)} aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                     className="rounded-lg p-2 text-[#CDD9F4] hover:bg-white/10">
                     {showPassword ? <EyeOff size={18}/> : <Eye size={18}/>}
