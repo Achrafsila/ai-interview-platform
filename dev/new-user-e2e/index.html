@@ -136,11 +136,33 @@ footer{margin-top:45px;color:#8198b6;font-size:12px;text-align:center}a{color:#9
     <div class="grid">
       <div class="field"><label for="simFamily">Type d'entretien</label><select id="simFamily"><option value="rh">Entretien RH</option><option value="technical">Entretien technique</option></select></div>
       <div class="field"><label for="simDifficulty">Niveau</label><select id="simDifficulty"><option value="">Adapté automatiquement</option><option value="1">L1 — Débutant</option><option value="2">L2 — Confirmé</option><option value="3">L3 — Senior</option></select></div>
+      <div class="field hidden" id="simDomainWrap"><label for="simDomain">Spécialité technique</label>
+        <select id="simDomain">
+          <option value="software">Software Engineering</option>
+          <option value="data_ai">Data & IA</option>
+          <option value="cloud_devops">Cloud & DevOps</option>
+          <option value="cybersecurity">Cybersécurité</option>
+          <option value="testing_qa">Testing & QA</option>
+          <option value="business_analysis">Business Analysis</option>
+        </select>
+      </div>
+      <div class="field"><label for="simMode">Type de simulation</label><select id="simMode">
+        <option value="guided">Démonstration guidée (sans IA)</option>
+        <option value="ai" disabled>Entretien avec relances IA (clé API nécessaire)</option>
+      </select></div>
     </div>
-    <h2>Objectifs de préparation de cette simulation</h2>
+    <h2 id="simGoalsTitle">Objectifs de préparation RH</h2>
+    <p class="muted" id="simGoalsHint">Choisissez les compétences RH à travailler pour cet entretien.</p>
     <div class="grid" id="simulationGoals"></div>
+    <div class="muted" id="aiModeHint" style="margin-top:12px">Les questions brouillon sont disponibles uniquement dans ce laboratoire local.</div>
     <div class="field"><label for="simJobDescription">Fiche de poste (facultatif, uniquement à cette étape)</label><textarea id="simJobDescription" maxlength="3000" placeholder="Collez la description du poste ciblé..."></textarea><div class="muted">Cette description n'est pas enregistrée dans le profil.</div></div>
     <div class="field"><label for="simCount">Nombre de questions</label><select id="simCount"><option value="3">3 questions — test rapide</option><option value="5">5 questions</option></select></div>
+    <div id="aiPrivacyWrap" class="alert hidden">
+      <label class="inline-check"><input type="checkbox" id="aiPrivacyConsent">
+        J'accepte que mes réponses de test soient transmises au fournisseur IA pour générer des relances et un bilan qualitatif.
+      </label>
+      <div class="muted" style="margin-top:6px">Ne renseignez aucune donnée personnelle sensible. Le mode IA est uniquement local et n'écrit rien dans Supabase.</div>
+    </div>
     <div class="flow"><button class="primary" type="submit" id="launchInterview">Démarrer mon entretien →</button><button class="ghost" type="button" id="backDashboard">Retour au profil</button></div>
     <div class="error" id="configurationError" role="alert"></div>
   </form>
@@ -168,6 +190,7 @@ footer{margin-top:45px;color:#8198b6;font-size:12px;text-align:center}a{color:#9
       <p>Vos réponses ont été parcourues. Le scoring et le feedback IA n'ont pas encore été implémentés.</p>
       <div class="item"><span class="muted">Objectifs enregistrés dans votre profil</span><h3 id="recapPersistentGoals"></h3></div>
       <div class="item"><span class="muted">Objectifs utilisés pour cette simulation</span><h3 id="recapSimulationGoals"></h3></div>
+      <div class="alert success hidden" id="aiRecapFeedback" style="white-space:pre-wrap"></div>
       <div class="flow" style="margin-top:20px"><button class="primary" id="retrySimulation">Nouvelle simulation</button><button class="secondary" id="returnDashboard">Mon tableau de bord</button></div>
     </div>
     <div class="card"><h2>Questions et réponses</h2><div id="recapAnswers"></div></div>

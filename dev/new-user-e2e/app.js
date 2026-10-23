@@ -4,14 +4,66 @@ const GOALS = {
   first_job:"Premier emploi", job_change:"Changer de poste", career_growth:"Évoluer",
 };
 const PREP = {
-  confidence:"Confiance en soi", answer_structure:"Structurer mes réponses",
-  communication:"Communication", domain_knowledge:"Connaissances métier",
-  stress_management:"Gestion du stress",
+  confidence:"Confiance en soi", answer_structure:"Structurer mes réponses comportementales",
+  communication:"Communication en entretien RH", domain_knowledge:"Connaissances métier",
+  stress_management:"Gestion du stress en entretien RH",
+  rh_motivation:"Motivations et projet professionnel",
+  rh_parcours:"Présenter et valoriser mon parcours",
+  rh_teamwork:"Collaboration et travail en équipe",
+  rh_leadership:"Leadership et influence",
+  rh_behavioral:"Situations vécues et méthode STAR",
+  rh_conflict:"Gestion des désaccords et conflits",
+  tech_fundamentals:"Fondamentaux techniques",
+  tech_problem_solving:"Résolution de problèmes techniques",
+  tech_architecture:"Architecture et conception",
+  tech_debugging:"Débogage et investigation",
+  tech_practices:"Qualité et bonnes pratiques",
+  tech_reasoning:"Structuration du raisonnement",
+  tech_explain:"Expliquer clairement mes choix techniques",
+  tech_incident:"Diagnostic et gestion d'incident",
+  tech_sql:"SQL, requêtes et optimisation",
+  tech_data_pipelines:"ETL, pipelines et qualité des données",
+  tech_ml:"Machine learning et IA",
+  tech_api:"API, backend et intégrations",
+  tech_system_design:"Conception et scalabilité des systèmes",
+  tech_cloud:"Cloud, infrastructure et conteneurs",
+  tech_cicd:"CI/CD et déploiements",
+  tech_observability:"Monitoring et observabilité",
+  tech_security:"Sécurité applicative et vulnérabilités",
+  tech_threat_model:"Analyse de risques et menaces",
+  tech_iam:"Identités, accès et IAM",
+  tech_automation:"Automatisation des tests",
+  tech_quality:"Qualité, anomalies et stratégie QA",
+  tech_test_strategy:"Conception de scénarios de test",
+  tech_requirements:"Analyse et cadrage des besoins",
+  tech_user_stories:"User stories et critères d'acceptation",
+  tech_stakeholders:"Ateliers et gestion des parties prenantes",
+};
+const RH_SIM_GOALS = [
+  "rh_motivation","rh_parcours","communication","answer_structure",
+  "rh_teamwork","rh_leadership","rh_behavioral","rh_conflict",
+  "confidence","stress_management",
+];
+const TECH_SIM_GOALS = [
+  "tech_fundamentals","tech_problem_solving","tech_architecture",
+  "tech_debugging","tech_practices","tech_reasoning",
+  "tech_explain","tech_incident",
+];
+const TECH_DOMAIN_GOALS = {
+  software:["tech_api","tech_system_design"],
+  data_ai:["tech_sql","tech_data_pipelines","tech_ml"],
+  cloud_devops:["tech_cloud","tech_cicd","tech_observability"],
+  cybersecurity:["tech_security","tech_threat_model","tech_iam"],
+  testing_qa:["tech_automation","tech_quality","tech_test_strategy"],
+  business_analysis:["tech_requirements","tech_user_stories","tech_stakeholders"],
 };
 const state = {
   mode:"demo", liveConfig:null, page:"welcome", authMode:"signup",
   user:null, accessToken:null, profile:null, selectedGoals:[],
   selection:null, questions:[], answers:[], index:0,
+  aiReady:false, aiSession:null, aiTotal:0, aiPhase:"primary",
+  aiCurrentQuestion:null, aiFeedback:null,
+  simGoalSelections:{}, lastRenderedFamily:null,
 };
 function show(page) {
   state.page = page;
@@ -182,65 +234,202 @@ function renderDashboard(){
     ? "En mode démo, vous pouvez parcourir toutes les étapes avec des questions brouillon issues de votre référentiel local. Pas de notation IA."
     : "Votre profil est enregistré dans Supabase. Aucune question n'est encore publiée dans le catalogue réel : la simulation complète reste bloquée.");
 }
-function renderConfiguration(){
-  state.selectedGoals=[...state.profile.preparation_goals];
+function defaultGoalsForFamily(family){
+  const saved=state.profile?.preparation_goals||[];
+  if(family==="rh"){
+    const selected=saved.filter(goal=>RH_SIM_GOALS.includes(goal));
+    return selected.length?selected:["rh_motivation"];
+  }
+  const mapped=[];
+  const map={
+    domain_knowledge:"tech_fundamentals",
+    communication:"tech_explain",
+    answer_structure:"tech_reasoning",
+    confidence:"tech_problem_solving",
+    stress_management:"tech_incident",
+  };
+  for(const goal of saved)if(map[goal]&&!mapped.includes(map[goal]))mapped.push(map[goal]);
+  return mapped.length?mapped:["tech_fundamentals","tech_problem_solving"];
+}
+function rememberCurrentSimulationGoals(){
+  if(state.lastRenderedFamily){
+    state.simGoalSelections[state.lastRenderedFamily]=chosenPrep("simulationGoals");
+  }
+}
+function renderSimulationGoals(){
+  const family=$("simFamily").value;
+  const technical=family==="technical";
+  const base=technical?TECH_SIM_GOALS:RH_SIM_GOALS;
+  const domainGoals=technical?(TECH_DOMAIN_GOALS[$("simDomain").value]||[]):[];
+  const allowed=[...base,...domainGoals];
+  const stored=state.simGoalSelections[family]||defaultGoalsForFamily(family);
+  let selected=stored.filter(value=>allowed.includes(value));
+  if(!selected.length){
+    const suggested=defaultGoalsForFamily(family).filter(v=>allowed.includes(v));
+    selected=suggested.length?suggested:[base[0]];
+  }
+  $("simDomainWrap").classList.toggle("hidden",!technical);
+  text("simGoalsTitle",technical?"Objectifs de préparation technique":"Objectifs de préparation RH");
+  text("simGoalsHint",technical
+    ?"Choisissez des thèmes techniques adaptés à la spécialité sélectionnée."
+    :"Travaillez les motivations, le parcours et les situations comportementales.");
   const container=$("simulationGoals");container.replaceChildren();
-  for(const [code,label] of Object.entries(PREP)){
+  for(const code of allowed){
     const item=document.createElement("label");item.className="choice";
-    const checkbox=document.createElement("input");checkbox.type="checkbox";checkbox.value=code;
-    checkbox.checked=state.selectedGoals.includes(code);
+    const checkbox=document.createElement("input");checkbox.type="checkbox";
+    checkbox.value=code;checkbox.checked=selected.includes(code);
     item.classList.toggle("selected",checkbox.checked);
-    const bold=document.createElement("b");bold.textContent=label;
+    const bold=document.createElement("b");bold.textContent=PREP[code]||code;
     item.append(checkbox,bold);container.append(item);
   }
+  state.lastRenderedFamily=family;
+}
+function renderAIMode(){
+  const ai=$("simMode").value==="ai";
+  $("aiPrivacyWrap").classList.toggle("hidden",!ai);
+  text("aiModeHint",ai
+    ?"Mode IA actif : réponses envoyées au fournisseur IA depuis le serveur local. Les questions brouillon restent non publiées."
+    :"Démo guidée sans IA. Les questions brouillon sont visibles uniquement dans ce laboratoire local.");
+}
+function renderConfiguration(){
+  state.aiSession=null;
+  state.aiFeedback=null;
+  state.simGoalSelections={};
+  state.lastRenderedFamily=null;
   $("simDifficulty").value="";
   $("simJobDescription").value="";
   $("simFamily").value="rh";
+  $("simDomain").value="software";
   $("simCount").value="3";
+  $("simMode").value=state.aiReady?"ai":"guided";
+  $("aiPrivacyConsent").checked=false;
+  renderSimulationGoals();
+  renderAIMode();
   text("configurationError","");
 }
 async function startSimulation(event){
   event.preventDefault();text("configurationError","");
   const simGoals=chosenPrep("simulationGoals");
-  if(!simGoals.length){error("configurationError","Choisissez au moins un objectif pour cet entretien.");return;}
+  if(!simGoals.length){
+    error("configurationError","Choisissez au moins un sujet pour cet entretien.");return;
+  }
+  const type=$("simMode").value;
+  if(type==="ai"&&!state.aiReady){
+    error("configurationError","OPENAI_API_KEY n'est pas configurée pour la simulation IA locale.");return;
+  }
+  if(type==="ai"&&!$("aiPrivacyConsent").checked){
+    error("configurationError","Acceptez d'abord l'envoi des réponses au fournisseur IA pour cette simulation.");return;
+  }
   state.selection={
     family:$("simFamily").value,
+    simulationMode:type,
+    domain:$("simFamily").value==="technical"?$("simDomain").value:null,
     difficulty:$("simDifficulty").value?Number($("simDifficulty").value):null,
     locale:state.profile.preferred_locale,
     count:Number($("simCount").value),
     prepGoals:simGoals,
     jobDescription:$("simJobDescription").value.trim(),
   };
-  if(state.mode==="live"){
+  if(state.mode==="live"&&type==="guided"){
     error("configurationError",
-      "Le catalogue Supabase contient 0 question approuvée/publiée. Une vraie simulation ne peut pas démarrer. Testez le parcours en mode démo pour vérifier l'interface complète.");
-    return;
+      "Les 120 questions de Supabase sont toujours en brouillon. Lancez une simulation locale IA de test, ou utilisez le parcours Démo.");return;
   }
   $("launchInterview").disabled=true;
   try{
-    const {items}=await jsonResponse("/api/questions?family="+encodeURIComponent(state.selection.family)+"&locale="+state.selection.locale);
-    let filtered=items.filter(q=>!state.selection.difficulty||q.difficulty===state.selection.difficulty);
-    if(filtered.length===0)throw Error("Aucune question démo pour ce niveau.");
-    state.questions=filtered.slice(0,state.selection.count);
-    state.answers=[];state.index=0;
+    state.aiSession=null;state.aiFeedback=null;
+    if(type==="ai"){
+      const result=await jsonResponse("/api/ai/session/start",{
+        method:"POST",headers:{"content-type":"application/json"},
+        body:JSON.stringify({
+          family:state.selection.family,domain:state.selection.domain,
+          difficulty:state.selection.difficulty,locale:state.selection.locale,
+          count:state.selection.count,goals:simGoals,
+          job_description:state.selection.jobDescription,
+        }),
+      });
+      state.aiSession=result.session_id;
+      state.aiCurrentQuestion=result.question;
+      state.aiTotal=result.total;
+      state.aiPhase=result.phase;
+      state.questions=[];state.index=0;state.answers=[];
+    }else{
+      const {items}=await jsonResponse("/api/questions?family="+encodeURIComponent(state.selection.family)+"&locale="+state.selection.locale);
+      let filtered=items.filter(q=>
+        (!state.selection.difficulty||q.difficulty===state.selection.difficulty) &&
+        (!state.selection.domain||q.category===state.selection.domain));
+      if(filtered.length===0)throw Error("Aucune question démo ne correspond à ces critères.");
+      state.questions=filtered.slice(0,state.selection.count);
+      state.answers=[];state.index=0;
+    }
     showCurrentQuestion();show("interview");
   }catch(e){error("configurationError",e);}
   finally{$("launchInterview").disabled=false;}
 }
 function showCurrentQuestion(){
-  const q=state.questions[state.index],count=state.questions.length;
-  text("interviewProgress","Question "+(state.index+1)+" / "+count);
+  const ai=Boolean(state.aiSession);
+  const q=ai?state.aiCurrentQuestion:state.questions[state.index];
+  const count=ai?state.aiTotal:state.questions.length;
+  text("interviewProgress","Question "+(state.index+1)+" / "+count+
+    (ai&&state.aiPhase==="followup"?" · Relance IA":""));
   $("interviewProgressBar").style.width=(100*state.index/count)+"%";
   text("interviewCode",q.code);
   text("interviewLevel","L"+q.difficulty+" · "+q.category);
   text("interviewPrompt",q.prompt);
-  const followup=q.followup?"Relance préparée (non IA) : "+q.followup:"Pas de relance prédéfinie";
-  text("interviewFollowup",followup);
+  if(ai){
+    text("interviewStatus",state.aiPhase==="followup"
+      ?"RELANCE GÉNÉRÉE PAR L'IA · TEST LOCAL"
+      :"ENTRETIEN AVEC IA · QUESTIONS EN BROUILLON");
+    text("interviewFollowup",state.aiPhase==="followup"
+      ?"Cette question de relance a été générée par l'IA à partir de votre réponse précédente."
+      :"Répondez naturellement. L'IA préparera une relance en tenant compte de votre réponse et des objectifs choisis.");
+  }else{
+    text("interviewStatus","DÉMONSTRATION GUIDÉE · SANS IA");
+    text("interviewFollowup",q.followup?"Relance prédéfinie (non IA) : "+q.followup:"Aucune relance prédéfinie");
+  }
   $("interviewAnswer").value="";
   text("interviewError","");
-  text("submitAnswer",state.index===count-1?"Terminer l'entretien":"Valider ma réponse et continuer →");
+  text("submitAnswer",ai
+    ?(state.aiPhase==="primary"?"Répondre et obtenir une relance IA →"
+      :state.index===count-1?"Terminer et recevoir mon bilan IA →":"Passer à la question suivante →")
+    :state.index===count-1?"Terminer l'entretien":"Valider ma réponse et continuer →");
 }
-function completeStep(){
+async function completeStep(){
+  text("interviewError","");
+  if(state.aiSession){
+    if(!$("interviewAnswer").value.trim()){
+      error("interviewError","Une réponse est nécessaire pour permettre à l'IA de vous relancer.");return;
+    }
+    $("submitAnswer").disabled=true;
+    const previousText=$("submitAnswer").textContent;
+    text("submitAnswer","L'IA prépare sa réponse…");
+    try{
+      const result=await jsonResponse("/api/ai/session/answer",{
+        method:"POST",headers:{"content-type":"application/json"},
+        body:JSON.stringify({
+          session_id:state.aiSession,
+          answer:$("interviewAnswer").value.trim(),
+          visible_prompt:state.aiCurrentQuestion.prompt,
+        }),
+      });
+      if(result.completed){
+        state.answers=result.transcript.map(item=>({
+          code:item.code,prompt:item.question,answer:item.answer,
+        }));
+        state.aiFeedback=result.feedback||null;
+        state.aiSession=null;
+        renderRecap();show("recap");
+      }else{
+        state.aiCurrentQuestion=result.question;
+        state.aiPhase=result.phase;
+        state.index=result.index-1;
+        showCurrentQuestion();
+      }
+    }catch(e){error("interviewError",e);}
+    finally{$("submitAnswer").disabled=false;
+      if(state.page==="interview"&&$("submitAnswer").textContent==="L'IA prépare sa réponse…")
+        text("submitAnswer",previousText);}
+    return;
+  }
   state.answers.push({
     code:state.questions[state.index].code,
     prompt:state.questions[state.index].prompt,
@@ -251,7 +440,9 @@ function completeStep(){
   else{showCurrentQuestion();}
 }
 function renderRecap(){
-  text("recapCount",state.answers.length+" question(s)");
+  text("recapCount",state.answers.length+(state.selection?.simulationMode==="ai"?" réponse(s)":" question(s)"));
+  $("aiRecapFeedback").classList.toggle("hidden",!state.aiFeedback);
+  text("aiRecapFeedback",state.aiFeedback?"Bilan qualitatif de l'IA (sans notation) :\n"+state.aiFeedback:"");
   text("recapPersistentGoals",names(state.profile.preparation_goals));
   text("recapSimulationGoals",names(state.selection.prepGoals));
   $("recapAnswers").replaceChildren();
@@ -271,6 +462,7 @@ async function signOut(){
   }
   state.user=null;state.accessToken=null;state.profile=null;state.selectedGoals=[];
   state.questions=[];state.answers=[];state.index=0;
+  state.aiSession=null;state.aiFeedback=null;
   text("modeIndicator","MODE DÉMO · LOCAL");
   show("welcome");
 }
@@ -285,6 +477,14 @@ async function init(){
       text("liveAvailability","Mode réel disponible après configuration des variables SUPABASE_URL et SUPABASE_PUBLISHABLE_KEY sur votre Mac.");
     }
   }catch(e){text("liveAvailability","Impossible de vérifier la connexion Supabase locale : "+e.message);}
+  try{
+    const status=await jsonResponse("/api/ai/status");
+    state.aiReady=Boolean(status.available);
+    $("simMode").querySelector('option[value="ai"]').disabled=!state.aiReady;
+    if(state.aiReady){
+      text("aiModeHint","L'IA est disponible. Vos réponses de test seront envoyées au fournisseur IA seulement avec votre accord.");
+    }
+  }catch {state.aiReady=false;}
 }
 $("chooseDemo").onclick=()=>enterAuth("demo");
 $("chooseLive").onclick=()=>{if(state.liveConfig)enterAuth("live");};
@@ -306,6 +506,18 @@ $("editProfile").onclick=()=>{renderOnboarding();show("onboarding");};
 $("signOut").onclick=signOut;
 $("goConfigure").onclick=()=>{renderConfiguration();show("configure");};
 $("backDashboard").onclick=()=>{renderDashboard();show("dashboard");};
+$("simFamily").addEventListener("change",()=>{
+  rememberCurrentSimulationGoals();
+  renderSimulationGoals();
+});
+$("simDomain").addEventListener("change",()=>{
+  rememberCurrentSimulationGoals();
+  renderSimulationGoals();
+});
+$("simMode").addEventListener("change",()=>{
+  $("aiPrivacyConsent").checked=false;
+  renderAIMode();
+});
 $("configurationForm").addEventListener("submit",startSimulation);
 $("submitAnswer").onclick=completeStep;
 $("stopInterview").onclick=()=>{renderDashboard();show("dashboard");};

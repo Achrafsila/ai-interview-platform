@@ -29,7 +29,7 @@ python3 dev/local-preview/server.py
 
 Ouvrir <http://127.0.0.1:8765/e2e>.
 
-Le bouton **« Tester le parcours complet »** lance le scénario sans création de compte réel et sans besoin de clé Supabase. Cette démo utilise les questions JSON de développement (toutes non publiées) et un état temporaire en mémoire/sessionStorage. Elle **n'écrit rien dans Supabase** et ne produit aucun scoring IA.
+Le bouton **« Tester le parcours complet »** lance le scénario sans création de compte réel et sans besoin de clé Supabase. Cette démo utilise les questions JSON de développement (toutes non publiées) et un état temporaire en mémoire/sessionStorage. Elle **n'écrit rien dans Supabase** et ne produit aucun scoring automatique. Une option séparée de relance IA locale est désormais disponible si le serveur est lancé avec `OPENAI_API_KEY` ; voir [le guide IA](S2-04_AI_LOCAL_SIMULATION.md).
 
 ### Activer la vraie inscription Supabase
 
@@ -49,7 +49,7 @@ En mode Supabase réel, on peut tester inscription, connexion, confirmation e-ma
 
 Le catalogue S2-03 contient **120 questions en `draft`, aucune approuvée/publiée**. Le service S2-04 refuse donc correctement de distribuer ces brouillons. En mode réel, le bouton « Démarrer mon entretien » affiche ce blocage au lieu de forcer une publication.
 
-En mode **démo** seulement, l'application peut parcourir des brouillons via le serveur localhost sans authentification ni connexion à Supabase. Ne pas assimiler cet aperçu à une session d'entretien IA réelle.
+En mode **démo** seulement, l'application peut parcourir des brouillons via le serveur localhost sans authentification ni connexion à Supabase. Une variante IA fournit des relances générées par modèle à partir des réponses, si une clé API est configurée. Les objectifs affichés deviennent des **sujets RH** ou des **sujets techniques de spécialité** selon le type choisi. Ne pas assimiler cet aperçu à une session d'entretien IA réelle.
 
 ## Matrice de preuves
 

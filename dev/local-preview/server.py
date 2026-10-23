@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 import secrets
 import threading
 import webbrowser
@@ -20,6 +21,9 @@ from urllib.parse import parse_qs, urlsplit
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 NEW_USER = HERE.parent / "new-user-e2e"
+sys.path.insert(0, str(HERE))
+from ai_interview import InterviewLab, OpenAIRehearsalProvider, LabValidationError, AIUnavailableError
+
 BANK = ROOT / "data" / "question-bank"
 FILES = (
     "rh_questions.json",
@@ -96,6 +100,12 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
     html = (HERE / "index.html").read_bytes()
     e2e_html = (NEW_USER / "index.html").read_bytes()
     e2e_js = (NEW_USER / "app.js").read_bytes()
+    ai_provider = OpenAIRehearsalProvider(
+        api_key=os.environ.get("OPENAI_API_KEY", ""),
+        model=os.environ.get("OPENAI_MODEL", "gpt-4.1-mini"),
+    )
+    ai_lab = InterviewLab(questions, ai_provider)
+
     class Handler(BaseHTTPRequestHandler):
         server_version = "AIInterviewLocalPreview/1.0"
 
@@ -145,6 +155,13 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
             elif url.path == "/e2e/app.js":
                 self._headers(kind="text/javascript; charset=utf-8", length=len(e2e_js))
                 self.wfile.write(e2e_js)
+            elif url.path == "/api/ai/status":
+                self._send({
+                    "available": bool(ai_provider.api_key),
+                    "provider": "openai" if ai_provider.api_key else "not_configured",
+                    "draft_preview": True,
+                    "persistent": False,
+                })
             elif url.path == "/api/e2e/config":
                 live_enabled = (os.environ.get("SUPABASE_URL", "").startswith("https://")
                                 and bool(os.environ.get("SUPABASE_PUBLISHABLE_KEY", "")))
@@ -196,6 +213,23 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
             except (ValueError, json.JSONDecodeError):
                 return self._send({"error": "invalid_json"}, 400)
             url = urlsplit(self.path)
+            if url.path == "/api/ai/session/start":
+                if not ai_provider.api_key:
+                    return self._send({"error": "OPENAI_API_KEY non configurée sur ce serveur local."}, 503)
+                try:
+                    response = ai_lab.start(body)
+                    return self._send(response, 201)
+                except LabValidationError as exc:
+                    return self._send({"error": str(exc)}, 400)
+            if url.path == "/api/ai/session/answer":
+                if not ai_provider.api_key:
+                    return self._send({"error": "OPENAI_API_KEY non configurée sur ce serveur local."}, 503)
+                try:
+                    return self._send(ai_lab.answer(body))
+                except LabValidationError as exc:
+                    return self._send({"error": str(exc)}, 400)
+                except AIUnavailableError as exc:
+                    return self._send({"error": str(exc)}, 502)
             if url.path == "/api/session/start":
                 try:
                     selected = select_questions(questions, body)
