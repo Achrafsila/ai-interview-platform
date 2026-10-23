@@ -36,7 +36,7 @@ export AI_PROVIDER=groq
 python3 dev/local-preview/server.py
 \`\`\`
 
-Ouvrir <http://127.0.0.1:8765/e2e>. Le parcours offre des relances IA et un bilan qualitatif avec \`llama-3.3-70b-versatile\` après consentement. La clé reste sur le serveur local et les 120 questions demeurent en brouillon dans Supabase. [Guide Groq / OpenAI](docs/S2-04_AI_LOCAL_SIMULATION.md).
+Ouvrir <http://127.0.0.1:8765/e2e>. Le parcours offre des relances IA et un bilan qualitatif avec \`openai/gpt-oss-120b\` après consentement. Le modèle ancien a été retiré pour les comptes Free/Developer en août 2026. La clé reste sur le serveur local et les 120 questions demeurent en brouillon dans Supabase. [Guide Groq / OpenAI](docs/S2-04_AI_LOCAL_SIMULATION.md).
 
 
 ## Tester en local sur Mac
