@@ -23,33 +23,59 @@ Fondamentaux, résolution de problèmes, architecture, débogage, bonnes pratiqu
 
 Les objectifs RH n'apparaissent pas dans un entretien technique et inversement. Chaque sélection vaut **pour une simulation** et ne modifie jamais les préférences de l'onboarding.
 
-## Démarrage sur Mac
+## Démarrage sur Mac avec Groq (recommandé si vous possédez une clé Groq)
 
-À la racine du dépôt GitHub à jour :
+Le fournisseur **Groq** est pris en charge sans installer le SDK : le backend utilise l'API officielle Groq Chat Completions et le modèle \`llama-3.3-70b-versatile\`.
+
+Dans le dossier GitHub du projet :
 
 \`\`\`bash
 git pull origin main
-export OPENAI_API_KEY="votre_cle_api_personnelle"
-# Facultatif :
-export OPENAI_MODEL="gpt-4.1-mini"
+# macOS / zsh : saisie masquée (la clé ne figure pas dans l'historique)
+read -s "GROQ_API_KEY?Collez votre clé Groq : "
+echo
+export GROQ_API_KEY
+export AI_PROVIDER=groq
 python3 dev/local-preview/server.py
 \`\`\`
 
-Ouvrir <http://127.0.0.1:8765/e2e>, puis **Tester le parcours complet**. Terminer l'onboarding de démonstration, configurer RH ou technique et choisir **Entretien avec relances IA**. Accepter explicitement l'envoi des réponses au fournisseur IA avant de démarrer.
+Ouvrez <http://127.0.0.1:8765/e2e> → **Tester le parcours complet**, terminez l'onboarding démo puis choisissez **Entretien avec relances IA · Groq**. Acceptez l'envoi des réponses à Groq avant de commencer.
 
-**Sans \`OPENAI_API_KEY\`** : l'option IA est désactivée ; le mode guidé sans IA reste disponible.
+Vous pouvez vérifier votre clé sans l'afficher :
 
-Une souscription ChatGPT ne fournit pas automatiquement une clé API. Les appels à l'API OpenAI peuvent être facturés séparément. Créer la clé dans [OpenAI API Keys](https://platform.openai.com/api-keys) et consulter les [tarifs API](https://platform.openai.com/pricing).
+\`\`\`bash
+curl -sS -o /dev/null -w "Groq HTTP %{http_code}\n" \
+  https://api.groq.com/openai/v1/models \
+  -H "Authorization: Bearer $GROQ_API_KEY"
+\`\`\`
+
+HTTP 200 = clé reconnue, HTTP 401 = clé Groq invalide/révoquée, HTTP 403 = permission insuffisante. Les comptes et quotas Groq sont distincts des comptes OpenAI. Ne partagez jamais la valeur de votre clé dans ChatGPT, GitHub ou le navigateur.
+
+### Choix du fournisseur
+
+Le serveur choisit automatiquement **Groq lorsque \`GROQ_API_KEY\` est définie** ; sinon il tente OpenAI si \`OPENAI_API_KEY\` est définie. Vous pouvez forcer le choix :
+
+| Variable | Groq | OpenAI |
+|---|---|---|
+| \`AI_PROVIDER\` | \`groq\` | \`openai\` |
+| Clé API | \`GROQ_API_KEY\` | \`OPENAI_API_KEY\` |
+| Modèle par défaut | \`llama-3.3-70b-versatile\` | \`gpt-4.1-mini\` |
+| Modifier le modèle | \`GROQ_MODEL\` | \`OPENAI_MODEL\` |
+| Point de terminaison | \`https://api.groq.com/openai/v1/chat/completions\` | \`https://api.openai.com/v1/responses\` |
+
+**Important :** une clé Groq envoyée à \`api.openai.com\` provoque un 401 ; elle doit être envoyée à \`api.groq.com\`. Le même moteur local assure les relances et le bilan qualitatif quel que soit le fournisseur.
+
+**Sans clé API reconnue** : l'option IA est désactivée ; la simulation guidée sans IA continue de fonctionner. Chaque fournisseur gère sa propre facturation, ses limites et ses règles de conservation.
 
 ### Ce que fait le moteur IA
 
 1. Sélectionne localement des questions issues du corpus de développement selon la famille RH/technique, la spécialité et le niveau.
 2. Montre une question et recueille une réponse.
-3. Envoie la **question, la réponse, les objectifs de préparation et l'éventuelle description du poste** à l'API Responses d'OpenAI via **le serveur Python**.
+3. Envoie la **question, la réponse, les objectifs de préparation et l'éventuelle description du poste** à Groq Chat Completions ou à l'API Responses d'OpenAI via **le serveur Python**, selon la configuration.
 4. Affiche une **relance générée par un modèle** à partir de la réponse et permet de répondre.
 5. Passe à la question suivante ; en fin d'entretien, génère un **bilan qualitatif prudent**, sans barème, décision de recrutement ni note automatisée.
 
-Le navigateur ne reçoit jamais la clé API. Le serveur ne transmet aucun attendu de réponse ou barème interne au modèle ni au candidat. Les requêtes utilisent \`store: false\` et les réponses ne sont conservées qu'en mémoire du serveur pendant la simulation. Quitter le serveur supprime cette mémoire.
+Le navigateur ne reçoit jamais la clé API. Le serveur ne transmet aucun attendu de réponse ou barème interne au modèle ni au candidat. Les requêtes OpenAI utilisent \`store: false\` ; pour Groq, les paramètres Chat Completions et les règles de conservation du fournisseur s'appliquent. Les réponses de la simulation ne sont conservées qu'en mémoire locale du serveur Python. Quitter le serveur supprime cette mémoire.
 
 Pour respecter la confidentialité, **ne pas utiliser de données personnelles sensibles ou de vraies réponses de candidats** dans le laboratoire. Une case de consentement à l'envoi des réponses doit être cochée pour démarrer le mode IA.
 
@@ -68,7 +94,7 @@ python3 -m unittest discover -s tests -p 'test_ai_interview_lab.py' -v
 python3 -m unittest discover -s tests/e2e -v
 \`\`\`
 
-Les tests du mode IA utilisent un **faux fournisseur** (aucun coût, aucune requête externe) : validation RH/tech, isolation des familles, générateur de relance, conformité des arguments au contrat OpenAI, refus d'une simulation sans clé, consentement et parcours navigateur. La **vraie génération OpenAI** exige une clé valide et une connexion depuis le Mac et n'est pas revendiquée par la CI.
+Les tests du mode IA utilisent un **faux fournisseur** (aucun coût, aucune requête externe) : validation RH/tech, isolation des familles, générateur de relance, conformité des arguments au contrat OpenAI, refus d'une simulation sans clé, consentement et parcours navigateur. La **vraie génération Groq ou OpenAI** exige une clé valide et une connexion depuis le Mac et n'est pas revendiquée par la CI.
 
 ### Hors périmètre de ce test
 
@@ -79,8 +105,8 @@ Les tests du mode IA utilisent un **faux fournisseur** (aucun coût, aucune requ
 
 ## Problèmes courants
 
-- **Option IA grisée** : arrêter le serveur, définir \`OPENAI_API_KEY\` dans le Terminal qui le lance, puis redémarrer.
-- **Réponse HTTP 401 du fournisseur** : vérifier que la clé possède accès au modèle demandé et que la facturation de l'API est configurée.
+- **Option IA grisée** : arrêter le serveur, définir \`GROQ_API_KEY\` (ou \`OPENAI_API_KEY\`) dans le Terminal qui le lance, puis redémarrer.
+- **HTTP 401 du fournisseur** : confirmer que la clé correspond au bon domaine API (Groq ≠ OpenAI) puis vérifier sa validité.
 - **Réponse HTTP 429** : vérifier les quotas API. Ne pas relancer en boucle.
 - **Le domaine ne change pas** : la spécialité est visible uniquement quand \`Entretien technique\` est sélectionné.
 - **Aucun résultat** : choisir une difficulté plus large. Toutes les catégories n'ont pas des questions à chaque niveau.
