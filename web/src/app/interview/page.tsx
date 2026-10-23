@@ -99,6 +99,13 @@ export default function InterviewPage(){
   // Some browser voices do not emit word boundaries; provide progressive visual fallback.
   introInterval.current=setInterval(()=>setIntroWords(current=>Math.min(words.length,current+1)),430);
  }
+ // Launch the immersive introduction immediately when a configured interview opens.
+ useEffect(()=>{
+  if(!config||state!=="ready"||introStage!=="none")return;
+  queueMicrotask(()=>start());
+  // start intentionally depends on the loaded configuration, not on each render.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+ },[config]);
  async function startInterview(){
   setIntroStage("none");
   if(!config)return;
@@ -152,6 +159,7 @@ export default function InterviewPage(){
  }
  function interrupt(){window.speechSynthesis?.cancel();setState("listening");}
  const question=result?.question?.prompt;
+ if(!configChecked || (config&&state==="ready"&&introStage==="none"))return <main role="status" className="flex min-h-dvh items-center justify-center bg-[#0C1436] text-sm font-semibold text-[#B8C8E8]">Préparation de votre entretien…</main>;
  if(introStage!=="none")return <main className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[#0C1436] px-5 py-12 text-white">
   <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,#334A96_0%,#18275A_36%,#0C1436_76%)]"/>
   <div className="pointer-events-none absolute -left-28 top-12 size-80 rounded-full bg-[#7669DF]/15 blur-[95px]"/>
@@ -177,10 +185,9 @@ export default function InterviewPage(){
     <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
      <div className="relative size-48 sm:size-56"><VoicePoweredOrb state={state} voiceLevel={dictating ? .55 : 0} className="h-full w-full"/><span className="sr-only">{state==="speaking"?"L’intervieweur parle":dictating?"Microphone actif":state==="listening"?"À vous de répondre":"Orbe d’entretien"}</span></div>
      <p className="mt-5 text-sm font-bold text-[#5266A6]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",done:"Séance terminée",error:"Connexion indisponible"})[state]}</p>
-     <h2 className="mt-6 text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{introStage!=="none"?"":state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":question||"Préparation de la prochaine question…"}</h2>
-     {state==="ready"&&introStage==="none"&&config&&<button onClick={start} className="mt-8 rounded-xl bg-[#3456D7] px-7 py-4 font-bold text-white"><Play size={17} className="mr-2 inline"/> Commencer l’entretien</button>}
+     <h2 className="mt-6 text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":question||"Préparation de la prochaine question…"}</h2>
      {state==="ready"&&introStage==="none"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
-     {state==="error"&&<button onClick={start} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
+     {state==="error"&&<button onClick={()=>void startInterview()} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
      {state==="speaking"&&<button onClick={interrupt} className="mt-7 rounded-xl border border-[#C8D4F0] px-5 py-3 text-sm font-semibold">Prendre la parole</button>}
      {(state==="listening"||state==="paused")&&<div className="mt-7 w-full text-left">
        <label htmlFor="spoken-answer" className="mb-2 block text-sm font-semibold">Votre réponse {dictating&&<span role="status" className="ml-2 text-[#21866F]">● Transcription en direct…</span>}</label>
