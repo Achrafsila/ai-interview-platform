@@ -165,7 +165,10 @@ class InterviewLabTests(unittest.TestCase):
                          "https://api.groq.com/openai/v1/chat/completions")
         self.assertEqual(captured["token"], "Bearer gsk_mock-secret")
         self.assertEqual(captured["user_agent"], "AIInterviewPlatform/0.1")
-        self.assertEqual(captured["body"]["model"], "llama-3.3-70b-versatile")
+        self.assertEqual(captured["body"]["model"], "openai/gpt-oss-120b")
+        self.assertEqual(captured["body"]["reasoning_effort"], "low")
+        self.assertFalse(captured["body"]["include_reasoning"])
+        self.assertGreaterEqual(captured["body"]["max_completion_tokens"], 512)
         self.assertEqual(captured["body"]["messages"][0]["role"], "system")
         self.assertEqual(captured["body"]["messages"][1]["role"], "user")
         self.assertIn("J'ai piloté", captured["body"]["messages"][1]["content"])
@@ -189,8 +192,22 @@ class InterviewLabTests(unittest.TestCase):
              "answer": "En observant les logs."}
         ], locale="fr", family="technical", goals=["tech_incident"])
         self.assertIn("exemple", feedback)
-        self.assertEqual(captured[0]["max_completion_tokens"], 280)
+        self.assertGreaterEqual(captured[0]["max_completion_tokens"], 512)
+        self.assertEqual(captured[0]["reasoning_effort"], "low")
         self.assertIn("logs", captured[0]["messages"][1]["content"])
+
+    def test_groq_retired_model_reports_clear_404(self):
+        import urllib.error
+        def opener(request, timeout=None):
+            raise urllib.error.HTTPError(
+                request.full_url, 404, "model_not_found", None,
+                io.BytesIO(b'{"error":{"code":"model_not_found"}}')
+            )
+        provider = GroqRehearsalProvider(api_key="gsk_mock", opener=opener)
+        with self.assertRaises(AIUnavailableError) as caught:
+            provider._complete("test", {"answer": "test"})
+        self.assertIn("404", str(caught.exception))
+        self.assertIn("openai/gpt-oss-120b", str(caught.exception))
 
     def test_groq_invalid_credentials_return_safe_error(self):
         import urllib.error
