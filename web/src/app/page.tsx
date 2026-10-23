@@ -129,7 +129,7 @@ export default function Home() {
           <Link href="/login" className="landing-primary-btn inline-flex min-h-[58px] shrink-0 items-center gap-3 rounded-2xl px-7 text-sm font-bold text-white">C’est parti <MoveUpRight size={19}/></Link>
         </div>
       </section>
-      <footer className="landing-footer relative bg-[#11183B] px-5 py-8 text-[#C4CEEB] sm:px-10">
+      <footer className="landing-footer relative border-0 bg-[#11183B] px-5 py-8 text-[#C4CEEB] sm:px-10">
         <div className="mx-auto flex max-w-[1160px] flex-col justify-between gap-4 text-xs sm:flex-row sm:items-center">
           <span className="font-medium">© 2026 <span className="font-bold text-white">InterviewLab</span> · Votre coach d’entretien IA</span>
           <span className="text-[#A6B2D4]">Un outil d’entraînement, pas une décision de recrutement.</span>

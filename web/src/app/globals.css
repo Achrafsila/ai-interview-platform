@@ -332,15 +332,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .landing-header-shell { position:fixed; left:0; right:0; top:0; z-index:50; transform:none; }
 .landing-bottom-section {
   background-color:#11183B;
-  background-image:radial-gradient(ellipse 56% 110% at 90% 44%,rgba(104,73,204,.30),transparent 78%);
+  background-image:radial-gradient(ellipse 72% 120% at 93% 35%,rgba(104,73,204,.16),transparent 75%);
 }
 .landing-footer {
   background: #11183B;
 }
-.landing-footer::before {
-  content:"";position:absolute;inset:0 0 auto;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(177,157,255,.18),transparent);
-}
+.landing-footer::before { display:none; }
 @media(max-width:640px){
  .landing-liquid-header { -webkit-backdrop-filter:blur(15px) saturate(150%); backdrop-filter:blur(15px) saturate(150%); }
 }
