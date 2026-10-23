@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Languages, Sparkles, Target, TrendingUp } from "lucide-react";
 import type { OnboardingProfile } from "./onboarding-stages";
@@ -13,89 +13,113 @@ type Props = {
   onPrevious: () => void;
 };
 
-const words = "Votre objectif est clair. Maintenant, on va le préparer ensemble.".split(" ");
+const message = "Votre objectif est clair. Maintenant, on va le préparer ensemble.";
+const words = message.split(" ");
+const revealDuration = 3450;
 
 export function WelcomeSequence({ profile, objective, priorities, onContinue, onPrevious }: Props) {
   const reducedMotion = useReducedMotion();
-  const [skip, setSkip] = useState(false);
-  const animate = !reducedMotion && !skip;
+  const [sequenceComplete, setSequenceComplete] = useState(false);
+  const animate = reducedMotion !== true;
+  const ctaReady = reducedMotion === true || sequenceComplete;
   const firstName = profile.firstName.trim();
   const language = profile.preferredLocale === "en" ? "English" : "Français";
   const chapters = [
-    { label: "NOTRE OBJECTIF", text: objective, icon: Target, delay: 1.55 },
-    { label: "CE QU’ON VA TRAVAILLER", text: priorities.join(" · "), icon: TrendingUp, delay: 1.85 },
-    { label: "ON S’ENTRAÎNE EN", text: language, icon: Languages, delay: 2.15 },
+    { label: "NOTRE OBJECTIF", text: objective, icon: Target, delay: 1.7 },
+    { label: "CE QU’ON VA TRAVAILLER", text: priorities.join(" · "), icon: TrendingUp, delay: 2.05 },
+    { label: "ON S’ENTRAÎNE EN", text: language, icon: Languages, delay: 2.4 },
   ];
 
+  useEffect(() => {
+    if (!animate) return;
+    const timer = window.setTimeout(() => setSequenceComplete(true), revealDuration);
+    return () => window.clearTimeout(timer);
+  }, [animate]);
+
   return (
-    <section data-testid="welcome-sequence" aria-label="Bienvenue dans notre espace" className="welcome-stage relative isolate mx-auto flex min-h-[min(760px,calc(100dvh-130px))] w-full max-w-[1100px] flex-col justify-center overflow-hidden rounded-[30px] border border-white/50 px-6 py-10 text-white shadow-[0_40px_100px_rgba(21,32,73,0.24)] sm:px-14 sm:py-14">
-      <div aria-hidden="true" className="welcome-aura welcome-aura-a" />
-      <div aria-hidden="true" className="welcome-aura welcome-aura-b" />
-      <div className="relative z-10 mx-auto w-full max-w-3xl">
-        <div className="flex min-h-10 items-center justify-between gap-3">
-          <span className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#B9C9EE]">
-            <Sparkles size={16} aria-hidden="true"/> NOTRE AVENTURE COMMENCE ICI
-          </span>
-          {!skip && !reducedMotion && (
-            <button type="button" onClick={() => setSkip(true)}
-              className="min-h-11 rounded-xl px-3 text-xs font-semibold text-[#D2DCED] transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-              Passer l’animation
-            </button>
-          )}
-        </div>
-        <motion.div initial={animate ? { opacity: 0, y: 34, filter: "blur(12px)" } : false}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: animate ? 0.8 : 0, ease: [0.2, 0.8, 0.2, 1] }} className="mt-8">
-          <motion.span initial={animate ? { scale: 0.78, opacity: 0, rotate: -12 } : false}
-            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-            transition={animate ? { type: "spring", damping: 16, stiffness: 160, delay: 0.1 } : { duration: 0 }}
-            className="mb-7 grid h-16 w-16 place-items-center rounded-2xl border border-white/20 bg-white/10 text-[#E6EDFF] shadow-[0_14px_40px_rgba(49,84,172,0.22)] backdrop-blur-xl">
-            <Sparkles size={29} aria-hidden="true"/>
-          </motion.span>
-          <h1 className="text-[clamp(2.7rem,6vw,5rem)] font-semibold leading-[1.04] tracking-[-0.06em]">
-            Bienvenue{firstName ? `, ${firstName}` : ""}<span className="text-[#A9C0FF]">.</span>
-          </h1>
+    <section data-testid="welcome-sequence" aria-label="Bienvenue dans notre espace"
+      className="welcome-v5 fixed inset-0 z-50 isolate flex min-h-dvh flex-col overflow-x-hidden overflow-y-auto text-white"
+      style={{ backgroundColor: "#080F23",
+        backgroundImage: "radial-gradient(ellipse 50% 80% at 92% 18%, rgba(43,76,173,.26), transparent 75%), linear-gradient(145deg, #080F23 0%, #0B1630 53%, #0C2041 100%)",
+        color: "#FFFFFF" }}>
+      <div className="welcome-v5-glow welcome-v5-glow-one" aria-hidden="true"/>
+      <div className="welcome-v5-glow welcome-v5-glow-two" aria-hidden="true"/>
+      <div className="welcome-v5-orbit" aria-hidden="true"/>
+
+      <header className="relative z-10 mx-auto flex w-full max-w-[1420px] items-center justify-between px-6 py-6 sm:px-12 sm:py-9">
+        <span className="flex items-center gap-2.5 text-[13px] font-semibold tracking-[-0.01em] text-white">
+          <span className="grid h-9 w-9 place-items-center rounded-xl border border-white/20 bg-white/10"><Sparkles size={18}/></span>
+          Interview Platform
+        </span>
+        <span className="hidden text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B5C9FF] sm:block">Notre aventure commence ici</span>
+      </header>
+
+      <div className="relative z-10 mx-auto flex w-full max-w-[1000px] flex-1 flex-col justify-center px-6 pb-12 pt-8 sm:px-12 sm:pb-20">
+        <motion.div initial={animate ? { opacity: 0, scale: 0.5, rotate: -25, y: 36 } : false}
+          animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+          transition={animate ? { type: "spring", stiffness: 165, damping: 15, delay: 0.05 } : { duration: 0 }}
+          className="mb-7 grid h-[66px] w-[66px] place-items-center rounded-[23px] border border-[#89A4FD]/45 bg-[#526EE1]/25 shadow-[0_0_80px_rgba(92,125,255,0.32)] backdrop-blur-xl">
+          <Sparkles size={31} className="text-[#CFDAFF]"/>
         </motion.div>
-        <p aria-label="Votre objectif est clair. Maintenant, on va le préparer ensemble."
-          className="mt-7 max-w-2xl text-[clamp(1.12rem,2.2vw,1.5rem)] font-medium leading-[1.55] tracking-[-0.02em] text-[#D8E3FC]">
+        <motion.p initial={animate ? { opacity: 0, x: -45 } : false}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: animate ? 0.55 : 0, delay: animate ? 0.12 : 0 }}
+          className="mb-4 text-[11px] font-bold uppercase tracking-[0.25em] text-[#ABC3FF]">
+          Un nouveau chapitre commence
+        </motion.p>
+
+        <motion.h1 initial={animate ? { opacity: 0, y: 65, scale: 0.88, filter: "blur(18px)" } : false}
+          animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+          transition={{ duration: animate ? 0.85 : 0, delay: animate ? 0.2 : 0, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-[940px] text-[clamp(3.5rem,8vw,7.6rem)] font-semibold leading-[0.99] tracking-[-0.065em] text-white">
+          Bienvenue{firstName ? `, ${firstName}` : ""}<span className="text-[#9EB9FF]">.</span>
+        </motion.h1>
+
+        <p aria-label={message}
+          className="mt-7 max-w-[820px] text-[clamp(1.12rem,2.6vw,1.75rem)] font-medium leading-[1.5] tracking-[-0.022em] text-[#E1E9FF] sm:mt-9">
           {words.map((word, index) => (
-            <motion.span key={index} aria-hidden="true" className="mr-[0.3em] inline-block"
-              initial={animate ? { opacity: 0, y: 15, filter: "blur(5px)" } : false}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: animate ? 0.4 : 0, delay: animate ? 0.54 + index * 0.095 : 0, ease: "easeOut" }}>
+            <motion.span key={index} aria-hidden="true" className="mr-[0.31em] inline-block"
+              initial={animate ? { opacity: 0, y: 30, scale: 0.84, filter: "blur(11px)" } : false}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+              transition={{ duration: animate ? 0.5 : 0, delay: animate ? 0.95 + index * 0.087 : 0, ease: [0.16, 1, 0.3, 1] }}>
               {word}
             </motion.span>
           ))}
         </p>
-        <div className="mt-9 grid gap-3 sm:grid-cols-3" aria-label="Notre plan de préparation">
-          {chapters.map(({ label, text, icon: Icon, delay }) => (
-            <motion.div key={label} initial={animate ? { opacity: 0, y: 28, scale: 0.96 } : false}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: animate ? 0.55 : 0, delay: animate ? delay : 0, ease: [0.2, 0.8, 0.2, 1] }}
-              className="welcome-card flex min-h-[132px] flex-col rounded-[22px] border border-white/15 p-5 backdrop-blur-xl">
-              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#AFC3F4]">
-                <Icon size={16} aria-hidden="true"/> {label}
+
+        <div className="mt-11 grid gap-3 sm:mt-14 sm:grid-cols-3" aria-label="Notre plan de préparation">
+          {chapters.map(({ label, text, icon: Icon, delay }, i) => (
+            <motion.div key={label} initial={animate ? { opacity: 0, y: 75, rotateX: 22, scale: 0.9, filter: "blur(9px)" } : false}
+              animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1, filter: "blur(0px)" }}
+              transition={{ duration: animate ? 0.65 : 0, delay: animate ? delay : 0, ease: [0.16, 1, 0.3, 1] }}
+              className="welcome-v5-card relative min-h-[136px] overflow-hidden rounded-[22px] p-5 sm:min-h-[162px] sm:p-6"
+              style={{ transformPerspective: 1000 }}>
+              <span className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#8FADFF]/70 to-transparent" aria-hidden="true"/>
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#ABC6FF]">
+                <Icon size={17} aria-hidden="true"/> {label}
               </div>
-              <p className="mt-4 text-sm font-semibold leading-6 text-white">{text}</p>
+              <p className="mt-5 text-[15px] font-semibold leading-6 text-white sm:text-base">{text}</p>
+              <span className="absolute bottom-4 right-5 text-xs font-medium text-[#7795D0]" aria-hidden="true">0{i+1}</span>
             </motion.div>
           ))}
         </div>
-        <motion.div initial={animate ? { opacity: 0, y: 16 } : false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: animate ? 0.45 : 0, delay: animate ? 2.55 : 0 }}
-          className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/20 pt-7">
+
+        <div className="mt-9 flex min-h-[91px] flex-wrap items-center justify-between gap-3 border-t border-[#8097C0]/30 pt-6 sm:mt-12">
           <button type="button" onClick={onPrevious}
-            className="inline-flex min-h-12 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-[#CFDAF3] transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-            <ArrowLeft size={18} aria-hidden="true"/> Précédent
+            className="inline-flex min-h-12 items-center gap-2 rounded-xl px-4 text-sm font-semibold text-[#DAE5FF] transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+            <ArrowLeft size={18}/> Précédent
           </button>
-          <button type="button" onClick={onContinue}
-            className="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl bg-white px-6 py-3 text-sm font-bold text-[#17264D] shadow-lg transition hover:-translate-y-0.5 hover:bg-[#E9F1FF] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
-            Découvrir notre espace <ArrowRight size={18} aria-hidden="true"/>
-          </button>
-        </motion.div>
-        <p className="mt-5 text-xs leading-5 text-[#BCCBE6]">
-          Aperçu UX : les réponses ne sont pas encore enregistrées dans Supabase.
-        </p>
+          {ctaReady && (
+            <motion.button type="button" onClick={onContinue} data-testid="welcome-cta"
+              initial={animate ? { opacity: 0, scale: 0.78, y: 42, filter: "blur(10px)" } : false}
+              animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+              transition={animate ? { type: "spring", stiffness: 170, damping: 16 } : { duration: 0 }}
+              className="welcome-v5-cta inline-flex min-h-[54px] items-center justify-center gap-3 rounded-2xl px-7 text-sm font-bold text-[#101E42] shadow-[0_16px_50px_rgba(98,133,254,0.28)] transition hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+              Découvrir notre espace <ArrowRight size={19}/>
+            </motion.button>
+          )}
+        </div>
+        <p className="mt-3 text-[11px] leading-5 text-[#A6BCE5]">Aperçu UX : le profil n’est pas encore enregistré dans Supabase.</p>
       </div>
     </section>
   );

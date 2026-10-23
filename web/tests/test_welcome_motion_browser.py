@@ -23,12 +23,14 @@ def run():
         for motion, viewport in [("no-preference", {"width":1440,"height":900}),("reduce", {"width":390,"height":844})]:
             page = b.new_page(viewport=viewport, reduced_motion=motion)
             journey(page)
+            expect(page.get_by_role("button", name="Passer l’animation")).to_have_count(0)
+            expect(page.get_by_test_id("welcome-sequence")).to_have_css("position", "fixed")
+            expect(page.get_by_test_id("welcome-sequence")).to_have_css("background-color", "rgb(8, 15, 35)")
             if motion == "no-preference":
-                expect(page.get_by_role("button", name="Passer l’animation")).to_be_visible()
-                page.get_by_role("button", name="Passer l’animation").click()
-                expect(page.get_by_role("button", name="Passer l’animation")).to_have_count(0)
+                expect(page.get_by_test_id("welcome-cta")).to_have_count(0)
+                expect(page.get_by_test_id("welcome-cta")).to_be_visible(timeout=6500)
             else:
-                expect(page.get_by_role("button", name="Passer l’animation")).to_have_count(0)
+                expect(page.get_by_test_id("welcome-cta")).to_be_visible()
             expect(page.get_by_role("button", name="Découvrir notre espace")).to_be_visible()
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
             page.get_by_role("button", name="Découvrir notre espace").click()

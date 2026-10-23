@@ -71,3 +71,7 @@ Après « C'est parti ! », le formulaire est remplacé dans la même page par u
 `motion/react` est notre bibliothèque d'animation unique. Scroll Craft est installé localement pour inspirer la profondeur et la narration mais n'est pas exécuté comme moteur de scrolling dans l'onboarding. Voir `docs/ux/UX-06_WELCOME_MOTION_AND_RETURNING_USER.md` pour l'installation des outils et la règle future de reconnexion, **non implémentée sans Supabase Auth**.
 
 Tests : `python3 web/tests/test_welcome_motion_browser.py` en plus du test de parcours complet.
+
+## Welcome V5 plein écran
+
+Sur l'écran final, la scène cinématique occupe maintenant tout le viewport avec fond dark navy opaque (pas de frame ni transparence claire), animations plus affirmées et 3 cartes de récapitulatif plus contrastées. Le CTA « Découvrir notre espace » n'est rendu qu'à la fin de l'animation ; « Passer l'animation » n'existe plus. Respect de `prefers-reduced-motion` (affichage immédiat).

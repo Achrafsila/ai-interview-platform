@@ -54,3 +54,9 @@ Le dépôt MIT est une **bibliothèque React/JS**, pas une skill d'instructions.
 ## Décisions à prendre plus tard
 
 Le libellé et la durée de l'accueil de reconnexion (« Bon retour parmi nous, [prénom] ») seront affinés avec la maquette sign-in. Le routage dépendra strictement de `is_authenticated` et d'un indicateur serveur `onboarding_completed`. Aucune logique d'authentification réelle n'a été implémentée dans cette livraison.
+
+## Révision V5 — welcome fullscreen (retour visuel utilisateur)
+
+Le rendu V4 était jugé trop pâle, insuffisamment contrasté, cadré par une carte et trop timide en motion. La V5 remplace la frame par une **scène fixe plein viewport** (dark navy, fond opaque imposé sur la scène pour ne jamais laisser apparaître le background clair de l'onboarding) : titre « Bienvenue, [prénom] » XL avec zoom/translation et blur-to-sharp marqués, phrase animée mot par mot, trois cartes profondes en cascade, halos doux plus amples. Le header de la scène est discret. Le bouton « Passer l'animation » est **supprimé**. Le CTA « Découvrir notre espace » est **conditionnel** et n'apparaît qu'à l'issue de la séquence (~3,45 s). L'accès reste instantané pour les personnes demandant `prefers-reduced-motion`. « Précédent » reste visible afin de pouvoir corriger ses réponses.
+
+Tests supplémentaires : `web/tests/test_welcome_motion_browser.py` vérifie la position `fixed`, la couleur de fond opaque `rgb(8,15,35)`, l'absence de skip, le CTA absent avant l'animation et présent ensuite en mode desktop, ainsi que le reduced motion / CTA immédiat mobile. Tests onboarding complets passés.
