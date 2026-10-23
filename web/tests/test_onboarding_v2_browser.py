@@ -36,8 +36,17 @@ def run():
             expect(page.get_by_role("heading", name="Bienvenue, Camille !")).to_be_visible()
             expect(page.get_by_text("Français", exact=True)).to_be_visible()
             expect(page.get_by_text("Mieux communiquer")).to_be_visible()
+            # The single footer Previous button returns to step 4 with answers intact.
+            page.get_by_role("button", name="Précédent").click()
+            expect(page.get_by_role("heading", name="Dans quelle langue on s’entraîne ?")).to_be_visible()
+            expect(page.get_by_role("radio", name="Français")).to_have_attribute("aria-checked", "true")
+            page.get_by_role("button", name="Retour", exact=True).click()
+            expect(page.get_by_role("heading", name="Qu’est-ce qu’on peut améliorer ensemble ?")).to_be_visible()
+            page.get_by_role("button", name="Continuer").click()
+            page.get_by_role("button", name="C’est parti !").click()
+            expect(page.get_by_role("heading", name="Bienvenue, Camille !")).to_be_visible()
             # Edit priority and navigate Back to summary without destroying changes.
-            page.get_by_role("button", name="Ajuster notre plan").click()
+            page.get_by_role("button", name="CE QU’ON VA TRAVAILLER").click()
             expect(page.get_by_role("heading", name="Qu’est-ce qu’on peut améliorer ensemble ?")).to_be_visible()
             page.get_by_role("button", name="Retour", exact=True).click()
             expect(page.get_by_role("heading", name="Bienvenue, Camille !")).to_be_visible()

@@ -337,9 +337,12 @@ export function OnboardingStages({
                   Découvrir mon espace <ArrowRight size={17} aria-hidden="true" />
                 </button>
               </motion.div>
-              <div className="mt-4 flex flex-wrap gap-3">
-                <button type="button" onClick={() => editStep(0)} className="min-h-10 rounded-xl px-3 text-sm font-semibold text-[#526079] hover:bg-white/80">Corriger mon prénom ou mon nom</button>
-                <button type="button" onClick={() => editStep(2)} className="min-h-10 rounded-xl px-3 text-sm font-semibold text-[#526079] hover:bg-white/80">Ajuster notre plan</button>
+              <div className="mt-4">
+                <button type="button"
+                  onClick={() => { setFinished(false); setReturnToRecap(false); setStep(steps.length - 1); setDirection(-1); setFieldError(""); }}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-semibold text-[#526079] transition hover:bg-white/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3]">
+                  <ArrowLeft size={17} aria-hidden="true" /> Précédent
+                </button>
               </div>
               <p className="mt-2 text-xs leading-5 text-[#78859B]">Aperçu UX : ces informations ne sont pas encore enregistrées dans Supabase.</p>
             </motion.div>
