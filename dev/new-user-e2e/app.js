@@ -439,7 +439,9 @@ async function completeStep(){
   else{showCurrentQuestion();}
 }
 function renderRecap(){
-  text("recapCount",state.answers.length+" question(s)");
+  text("recapCount",state.answers.length+" réponse(s)");
+  $("aiRecapFeedback").classList.toggle("hidden",!state.aiFeedback);
+  text("aiRecapFeedback",state.aiFeedback?"Bilan qualitatif de l'IA (sans notation) :\n"+state.aiFeedback:"");
   text("recapPersistentGoals",names(state.profile.preparation_goals));
   text("recapSimulationGoals",names(state.selection.prepGoals));
   $("recapAnswers").replaceChildren();
@@ -459,6 +461,7 @@ async function signOut(){
   }
   state.user=null;state.accessToken=null;state.profile=null;state.selectedGoals=[];
   state.questions=[];state.answers=[];state.index=0;
+  state.aiSession=null;state.aiFeedback=null;
   text("modeIndicator","MODE DÉMO · LOCAL");
   show("welcome");
 }
@@ -473,6 +476,14 @@ async function init(){
       text("liveAvailability","Mode réel disponible après configuration des variables SUPABASE_URL et SUPABASE_PUBLISHABLE_KEY sur votre Mac.");
     }
   }catch(e){text("liveAvailability","Impossible de vérifier la connexion Supabase locale : "+e.message);}
+  try{
+    const status=await jsonResponse("/api/ai/status");
+    state.aiReady=Boolean(status.available);
+    $("simMode").querySelector('option[value="ai"]').disabled=!state.aiReady;
+    if(state.aiReady){
+      text("aiModeHint","L'IA est disponible. Vos réponses de test seront envoyées au fournisseur IA seulement avec votre accord.");
+    }
+  }catch {state.aiReady=false;}
 }
 $("chooseDemo").onclick=()=>enterAuth("demo");
 $("chooseLive").onclick=()=>{if(state.liveConfig)enterAuth("live");};
@@ -494,6 +505,18 @@ $("editProfile").onclick=()=>{renderOnboarding();show("onboarding");};
 $("signOut").onclick=signOut;
 $("goConfigure").onclick=()=>{renderConfiguration();show("configure");};
 $("backDashboard").onclick=()=>{renderDashboard();show("dashboard");};
+$("simFamily").addEventListener("change",()=>{
+  rememberCurrentSimulationGoals();
+  renderSimulationGoals();
+});
+$("simDomain").addEventListener("change",()=>{
+  rememberCurrentSimulationGoals();
+  renderSimulationGoals();
+});
+$("simMode").addEventListener("change",()=>{
+  $("aiPrivacyConsent").checked=false;
+  renderAIMode();
+});
 $("configurationForm").addEventListener("submit",startSimulation);
 $("submitAnswer").onclick=completeStep;
 $("stopInterview").onclick=()=>{renderDashboard();show("dashboard");};
