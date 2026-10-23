@@ -45,3 +45,6 @@ tmp/
 temp/
 *.sqlite
 *.sqlite3
+
+# Local-only auth fixtures; never commit demo passwords
+.demo-credentials/

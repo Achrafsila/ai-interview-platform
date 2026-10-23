@@ -1,35 +1,40 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { OnboardingStages, type OnboardingProfile } from "@/components/ui/onboarding-stages";
-
-const previewKey = "ai-interview-preview-profile";
-const subscribeNoop = () => () => {};
-
-function readPreview(raw: string): Partial<OnboardingProfile> | undefined {
-  try {
-    if (!raw) return undefined;
-    const p = JSON.parse(raw) as Partial<OnboardingProfile>;
-    if (!p || typeof p !== "object") return undefined;
-    return p;
-  } catch {
-    return undefined;
-  }
-}
+import { getAuthClient } from "@/lib/supabase-auth";
+import { readProfile, writeProfile } from "@/lib/profile";
+import { useRouter } from "next/navigation";
 
 export default function OnboardingPage() {
-  const stored = useSyncExternalStore(subscribeNoop, () => window.sessionStorage.getItem(previewKey), () => undefined);
-  const initialProfile = stored === undefined ? null : stored ? (readPreview(stored) ?? {}) : {};
+  const [initialProfile, setInitialProfile] = useState<Partial<OnboardingProfile> | null>(null);
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  function handleComplete(profile: OnboardingProfile) {
-    // UX preview only. No Auth or Supabase persistence.
-    console.info("Onboarding preview completed", {
-      professionalGoal: profile.professionalGoal,
-      preparationGoalsCount: profile.preparationGoals.length,
-      preferredLocale: profile.preferredLocale,
-    });
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      const supabase = getAuthClient();
+      if (!supabase) { if (mounted) setError("Supabase n’est pas configuré."); return; }
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { router.replace("/login"); return; }
+      try {
+        const saved = await readProfile(supabase, user.id);
+        if (mounted) setInitialProfile(saved?.profile ?? {});
+      } catch { if (mounted) setError("Nous n’avons pas pu charger vos informations."); }
+    }
+    void load();
+    return () => { mounted = false; };
+  }, [router]);
+
+  async function handleComplete(profile: OnboardingProfile) {
+    const supabase = getAuthClient();
+    if (!supabase) throw new Error("Client non configuré");
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (!user || error) throw new Error("Session expirée");
+    await writeProfile(supabase, user.id, profile);
   }
 
   return (
@@ -37,18 +42,19 @@ export default function OnboardingPage() {
       <div className="atmosphere-orb atmosphere-orb-one" aria-hidden="true" />
       <div className="atmosphere-orb atmosphere-orb-two" aria-hidden="true" />
       <div className="atmosphere-orb atmosphere-orb-three" aria-hidden="true" />
-      <nav className="relative z-10 mx-auto flex max-w-[1100px] items-center justify-between px-5 py-6 sm:px-6" aria-label="Navigation principale">
+      <nav className="relative z-10 mx-auto flex max-w-[1100px] items-center justify-between px-5 py-6 sm:px-6">
         <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-[#172033]">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#0B1222] text-white"><Sparkles size={18}/></span>
           Interview Platform
         </Link>
-        <Link href={initialProfile?.employmentStatus ? "/dashboard" : "/"} className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-[#526079] hover:bg-[#E8EDF5]">
-          <ArrowLeft size={16}/> {initialProfile?.employmentStatus ? "Mon espace" : "Retour à l’accueil"}
+        <Link href="/dashboard" className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-[#526079] hover:bg-[#E8EDF5]">
+          <ArrowLeft size={16}/> Mon espace
         </Link>
       </nav>
       <div className="relative z-10 px-4 sm:px-6">
-        {initialProfile === null ? <div className="mx-auto max-w-lg py-24 text-center text-[#526079]" role="status">On prépare votre parcours…</div>
-          : <OnboardingStages onComplete={handleComplete} initialProfile={initialProfile} />}
+        {error ? <p role="alert" className="mx-auto max-w-xl rounded-2xl border border-[#DDE5F2] bg-white p-5 text-sm text-[#172033]">{error}</p> :
+          initialProfile === null ? <div className="mx-auto max-w-lg py-24 text-center text-[#526079]" role="status">On prépare votre parcours…</div> :
+          <OnboardingStages onComplete={handleComplete} initialProfile={initialProfile} />}
       </div>
     </main>
   );

@@ -7,6 +7,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Eye, EyeOff, LockKeyhole, Mail, ShieldCheck, Sparkles } from "lucide-react";
 import { SmokeyAuthBackground } from "./smokey-auth-background";
 import { getAuthClient } from "@/lib/supabase-auth";
+import { getAppRole, readProfile } from "@/lib/profile";
 
 type Mode = "signin" | "signup" | "reset";
 type Message = { type: "error" | "success"; text: string };
@@ -53,11 +54,15 @@ export function LoginForm() {
           : "Consultez votre boîte e-mail pour confirmer votre inscription, si la vérification est activée." });
         if (data.session) router.push("/onboarding");
       } else {
-        const { error } = await client.auth.signInWithPassword({ email: email.trim(), password });
-        if (error) throw error;
-        // Future: server-backed onboarding_completed decides the route.
-        // For now the dashboard explicitly tells users if their profile isn't yet available.
-        router.push("/dashboard");
+        const { data, error } = await client.auth.signInWithPassword({ email: email.trim(), password });
+        if (error || !data.user) throw error ?? new Error("Connexion refusée");
+        const role = await getAppRole(client, data.user.id);
+        if (role !== "user") {
+          router.replace("/role-preview");
+        } else {
+          const saved = await readProfile(client, data.user.id);
+          router.replace(saved?.completed ? "/dashboard" : "/onboarding");
+        }
       }
     } catch {
       setMessage({ type: "error", text: "Nous n'avons pas pu finaliser cette opération. Vérifiez vos informations ou réessayez." });

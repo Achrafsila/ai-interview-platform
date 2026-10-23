@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getAuthClient } from "@/lib/supabase-auth";
+import { getAppRole, readProfile } from "@/lib/profile";
 
 export default function AuthCallbackPage() {
   const [error, setError] = useState("");
@@ -31,8 +32,17 @@ export default function AuthCallbackPage() {
         window.location.replace("/auth/update-password");
         return;
       }
-      // Profile-completion routing must use a server-owned onboarding status later.
-      window.location.replace("/dashboard");
+      try {
+        const role = await getAppRole(client!, data.user.id);
+        if (role !== "user") {
+          window.location.replace("/role-preview");
+        } else {
+          const saved = await readProfile(client!, data.user.id);
+          window.location.replace(saved?.completed ? "/dashboard" : "/onboarding");
+        }
+      } catch {
+        if (active) setError("Nous n’avons pas pu retrouver votre profil. Réessayez.");
+      }
     }
     void finish();
     return () => { active = false; };

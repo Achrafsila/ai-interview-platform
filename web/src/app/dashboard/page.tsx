@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getAuthClient } from "@/lib/supabase-auth";
+import { readProfile, getAppRole } from "@/lib/profile";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight, ArrowUpRight, BookOpen, ChevronRight, Compass, MessageCircle, Sparkles, Target, UserRound } from "lucide-react";
-import { employmentOptions, experienceOptions, goalsForContext, professionalOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal, type EmploymentStatus, type ExperienceLevel } from "@/components/ui/onboarding-stages";
-
-const profileKey = "ai-interview-preview-profile";
-const subscribeNoop = () => () => {};
+import { employmentOptions, experienceOptions, professionalOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal } from "@/components/ui/onboarding-stages";
 
 const goals: Record<ProfessionalGoal, { label: string; detail: string; icon: typeof Target }> =
   Object.fromEntries(professionalOptions.map((item) => [
@@ -20,36 +20,36 @@ const priorities: Record<PreparationGoal, string> = {
   domain_knowledge: "Renforcer les connaissances métier",
   stress_management: "Gérer la pression",
 };
-const validGoal = (v: unknown): v is ProfessionalGoal => professionalOptions.some((goal) => goal.value === v);
-const validEmploymentStatus = (v: unknown): v is EmploymentStatus => employmentOptions.some((x) => x.value === v);
-const validExperience = (v: unknown): v is ExperienceLevel => experienceOptions.some((x) => x.value === v);
-const validPriority = (v: unknown): v is PreparationGoal => typeof v === "string" && v in priorities;
-
-function loadPreviewProfile(raw: string | null): OnboardingProfile | null {
-  try {
-    if (!raw) return null;
-    const value: unknown = JSON.parse(raw);
-    if (!value || typeof value !== "object") return null;
-    const p = value as Partial<OnboardingProfile>;
-    if (!validEmploymentStatus(p.employmentStatus) || !validGoal(p.professionalGoal)) return null;
-    if (!goalsForContext(p.employmentStatus, validExperience(p.experienceLevel) ? p.experienceLevel : undefined).includes(p.professionalGoal)) return null;
-    return {
-      firstName: typeof p.firstName === "string" ? p.firstName.slice(0, 80) : "",
-      lastName: typeof p.lastName === "string" ? p.lastName.slice(0, 80) : "",
-      professionalGoal: p.professionalGoal,
-      employmentStatus: validEmploymentStatus(p.employmentStatus) ? p.employmentStatus : undefined,
-      experienceLevel: validExperience(p.experienceLevel) ? p.experienceLevel : undefined,
-      preparationGoals: Array.isArray(p.preparationGoals) ? p.preparationGoals.filter(validPriority).slice(0, 3) : [],
-      preferredLocale: p.preferredLocale === "en" ? "en" : "fr",
-    };
-  } catch {
-    return null;
-  }
-}
-
 export default function DashboardPage() {
-  const stored = useSyncExternalStore(subscribeNoop, () => window.sessionStorage.getItem(profileKey), () => undefined);
-  const profile = stored === undefined ? undefined : loadPreviewProfile(stored);
+  const [profile, setProfile] = useState<OnboardingProfile | null | undefined>(undefined);
+  const [loadError, setLoadError] = useState("");
+  const router = useRouter();
+  useEffect(() => {
+    let mounted = true;
+    async function load() {
+      const client = getAuthClient();
+      if (!client) { if (mounted) setLoadError("Supabase n’est pas configuré."); return; }
+      const { data: { user } } = await client.auth.getUser();
+      if (!user) { router.replace("/login"); return; }
+      try {
+        const role = await getAppRole(client, user.id);
+        if (role !== "user") { router.replace("/role-preview"); return; }
+        const saved = await readProfile(client, user.id);
+        if (!saved?.completed) { router.replace("/onboarding"); return; }
+        if (mounted) setProfile(saved.profile);
+      } catch {
+        if (mounted) setLoadError("Nous n’avons pas pu récupérer notre parcours. Réessayez.");
+      }
+    }
+    void load();
+    return () => { mounted = false; };
+  }, [router]);
+  async function signOut() {
+    const client = getAuthClient();
+    await client?.auth.signOut();
+    router.replace("/login");
+    router.refresh();
+  }
   const reducedMotion = useReducedMotion();
   const goal = profile && goals[profile.professionalGoal];
   const GoalIcon = goal?.icon ?? Target;
@@ -70,10 +70,11 @@ export default function DashboardPage() {
           <nav aria-label="Navigation de l’espace candidat" className="flex flex-wrap items-center gap-3 sm:gap-5">
             <span aria-current="page" className="rounded-full bg-white/70 px-4 py-2 text-sm font-semibold text-[#172033]">Mon espace</span>
             <Link href="/onboarding" className="rounded-full px-3 py-2 text-sm font-medium text-[#526079] transition hover:bg-white/70">Mon profil</Link>
+            <button onClick={signOut} className="rounded-full px-3 py-2 text-sm font-medium text-[#526079] transition hover:bg-white/70">Se déconnecter</button>
           </nav>
         </header>
 
-        {profile === undefined ? (
+        {loadError ? <p role="alert" className="py-28 text-center text-[#526079]">{loadError}</p> : profile === undefined ? (
           <div role="status" className="py-28 text-center text-[#526079]">On prépare votre espace…</div>
         ) : profile === null ? (
           <section className="onboarding-glass mx-auto mt-16 max-w-2xl rounded-[30px] border border-white/80 p-8 text-center shadow-xl sm:p-14">
@@ -81,7 +82,7 @@ export default function DashboardPage() {
             <h1 className="mt-7 text-[32px] font-semibold tracking-tight sm:text-[43px]">On prépare notre parcours ?</h1>
             <p className="mx-auto mt-4 max-w-md leading-8 text-[#526079]">Pour préparer notre premier entretien, on commence par comprendre ce que vous souhaitez accomplir.</p>
             <Link href="/onboarding" className="mt-8 inline-flex min-h-12 items-center gap-3 rounded-xl bg-[#2947A3] px-6 text-sm font-semibold text-white hover:bg-[#1E3586]">Commencer mon parcours <ArrowRight size={17}/></Link>
-            <p className="mt-6 text-xs text-[#78859B]">Ce prototype ne conserve les réponses que dans cet onglet.</p>
+            <p className="mt-6 text-xs text-[#78859B]">Votre profil sera enregistré dans notre espace sécurisé.</p>
           </section>
         ) : (
           <>
@@ -145,7 +146,7 @@ export default function DashboardPage() {
 
             <footer className="mt-9 flex items-start gap-3 rounded-2xl border border-white/70 bg-white/45 px-5 py-4 text-xs leading-6 text-[#66748A] backdrop-blur-md">
               <MessageCircle className="mt-0.5 shrink-0" size={16}/>
-              <p><strong className="text-[#526079]">Aperçu UX.</strong> Vos réponses sont conservées uniquement dans cet onglet, sans enregistrement Supabase. Les résultats d’entretien et les scores ne sont pas encore connectés à ce nouveau frontend.</p>
+              <p><strong className="text-[#526079]">Notre parcours est enregistré.</strong> Les simulations et les scores ne sont pas encore intégrés à ce nouveau frontend.</p>
             </footer>
           </>
         )}

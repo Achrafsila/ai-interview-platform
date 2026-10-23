@@ -24,7 +24,7 @@ export type OnboardingProfile = {
 
 type Props = {
   className?: string;
-  onComplete?: (profile: OnboardingProfile) => void;
+  onComplete?: (profile: OnboardingProfile) => void | Promise<void>;
   initialProfile?: Partial<OnboardingProfile>;
   enableAnimations?: boolean;
 };
@@ -102,6 +102,7 @@ export function OnboardingStages({
   const [step, setStep] = useState(0);
   const [fieldError, setFieldError] = useState("");
   const [finished, setFinished] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [returnToRecap, setReturnToRecap] = useState(false);
   const [direction, setDirection] = useState(1);
   const percent = finished ? 100 : Math.round(((step + 1) / steps.length) * 100);
@@ -115,7 +116,7 @@ export function OnboardingStages({
     (step === 3 && profile.preparationGoals.length > 0) ||
     step === 4;
 
-  function next() {
+  async function next() {
     if (!canProceed) {
       setFieldError(step === 0 ? "Indiquez votre prénom et votre nom pour continuer." :
         step === 1 ? "Choisissez votre situation actuelle." :
@@ -125,13 +126,30 @@ export function OnboardingStages({
     if (step === steps.length - 1) {
       if (!selectedGoalValid) { setFieldError("Choisissez d’abord un objectif compatible avec votre situation."); return; }
       const completed = { ...profile, firstName, lastName: profile.lastName.trim() };
-      onComplete?.(completed);
+      setSaving(true);
+      try {
+        await onComplete?.(completed);
+      } catch {
+        setFieldError("L’enregistrement n’a pas fonctionné. Réessayons sans perdre vos réponses.");
+        setSaving(false);
+        return;
+      }
+      setSaving(false);
       setFinished(true);
       setReturnToRecap(false);
       return;
     }
     setFieldError("");
     if (returnToRecap) {
+      setSaving(true);
+      try {
+        await onComplete?.({ ...profile, firstName, lastName: profile.lastName.trim() });
+      } catch {
+        setFieldError("Nous n’avons pas pu enregistrer cette modification. Réessayons.");
+        setSaving(false);
+        return;
+      }
+      setSaving(false);
       setFinished(true);
       setReturnToRecap(false);
     } else {
@@ -161,12 +179,6 @@ export function OnboardingStages({
   }
 
   function openDashboard() {
-    // Tab-scoped preview only. Never replace authenticated Supabase persistence.
-    window.sessionStorage.setItem("ai-interview-preview-profile", JSON.stringify({
-      ...profile,
-      firstName: profile.firstName.trim(),
-      lastName: profile.lastName.trim(),
-    }));
     router.push("/dashboard");
   }
 
@@ -397,7 +409,7 @@ export function OnboardingStages({
                     disabled={step === 0 && !returnToRecap} className="inline-flex min-h-12 items-center gap-2 rounded-xl px-4 text-sm font-semibold text-[#526079] transition hover:bg-[#F1F4F9] disabled:cursor-not-allowed disabled:opacity-30">
                     <ArrowLeft size={17} aria-hidden="true" /> Retour
                   </button>
-                  <button type="button" onClick={next} disabled={!canProceed}
+                  <button type="button" onClick={next} disabled={!canProceed || saving}
                     className="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl bg-[#2947A3] px-6 text-sm font-semibold text-white transition hover:bg-[#1E3586] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2947A3] disabled:cursor-not-allowed disabled:opacity-50">
                     {returnToRecap ? "Enregistrer et revenir" : step === steps.length - 1 ? "C’est parti !" : "Continuer"}
                     {step === steps.length - 1 ? <Check size={17} aria-hidden="true" /> : <ChevronRight size={17} aria-hidden="true" />}

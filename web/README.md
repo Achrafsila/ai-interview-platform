@@ -83,3 +83,10 @@ Le welcome reste plein écran et animé mais reprend l'univers bleu glacé/lavan
 ## Auth UX — login Smokey WebGL
 
 Page `/login` : expérience liquid glass avec fond WebGL animé et fallback gradient, formulaires connexion/inscription/réinitialisation et Google via `@supabase/supabase-js`. Les boutons sont désactivés quand Supabase n'est pas configuré (aucune fausse connexion). Voir `web/.env.example` et `docs/ux/UX-08_AUTH_LOGIN_SMOKEY_V1.md` pour le setup, les limites et les étapes de sécurisation des routes. Test Chrome : `python3 web/tests/test_login_browser.py`.
+
+
+## Auth réelle / persistance candidat (S2)
+
+Le frontend utilise maintenant `@supabase/ssr` (cookies partagés navigateur/serveur), `src/proxy.ts` pour les routes protégées, et `public.candidate_profiles` avec RLS. Les formulaires d'onboarding sauvegardent désormais prénom/nom, situation, expérience, objectif professionnel, priorités et langue dans Supabase ; l'accès au dashboard lit les valeurs depuis la base, et le bouton « Se déconnecter » met fin à la session. Connexion par email/mot de passe ou OAuth : compte utilisateur existant → dashboard si profil complet, sinon onboarding. Les rôles admin et coach sont stockés dans `app_user_roles`, table RLS en lecture seule pour l'utilisateur courant ; interfaces réservées laissées en placeholder.
+
+La création de comptes Auth Demo doit être effectuée via la clé administrative **hors frontend** : `docs/auth/TEST_ACCOUNTS.md` et `web/scripts/provision_demo_accounts.mjs`. Les accès ne sont pas encore générés sans clé administrative. Les tests navigateur sans Auth de l'ancien prototype ne sont plus représentatifs des pages maintenant protégées ; utiliser `web/tests/test_auth_live_routes.py` et `web/tests/test_login_browser.py` pour l'accès anonyme et les formulaires.

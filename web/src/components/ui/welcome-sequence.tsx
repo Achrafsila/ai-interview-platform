@@ -120,7 +120,7 @@ export function WelcomeSequence({ profile, objective, priorities, onContinue, on
             </motion.button>
           )}
         </div>
-        <p className="mt-3 text-[11px] leading-5 text-[#637494]">Aperçu UX : le profil n’est pas encore enregistré dans Supabase.</p>
+        <p className="mt-3 text-[11px] leading-5 text-[#637494]">Votre parcours est enregistré. On est prêts pour la suite.</p>
       </div>
     </section>
   );
