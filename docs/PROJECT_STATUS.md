@@ -50,3 +50,10 @@ Les tests réels SQL (transactions annulées) et CI ont réussi. **Aucun utilisa
 La PR #45 fournit un test navigateur Chromium : compte démo → onboarding → profil → simulation configurée → réponses → récapitulatif → contrôle que les préférences enregistrées restent inchangées. Elle ajoute le mode de connexion **facultatif** Supabase Auth et la table propriétaire `public.candidate_profiles` sécurisée par trois politiques RLS. Les tests navigateur réussissent ; aucun vrai utilisateur n'a été inscrit automatiquement.
 
 **Point de départ :** [guide E2E](NEW_USER_E2E.md). Les 120 questions de `question_bank` restent non publiées, interdisant une vraie session IA ; le parcours complet visible reste un laboratoire local de démonstration.
+
+
+## Itération S2-04 — IA locale et préparation spécialisée (PR #46)
+
+Le laboratoire `/e2e` peut désormais proposer des **objectifs RH** ou **techniques** différents, ces derniers dépendant du domaine (Software, Data/IA, Cloud/DevOps, Cyber, QA, Business Analysis). Une simulation IA côté Python local peut générer une relance à partir d'une réponse et un bilan de coaching prudent via OpenAI Responses API lorsque `OPENAI_API_KEY` est configurée. Le navigateur doit demander un consentement d'envoi avant de transmettre les réponses au fournisseur.
+
+Le mode local de test rend les 120 brouillons disponibles **uniquement en prévisualisation de développement**. **Aucune publication officielle des 120 questions n'a été réalisée dans Supabase.** Les tests CI du modèle reposent sur un faux fournisseur ; aucune réponse IA facturée n'a été testée sans clé API. Voir [guide technique](S2-04_AI_LOCAL_SIMULATION.md).
