@@ -15,20 +15,20 @@ export default function Home() {
         </header>
         <section className="relative mx-auto max-w-6xl px-5 pb-24 pt-16 sm:px-10 sm:pb-36 sm:pt-24">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#A6B8E4]">Votre prochain entretien commence ici</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#A6B8E4]">Votre prochain entretien, on le prépare ensemble</p>
             <h1 className="mt-7 text-[clamp(2.6rem,6vw,5.6rem)] font-semibold leading-[1.05] tracking-[-0.06em]">Le bon entretien commence avant le jour J.</h1>
-            <p className="mt-8 max-w-xl text-lg leading-8 text-[#C4CCDB]">Préparez vos réponses, entraînez-vous à votre rythme et progressez grâce à un accompagnement adapté à vos ambitions.</p>
+            <p className="mt-8 max-w-xl text-lg leading-8 text-[#C4CCDB]">Vous avez un objectif. Nous vous aidons à vous y préparer, avec des entretiens adaptés et des conseils concrets pour progresser.</p>
             <Link href="/onboarding" className="mt-10 inline-flex min-h-13 items-center justify-center gap-3 rounded-xl bg-white px-7 py-4 text-sm font-semibold text-[#172033] transition hover:bg-[#E9EEF7] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
-              Construire mon parcours <ArrowUpRight size={18} />
+              Commençons ensemble <ArrowUpRight size={18} />
             </Link>
           </div>
         </section>
       </div>
       <section className="mx-auto grid max-w-6xl gap-4 px-5 py-16 sm:grid-cols-3 sm:px-10 sm:py-24">
         {[
-          ["Vous préparer", "Un parcours qui part de vos objectifs et de votre expérience."],
-          ["Vous entraîner", "Des mises en situation RH ou techniques, à votre rythme."],
-          ["Vous améliorer", "Des conseils concrets pour préparer votre prochain échange."],
+          ["On fait le point", "On commence par comprendre votre objectif et ce que vous voulez améliorer."],
+          ["On s’entraîne", "On prépare vos réponses avec des mises en situation RH ou techniques."],
+          ["On progresse", "Après chaque séance, on identifie ensemble ce qui fonctionne et ce qu’on peut renforcer."],
         ].map(([title, description]) => (
           <div key={title} className="rounded-2xl border border-[#DFE5EE] bg-white p-7">
             <CheckCircle2 className="text-[#2947A3]" size={22} aria-hidden="true" />
