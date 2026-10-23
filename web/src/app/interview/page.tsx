@@ -13,7 +13,22 @@ async function send(action:"start"|"answer",payload:object):Promise<Response>{
  return data;
 }
 export default function InterviewPage(){
- const [config]=useState<Config|null>(()=>{if(typeof window==="undefined")return null;try{const raw=sessionStorage.getItem("interview-lab-config");return raw?JSON.parse(raw) as Config:null;}catch{return null;}});
+ const [config,setConfig]=useState<Config|null>(null);
+ const [configChecked,setConfigChecked]=useState(false);
+ useEffect(()=>{
+  // Read after hydration: the server-rendered page cannot access sessionStorage.
+  let saved:Config|null=null;
+  try{
+   const raw=window.sessionStorage.getItem("interview-lab-config");
+   if(raw){
+    const item=JSON.parse(raw) as Partial<Config>;
+    if((item.family==="rh"||item.family==="technical")&&(item.locale==="fr"||item.locale==="en")&&
+      typeof item.jobTitle==="string"&&item.jobTitle.trim()&&Array.isArray(item.goals)&&item.goals.length&&
+      typeof item.count==="number") saved=item as Config;
+   }
+  }catch{}
+  queueMicrotask(()=>{setConfig(saved);setConfigChecked(true);});
+ },[]);
  const [state,setState]=useState<"ready"|"speaking"|"listening"|"thinking"|"paused"|"done"|"error">("ready");
  const [result,setResult]=useState<Response|null>(null);
  const [session,setSession]=useState("");
@@ -41,7 +56,7 @@ export default function InterviewPage(){
   setState("speaking");window.speechSynthesis.speak(utter);
  }
  async function start(){
-  if(!config)return;
+  if(!config){setError("Configuration introuvable. Revenez à la préparation pour choisir votre entretien.");return;}
   setError("");setState("thinking");
   try{const data=await send("start",{family:config.family,locale:config.locale,goals:config.goals,count:config.count,job_description:config.job_description});
    setSession(data.session_id||"");setResult(data);speak(data.question?.prompt||"",config.locale);
@@ -87,13 +102,14 @@ export default function InterviewPage(){
  return <main className="min-h-dvh bg-[#F5F7FC] px-4 py-8 text-[#18233D] sm:px-8">
   <div className="mx-auto max-w-5xl">
    <header className="flex flex-wrap items-center justify-between gap-4"><Link href="/preparation" className="inline-flex items-center gap-2 text-sm font-bold text-[#4965BC]"><ArrowLeft size={17}/> Configuration</Link><span className="rounded-full bg-[#E8ECFD] px-4 py-2 text-xs font-bold text-[#4D61AD]">Laboratoire vocal · Non noté</span></header>
-   <div className="mt-9 flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[.14em] text-[#6479B7]">Simulation {config?.family==="technical"?"technique":"RH"}</p><h1 className="mt-2 text-3xl font-bold tracking-tight">Votre entretien IA</h1><p className="mt-2 text-sm text-[#657691]">{config?.jobTitle||"Configuration en attente"}</p></div><span className="text-sm font-semibold tabular-nums text-[#637493]">{Math.floor(elapsed/60).toString().padStart(2,"0")}:{(elapsed%60).toString().padStart(2,"0")}</span></div>
+   <div className="mt-9 flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[.14em] text-[#6479B7]">Simulation {config?.family==="technical"?"technique":"RH"}</p><h1 className="mt-2 text-3xl font-bold tracking-tight">Votre entretien IA</h1><p className="mt-2 text-sm text-[#657691]">{config?.jobTitle||(configChecked?"Configuration manquante":"Chargement de la configuration…")}</p></div><span className="text-sm font-semibold tabular-nums text-[#637493]">{Math.floor(elapsed/60).toString().padStart(2,"0")}:{(elapsed%60).toString().padStart(2,"0")}</span></div>
    <section className="mt-7 rounded-[28px] border border-[#DCE4F4] bg-white p-6 shadow-[0_18px_45px_rgba(43,67,128,.07)] sm:p-10">
     <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
      <div className={`grid size-36 place-items-center rounded-full border-[15px] transition-all duration-500 ${state==="speaking"?"border-[#DCDDFD] bg-[#A39CF2]":state==="listening"?"border-[#DCF2EA] bg-[#56BFA4]":"border-[#E4EBFD] bg-[#A5B5E7]"}`}><Volume2 size={45} className="text-white"/></div>
      <p className="mt-5 text-sm font-bold text-[#5266A6]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",done:"Séance terminée",error:"Connexion indisponible"})[state]}</p>
      <h2 className="mt-6 text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":question||"Préparation de la prochaine question…"}</h2>
-     {state==="ready"&&<button onClick={start} disabled={!config} className="mt-8 rounded-xl bg-[#3456D7] px-7 py-4 font-bold text-white disabled:opacity-50"><Play size={17} className="mr-2 inline"/> Commencer l’entretien</button>}
+     {state==="ready"&&config&&<button onClick={start} className="mt-8 rounded-xl bg-[#3456D7] px-7 py-4 font-bold text-white"><Play size={17} className="mr-2 inline"/> Commencer l’entretien</button>}
+     {state==="ready"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
      {state==="error"&&<button onClick={start} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
      {state==="speaking"&&<button onClick={interrupt} className="mt-7 rounded-xl border border-[#C8D4F0] px-5 py-3 text-sm font-semibold">Prendre la parole</button>}
      {(state==="listening"||state==="paused")&&<div className="mt-7 w-full text-left">
