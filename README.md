@@ -1,6 +1,6 @@
 # AI Interview Platform
 
-Plateforme d'entraînement aux entretiens d'embauche assistée par l'IA. **Statut : POC en développement, Sprint 2 — banque S2-03 déployée et raccordement serveur S2-04 testé.** Base Supabase dédiée, service protégé par JWT et moteur de sessions minimal disponibles. Le parcours candidat d'onboarding est maintenant testable dans un laboratoire localhost, mais les relances IA conversationnelles, la notation et l'interface de production ne sont pas encore livrées.
+Plateforme d'entraînement aux entretiens d'embauche assistée par l'IA. **Statut : POC en développement, Sprint 2 — banque S2-03 déployée et raccordement serveur S2-04 testé.** Base Supabase dédiée, service protégé par JWT et moteur de sessions minimal disponibles. Le parcours candidat et une **simulation IA locale avec relances générées par modèle** sont testables sur localhost ; la notation, le moteur IA de production et l'interface finale ne sont pas encore livrés.
 
 ## Démarrage rapide pour contributeurs
 
@@ -21,7 +21,7 @@ Documentation du changement : [CHANGELOG](CHANGELOG.md) · [Modèle ADR](docs/AD
 python3 dev/local-preview/server.py
 ```
 
-Ouvrir **http://127.0.0.1:8765/e2e** pour suivre le parcours inscription → onboarding → profil → configuration → entretien guidé → récapitulatif. Le mode démo est intégralement local ; une connexion facultative à Supabase Auth permet de tester l'enregistrement réel du profil (mais pas encore une simulation IA, puisque les 120 questions restent en brouillon). Voir [guide E2E](docs/NEW_USER_E2E.md).
+Ouvrir **http://127.0.0.1:8765/e2e** pour suivre le parcours inscription → onboarding → profil → configuration RH/technique → entretien guidé ou IA → récapitulatif. Le mode démo est intégralement local ; une connexion facultative à Supabase Auth permet de tester l'enregistrement réel du profil (mais pas encore une simulation IA, puisque les 120 questions restent en brouillon). Voir [guide E2E](docs/NEW_USER_E2E.md) et [démarrage IA locale](docs/S2-04_AI_LOCAL_SIMULATION.md).
 
 ## Tester en local sur Mac
 
@@ -60,7 +60,7 @@ Le candidat crée son compte et renseigne son profil (expérience, poste visé, 
 | Fournisseur avatar / voix / transcription | Non validé, POC prioritaire |
 | Corpus S2-03 | 120 questions FR/EN importées en Supabase, toutes en brouillon ; sécurité/versioning et handoff S2-04 implémentés, revue métier en attente |
 | Calibration S2-03 | 12 cas simulés documentés ; moteur de notation non testé |
-| Implémentation applicative | API S2-03 / moteur sessions S2-04 minimal et **lab navigateur E2E nouvel utilisateur** ; onboarding Supabase Auth/REST avec RLS, scoring IA et application de production non livrés |
+| Implémentation applicative | API S2-03 et sessions S2-04, laboratoire E2E avec **relance IA locale optionnelle et objectifs RH/tech spécialisés** ; scoring et production non livrés |
 
 La fusion de la PR #2 intègre une proposition d'architecture ; elle ne valide pas les choix de stack, de fournisseurs, d'hébergement ou de conformité.
 
