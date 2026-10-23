@@ -6,7 +6,7 @@ const GOALS = {
 const PREP = {
   confidence:"Confiance en soi", answer_structure:"Structurer mes réponses comportementales",
   communication:"Communication en entretien RH", domain_knowledge:"Connaissances métier",
-  stress_management:"Gérer les questions RH difficiles",
+  stress_management:"Gestion du stress en entretien RH",
   rh_motivation:"Motivations et projet professionnel",
   rh_parcours:"Présenter et valoriser mon parcours",
   rh_teamwork:"Collaboration et travail en équipe",
@@ -310,45 +310,125 @@ function renderConfiguration(){
 async function startSimulation(event){
   event.preventDefault();text("configurationError","");
   const simGoals=chosenPrep("simulationGoals");
-  if(!simGoals.length){error("configurationError","Choisissez au moins un objectif pour cet entretien.");return;}
+  if(!simGoals.length){
+    error("configurationError","Choisissez au moins un sujet pour cet entretien.");return;
+  }
+  const type=$("simMode").value;
+  if(type==="ai"&&!state.aiReady){
+    error("configurationError","OPENAI_API_KEY n'est pas configurée pour la simulation IA locale.");return;
+  }
+  if(type==="ai"&&!$("aiPrivacyConsent").checked){
+    error("configurationError","Acceptez d'abord l'envoi des réponses au fournisseur IA pour cette simulation.");return;
+  }
   state.selection={
     family:$("simFamily").value,
+    domain:$("simFamily").value==="technical"?$("simDomain").value:null,
     difficulty:$("simDifficulty").value?Number($("simDifficulty").value):null,
     locale:state.profile.preferred_locale,
     count:Number($("simCount").value),
     prepGoals:simGoals,
     jobDescription:$("simJobDescription").value.trim(),
   };
-  if(state.mode==="live"){
+  if(state.mode==="live"&&type==="guided"){
     error("configurationError",
-      "Le catalogue Supabase contient 0 question approuvée/publiée. Une vraie simulation ne peut pas démarrer. Testez le parcours en mode démo pour vérifier l'interface complète.");
-    return;
+      "Les 120 questions de Supabase sont toujours en brouillon. Lancez une simulation locale IA de test, ou utilisez le parcours Démo.");return;
   }
   $("launchInterview").disabled=true;
   try{
-    const {items}=await jsonResponse("/api/questions?family="+encodeURIComponent(state.selection.family)+"&locale="+state.selection.locale);
-    let filtered=items.filter(q=>!state.selection.difficulty||q.difficulty===state.selection.difficulty);
-    if(filtered.length===0)throw Error("Aucune question démo pour ce niveau.");
-    state.questions=filtered.slice(0,state.selection.count);
-    state.answers=[];state.index=0;
+    state.aiSession=null;state.aiFeedback=null;
+    if(type==="ai"){
+      const result=await jsonResponse("/api/ai/session/start",{
+        method:"POST",headers:{"content-type":"application/json"},
+        body:JSON.stringify({
+          family:state.selection.family,domain:state.selection.domain,
+          difficulty:state.selection.difficulty,locale:state.selection.locale,
+          count:state.selection.count,goals:simGoals,
+          job_description:state.selection.jobDescription,
+        }),
+      });
+      state.aiSession=result.session_id;
+      state.aiCurrentQuestion=result.question;
+      state.aiTotal=result.total;
+      state.aiPhase=result.phase;
+      state.questions=[];state.index=0;state.answers=[];
+    }else{
+      const {items}=await jsonResponse("/api/questions?family="+encodeURIComponent(state.selection.family)+"&locale="+state.selection.locale);
+      let filtered=items.filter(q=>
+        (!state.selection.difficulty||q.difficulty===state.selection.difficulty) &&
+        (!state.selection.domain||q.category===state.selection.domain));
+      if(filtered.length===0)throw Error("Aucune question démo ne correspond à ces critères.");
+      state.questions=filtered.slice(0,state.selection.count);
+      state.answers=[];state.index=0;
+    }
     showCurrentQuestion();show("interview");
   }catch(e){error("configurationError",e);}
   finally{$("launchInterview").disabled=false;}
 }
 function showCurrentQuestion(){
-  const q=state.questions[state.index],count=state.questions.length;
-  text("interviewProgress","Question "+(state.index+1)+" / "+count);
+  const ai=Boolean(state.aiSession);
+  const q=ai?state.aiCurrentQuestion:state.questions[state.index];
+  const count=ai?state.aiTotal:state.questions.length;
+  text("interviewProgress","Question "+(state.index+1)+" / "+count+
+    (ai&&state.aiPhase==="followup"?" · Relance IA":""));
   $("interviewProgressBar").style.width=(100*state.index/count)+"%";
   text("interviewCode",q.code);
   text("interviewLevel","L"+q.difficulty+" · "+q.category);
   text("interviewPrompt",q.prompt);
-  const followup=q.followup?"Relance préparée (non IA) : "+q.followup:"Pas de relance prédéfinie";
-  text("interviewFollowup",followup);
+  if(ai){
+    text("interviewStatus",state.aiPhase==="followup"
+      ?"RELANCE GÉNÉRÉE PAR L'IA · TEST LOCAL"
+      :"ENTRETIEN AVEC IA · QUESTIONS EN BROUILLON");
+    text("interviewFollowup",state.aiPhase==="followup"
+      ?"Cette question de relance a été générée par l'IA à partir de votre réponse précédente."
+      :"Répondez naturellement. L'IA préparera une relance en tenant compte de votre réponse et des objectifs choisis.");
+  }else{
+    text("interviewStatus","DÉMONSTRATION GUIDÉE · SANS IA");
+    text("interviewFollowup",q.followup?"Relance prédéfinie (non IA) : "+q.followup:"Aucune relance prédéfinie");
+  }
   $("interviewAnswer").value="";
   text("interviewError","");
-  text("submitAnswer",state.index===count-1?"Terminer l'entretien":"Valider ma réponse et continuer →");
+  text("submitAnswer",ai
+    ?(state.aiPhase==="primary"?"Répondre et obtenir une relance IA →"
+      :state.index===count-1?"Terminer et recevoir mon bilan IA →":"Passer à la question suivante →")
+    :state.index===count-1?"Terminer l'entretien":"Valider ma réponse et continuer →");
 }
-function completeStep(){
+async function completeStep(){
+  text("interviewError","");
+  if(state.aiSession){
+    if(!$("interviewAnswer").value.trim()){
+      error("interviewError","Une réponse est nécessaire pour permettre à l'IA de vous relancer.");return;
+    }
+    $("submitAnswer").disabled=true;
+    const previousText=$("submitAnswer").textContent;
+    text("submitAnswer","L'IA prépare sa réponse…");
+    try{
+      const result=await jsonResponse("/api/ai/session/answer",{
+        method:"POST",headers:{"content-type":"application/json"},
+        body:JSON.stringify({
+          session_id:state.aiSession,
+          answer:$("interviewAnswer").value.trim(),
+          visible_prompt:state.aiCurrentQuestion.prompt,
+        }),
+      });
+      if(result.completed){
+        state.answers=result.transcript.map(item=>({
+          code:item.code,prompt:item.question,answer:item.answer,
+        }));
+        state.aiFeedback=result.feedback||null;
+        state.aiSession=null;
+        renderRecap();show("recap");
+      }else{
+        state.aiCurrentQuestion=result.question;
+        state.aiPhase=result.phase;
+        state.index=result.index-1;
+        showCurrentQuestion();
+      }
+    }catch(e){error("interviewError",e);}
+    finally{$("submitAnswer").disabled=false;
+      if(state.page==="interview"&&$("submitAnswer").textContent==="L'IA prépare sa réponse…")
+        text("submitAnswer",previousText);}
+    return;
+  }
   state.answers.push({
     code:state.questions[state.index].code,
     prompt:state.questions[state.index].prompt,
