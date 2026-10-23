@@ -61,6 +61,7 @@ export default function InterviewPage(){
  const [handsFree,setHandsFree]=useState(true);
  const handsFreeRef=useRef(true);
  const [speechHint,setSpeechHint]=useState("");
+ const [voiceNotice,setVoiceNotice]=useState("");
  function clearSilence(){if(silenceTimer.current){clearTimeout(silenceTimer.current);silenceTimer.current=null;}}
  function stopDictation(){clearSilence();const current=recognition.current;recognition.current=null;current?.stop();setDictating(false);}
 
@@ -69,17 +70,37 @@ export default function InterviewPage(){
  useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
  function speak(text:string,locale:string){
   stopDictation();
-  if(!("speechSynthesis" in window)||muted){setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());return;}
-  window.speechSynthesis.cancel();
+  const synth=window.speechSynthesis;
+  if(!synth||muted){
+   setState("listening");
+   setVoiceNotice(muted?"Le son est coupé. Réactivez-le pour écouter la question.":"Lecture vocale indisponible dans ce navigateur.");
+   return;
+  }
+  synth.cancel();
   const utter=new SpeechSynthesisUtterance(text);
   utter.lang=locale==="en"?"en-US":"fr-FR";utter.rate=.96;
-  const completed=()=>setState(s=>{
-   if(s==="speaking"&&handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());
-   return s==="speaking"?"listening":s;
-  });
-  utter.onend=completed;utter.onerror=completed;
+  const voices=synth.getVoices();
+  const localVoice=voices.find(v=>v.lang.toLowerCase().startsWith(locale.toLowerCase())&&v.localService)
+   ||voices.find(v=>v.lang.toLowerCase().startsWith(locale.toLowerCase()));
+  if(localVoice)utter.voice=localVoice;
+  let finished=false;
+  utter.onstart=()=>{setVoiceNotice("");setState("speaking");};
+  const complete=(failed:boolean)=>{
+   if(finished||voice.current!==utter)return;
+   finished=true;
+   setState("listening");
+   if(failed){
+    setVoiceNotice("Lecture automatique bloquée ou indisponible. Cliquez sur « Écouter la question » pour la relancer.");
+   }else if(handsFreeRef.current){
+    queueMicrotask(()=>autoListenRef.current());
+   }
+  };
+  utter.onend=()=>complete(false);
+  utter.onerror=()=>complete(true);
   voice.current=utter;
-  setState("speaking");window.speechSynthesis.speak(utter);
+  setState("speaking");
+  setVoiceNotice("");
+  try{synth.speak(utter);}catch{complete(true);}
  }
  function start(){
   if(!config){setError("Configuration introuvable. Revenez à la préparation.");return;}
@@ -237,6 +258,10 @@ export default function InterviewPage(){
      <h2 className="mt-6 text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":question||"Préparation de la prochaine question…"}</h2>
      {state==="ready"&&introStage==="none"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
      {state==="error"&&<button onClick={()=>void startInterview()} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
+     {(state==="speaking"||state==="listening")&&question&&<button type="button" onClick={()=>{
+      stopDictation();window.speechSynthesis?.cancel();speak(question,config?.locale||"fr");
+     }} className="mt-5 rounded-xl border border-[#C8D4F0] bg-[#EEF2FF] px-5 py-3 text-sm font-semibold text-[#405ABA]"><Volume2 size={17} className="mr-2 inline"/> Écouter la question</button>}
+     {voiceNotice&&<p role="status" className="mt-3 text-sm text-[#925A34]">{voiceNotice}</p>}
      {state==="speaking"&&<button onClick={interrupt} className="mt-7 rounded-xl border border-[#C8D4F0] px-5 py-3 text-sm font-semibold">Prendre la parole</button>}
      {(state==="listening"||state==="paused")&&<div className="mt-7 w-full text-left">
        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#F0F4FF] px-4 py-3 text-xs text-[#405BA8]">
