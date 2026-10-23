@@ -438,11 +438,11 @@ export function OnboardingStages({
                 {fieldError && <p role="alert" className="mb-4 text-sm text-[#B42318]">{fieldError}</p>}
                 <div className="flex items-center justify-between gap-4">
                   <button type="button" onClick={previous}
-                    disabled={step === 0 && !returnToRecap} className="inline-flex min-h-12 items-center gap-2 rounded-xl px-4 text-sm font-semibold text-[#526079] transition hover:bg-[#F1F4F9] disabled:cursor-not-allowed disabled:opacity-30">
+                    disabled={step === 0 && !returnToRecap} className="onboarding-glass-button inline-flex min-h-12 items-center gap-2 rounded-2xl px-5 text-sm font-semibold">
                     <ArrowLeft size={17} aria-hidden="true" /> Retour
                   </button>
                   <button type="button" onClick={next} disabled={!canProceed || saving}
-                    className="onboarding-v2-primary inline-flex min-h-12 items-center justify-center gap-3 rounded-xl px-6 text-sm font-semibold text-white transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8755ED] disabled:cursor-not-allowed disabled:opacity-50">
+                    className="onboarding-glass-button-primary inline-flex min-h-12 items-center justify-center gap-3 rounded-2xl px-6 text-sm font-semibold text-white">
                     {returnToRecap ? "Enregistrer et revenir" : step === steps.length - 1 ? "C’est parti !" : "Continuer"}
                     {step === steps.length - 1 ? <Check size={17} aria-hidden="true" /> : <ChevronRight size={17} aria-hidden="true" />}
                   </button>
