@@ -38,16 +38,14 @@ export default function OnboardingPage() {
   }
 
   return (
-    <main className="onboarding-atmosphere relative isolate min-h-screen overflow-hidden pb-14 text-[#172033]">
-      <div className="atmosphere-orb atmosphere-orb-one" aria-hidden="true" />
-      <div className="atmosphere-orb atmosphere-orb-two" aria-hidden="true" />
-      <div className="atmosphere-orb atmosphere-orb-three" aria-hidden="true" />
+    <main className="relative isolate min-h-screen overflow-hidden bg-[#070F20] pb-14 text-[#F6F8FF] [color-scheme:light]">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_48%_at_80%_0%,rgba(49,89,203,.25),transparent_80%)]" />
       <nav className="relative z-10 mx-auto flex max-w-[1100px] items-center justify-between px-5 py-6 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-[#172033]">
+        <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-white">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#0B1222] text-white"><Sparkles size={18}/></span>
           Interview Platform
         </Link>
-        <Link href="/dashboard" className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-[#526079] hover:bg-[#E8EDF5]">
+        <Link href="/dashboard" className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-medium text-[#ABC2F4] hover:bg-[#1B2F51]">
           <ArrowLeft size={16}/> Mon espace
         </Link>
       </nav>

@@ -95,7 +95,7 @@ export default function DashboardPage() {
             </div>
           </header>
 
-          <div className="mx-auto max-w-[1230px] px-5 pb-20 pt-9 sm:px-9 lg:px-12 lg:pt-12">
+          <div className="w-full px-5 pb-20 pt-9 sm:px-9 lg:px-10 lg:pt-12">
             {loadError ? <div role="alert" className={card + " p-8"}>{loadError} <button onClick={() => window.location.reload()} className="ml-3 font-semibold text-[#9CB9FF] underline">Réessayer</button></div> :
               profile === undefined ? <div role="status" className="space-y-5 animate-pulse"><div className="h-10 w-2/3 rounded-xl bg-[#192846]"/><div className="h-56 rounded-3xl bg-[#172742]"/><div className="h-36 rounded-3xl bg-[#172742]"/></div> :
               profile === null ? <section className={card + " p-10"}><h1 className="text-3xl font-bold">Bienvenue dans votre espace</h1><p className="mt-4 text-[#ADBFDD]">Complétez votre profil pour personnaliser votre première simulation.</p><Link className="mt-8 inline-flex rounded-xl bg-[#5278ED] px-6 py-3 font-semibold text-white" href="/onboarding">Compléter mon profil <ArrowRight className="ml-2"/></Link></section> :
@@ -126,7 +126,7 @@ export default function DashboardPage() {
                     <h2 className="mt-7 text-2xl font-semibold tracking-tight">{goalNames[profile.professionalGoal]}</h2>
                     <p className="mt-4 text-sm leading-7 text-[#A7B9D7]">Chaque séance sera adaptée à votre situation et aux compétences que vous souhaitez renforcer.</p>
                     {(situation || experience) && <div className="mt-6 flex flex-wrap gap-2">{situation && <span className="rounded-lg border border-[#324B70] bg-[#1B2E4C] px-3 py-2 text-xs text-[#BED0ED]">{situation}</span>}{experience && <span className="rounded-lg border border-[#324B70] bg-[#1B2E4C] px-3 py-2 text-xs text-[#BED0ED]">{experience}</span>}</div>}
-                    <Link href="/onboarding" className="mt-auto inline-flex min-h-11 items-center gap-2 pt-6 text-sm font-semibold text-[#9EBBFF] transition hover:text-white">Ajuster mon profil <ChevronRight size={17}/></Link>
+                    <p className="mt-auto pt-6 text-xs leading-6 text-[#8EA4C9]">Objectif enregistré dans votre profil candidat.</p>
                   </motion.section>
                 </div>
 
@@ -143,7 +143,7 @@ export default function DashboardPage() {
 
                 <div className="mt-7 grid gap-5 xl:grid-cols-[1.15fr_.85fr]">
                   <motion.section {...appear(.29)} className={card + " p-7 sm:p-8"}>
-                    <div className="flex items-center justify-between gap-3"><h2 className="flex items-center gap-3 text-lg font-semibold"><Target className="text-[#90AFFF]" size={21}/> Vos priorités</h2><Link href="/onboarding" className="text-xs font-semibold text-[#9DB9FA] hover:text-white">Modifier</Link></div>
+                    <div className="flex items-center justify-between gap-3"><h2 className="flex items-center gap-3 text-lg font-semibold"><Target className="text-[#90AFFF]" size={21}/> Vos priorités</h2><span className="text-xs font-medium text-[#8FA7CB]">Préférences enregistrées</span></div>
                     <p className="mt-3 text-sm leading-6 text-[#A3B5D3]">Ces objectifs seront préremplis lors de votre simulation. Vous pourrez les ajuster pour chaque séance.</p>
                     <div className="mt-6 space-y-3">{profile.preparationGoals.map((key,index) => <div key={key} className="flex items-center gap-3 rounded-xl border border-[#293F62] bg-[#162A47]/70 px-4 py-3.5"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[#2B4A80] text-xs font-bold text-[#C5D6FF]">{String(index+1).padStart(2,"0")}</span><span className="flex-1 text-sm font-medium text-[#E1EAFC]">{priorityNames[key]}</span><Check size={16} className="text-[#75C8B4]"/></div>)}</div>
                   </motion.section>
@@ -154,7 +154,7 @@ export default function DashboardPage() {
                       <h3 className="mt-5 text-lg font-semibold">Vos premiers conseils arrivent bientôt.</h3>
                       <p className="mt-3 text-sm leading-7 text-[#A8BAD7]">Après votre première simulation, votre coach pourra identifier vos points forts et vous proposer une prochaine action.</p>
                     </div>
-                    <Link href="/preparation" className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#A6BFFF] hover:text-white">Commencer ma préparation <ArrowRight size={17}/></Link>
+                    <p className="mt-6 text-xs leading-6 text-[#90A7CB]">Votre analyse sera disponible dans cet espace.</p>
                   </motion.section>
                 </div>
 
