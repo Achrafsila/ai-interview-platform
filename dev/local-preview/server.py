@@ -14,6 +14,9 @@ import sys
 import secrets
 import threading
 import webbrowser
+import subprocess
+import tempfile
+import shutil
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
@@ -211,6 +214,31 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
             except (ValueError, json.JSONDecodeError):
                 return self._send({"error": "invalid_json"}, 400)
             url = urlsplit(self.path)
+            if url.path == "/api/ai/tts":
+                sentence = body.get("text")
+                locale = body.get("locale", "fr")
+                if (not isinstance(sentence, str) or not 1 <= len(sentence.strip()) <= 1200
+                        or locale not in ("fr", "en")):
+                    return self._send({"error": "invalid_tts_payload"}, 400)
+                if sys.platform != "darwin" or not shutil.which("say") or not shutil.which("ffmpeg"):
+                    return self._send({"error": "local_tts_unavailable"}, 503)
+                try:
+                    with tempfile.TemporaryDirectory(prefix="interview-tts-") as tmp:
+                        aiff = str(Path(tmp) / "question.aiff")
+                        mp3 = str(Path(tmp) / "question.mp3")
+                        subprocess.run(["say", "-v", "Thomas" if locale == "fr" else "Samantha",
+                                        "-r", "175", "-o", aiff, sentence], check=True,
+                                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=22)
+                        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", aiff,
+                                        "-codec:a", "libmp3lame", "-qscale:a", "4", mp3],
+                                       check=True, stdout=subprocess.DEVNULL,
+                                       stderr=subprocess.DEVNULL, timeout=12)
+                        sound = Path(mp3).read_bytes()
+                    self._headers(200, "audio/mpeg", len(sound))
+                    self.wfile.write(sound)
+                except (subprocess.TimeoutExpired, subprocess.CalledProcessError, OSError):
+                    return self._send({"error": "local_tts_generation_failed"}, 503)
+                return
             if url.path == "/api/ai/session/start":
                 if not ai_provider.api_key:
                     return self._send({"error": "Clé API du fournisseur sélectionné non configurée (GROQ_API_KEY ou OPENAI_API_KEY)."}, 503)

@@ -50,7 +50,15 @@ export default function InterviewPage(){
   :"J’espère que vous êtes prêt ! Votre entretien commencera dans cinq secondes. Bonne chance !";
  const words=introLine.split(/\s+/);
  const recognition=useRef<Recognizer|null>(null);
- const voice=useRef<SpeechSynthesisUtterance|null>(null);
+ const questionAudio=useRef<HTMLAudioElement|null>(null);
+ const questionAudioUrl=useRef<string|null>(null);
+ const voiceSequence=useRef(0);
+ function stopQuestionAudio(){
+  voiceSequence.current++;
+  questionAudio.current?.pause();questionAudio.current=null;
+  if(questionAudioUrl.current){URL.revokeObjectURL(questionAudioUrl.current);questionAudioUrl.current=null;}
+ }
+
  const sessionRef=useRef(false);
  const pausedFrom=useRef<"speaking"|"listening">("listening");
  const [dictating,setDictating]=useState(false);
@@ -69,40 +77,34 @@ export default function InterviewPage(){
 
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
- useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);introAudio.current?.pause();if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
- function speak(text:string,locale:string){
+ useEffect(()=>()=>{recognition.current?.stop();questionAudio.current?.pause();if(questionAudioUrl.current)URL.revokeObjectURL(questionAudioUrl.current);window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);introAudio.current?.pause();if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
+ async function speak(text:string,locale:string){
   stopDictation();
-  const synth=window.speechSynthesis;
-  if(!synth||muted){
+  stopQuestionAudio();
+  if(muted){setState("listening");setVoiceNotice("Le son est coupé.");return;}
+  const sequence=voiceSequence.current;
+  setState("speaking");setVoiceNotice("Préparation de la voix de l’intervieweur…");
+  try{
+   const r=await fetch("/api/interview/tts",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({text,locale})});
+   if(!r.ok)throw new Error("Le serveur vocal local n’est pas disponible.");
+   const blob=await r.blob();
+   if(sequence!==voiceSequence.current)return;
+   const url=URL.createObjectURL(blob);questionAudioUrl.current=url;
+   const audio=new Audio(url);questionAudio.current=audio;
+   audio.onended=()=>{
+    if(sequence!==voiceSequence.current)return;
+    stopQuestionAudio();setState("listening");setVoiceNotice("");
+    if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());
+   };
+   audio.onerror=()=>{if(sequence===voiceSequence.current){setState("listening");setVoiceNotice("Erreur de lecture de la question.");}};
+   await audio.play();
+   if(sequence===voiceSequence.current)setVoiceNotice("");
+  }catch{
+   if(sequence!==voiceSequence.current)return;
    setState("listening");
-   setVoiceNotice(muted?"Le son est coupé. Réactivez-le pour écouter la question.":"Lecture vocale indisponible dans ce navigateur.");
-   return;
+   setVoiceNotice("Lecture audio indisponible. Vérifiez que le serveur Python a été redémarré, puis cliquez sur « Écouter la question ».");
   }
-  synth.cancel();
-  const utter=new SpeechSynthesisUtterance(text);
-  utter.lang=locale==="en"?"en-US":"fr-FR";utter.rate=.96;
-  const voices=synth.getVoices();
-  const localVoice=voices.find(v=>v.lang.toLowerCase().startsWith(locale.toLowerCase())&&v.localService)
-   ||voices.find(v=>v.lang.toLowerCase().startsWith(locale.toLowerCase()));
-  if(localVoice)utter.voice=localVoice;
-  let finished=false;
-  utter.onstart=()=>{setVoiceNotice("");setState("speaking");};
-  const complete=(failed:boolean)=>{
-   if(finished||voice.current!==utter)return;
-   finished=true;
-   setState("listening");
-   if(failed){
-    setVoiceNotice("Lecture automatique bloquée ou indisponible. Cliquez sur « Écouter la question » pour la relancer.");
-   }else if(handsFreeRef.current){
-    queueMicrotask(()=>autoListenRef.current());
-   }
-  };
-  utter.onend=()=>complete(false);
-  utter.onerror=()=>complete(true);
-  voice.current=utter;
-  setState("speaking");
-  setVoiceNotice("");
-  try{synth.speak(utter);}catch{complete(true);}
  }
  function start(){
   if(!config){setError("Configuration introuvable. Revenez à la préparation.");return;}
@@ -156,7 +158,7 @@ export default function InterviewPage(){
   if(!session||!value.trim()||submittingRef.current)return;
   submittingRef.current=true;
   stopDictation();
-  window.speechSynthesis?.cancel();
+  stopQuestionAudio();window.speechSynthesis?.cancel();
   setState("thinking");setError("");setSpeechHint("");
   try{
    const data=await send("answer",{session_id:session,answer:value.trim()});
@@ -219,18 +221,19 @@ export default function InterviewPage(){
  });
  function togglePause(){
   if(state==="paused"){
-   if(pausedFrom.current==="speaking"&&"speechSynthesis" in window&&window.speechSynthesis.paused){
-    window.speechSynthesis.resume();setState("speaking");
+   if(pausedFrom.current==="speaking"&&questionAudio.current){void questionAudio.current.play();setState("speaking");}
+   else if(pausedFrom.current==="speaking"&&"speechSynthesis" in window&&window.speechSynthesis.paused){
+    window.speechSynthesis.resume();questionAudio.current?.play().catch(()=>{});setState("speaking");
    }else{setState("listening");}
    return;
   }
   if(state!=="speaking"&&state!=="listening")return;
   pausedFrom.current=state;
   stopDictation();
-  if(state==="speaking"&&"speechSynthesis" in window)window.speechSynthesis.pause();
+  if(state==="speaking"){questionAudio.current?.pause();if("speechSynthesis" in window)window.speechSynthesis.pause();}
   setState("paused");
  }
- function interrupt(){window.speechSynthesis?.cancel();setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}
+ function interrupt(){stopQuestionAudio();window.speechSynthesis?.cancel();setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}
  const question=result?.question?.prompt;
  if(!configChecked || (config&&state==="ready"&&introStage==="none"))return <main role="status" className="flex min-h-dvh items-center justify-center bg-[#0C1436] text-sm font-semibold text-[#B8C8E8]">Préparation de votre entretien…</main>;
  if(introStage!=="none")return <main className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[#0C1436] px-5 py-12 text-white">
@@ -274,7 +277,7 @@ export default function InterviewPage(){
      {state==="ready"&&introStage==="none"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
      {state==="error"&&<button onClick={()=>void startInterview()} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
      {(state==="speaking"||state==="listening")&&question&&<button type="button" onClick={()=>{
-      stopDictation();window.speechSynthesis?.cancel();speak(question,config?.locale||"fr");
+      stopDictation();stopQuestionAudio();void speak(question,config?.locale||"fr");
      }} className="mt-5 rounded-xl border border-[#C8D4F0] bg-[#EEF2FF] px-5 py-3 text-sm font-semibold text-[#405ABA]"><Volume2 size={17} className="mr-2 inline"/> Écouter la question</button>}
      {voiceNotice&&<p role="status" className="mt-3 text-sm text-[#925A34]">{voiceNotice}</p>}
      {state==="speaking"&&<button onClick={interrupt} className="mt-7 rounded-xl border border-[#C8D4F0] px-5 py-3 text-sm font-semibold">Prendre la parole</button>}
@@ -298,11 +301,11 @@ export default function InterviewPage(){
     </div>
    </section>
    {["speaking","listening","paused"].includes(state)&&<div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-    <button onClick={()=>{setMuted(x=>!x);if(!muted&&state==="speaking"){window.speechSynthesis?.cancel();setState("listening");}}} className="flex items-center gap-2 rounded-xl border border-[#D4DEEE] bg-white px-4 py-3 text-sm">{muted?<VolumeX size={18}/>:<Volume2 size={18}/>} {muted?"Son coupé":"Son activé"}</button>
+    <button onClick={()=>{setMuted(x=>!x);if(!muted&&state==="speaking"){stopQuestionAudio();window.speechSynthesis?.cancel();setState("listening");}}} className="flex items-center gap-2 rounded-xl border border-[#D4DEEE] bg-white px-4 py-3 text-sm">{muted?<VolumeX size={18}/>:<Volume2 size={18}/>} {muted?"Son coupé":"Son activé"}</button>
     <button onClick={togglePause} className="flex items-center gap-2 rounded-xl border border-[#D4DEEE] bg-white px-4 py-3 text-sm">{state==="paused"?<Play size={18}/>:<Pause size={18}/>} {state==="paused"?"Reprendre":"Pause"}</button>
     <button onClick={()=>setStopOpen(true)} className="rounded-xl border border-[#F0CCD0] bg-white px-4 py-3 text-sm font-medium text-[#AA4050]">Terminer</button>
    </div>}
-   {stopOpen&&<div role="dialog" aria-modal="true" aria-label="Terminer l’entretien" className="mx-auto mt-5 max-w-md rounded-2xl border border-[#F0CCD0] bg-white p-6"><h3 className="font-bold">Terminer cette séance ?</h3><p className="mt-2 text-sm text-[#6C7890]">Les réponses en cours ne pourront pas être conservées et aucun bilan partiel ne sera produit par le laboratoire actuel.</p><div className="mt-5 flex gap-3"><button onClick={()=>setStopOpen(false)} className="rounded-xl border px-4 py-2">Continuer</button><button onClick={()=>{recognition.current?.stop();window.speechSynthesis?.cancel();setStopOpen(false);setResult({completed:true,feedback:"Séance interrompue volontairement. Le laboratoire ne permet pas encore de produire ni de conserver un bilan partiel."});setState("done");}} className="rounded-xl bg-[#A64D58] px-4 py-2 font-bold text-white">Terminer</button></div></div>}
+   {stopOpen&&<div role="dialog" aria-modal="true" aria-label="Terminer l’entretien" className="mx-auto mt-5 max-w-md rounded-2xl border border-[#F0CCD0] bg-white p-6"><h3 className="font-bold">Terminer cette séance ?</h3><p className="mt-2 text-sm text-[#6C7890]">Les réponses en cours ne pourront pas être conservées et aucun bilan partiel ne sera produit par le laboratoire actuel.</p><div className="mt-5 flex gap-3"><button onClick={()=>setStopOpen(false)} className="rounded-xl border px-4 py-2">Continuer</button><button onClick={()=>{stopDictation();stopQuestionAudio();window.speechSynthesis?.cancel();setStopOpen(false);setResult({completed:true,feedback:"Séance interrompue volontairement. Le laboratoire ne permet pas encore de produire ni de conserver un bilan partiel."});setState("done");}} className="rounded-xl bg-[#A64D58] px-4 py-2 font-bold text-white">Terminer</button></div></div>}
    <p className="mt-7 text-center text-xs leading-6 text-[#7786A0]">Prototype local : questions issues du corpus brouillon ; reconnaissance vocale selon le navigateur ; aucune évaluation chiffrée.</p>
   </div>
  </main>;
