@@ -42,7 +42,7 @@ export default function InterviewPage(){
  const [introStage,setIntroStage]=useState<"none"|"welcome"|"countdown">("none");
  const [introWords,setIntroWords]=useState(0);
  const [introNotice,setIntroNotice]=useState("");
- const introWatchdog=useRef<ReturnType<typeof setTimeout>|null>(null);
+ const introAudio=useRef<HTMLAudioElement|null>(null);
  const introInterval=useRef<ReturnType<typeof setInterval>|null>(null);
  const introFinished=useRef(false);
  const introLine=config?.locale==="en"
@@ -69,7 +69,7 @@ export default function InterviewPage(){
 
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
- useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(introWatchdog.current)clearTimeout(introWatchdog.current);if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
+ useEffect(()=>()=>{recognition.current?.stop();window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);introAudio.current?.pause();if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
  function speak(text:string,locale:string){
   stopDictation();
   const synth=window.speechSynthesis;
@@ -106,58 +106,37 @@ export default function InterviewPage(){
  }
  function start(){
   if(!config){setError("Configuration introuvable. Revenez à la préparation.");return;}
-  setError("");
-  setIntroWords(0);
-  setIntroNotice("");
-  setIntroStage("welcome");
+  setError("");setIntroWords(0);setIntroNotice("");
   introFinished.current=false;
   if(introInterval.current)clearInterval(introInterval.current);
-  if(introWatchdog.current)clearTimeout(introWatchdog.current);
-  const finish=()=>{
-   if(introFinished.current)return;
-   introFinished.current=true;
-   if(introInterval.current)clearInterval(introInterval.current);
-   if(introWatchdog.current)clearTimeout(introWatchdog.current);
-   setIntroNotice("");
-   setIntroWords(words.length);
-   setIntroStage("countdown");
-  };
-  if(muted||!("speechSynthesis" in window)){
-   setIntroNotice("La lecture vocale n’est pas disponible. Activez le son ou poursuivez sans audio.");
-   return;
-  }
-  window.speechSynthesis.cancel();
-  const announcement=new SpeechSynthesisUtterance(introLine);
-  announcement.lang=config.locale==="en"?"en-US":"fr-FR";
-  const matching=window.speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(config.locale)&&v.localService)
-   ||window.speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(config.locale));
-  if(matching)announcement.voice=matching;
-  announcement.rate=.89;
-  announcement.pitch=1.07;
-  // Speech boundary events synchronize the reveal when supported by the browser.
-  announcement.onboundary=(event)=>{
-   if(event.name!=="word")return;
-   const spoken=introLine.slice(0,event.charIndex+Math.max(1,event.charLength||1)).trim();
-   setIntroWords(Math.min(words.length,spoken.split(/\s+/).length));
-  };
-  announcement.onstart=()=>{
-   if(introWatchdog.current)clearTimeout(introWatchdog.current);
-   setIntroNotice("");
-  };
-  announcement.onend=finish;
-  announcement.onerror=()=>{
-   if(introWatchdog.current)clearTimeout(introWatchdog.current);
-   setIntroNotice("La voix n’a pas pu démarrer. Cliquez sur « Écouter le message ».");
-  };
-  try{window.speechSynthesis.speak(announcement);}catch{
-   setIntroNotice("Lecture audio bloquée. Cliquez sur « Écouter le message ».");
-  }
-  introWatchdog.current=setTimeout(()=>{
-   if(!introFinished.current)setIntroNotice("Si vous n’entendez rien, cliquez sur « Écouter le message » pour activer le son.");
-  },3000);
-  // Some browser voices do not emit word boundaries; provide progressive visual fallback.
-  introInterval.current=setInterval(()=>setIntroWords(current=>Math.min(words.length,current+1)),430);
+  setIntroStage("welcome");
  }
+ function finishIntroduction(){
+  if(introFinished.current)return;
+  introFinished.current=true;
+  introAudio.current?.pause();
+  if(introInterval.current)clearInterval(introInterval.current);
+  setIntroNotice("");
+  setIntroWords(words.length);
+  setIntroStage("countdown");
+ }
+ function playIntro(){
+  const audio=introAudio.current;
+  if(!audio)return;
+  audio.currentTime=0;
+  void audio.play().then(()=>setIntroNotice("")).catch(()=>{
+   setIntroNotice("Le navigateur bloque la lecture automatique. Cliquez sur « Écouter le message » pour lancer la voix.");
+  });
+ }
+ useEffect(()=>{
+  if(introStage!=="welcome")return;
+  // Autoplay is opportunistic; an explicit user click remains available.
+  const audio=introAudio.current;
+  if(!audio)return;
+  void audio.play().catch(()=>{
+   setIntroNotice("Cliquez sur « Écouter le message » pour activer la voix.");
+  });
+ },[introStage]);
  // Launch the immersive introduction immediately when a configured interview opens.
  useEffect(()=>{
   if(!config||state!=="ready"||introStage!=="none")return;
@@ -262,6 +241,13 @@ export default function InterviewPage(){
    <p className="text-xs font-semibold uppercase tracking-[.26em] text-[#AEBEF8]">AI Interview Platform</p>
    <p className="mt-3 text-sm text-[#B8C8E8]">{introStage==="welcome"?"Préparons votre entretien":"Vous entrez dans votre entretien"}</p>
    <div className="my-8 size-64 sm:size-80"><VoicePoweredOrb state={introStage==="welcome"?"speaking":"thinking"} voiceLevel={introStage==="welcome"?.42+.28*Math.sin(introWords*1.6):.05} className="h-full w-full"/></div>
+   {introStage==="welcome"&&<audio ref={introAudio} preload="auto" src={config?.locale==="en"?"/audio/interview-intro-en.mp3":"/audio/interview-intro-fr.mp3"}
+    onPlay={()=>{
+     setIntroNotice("");if(introInterval.current)clearInterval(introInterval.current);
+     introInterval.current=setInterval(()=>setIntroWords(current=>Math.min(words.length,current+1)),430);
+    }}
+    onEnded={finishIntroduction}
+    onError={()=>setIntroNotice("Le fichier audio n’a pas pu être chargé. Vérifiez le navigateur ou continuez sans audio.")}/>}
    {introStage==="welcome"?
     <h1 aria-live="off" className="min-h-32 max-w-2xl text-balance text-2xl font-semibold leading-relaxed tracking-tight sm:text-4xl">
      {words.slice(0,introWords).map((word,index)=><span key={index} className="inline-block animate-[fade-in_.3s_ease-out]">{word}{" "}</span>)}
@@ -270,8 +256,8 @@ export default function InterviewPage(){
     <div className="min-h-32"><CountdownTimer onComplete={()=>void startInterview()}/></div>}
    {introStage==="welcome"&&<div className="mt-5 flex flex-col items-center gap-3">
     {introNotice&&<p role="status" className="max-w-sm text-sm leading-6 text-[#CFDAF9]">{introNotice}</p>}
-    <button type="button" onClick={start} className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20"><Volume2 size={17}/> Écouter le message</button>
-    {introNotice&&<button type="button" onClick={()=>{window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(introWatchdog.current)clearTimeout(introWatchdog.current);setIntroStage("countdown");}} className="text-xs text-[#C4D0F4] underline underline-offset-4">Continuer sans audio</button>}
+    <button type="button" onClick={playIntro} className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20"><Volume2 size={17}/> Écouter le message</button>
+    {introNotice&&<button type="button" onClick={finishIntroduction} className="text-xs text-[#C4D0F4] underline underline-offset-4">Continuer sans audio</button>}
    </div>}
    <p className="mt-8 text-xs font-medium tracking-[.12em] text-[#9CAED6]">{introStage==="welcome"?"UN INSTANT POUR VOUS METTRE À L’AISE":"L’INTERVIEWEUR PREND LA PAROLE DANS QUELQUES SECONDES"}</p>
   </div>
