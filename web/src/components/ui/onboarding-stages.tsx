@@ -263,20 +263,20 @@ export function OnboardingStages({
         </aside>
         </div>
 
-        <div className="pb-5 pt-4 text-white">
-          <p className="text-xs font-bold uppercase tracking-[.18em] text-[#9AB6FF]">Votre parcours prend forme</p>
+        <div className="pb-5 pt-4 text-[#172033]">
+          <p className="text-xs font-bold uppercase tracking-[.18em] text-[#3656A1]">Votre parcours prend forme</p>
           <h1 className="mt-3 text-[clamp(2rem,4vw,3.8rem)] font-semibold leading-tight tracking-[-.055em]">
             {firstName ? `Construisons votre profil, ${firstName}.` : "Faisons connaissance."}
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#A9BBDD]">Chaque réponse enrichit votre profil. Vous pouvez revenir sur les étapes précédentes à tout moment.</p>
-          <div className="mt-7 flex items-center gap-3 text-xs text-[#9DB2D5]">
-            <span className="font-bold text-white">{step + 1} / {steps.length}</span>
-            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#273C62]"><motion.div animate={{width:`${percent}%`}} transition={{duration:.55}} className="h-full rounded-full bg-[#779BFF]"/></div>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#526688]">Chaque réponse enrichit votre profil. Vous pouvez revenir sur les étapes précédentes à tout moment.</p>
+          <div className="mt-7 flex items-center gap-3 text-xs text-[#526688]">
+            <span className="font-bold text-[#172033]">{step + 1} / {steps.length}</span>
+            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#CBD6EF]"><motion.div animate={{width:`${percent}%`}} transition={{duration:.55}} className="h-full rounded-full bg-[#779BFF]"/></div>
             <span>{percent}%</span>
           </div>
         </div>
 
-        {step > 0 && <div className="relative space-y-3 border-l-2 border-[#324974] pb-1 pl-5 sm:pl-8">
+        {step > 0 && <div className="relative space-y-3 border-l-2 border-[#B4C6E9] pb-1 pl-5 sm:pl-8">
           {Array.from({length:step},(_,i) => {
             const summaries = [
               {title:"Faisons connaissance",text:`Bonjour ${profile.firstName} ${profile.lastName}.`},
@@ -285,15 +285,15 @@ export function OnboardingStages({
               {title:"Vos priorités",text:preparationLabels.join(" · ")},
             ];
             const item = summaries[i];
-            return <motion.div key={i} layout initial={animated?{opacity:0,y:12}:false} animate={{opacity:1,y:0}} className="relative flex items-center justify-between gap-4 rounded-2xl border border-[#304B76] bg-[#142643] px-5 py-4 text-white shadow-[0_12px_30px_rgba(3,9,29,.15)] sm:px-7">
+            return <motion.div key={i} layout initial={animated?{opacity:0,y:12}:false} animate={{opacity:1,y:0}} className="relative flex items-center justify-between gap-4 rounded-2xl border border-[#B3C6EF] bg-white/70 px-5 py-4 text-[#172033] shadow-[0_12px_30px_rgba(3,9,29,.15)] sm:px-7">
               <span className="absolute -left-[30px] grid h-4 w-4 place-items-center rounded-full bg-[#79C6B2] text-[#0B1B30] sm:-left-[42px]"><Check size={11}/></span>
-              <div className="min-w-0"><p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#94B0EA]">Étape {i+1} · {item.title}</p><p className="mt-2 break-words text-base font-semibold leading-6">{item.text}</p></div>
-              <button type="button" onClick={()=>{setDirection(-1);setStep(i);setFieldError("");}} className="shrink-0 rounded-xl border border-[#426092] px-3 py-2 text-xs font-semibold text-[#BCD0F5] transition hover:bg-[#25416B] hover:text-white">Modifier</button>
+              <div className="min-w-0"><p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#3656A1]">Étape {i+1} · {item.title}</p><p className="mt-2 break-words text-base font-semibold leading-6">{item.text}</p></div>
+              <button type="button" onClick={()=>{setDirection(-1);setStep(i);setFieldError("");}} className="shrink-0 rounded-xl border border-[#B7C9EA] px-3 py-2 text-xs font-semibold text-[#2947A3] transition hover:bg-[#E5ECFC]">Modifier</button>
             </motion.div>;
           })}
         </div>}
 
-        <section className="relative flex min-w-0 flex-col overflow-hidden rounded-[24px] border border-[#8DA7E7]/60 bg-[#EFF3FC] px-6 py-9 text-[#172033] shadow-[0_22px_75px_rgba(3,11,30,.25)] sm:px-12 sm:py-12 lg:px-16" aria-label="Onboarding personnalisé">
+        <section className="relative flex min-w-0 flex-col overflow-hidden rounded-[24px] border border-[#B9C9EC] bg-white/70 px-6 py-9 text-[#172033] shadow-[0_22px_75px_rgba(3,11,30,.25)] sm:px-12 sm:py-12 lg:px-16" aria-label="Onboarding personnalisé">
           {!finished ? (
             <>
               <div className="flex items-center justify-between gap-5">
