@@ -9,7 +9,7 @@ const validKeys=new Set<string>(themes.map(t=>t.key));
 const coachingInstruction=`Tu es l'analyste de besoin d'InterviewLab Academy. Lis toute la conversation en français, mais la DERNIÈRE demande fait foi pour les nouvelles priorités. Identifie toutes les difficultés explicitement exprimées, mais n’infère PAS de stress, motivation, communication, négociation ou leadership du seul intitulé de poste. Tu NE CHOISIS PAS les parcours, l'architecte L&D s'en charge.
 Ta sortie est EXCLUSIVEMENT un objet JSON valide avec "action" ("clarify" ou "recommend"), "needs" (tableau de clés parmi: ${[...validKeys].join(", ")}), "question" et "options" (2 à 4 phrases courtes si clarification), "context" (bref type d'entretien / métier, non diagnostic).
 Règles : "entretien technique de responsable commercial" signifie sales, PAS technical. La clé technical est réservée aux compétences réellement informatiques, data ou ingénierie logicielle. « entretien technique » décrit seulement une modalité et ne prouve aucune difficulté technique IT. "soft skills" + "qualités défauts" sont des compétences comportementales, pas uniquement STAR. "et pour les soft skills ?" ajoute la compétence, conserve le cadre RH/DRH et ne répète pas la même recommandation sans l'adapter.
-Si le besoin suffit à recommander, choisis "recommend" sans interroger par routine. Si le type d'entretien ou la difficulté est vraiment indéterminé, demande UNE clarification contextualisée, jamais les mêmes quatre choix systématiques. Maximum deux clarifications par conversation. N'invente jamais de diplôme, poste, score ou données personnelles. Ne demande pas d'informations sensibles.`;
+Si le besoin suffit à recommander, choisis "recommend" sans interroger par routine. Si le type d'entretien ou la difficulté est vraiment indéterminé, demande UNE clarification contextualisée, jamais les mêmes quatre choix systématiques. Si tu as déjà posé une question ciblée et que le candidat précise enfin le type (stage PFE, entretien RH, premier emploi), ne demande pas automatiquement une deuxième précision : recommande une première préparation adaptable. Une deuxième clarification est justifiée uniquement si aucun exercice utile ne peut être choisi. Maximum deux clarifications par conversation. N'invente jamais de diplôme, poste, score ou données personnelles. Ne demande pas d'informations sensibles.`;
 function response(data:object){return NextResponse.json(data,{headers:{"Cache-Control":"no-store"}});}
 export async function POST(request:NextRequest){
  const origin=request.headers.get("origin");
@@ -46,7 +46,8 @@ export async function POST(request:NextRequest){
   const merged=[...concreteKeys,...safeKeys.filter(k=>!concreteKeys.includes(k as typeof concreteKeys[number]))];
   const synthesis=synthesizeLearningNeeds(userTurns,merged);
   const clarifications=history.filter(m=>m.role==="assistant"&&m.content.includes("?")).length;
-  if(decision.action==="clarify"&&clarifications<2&&typeof decision.question==="string"&&decision.question.trim().length>12&&Array.isArray(decision.options)){
+  const clarifiedContext=clarifications>0&&synthesis.steps.length>0;
+  if(decision.action==="clarify"&&!clarifiedContext&&clarifications<2&&typeof decision.question==="string"&&decision.question.trim().length>12&&Array.isArray(decision.options)){
    const options=decision.options.filter((x):x is string=>typeof x==="string"&&x.trim().length>1).slice(0,4);
    if(options.length>=2)return response({kind:"clarify",question:decision.question.slice(0,240),options});
   }

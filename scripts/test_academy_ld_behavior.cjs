@@ -1,0 +1,14 @@
+const fs=require("fs");
+const env=Object.fromEntries(fs.readFileSync("web/.env.local","utf8").split("\n").filter(x=>/^(GROQ_API_KEY|ACADEMY_AI_MODEL)=/.test(x)).map(x=>{const i=x.indexOf("=");return [x.slice(0,i),x.slice(i+1)]}));
+const src=fs.readFileSync("web/src/app/api/academy/ask/route.ts","utf8");
+const keys="softskills, hr_final, structure, stress, communication, motivation, first_interview, sales, technical, leadership, negotiation, internship";
+const system=src.match(/const coachingInstruction=`([\s\S]*?)`;/)[1].replace('${[...validKeys].join(", ")}',keys);
+const scenarios=[
+{id:"vague",history:[["user","Je dois passer un entretien prochainement"]],action:"clarify"},
+{id:"precise-rh",history:[["user","Entretien final avec la DRH, j'ai besoin de travailler mes qualités et défauts"]],action:"recommend",need:"softskills"},
+{id:"sales-technical",history:[["user","Entretien technique pour un responsable commercial, je veux préparer les questions de vente"]],action:"recommend",need:"sales",avoid:"technical"},
+{id:"clarified",history:[["user","Je veux préparer un entretien"],["assistant","Pour quel type d’entretien ?"],["user","Un entretien de stage PFE"]],need:"internship"},
+{id:"followup",history:[["user","Entretien final RH, je veux structurer mes réponses"],["assistant","Vous souhaitez préciser vos axes ?"],["user","Et pour mes soft skills ?"]],need:"softskills"},
+{id:"clear-stress",history:[["user","Je veux travailler ma gestion du stress et ma communication orale"]],action:"recommend",need:"stress"}
+];
+(async()=>{let pass=0,done=0;for(const scenario of scenarios){try{const response=await fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+env.GROQ_API_KEY},body:JSON.stringify({model:env.ACADEMY_AI_MODEL||"openai/gpt-oss-120b",temperature:0.1,max_tokens:1200,response_format:{type:"json_object"},messages:[{role:"system",content:system},...scenario.history.map(([role,content])=>({role,content}))]})});if(response.status===429){console.log("QUOTA 429: remaining scenarios not evaluated");break;}if(!response.ok){console.log("HTTP",scenario.id,response.status);continue;}const data=await response.json();const d=JSON.parse(data.choices[0].message.content);const valid=(!scenario.action||d.action===scenario.action)&&(!scenario.need||d.needs?.includes(scenario.need))&&(!scenario.avoid||!d.needs?.includes(scenario.avoid))&&(d.action!=="clarify"||(typeof d.question==="string"&&d.question.length>12&&Array.isArray(d.options)&&d.options.length>=2));done++;pass+=Number(valid);console.log(valid?"PASS":"FAIL",scenario.id,d.action,(d.needs||[]).join(","),d.action==="clarify"?d.question:"");}catch(e){console.log("ERROR",scenario.id,e.message.slice(0,70))}}console.log("BEHAVIOR",pass+"/"+done,"evaluated of",scenarios.length);})();
