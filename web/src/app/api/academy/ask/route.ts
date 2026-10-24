@@ -37,7 +37,14 @@ export async function POST(request:NextRequest){
   const decision=JSON.parse(output.choices?.[0]?.message?.content||"null") as Decision|null;
   if(!decision||!Array.isArray(decision.needs))throw Error("Invalid classification");
   const keys=decision.needs.filter(x=>typeof x==="string"&&validKeys.has(x)).slice(0,4);
-  const synthesis=synthesizeLearningNeeds(userTurns,keys);
+  // Keep explicit domain constraints grounded in the candidate’s words.
+  // The model can clarify synonyms, but cannot add an IT need to a non-IT interview.
+  const concreteKeys=fallback.needs.map(x=>x.key);
+  const combinedText=userTurns.join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  const hasTechnicalEvidence=/informatique|developpement logiciel|programmation|data analyst|devops|cyber|ingenierie informatique/.test(combinedText);
+  const safeKeys=keys.filter(k=>k!=="technical"||hasTechnicalEvidence);
+  const merged=[...concreteKeys,...safeKeys.filter(k=>!concreteKeys.includes(k as typeof concreteKeys[number]))];
+  const synthesis=synthesizeLearningNeeds(userTurns,merged);
   const clarifications=history.filter(m=>m.role==="assistant"&&m.content.includes("?")).length;
   if(decision.action==="clarify"&&clarifications<2&&typeof decision.question==="string"&&decision.question.trim().length>12&&Array.isArray(decision.options)){
    const options=decision.options.filter((x):x is string=>typeof x==="string"&&x.trim().length>1).slice(0,4);
