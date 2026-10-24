@@ -65,6 +65,7 @@ export default function DashboardPage() {
       <nav aria-label="Navigation candidat" className="space-y-1.5">
        <Link href="/dashboard" aria-current="page" className="flex min-h-12 items-center gap-3 rounded-2xl bg-[#EDE7FF] px-3.5 text-sm font-bold text-[#784DD6]"><LayoutDashboard size={18}/> Vue d’ensemble</Link>
        <Link href="/preparation" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-medium text-[#62718D] transition hover:bg-[#F2ECFF] hover:text-[#784DD6]"><CirclePlay size={18}/> Simulation</Link>
+       <Link href="/exercises" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-semibold text-[#62718D] transition hover:bg-[#F2ECFF] hover:text-[#784DD6]"><GraduationCap size={18}/> Academy</Link>
        <Link href="/onboarding" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-medium text-[#62718D] transition hover:bg-[#F2ECFF] hover:text-[#784DD6]"><UserRound size={18}/> Mon profil</Link>
       </nav>
       <div className="mt-auto rounded-2xl border border-[#E9DCFF] bg-gradient-to-br from-[#F4EEFF] to-[#E9F7FF] p-4"><div className="flex items-center gap-2 text-xs font-bold text-[#7055B3]"><BrainCircuit size={17}/> Coach IA</div><p className="mt-2 text-xs leading-6 text-[#695F83]">Des conseils personnalisés après votre premier entretien.</p></div>
@@ -75,6 +76,7 @@ export default function DashboardPage() {
       <div className="flex items-center gap-2 text-xs font-semibold text-[#70819F]"><LayoutDashboard size={17} className="text-[#4770D8]"/><span className="hidden sm:inline">Espace candidat</span><ChevronRight size={13} className="hidden sm:inline"/><span className="text-[#172033]">Vue d’ensemble</span></div>
       <div className="flex items-center gap-3">
        <span className="hidden rounded-full bg-[#E5F6EF] px-3 py-2 text-xs font-semibold text-[#237B65] sm:inline-flex"><span className="mr-2 h-2 w-2 rounded-full bg-[#33B996]"/> Mon espace</span>
+       <Link href="/exercises" aria-label="Accéder à Academy" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#D8D0FF] bg-[#F2EDFF] px-3 text-xs font-bold text-[#7451C8] transition hover:bg-[#E7DEFF] lg:hidden"><GraduationCap size={17}/> Academy</Link>
        <Link href="/onboarding" aria-label="Accéder à mon profil" className="grid size-10 place-items-center rounded-full border border-[#CFDAF5] bg-white text-[#4665BD] transition hover:bg-[#EEF2FF]"><UserRound size={18}/></Link>
        <button onClick={signOut} aria-label="Se déconnecter" className="grid size-10 place-items-center rounded-full border border-[#CFDAF5] text-[#4665BD] lg:hidden"><LogOut size={18}/></button>
       </div>
