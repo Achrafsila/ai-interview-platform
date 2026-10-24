@@ -20,7 +20,7 @@ export async function POST(request:NextRequest){
  if(last?.role!=="user"||last.content.trim().length<3)return NextResponse.json({error:"Précisez votre demande."},{status:400});
  const userTurns=history.filter(m=>m.role==="user").map(m=>m.content);
  const combined=userTurns.join(" ; ");
- const matched=pedagogicalMatch(combined);
+ const matched=pedagogicalMatch(combined,last.content);
  // The L&D matching engine, not the LLM, controls the available curriculum.
  const key=process.env.GROQ_API_KEY;
  if(!key){
