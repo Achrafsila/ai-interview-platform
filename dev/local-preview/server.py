@@ -261,7 +261,12 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
                     return self._send({"text": text.strip(), "engine": "whisper-large-v3"})
                 except urllib.error.HTTPError as exc:
                     # Expose only upstream status, never the request/audio or API key.
-                    return self._send({"error": "transcription_upstream_rejected", "upstream_status": exc.code}, 502)
+                    try:
+                        upstream_error = json.loads(exc.read(2048)).get("error", {})
+                        reason = upstream_error.get("code") or upstream_error.get("type") or "unspecified"
+                    except (ValueError, AttributeError, TypeError):
+                        reason = "unavailable"
+                    return self._send({"error": "transcription_upstream_rejected", "upstream_status": exc.code, "upstream_reason": str(reason)[:80]}, 502)
                 except (ValueError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
                     return self._send({"error": "transcription_unavailable"}, 502)
             if url.path == "/api/ai/tts":
