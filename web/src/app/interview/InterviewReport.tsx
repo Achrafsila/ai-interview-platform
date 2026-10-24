@@ -71,21 +71,21 @@ export function InterviewReport({ feedback, jobTitle, family, elapsed, interrupt
       <p className="text-xs font-bold uppercase tracking-[.13em] text-[#A9E9E6]">Recommandation pour votre prochaine simulation</p>
       <h3 className="mt-3 text-xl font-semibold">{focus.name}</h3>
       <p className="mt-2 max-w-2xl text-sm leading-7 text-[#D8E6F7]">{focus.detail}</p>
-      <Link href="/preparation" className="interview-v2-primary mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold">Refaire une simulation ciblée <ArrowRight size={17}/></Link>
-      <p className="mt-3 text-xs leading-5 text-[#B7C9DF]">Vous pourrez choisir vos objectifs avant la simulation. Les exercices dédiés ne sont pas encore disponibles.</p>
+      <Link href="/exercises" className="interview-v2-primary mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold">Travailler ce point maintenant <ArrowRight size={17}/></Link>
+      <p className="mt-3 text-xs leading-5 text-[#B7C9DF]">Ouvrez un exercice guidé, puis revenez à une simulation pour mettre vos acquis en pratique.</p>
      </div>
      <div className="mt-4 grid gap-4 md:grid-cols-2">
       <article className="rounded-[24px] border border-white/15 bg-white/[.055] p-5 sm:p-6">
        <Dumbbell size={22} className="text-[#A3C8FF]" aria-hidden="true"/>
        <h3 className="mt-4 text-lg font-semibold">Explorer des entraînements</h3>
        <p className="mt-2 text-sm leading-7 text-[#CDD8EF]">Des exercices courts et des supports pratiques adaptés à chaque compétence.</p>
-       <p className="mt-4 text-xs font-semibold text-[#B7C6F8]">Rubriques en préparation · bientôt disponibles</p>
+       <Link href="/exercises" className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-[#A6C6FF]/40 bg-[#5A83F0]/20 px-4 text-sm font-bold text-white transition hover:bg-[#5A83F0]/35">Explorer les exercices <ArrowRight size={17}/></Link>
       </article>
       <article className="rounded-[24px] border border-white/15 bg-white/[.055] p-5 sm:p-6">
        <CalendarDays size={22} className="text-[#DAB4FF]" aria-hidden="true"/>
        <h3 className="mt-4 text-lg font-semibold">Échanger avec un expert</h3>
        <p className="mt-2 text-sm leading-7 text-[#CDD8EF]">Un accompagnement individuel pour travailler votre discours, votre posture et vos réponses.</p>
-       <p className="mt-4 text-xs font-semibold text-[#D4B9F3]">Réservation one-to-one · bientôt disponible</p>
+       <p className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-[#BBA3D8]/30 bg-white/[.07] px-4 text-center text-sm font-semibold text-[#D4B9F3]">Réservation prochainement</p>
       </article>
      </div>
     </div>
