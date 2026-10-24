@@ -1,10 +1,11 @@
 "use client";
+import {CandidateProfileMenu} from "@/components/ui/candidate-profile-menu";
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, BookOpen, BrainCircuit, Check, ChevronRight, CirclePlay, GraduationCap, LayoutDashboard, LogOut, MessageSquareText, Play, Sparkles, Target, TrendingUp, UserRound, WandSparkles } from "lucide-react";
+import { ArrowRight, BookOpen, BrainCircuit, Check, ChevronRight, CirclePlay, GraduationCap, LayoutDashboard, MessageSquareText, Play, Sparkles, Target, TrendingUp, UserRound, WandSparkles } from "lucide-react";
 import { getAuthClient } from "@/lib/supabase-auth";
 import { getAppRole, readProfile } from "@/lib/profile";
 import { employmentOptions, professionalOptions, type OnboardingProfile, type ProfessionalGoal, type PreparationGoal } from "@/components/ui/onboarding-stages";
@@ -44,7 +45,6 @@ export default function DashboardPage() {
    }
    void load();return ()=>{active=false;};
  },[router]);
- async function signOut(){const client=getAuthClient();await client?.auth.signOut();router.replace("/login");router.refresh();}
  const motionIn=(delay:number)=>({initial:reducedMotion?false as const:{opacity:0,y:24},animate:{opacity:1,y:0},transition:{duration:.56,delay,ease:"easeOut" as const}});
  const trend=comparableProgress(results);
  const coach=results.find(r=>r.coach_priority&&r.coach_recommendation);
@@ -66,10 +66,8 @@ export default function DashboardPage() {
        <Link href="/dashboard" aria-current="page" className="flex min-h-12 items-center gap-3 rounded-2xl bg-[#EDE7FF] px-3.5 text-sm font-bold text-[#784DD6]"><LayoutDashboard size={18}/> Vue d’ensemble</Link>
        <Link href="/preparation" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-medium text-[#62718D] transition hover:bg-[#F2ECFF] hover:text-[#784DD6]"><CirclePlay size={18}/> Simulation</Link>
        <Link href="/exercises" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-semibold text-[#62718D] transition hover:bg-[#F2ECFF] hover:text-[#784DD6]"><GraduationCap size={18}/> Academy</Link>
-       <Link href="/onboarding" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-medium text-[#62718D] transition hover:bg-[#F2ECFF] hover:text-[#784DD6]"><UserRound size={18}/> Mon profil</Link>
       </nav>
       <div className="mt-auto rounded-2xl border border-[#E9DCFF] bg-gradient-to-br from-[#F4EEFF] to-[#E9F7FF] p-4"><div className="flex items-center gap-2 text-xs font-bold text-[#7055B3]"><BrainCircuit size={17}/> Coach IA</div><p className="mt-2 text-xs leading-6 text-[#695F83]">Des conseils personnalisés après votre premier entretien.</p></div>
-      <button onClick={signOut} className="mt-4 flex min-h-11 items-center gap-3 rounded-xl px-3.5 text-sm text-[#71809A] transition hover:bg-[#F0F4FE]"><LogOut size={17}/> Se déconnecter</button>
     </aside>
     <div className="min-w-0 flex-1">
      <header className="flex min-h-[78px] items-center justify-between gap-4 border-b border-white/80 bg-white/60 backdrop-blur-xl px-5 sm:px-8 lg:px-9">
@@ -77,8 +75,7 @@ export default function DashboardPage() {
       <div className="flex items-center gap-3">
        <span className="hidden rounded-full bg-[#E5F6EF] px-3 py-2 text-xs font-semibold text-[#237B65] sm:inline-flex"><span className="mr-2 h-2 w-2 rounded-full bg-[#33B996]"/> Mon espace</span>
        <Link href="/exercises" aria-label="Accéder à Academy" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#D8D0FF] bg-[#F2EDFF] px-3 text-xs font-bold text-[#7451C8] transition hover:bg-[#E7DEFF] lg:hidden"><GraduationCap size={17}/> Academy</Link>
-       <Link href="/onboarding" aria-label="Accéder à mon profil" className="grid size-10 place-items-center rounded-full border border-[#CFDAF5] bg-white text-[#4665BD] transition hover:bg-[#EEF2FF]"><UserRound size={18}/></Link>
-       <button onClick={signOut} aria-label="Se déconnecter" className="grid size-10 place-items-center rounded-full border border-[#CFDAF5] text-[#4665BD] lg:hidden"><LogOut size={18}/></button>
+       <CandidateProfileMenu/>
       </div>
      </header>
      <div className="w-full px-5 pb-16 pt-9 sm:px-8 lg:px-10">
