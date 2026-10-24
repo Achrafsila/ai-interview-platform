@@ -5,10 +5,10 @@ with sync_playwright() as pw:
     for viewport in [{"width":1440,"height":900},{"width":390,"height":844}]:
         page=b.new_page(viewport=viewport,reduced_motion="reduce")
         page.goto("http://localhost:3000/login",wait_until="networkidle")
-        expect(page.get_by_role("heading",name="Bon retour parmi nous.")).to_be_visible()
-        expect(page.get_by_role("button",name="Reprendre notre parcours")).to_be_enabled()
+        expect(page.get_by_role("heading",name="Prêt à vous préparer ?")).to_be_visible()
+        expect(page.get_by_role("button",name="Se connecter")).to_be_enabled()
         assert page.get_by_text("Démonstration UX :",exact=False).count()==0
-        for route in ["dashboard","onboarding","preparation","role-preview"]:
+        for route in ["dashboard","onboarding","preparation","interview","role-preview"]:
             page.goto(f"http://localhost:3000/{route}",wait_until="domcontentloaded")
             page.wait_for_url("**/login?next=*")
             assert page.url.endswith(f"next=%2F{route}"), page.url

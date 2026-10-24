@@ -17,7 +17,7 @@ export async function proxy(request: NextRequest) {
     },
   });
   const { data, error } = await client.auth.getUser();
-  const protectedRoute = ["/dashboard", "/onboarding", "/preparation", "/role-preview"].some(
+  const protectedRoute = ["/dashboard", "/onboarding", "/preparation", "/interview", "/role-preview"].some(
     p => request.nextUrl.pathname === p || request.nextUrl.pathname.startsWith(p + "/")
   );
   if (protectedRoute && (error || !data.user)) {
@@ -43,4 +43,4 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ["/dashboard/:path*", "/onboarding/:path*", "/preparation/:path*", "/role-preview/:path*"] };
+export const config = { matcher: ["/dashboard/:path*", "/onboarding/:path*", "/preparation/:path*", "/interview/:path*", "/role-preview/:path*"] };
