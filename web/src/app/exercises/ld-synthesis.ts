@@ -27,7 +27,7 @@ export function synthesizeLearningNeeds(userMessages:string[],semanticKeys?:stri
     hr_final:/\bdrh\b|entretien.{0,20}\brh\b|final.{0,25}(rh|ressources humaines)|questions? rh/,
     structure:/structur|methode star|reponses? organis|reponses? constru/,
     stress:/stress|pression|trac|angoiss|confiance/,
-    communication:/communi|expression orale|prise de parole|eloquen/,
+    communication:/communi|expression orale|prise de parole|eloquen|parl.{0,18}oral|\ba l.oral\b/,
     motivation:/motivation|pourquoi ce poste|pourquoi vous/,
     first_interview:/premier.{0,30}entretien|premier emploi/,
     sales:/responsable commercial|directeur commercial|poste commercial|role de commercial|fonction commerciale|business development|vente|commercial/,
@@ -65,7 +65,7 @@ function synthesizeSingle(text:string){
  if(/\bdrh\b|entretien.{0,20}\brh\b|questions? rh/.test(normalized))out.push("hr_final");
  if(/structur|\bstar\b/.test(normalized))out.push("structure");
  if(/stress|pression|trac/.test(normalized))out.push("stress");
- if(/communi|expression orale/.test(normalized))out.push("communication");
+ if(/communi|expression orale|prise de parole|parl.{0,18}oral|\ba l.oral\b/.test(normalized))out.push("communication");
  if(/motivation|pourquoi ce poste/.test(normalized))out.push("motivation");
  if(/responsable commercial|poste commercial|commercial|vente|business development/.test(normalized))out.push("sales");
  return out;
