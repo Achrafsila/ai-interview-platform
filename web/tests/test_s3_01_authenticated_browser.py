@@ -6,7 +6,7 @@ credentials = {}
 for line in (Path(__file__).resolve().parents[2] / '.demo-credentials/test-accounts.txt').read_text().splitlines():
     if '|' not in line or line.lstrip().startswith('#'):
         continue
-    email, password = [segment.strip() for segment in line.split('|', 1)]
+    email, password = [segment.strip() for segment in line.split('|')[:2]]
     if email in ('user@user.com', 'admin@admin.com', 'coach@coach.com'):
         credentials[email] = password
 assert len(credentials) == 3, 'Test credentials missing'
@@ -16,7 +16,7 @@ with sync_playwright() as pw:
     for email, expected in [('user@user.com', 'user'), ('admin@admin.com', 'admin'), ('coach@coach.com', 'coach')]:
         context = browser.new_context(viewport={'width': 1280, 'height': 840})
         page = context.new_page()
-        page.goto('http://localhost:3000/login', wait_until='domcontentloaded')
+        page.goto('http://localhost:3000/login', wait_until='networkidle')
         page.get_by_label('Adresse e-mail').fill(email)
         page.get_by_label('Mot de passe', exact=True).fill(credentials[email])
         page.get_by_role('button', name='Se connecter', exact=True).click()
