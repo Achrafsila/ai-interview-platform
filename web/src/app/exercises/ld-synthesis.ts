@@ -1,7 +1,7 @@
 import {interpretNeed} from "./ld-matching";
 import {paths,stepsForPath} from "./paths";
 
-const themes=[
+export const themes=[
  {key:"softskills",label:"Valoriser vos soft skills",pathId:"behavioral",module:"behavior"},
  {key:"hr_final",label:"Réussir les questions RH et DRH",pathId:"behavioral",module:"behavior"},
  {key:"structure",label:"Structurer vos réponses",pathId:"star",module:"structure"},
@@ -16,7 +16,7 @@ const themes=[
  {key:"internship",label:"Préparer votre stage ou PFE",pathId:"internship",module:"graduates"},
 ] as const;
 type Step={exerciseId:string;exerciseName:string;pathId:string;pathTitle:string;goal:string};
-export function synthesizeLearningNeeds(userMessages:string[]){
+export function synthesizeLearningNeeds(userMessages:string[],semanticKeys?:string[]){
  const found:Array<(typeof themes)[number]["key"]>=[];
  for(const message of userMessages){
   const normalized=message.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
@@ -46,7 +46,8 @@ export function synthesizeLearningNeeds(userMessages:string[]){
   const one=synthesizeSingle(recent);
   return one.includes(t.key);
  }).map(t=>t.key);
- const ordered=[...recentNeeds,...found.filter(k=>!recentNeeds.includes(k))];
+ const validated=(semanticKeys||[]).filter(k=>themes.some(t=>t.key===k));
+ const ordered=[...validated,...recentNeeds.filter(k=>!validated.includes(k)),...found.filter(k=>!validated.includes(k)&&!recentNeeds.includes(k))];
  const selected=ordered.slice(0,4).map(key=>themes.find(t=>t.key===key)!).filter(Boolean);
  const steps:Step[]=[];
  for(const theme of selected){
