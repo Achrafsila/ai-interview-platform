@@ -509,3 +509,12 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .analysis-v2-secondary{border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 10px 32px rgba(100,88,165,.1)}
 .analysis-v2 button:focus-visible{outline:3px solid #8455E8;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.analysis-v2-ring,.analysis-v2-ring-alt,.analysis-v2-core,.analysis-v2-live,.analysis-v2-indeterminate{animation:none!important}.analysis-v2-indeterminate{width:100%;opacity:.65}}
+
+/* Post-interview report: progressive reveal with reduced-motion support. */
+@keyframes report-v2-enter { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.report-v2-rise { animation: report-v2-enter .65s cubic-bezier(.22,1,.36,1) both; }
+.report-v2-delay-1 { animation-delay: .1s; }
+.report-v2-delay-2 { animation-delay: .2s; }
+.report-v2-delay-3 { animation-delay: .28s; }
+.report-v2-delay-4 { animation-delay: .35s; }
+@media (prefers-reduced-motion: reduce) { .report-v2-rise { animation: none; } }

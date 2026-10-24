@@ -3,8 +3,9 @@ import Link from "next/link";
 import { VoicePoweredOrb } from "@/components/ui/voice-powered-orb";
 import { CountdownTimer } from "@/components/ui/countdown-timer";
 import { InterviewAnalysisLoader } from "@/components/ui/interview-analysis-loader";
+import { InterviewReport } from "./InterviewReport";
 import {useEffect,useRef,useState} from "react";
-import {ArrowLeft,Mic,Volume2,VolumeX,Pause,Play,Send,Check,AlertTriangle} from "lucide-react";
+import {ArrowLeft,Mic,Volume2,VolumeX,Pause,Play,Send,AlertTriangle} from "lucide-react";
 type Config={family:"rh"|"technical";locale:"fr"|"en";jobTitle:string;job_description:string;goals:string[];count:number};
 type Response={session_id?:string;question?:{prompt:string};phase?:string;index?:number;total?:number;completed?:boolean;feedback?:string;transcript?:{question:string;answer:string}[];error?:string};
 type Recognizer={lang:string;continuous:boolean;interimResults:boolean;onresult:((e:{results:ArrayLike<(ArrayLike<{transcript:string}> & {isFinal:boolean})>})=>void)|null;onerror:((e:{error:string})=>void)|null;onend:(()=>void)|null;start:()=>void;stop:()=>void};
@@ -358,6 +359,7 @@ export default function InterviewPage(){
   </div>
  </main>;
  if(analyzingFinal && state==="thinking")return <InterviewAnalysisLoader />;
+ if(state==="done")return <InterviewReport feedback={result?.feedback} jobTitle={config?.jobTitle} family={config?.family} elapsed={elapsed} interrupted={!result?.transcript?.length && Boolean(result?.feedback?.startsWith("Séance interrompue"))}/>;
  return <main className="interview-session-v2 relative min-h-dvh overflow-x-clip bg-[#0A1028] px-4 py-7 text-white sm:px-8 sm:py-10"><div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(ellipse_at_50%_20%,#26376F_0%,#131E45_46%,transparent_82%)]"/><div className="absolute -right-36 top-40 size-[430px] rounded-full bg-[#BA58EE]/15 blur-[110px]"/><div className="absolute -left-36 top-[36%] size-[440px] rounded-full bg-[#5365FF]/15 blur-[110px]"/></div>
   <div className="relative mx-auto max-w-5xl">
    <header className="flex flex-wrap items-center justify-between gap-4"><Link href="/preparation" className="interview-v2-glass inline-flex min-h-11 items-center gap-2 rounded-2xl px-4 text-sm font-bold"><ArrowLeft size={17}/> Configuration</Link><span className="interview-v2-pill rounded-full px-4 py-2 text-xs font-bold">Laboratoire vocal · Non noté</span></header>
@@ -365,14 +367,14 @@ export default function InterviewPage(){
    <section className="interview-v2-stage mt-7 rounded-[32px] p-5 sm:p-10">
     <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
      <div className="interview-v2-orb relative size-52 sm:size-64"><VoicePoweredOrb state={state} voiceLevel={dictating ? .55 : 0} className="h-full w-full"/><span className="sr-only">{state==="speaking"?"L’intervieweur parle":dictating?"Microphone actif":state==="listening"?"À vous de répondre":"Orbe d’entretien"}</span></div>
-     <p className="mt-5 text-sm font-bold text-[#BCA7FF]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",done:"Séance terminée",error:"Connexion indisponible"})[state]}</p>
+     <p className="mt-5 text-sm font-bold text-[#BCA7FF]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",error:"Connexion indisponible"})[state]}</p>
      <div className="mt-6 flex min-h-24 w-full items-center justify-center">
-      {question&&state!=="done"&&state!=="ready"?
+      {question&&state!=="ready"?
        <h2 aria-label={question} className="flex max-w-2xl flex-col items-center gap-3 text-balance text-center text-xl font-semibold leading-relaxed tracking-tight text-[#F3F4FF] sm:text-[27px]">
         {segmentInterviewerText(question).map((phrase,index)=><span key={result?.session_id+"-"+(result?.index||0)+"-"+index} aria-hidden="true"
          className={`block transform-gpu transition-[opacity,transform,filter] duration-700 ease-out motion-reduce:transition-none ${questionReveal>index?"translate-y-0 opacity-100 blur-none":"translate-y-3 opacity-0 blur-[6px]"}`}>{phrase}</span>)}
        </h2>:
-       <h2 className="text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":state==="done"?"Votre entretien est terminé.":"Préparation de la prochaine question…"}</h2>}
+       <h2 className="text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":"Préparation de la prochaine question…"}</h2>}
      </div>
      {state==="ready"&&introStage==="none"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
      {state==="error"&&<button onClick={()=>void startInterview()} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
@@ -402,7 +404,7 @@ export default function InterviewPage(){
         <button disabled={!answer.trim()||state==="paused"||transcribing||enhancedRecording} onClick={submit} className="interview-v2-primary inline-flex min-h-12 items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold disabled:opacity-70">J’ai terminé <Send size={17}/></button>
        </div>
       </div>}
-     {state==="done"&&<div className="mt-7 w-full rounded-2xl bg-[#EFF8F3] p-6 text-left"><div className="flex items-center gap-2 font-bold text-[#247B64]"><Check size={18}/> Bilan pédagogique non noté</div><p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-[#435C56]">{result?.feedback||"Aucun retour disponible."}</p><p className="mt-3 text-xs text-[#65766F]">Cette session locale n’est pas enregistrée dans Supabase et ne met pas encore à jour le dashboard.</p></div>}
+
      {error&&<p role="alert" className="mt-5 rounded-xl bg-[#FFF0ED] p-3 text-sm text-[#A64040]"><AlertTriangle size={16} className="mr-2 inline"/>{error}</p>}
     </div>
    </section>
