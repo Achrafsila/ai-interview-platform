@@ -18,7 +18,7 @@ function CoachMascot({thinking}:{thinking:boolean}){
   </div>
  </div>;
 }
-export function AcademyAsk({compact=false}:{compact?:boolean}={}){
+export function AcademyAsk({compact=false,onRecommendation}:{compact?:boolean;onRecommendation?:(exerciseId:string)=>void}={}){
  const [prompt,setPrompt]=useState("");
  const [busy,setBusy]=useState(false);
  const [suggestion,setSuggestion]=useState<Suggestion|null>(null);
@@ -33,7 +33,7 @@ export function AcademyAsk({compact=false}:{compact?:boolean}={}){
    const response=await fetch("/api/academy/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:next})});
    const body=await response.json() as (Suggestion|Clarification)&{error?:string};
    if(!response.ok)throw new Error(body.error||"Le coach n’est pas disponible.");
-   if(body.kind==="clarify"){setClarification(body);setHistory(items=>[...items,{role:"assistant" as const,content:body.question}].slice(-9));}else{setSuggestion(body);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.needs?.length?"J’ai retenu plusieurs axes de préparation : "+body.needs.map(n=>n.label.toLowerCase()).join(", ")+". ":""}${body.reason}`}].slice(-9));}
+   if(body.kind==="clarify"){setClarification(body);setHistory(items=>[...items,{role:"assistant" as const,content:body.question}].slice(-9));}else{setSuggestion(body);onRecommendation?.(body.exerciseId);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.needs&&body.needs.length>1?"J’ai retenu plusieurs axes de préparation : "+body.needs.map(n=>n.label.toLowerCase()).join(", ")+". ":""}${body.reason}`}].slice(-9));}
   }catch(e){setError(e instanceof Error?e.message:"Le coach n’est pas disponible.");}
   finally{setBusy(false);}
  }

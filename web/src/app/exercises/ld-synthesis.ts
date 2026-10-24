@@ -9,7 +9,8 @@ const themes=[
  {key:"communication",label:"Renforcer votre communication",pathId:"eloquence",module:"communication"},
  {key:"motivation",label:"Exprimer votre motivation",pathId:"first-job",module:"motivation"},
  {key:"first_interview",label:"Préparer votre premier entretien",pathId:"first-job",module:"pitch"},
- {key:"technical",label:"Défendre vos connaissances métier",pathId:"data",module:"technical"},
+ {key:"sales",label:"Préparer un entretien pour un poste commercial",pathId:"sales",module:"negotiation"},
+ {key:"technical",label:"Défendre vos compétences techniques",pathId:"graduate-tech",module:"technical"},
  {key:"leadership",label:"Illustrer votre leadership",pathId:"lead-first",module:"leadership"},
  {key:"negotiation",label:"Préparer une négociation",pathId:"salary",module:"negotiation"},
  {key:"internship",label:"Préparer votre stage ou PFE",pathId:"internship",module:"graduates"},
@@ -29,7 +30,8 @@ export function synthesizeLearningNeeds(userMessages:string[]){
     communication:/communi|expression orale|prise de parole|eloquen/,
     motivation:/motivation|pourquoi ce poste|pourquoi vous/,
     first_interview:/premier.{0,30}entretien|premier emploi/,
-    technical:/questions? techni|connaissances? metier|data analyst|devops|cyber/,
+    sales:/responsable commercial|directeur commercial|poste commercial|role de commercial|fonction commerciale|business development|vente|commercial/,
+    technical:/competences? techniques? (?:en informatique|en data)|data analyst|devops|cyber|developpement logiciel|programmation/,
     leadership:/leadership|management|manager|gestion d.equipe/,
     negotiation:/negoci|salaire|remuneration/,
     internship:/stage|\bpfe\b|alternance/
@@ -37,7 +39,7 @@ export function synthesizeLearningNeeds(userMessages:string[]){
    if(expressions[t.key].test(normalized)&&!found.includes(t.key))found.push(t.key);
   }
   const fallback=interpretNeed(message)?.key;
-  if(fallback&&fallback!=="unknown"&&!found.includes(fallback))found.push(fallback);
+  if(fallback&&fallback!=="unknown"&&!(fallback==="technical"&&/entretien technique/.test(normalized))&&!found.includes(fallback))found.push(fallback);
  }
  const recent= userMessages.at(-1)||"";
  const recentNeeds=themes.filter(t=>{
@@ -64,5 +66,6 @@ function synthesizeSingle(text:string){
  if(/stress|pression|trac/.test(normalized))out.push("stress");
  if(/communi|expression orale/.test(normalized))out.push("communication");
  if(/motivation|pourquoi ce poste/.test(normalized))out.push("motivation");
+ if(/responsable commercial|poste commercial|commercial|vente|business development/.test(normalized))out.push("sales");
  return out;
 }
