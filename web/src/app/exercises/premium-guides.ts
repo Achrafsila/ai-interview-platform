@@ -1366,6 +1366,3897 @@ const a2Guides: Record<string, PremiumGuide> = {
   }
 };
 
+const remainingGuides: Record<string, PremiumGuide> = {
+  "motivation-1-foundation": {
+    "objective": "Pourquoi ce poste ? — Découverte",
+    "context": "Atelier découverte : Expliquez pourquoi ce poste constitue une étape logique pour vous. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : relier le poste à une contribution possible. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : relier le poste à une contribution possible.",
+      "La réponse traite bien de la situation « Pourquoi ce poste ? » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas confondre motivation et flatterie.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : relier le poste à une contribution possible.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de relier le poste à une contribution possible ?"
+  },
+  "motivation-1-practice": {
+    "objective": "Pourquoi ce poste ? — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez pourquoi ce poste constitue une étape logique pour vous. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : relier le poste à une contribution possible. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : relier le poste à une contribution possible.",
+      "La réponse traite bien de la situation « Pourquoi ce poste ? » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas confondre motivation et flatterie.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : relier le poste à une contribution possible.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de relier le poste à une contribution possible ?"
+  },
+  "motivation-1-challenge": {
+    "objective": "Pourquoi ce poste ? — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez pourquoi ce poste constitue une étape logique pour vous. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : relier le poste à une contribution possible. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : relier le poste à une contribution possible.",
+      "La réponse traite bien de la situation « Pourquoi ce poste ? » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas confondre motivation et flatterie.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : relier le poste à une contribution possible.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de relier le poste à une contribution possible ?"
+  },
+  "motivation-2-foundation": {
+    "objective": "Pourquoi cette entreprise ? — Découverte",
+    "context": "Atelier découverte : Décrivez ce qui vous attire dans la mission de cette organisation sans compliments génériques. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : appuyer un intérêt pour l’entreprise sur un fait vérifié. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : appuyer un intérêt pour l’entreprise sur un fait vérifié.",
+      "La réponse traite bien de la situation « Pourquoi cette entreprise ? » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Éviter des affirmations non documentées sur l’entreprise.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : appuyer un intérêt pour l’entreprise sur un fait vérifié.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de appuyer un intérêt pour l’entreprise sur un fait vérifié ?"
+  },
+  "motivation-2-practice": {
+    "objective": "Pourquoi cette entreprise ? — Approfondissement",
+    "context": "Atelier approfondissement : Décrivez ce qui vous attire dans la mission de cette organisation sans compliments génériques. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : appuyer un intérêt pour l’entreprise sur un fait vérifié. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : appuyer un intérêt pour l’entreprise sur un fait vérifié.",
+      "La réponse traite bien de la situation « Pourquoi cette entreprise ? » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Éviter des affirmations non documentées sur l’entreprise.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : appuyer un intérêt pour l’entreprise sur un fait vérifié.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de appuyer un intérêt pour l’entreprise sur un fait vérifié ?"
+  },
+  "motivation-2-challenge": {
+    "objective": "Pourquoi cette entreprise ? — Mise en situation",
+    "context": "Atelier mise en situation : Décrivez ce qui vous attire dans la mission de cette organisation sans compliments génériques. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : appuyer un intérêt pour l’entreprise sur un fait vérifié. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : appuyer un intérêt pour l’entreprise sur un fait vérifié.",
+      "La réponse traite bien de la situation « Pourquoi cette entreprise ? » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Éviter des affirmations non documentées sur l’entreprise.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : appuyer un intérêt pour l’entreprise sur un fait vérifié.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de appuyer un intérêt pour l’entreprise sur un fait vérifié ?"
+  },
+  "motivation-3-foundation": {
+    "objective": "Votre projet à trois ans — Découverte",
+    "context": "Atelier découverte : Présentez un projet professionnel ambitieux et réaliste. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : formuler une perspective cohérente et ouverte. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : formuler une perspective cohérente et ouverte.",
+      "La réponse traite bien de la situation « Votre projet à trois ans » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas promettre un avenir rigide.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler une perspective cohérente et ouverte.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler une perspective cohérente et ouverte ?"
+  },
+  "motivation-3-practice": {
+    "objective": "Votre projet à trois ans — Approfondissement",
+    "context": "Atelier approfondissement : Présentez un projet professionnel ambitieux et réaliste. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : formuler une perspective cohérente et ouverte. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : formuler une perspective cohérente et ouverte.",
+      "La réponse traite bien de la situation « Votre projet à trois ans » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas promettre un avenir rigide.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler une perspective cohérente et ouverte.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler une perspective cohérente et ouverte ?"
+  },
+  "motivation-3-challenge": {
+    "objective": "Votre projet à trois ans — Mise en situation",
+    "context": "Atelier mise en situation : Présentez un projet professionnel ambitieux et réaliste. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : formuler une perspective cohérente et ouverte. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : formuler une perspective cohérente et ouverte.",
+      "La réponse traite bien de la situation « Votre projet à trois ans » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas promettre un avenir rigide.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler une perspective cohérente et ouverte.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler une perspective cohérente et ouverte ?"
+  },
+  "motivation-4-foundation": {
+    "objective": "Vos critères de choix — Découverte",
+    "context": "Atelier découverte : Hiérarchisez trois critères importants pour votre prochaine opportunité. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : hiérarchiser des critères explicitement. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : hiérarchiser des critères explicitement.",
+      "La réponse traite bien de la situation « Vos critères de choix » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas annoncer uniquement la rémunération.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : hiérarchiser des critères explicitement.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de hiérarchiser des critères explicitement ?"
+  },
+  "motivation-4-practice": {
+    "objective": "Vos critères de choix — Approfondissement",
+    "context": "Atelier approfondissement : Hiérarchisez trois critères importants pour votre prochaine opportunité. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : hiérarchiser des critères explicitement. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : hiérarchiser des critères explicitement.",
+      "La réponse traite bien de la situation « Vos critères de choix » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas annoncer uniquement la rémunération.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : hiérarchiser des critères explicitement.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de hiérarchiser des critères explicitement ?"
+  },
+  "motivation-4-challenge": {
+    "objective": "Vos critères de choix — Mise en situation",
+    "context": "Atelier mise en situation : Hiérarchisez trois critères importants pour votre prochaine opportunité. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : hiérarchiser des critères explicitement. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : hiérarchiser des critères explicitement.",
+      "La réponse traite bien de la situation « Vos critères de choix » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas annoncer uniquement la rémunération.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : hiérarchiser des critères explicitement.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de hiérarchiser des critères explicitement ?"
+  },
+  "motivation-5-foundation": {
+    "objective": "Vos valeurs professionnelles — Découverte",
+    "context": "Atelier découverte : Illustrez une valeur qui influence réellement vos choix au travail. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : illustrer une valeur par un comportement. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : illustrer une valeur par un comportement.",
+      "La réponse traite bien de la situation « Vos valeurs professionnelles » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas citer des valeurs sans preuve.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : illustrer une valeur par un comportement.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de illustrer une valeur par un comportement ?"
+  },
+  "motivation-5-practice": {
+    "objective": "Vos valeurs professionnelles — Approfondissement",
+    "context": "Atelier approfondissement : Illustrez une valeur qui influence réellement vos choix au travail. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : illustrer une valeur par un comportement. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : illustrer une valeur par un comportement.",
+      "La réponse traite bien de la situation « Vos valeurs professionnelles » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas citer des valeurs sans preuve.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : illustrer une valeur par un comportement.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de illustrer une valeur par un comportement ?"
+  },
+  "motivation-5-challenge": {
+    "objective": "Vos valeurs professionnelles — Mise en situation",
+    "context": "Atelier mise en situation : Illustrez une valeur qui influence réellement vos choix au travail. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : illustrer une valeur par un comportement. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : illustrer une valeur par un comportement.",
+      "La réponse traite bien de la situation « Vos valeurs professionnelles » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas citer des valeurs sans preuve.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : illustrer une valeur par un comportement.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de illustrer une valeur par un comportement ?"
+  },
+  "motivation-6-foundation": {
+    "objective": "Votre moteur au quotidien — Découverte",
+    "context": "Atelier découverte : Expliquez ce qui vous donne de l'énergie au travail avec un exemple. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : identifier une source de motivation durable. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : identifier une source de motivation durable.",
+      "La réponse traite bien de la situation « Votre moteur au quotidien » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Éviter les généralités telles que « je suis passionné ».",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : identifier une source de motivation durable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de identifier une source de motivation durable ?"
+  },
+  "motivation-6-practice": {
+    "objective": "Votre moteur au quotidien — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez ce qui vous donne de l'énergie au travail avec un exemple. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : identifier une source de motivation durable. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : identifier une source de motivation durable.",
+      "La réponse traite bien de la situation « Votre moteur au quotidien » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Éviter les généralités telles que « je suis passionné ».",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : identifier une source de motivation durable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de identifier une source de motivation durable ?"
+  },
+  "motivation-6-challenge": {
+    "objective": "Votre moteur au quotidien — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez ce qui vous donne de l'énergie au travail avec un exemple. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : identifier une source de motivation durable. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : identifier une source de motivation durable.",
+      "La réponse traite bien de la situation « Votre moteur au quotidien » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Éviter les généralités telles que « je suis passionné ».",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : identifier une source de motivation durable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de identifier une source de motivation durable ?"
+  },
+  "motivation-7-foundation": {
+    "objective": "Pourquoi maintenant ? — Découverte",
+    "context": "Atelier découverte : Justifiez le timing de votre recherche de mobilité. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : expliquer le bon moment pour changer. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer le bon moment pour changer.",
+      "La réponse traite bien de la situation « Pourquoi maintenant ? » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas dénigrer le poste actuel.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer le bon moment pour changer.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer le bon moment pour changer ?"
+  },
+  "motivation-7-practice": {
+    "objective": "Pourquoi maintenant ? — Approfondissement",
+    "context": "Atelier approfondissement : Justifiez le timing de votre recherche de mobilité. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : expliquer le bon moment pour changer. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer le bon moment pour changer.",
+      "La réponse traite bien de la situation « Pourquoi maintenant ? » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas dénigrer le poste actuel.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer le bon moment pour changer.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer le bon moment pour changer ?"
+  },
+  "motivation-7-challenge": {
+    "objective": "Pourquoi maintenant ? — Mise en situation",
+    "context": "Atelier mise en situation : Justifiez le timing de votre recherche de mobilité. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : expliquer le bon moment pour changer. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer le bon moment pour changer.",
+      "La réponse traite bien de la situation « Pourquoi maintenant ? » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas dénigrer le poste actuel.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer le bon moment pour changer.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer le bon moment pour changer ?"
+  },
+  "motivation-8-foundation": {
+    "objective": "Vos attentes du manager — Découverte",
+    "context": "Atelier découverte : Décrivez le cadre de management dans lequel vous donnez le meilleur. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : définir des attentes de collaboration réciproques. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : définir des attentes de collaboration réciproques.",
+      "La réponse traite bien de la situation « Vos attentes du manager » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas décrire un manager idéal irréaliste.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : définir des attentes de collaboration réciproques.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de définir des attentes de collaboration réciproques ?"
+  },
+  "motivation-8-practice": {
+    "objective": "Vos attentes du manager — Approfondissement",
+    "context": "Atelier approfondissement : Décrivez le cadre de management dans lequel vous donnez le meilleur. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : définir des attentes de collaboration réciproques. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : définir des attentes de collaboration réciproques.",
+      "La réponse traite bien de la situation « Vos attentes du manager » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas décrire un manager idéal irréaliste.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : définir des attentes de collaboration réciproques.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de définir des attentes de collaboration réciproques ?"
+  },
+  "motivation-8-challenge": {
+    "objective": "Vos attentes du manager — Mise en situation",
+    "context": "Atelier mise en situation : Décrivez le cadre de management dans lequel vous donnez le meilleur. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : définir des attentes de collaboration réciproques. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : définir des attentes de collaboration réciproques.",
+      "La réponse traite bien de la situation « Vos attentes du manager » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas décrire un manager idéal irréaliste.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : définir des attentes de collaboration réciproques.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de définir des attentes de collaboration réciproques ?"
+  },
+  "structure-1-foundation": {
+    "objective": "Méthode STAR — Découverte",
+    "context": "Atelier découverte : Décrivez une réussite en suivant Situation, Tâche, Actions et Résultat. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : identifier situation, responsabilité, action et résultat. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : identifier situation, responsabilité, action et résultat.",
+      "La réponse traite bien de la situation « Méthode STAR » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas fondre action collective et action personnelle.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : identifier situation, responsabilité, action et résultat.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de identifier situation, responsabilité, action et résultat ?"
+  },
+  "structure-1-practice": {
+    "objective": "Méthode STAR — Approfondissement",
+    "context": "Atelier approfondissement : Décrivez une réussite en suivant Situation, Tâche, Actions et Résultat. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : identifier situation, responsabilité, action et résultat. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : identifier situation, responsabilité, action et résultat.",
+      "La réponse traite bien de la situation « Méthode STAR » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas fondre action collective et action personnelle.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : identifier situation, responsabilité, action et résultat.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de identifier situation, responsabilité, action et résultat ?"
+  },
+  "structure-1-challenge": {
+    "objective": "Méthode STAR — Mise en situation",
+    "context": "Atelier mise en situation : Décrivez une réussite en suivant Situation, Tâche, Actions et Résultat. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : identifier situation, responsabilité, action et résultat. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : identifier situation, responsabilité, action et résultat.",
+      "La réponse traite bien de la situation « Méthode STAR » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas fondre action collective et action personnelle.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : identifier situation, responsabilité, action et résultat.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de identifier situation, responsabilité, action et résultat ?"
+  },
+  "structure-2-foundation": {
+    "objective": "Répondre sans se disperser — Découverte",
+    "context": "Atelier découverte : Répondez en trois idées à la question : qu'apporterez-vous à l'équipe ? Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : retenir trois idées hiérarchisées. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : retenir trois idées hiérarchisées.",
+      "La réponse traite bien de la situation « Répondre sans se disperser » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Éviter le catalogue d’arguments.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : retenir trois idées hiérarchisées.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de retenir trois idées hiérarchisées ?"
+  },
+  "structure-2-practice": {
+    "objective": "Répondre sans se disperser — Approfondissement",
+    "context": "Atelier approfondissement : Répondez en trois idées à la question : qu'apporterez-vous à l'équipe ? Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : retenir trois idées hiérarchisées. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : retenir trois idées hiérarchisées.",
+      "La réponse traite bien de la situation « Répondre sans se disperser » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Éviter le catalogue d’arguments.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : retenir trois idées hiérarchisées.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de retenir trois idées hiérarchisées ?"
+  },
+  "structure-2-challenge": {
+    "objective": "Répondre sans se disperser — Mise en situation",
+    "context": "Atelier mise en situation : Répondez en trois idées à la question : qu'apporterez-vous à l'équipe ? Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : retenir trois idées hiérarchisées. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : retenir trois idées hiérarchisées.",
+      "La réponse traite bien de la situation « Répondre sans se disperser » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Éviter le catalogue d’arguments.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : retenir trois idées hiérarchisées.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de retenir trois idées hiérarchisées ?"
+  },
+  "structure-3-foundation": {
+    "objective": "Ouvrir avec une conclusion — Découverte",
+    "context": "Atelier découverte : Commencez par votre réponse principale avant de justifier votre raisonnement. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : annoncer la conclusion avant les justifications. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : annoncer la conclusion avant les justifications.",
+      "La réponse traite bien de la situation « Ouvrir avec une conclusion » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas cacher le message principal.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : annoncer la conclusion avant les justifications.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de annoncer la conclusion avant les justifications ?"
+  },
+  "structure-3-practice": {
+    "objective": "Ouvrir avec une conclusion — Approfondissement",
+    "context": "Atelier approfondissement : Commencez par votre réponse principale avant de justifier votre raisonnement. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : annoncer la conclusion avant les justifications. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : annoncer la conclusion avant les justifications.",
+      "La réponse traite bien de la situation « Ouvrir avec une conclusion » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas cacher le message principal.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : annoncer la conclusion avant les justifications.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de annoncer la conclusion avant les justifications ?"
+  },
+  "structure-3-challenge": {
+    "objective": "Ouvrir avec une conclusion — Mise en situation",
+    "context": "Atelier mise en situation : Commencez par votre réponse principale avant de justifier votre raisonnement. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : annoncer la conclusion avant les justifications. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : annoncer la conclusion avant les justifications.",
+      "La réponse traite bien de la situation « Ouvrir avec une conclusion » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas cacher le message principal.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : annoncer la conclusion avant les justifications.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de annoncer la conclusion avant les justifications ?"
+  },
+  "structure-4-foundation": {
+    "objective": "Quantifier un résultat — Découverte",
+    "context": "Atelier découverte : Expliquez un impact concret en précisant un indicateur réellement connu. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : citer un indicateur fiable et sa limite. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : citer un indicateur fiable et sa limite.",
+      "La réponse traite bien de la situation « Quantifier un résultat » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne jamais inventer un chiffre.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : citer un indicateur fiable et sa limite.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de citer un indicateur fiable et sa limite ?"
+  },
+  "structure-4-practice": {
+    "objective": "Quantifier un résultat — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez un impact concret en précisant un indicateur réellement connu. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : citer un indicateur fiable et sa limite. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : citer un indicateur fiable et sa limite.",
+      "La réponse traite bien de la situation « Quantifier un résultat » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne jamais inventer un chiffre.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : citer un indicateur fiable et sa limite.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de citer un indicateur fiable et sa limite ?"
+  },
+  "structure-4-challenge": {
+    "objective": "Quantifier un résultat — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez un impact concret en précisant un indicateur réellement connu. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : citer un indicateur fiable et sa limite. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : citer un indicateur fiable et sa limite.",
+      "La réponse traite bien de la situation « Quantifier un résultat » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne jamais inventer un chiffre.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : citer un indicateur fiable et sa limite.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de citer un indicateur fiable et sa limite ?"
+  },
+  "structure-5-foundation": {
+    "objective": "Reformuler une question ambiguë — Découverte",
+    "context": "Atelier découverte : Face à une question vague, formulez une demande de clarification professionnelle. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : poser une question de clarification ciblée. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : poser une question de clarification ciblée.",
+      "La réponse traite bien de la situation « Reformuler une question ambiguë » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas répondre sur une hypothèse silencieuse.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : poser une question de clarification ciblée.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de poser une question de clarification ciblée ?"
+  },
+  "structure-5-practice": {
+    "objective": "Reformuler une question ambiguë — Approfondissement",
+    "context": "Atelier approfondissement : Face à une question vague, formulez une demande de clarification professionnelle. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : poser une question de clarification ciblée. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : poser une question de clarification ciblée.",
+      "La réponse traite bien de la situation « Reformuler une question ambiguë » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas répondre sur une hypothèse silencieuse.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : poser une question de clarification ciblée.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de poser une question de clarification ciblée ?"
+  },
+  "structure-5-challenge": {
+    "objective": "Reformuler une question ambiguë — Mise en situation",
+    "context": "Atelier mise en situation : Face à une question vague, formulez une demande de clarification professionnelle. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : poser une question de clarification ciblée. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : poser une question de clarification ciblée.",
+      "La réponse traite bien de la situation « Reformuler une question ambiguë » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas répondre sur une hypothèse silencieuse.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : poser une question de clarification ciblée.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de poser une question de clarification ciblée ?"
+  },
+  "structure-6-foundation": {
+    "objective": "Construire un exemple négatif — Découverte",
+    "context": "Atelier découverte : Racontez un échec avec votre apprentissage et votre changement de pratique. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : assumer un apprentissage vérifiable. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : assumer un apprentissage vérifiable.",
+      "La réponse traite bien de la situation « Construire un exemple négatif » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas présenter un échec comme une réussite déguisée.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : assumer un apprentissage vérifiable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de assumer un apprentissage vérifiable ?"
+  },
+  "structure-6-practice": {
+    "objective": "Construire un exemple négatif — Approfondissement",
+    "context": "Atelier approfondissement : Racontez un échec avec votre apprentissage et votre changement de pratique. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : assumer un apprentissage vérifiable. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : assumer un apprentissage vérifiable.",
+      "La réponse traite bien de la situation « Construire un exemple négatif » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas présenter un échec comme une réussite déguisée.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : assumer un apprentissage vérifiable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de assumer un apprentissage vérifiable ?"
+  },
+  "structure-6-challenge": {
+    "objective": "Construire un exemple négatif — Mise en situation",
+    "context": "Atelier mise en situation : Racontez un échec avec votre apprentissage et votre changement de pratique. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : assumer un apprentissage vérifiable. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : assumer un apprentissage vérifiable.",
+      "La réponse traite bien de la situation « Construire un exemple négatif » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas présenter un échec comme une réussite déguisée.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : assumer un apprentissage vérifiable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de assumer un apprentissage vérifiable ?"
+  },
+  "structure-7-foundation": {
+    "objective": "Faire court sous pression — Découverte",
+    "context": "Atelier découverte : Répondez en moins de deux minutes à une question complexe. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : prioriser les informations utiles à la décision. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : prioriser les informations utiles à la décision.",
+      "La réponse traite bien de la situation « Faire court sous pression » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Éviter l’accumulation de contexte.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : prioriser les informations utiles à la décision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de prioriser les informations utiles à la décision ?"
+  },
+  "structure-7-practice": {
+    "objective": "Faire court sous pression — Approfondissement",
+    "context": "Atelier approfondissement : Répondez en moins de deux minutes à une question complexe. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : prioriser les informations utiles à la décision. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : prioriser les informations utiles à la décision.",
+      "La réponse traite bien de la situation « Faire court sous pression » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Éviter l’accumulation de contexte.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : prioriser les informations utiles à la décision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de prioriser les informations utiles à la décision ?"
+  },
+  "structure-7-challenge": {
+    "objective": "Faire court sous pression — Mise en situation",
+    "context": "Atelier mise en situation : Répondez en moins de deux minutes à une question complexe. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : prioriser les informations utiles à la décision. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : prioriser les informations utiles à la décision.",
+      "La réponse traite bien de la situation « Faire court sous pression » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Éviter l’accumulation de contexte.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : prioriser les informations utiles à la décision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de prioriser les informations utiles à la décision ?"
+  },
+  "structure-8-foundation": {
+    "objective": "Faire le lien avec le poste — Découverte",
+    "context": "Atelier découverte : Concluez un exemple en expliquant en quoi il vous prépare à la mission visée. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : conclure par la pertinence pour le poste. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : conclure par la pertinence pour le poste.",
+      "La réponse traite bien de la situation « Faire le lien avec le poste » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas répéter mécaniquement son CV.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : conclure par la pertinence pour le poste.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de conclure par la pertinence pour le poste ?"
+  },
+  "structure-8-practice": {
+    "objective": "Faire le lien avec le poste — Approfondissement",
+    "context": "Atelier approfondissement : Concluez un exemple en expliquant en quoi il vous prépare à la mission visée. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : conclure par la pertinence pour le poste. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : conclure par la pertinence pour le poste.",
+      "La réponse traite bien de la situation « Faire le lien avec le poste » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas répéter mécaniquement son CV.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : conclure par la pertinence pour le poste.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de conclure par la pertinence pour le poste ?"
+  },
+  "structure-8-challenge": {
+    "objective": "Faire le lien avec le poste — Mise en situation",
+    "context": "Atelier mise en situation : Concluez un exemple en expliquant en quoi il vous prépare à la mission visée. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : conclure par la pertinence pour le poste. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : conclure par la pertinence pour le poste.",
+      "La réponse traite bien de la situation « Faire le lien avec le poste » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas répéter mécaniquement son CV.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : conclure par la pertinence pour le poste.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de conclure par la pertinence pour le poste ?"
+  },
+  "confidence-1-foundation": {
+    "objective": "Commencer malgré le trac — Découverte",
+    "context": "Atelier découverte : Construisez une première phrase stable avant une question importante. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : préparer un début clair et naturel. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : préparer un début clair et naturel.",
+      "La réponse traite bien de la situation « Commencer malgré le trac » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas assimiler débit rapide et compétence.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : préparer un début clair et naturel.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de préparer un début clair et naturel ?"
+  },
+  "confidence-1-practice": {
+    "objective": "Commencer malgré le trac — Approfondissement",
+    "context": "Atelier approfondissement : Construisez une première phrase stable avant une question importante. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : préparer un début clair et naturel. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : préparer un début clair et naturel.",
+      "La réponse traite bien de la situation « Commencer malgré le trac » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas assimiler débit rapide et compétence.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : préparer un début clair et naturel.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de préparer un début clair et naturel ?"
+  },
+  "confidence-1-challenge": {
+    "objective": "Commencer malgré le trac — Mise en situation",
+    "context": "Atelier mise en situation : Construisez une première phrase stable avant une question importante. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : préparer un début clair et naturel. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : préparer un début clair et naturel.",
+      "La réponse traite bien de la situation « Commencer malgré le trac » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas assimiler débit rapide et compétence.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : préparer un début clair et naturel.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de préparer un début clair et naturel ?"
+  },
+  "confidence-2-foundation": {
+    "objective": "Gérer une question imprévue — Découverte",
+    "context": "Atelier découverte : Expliquez comment vous répondrez si vous avez besoin de réfléchir. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : demander quelques secondes de réflexion. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : demander quelques secondes de réflexion.",
+      "La réponse traite bien de la situation « Gérer une question imprévue » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas improviser une fausse certitude.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : demander quelques secondes de réflexion.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de demander quelques secondes de réflexion ?"
+  },
+  "confidence-2-practice": {
+    "objective": "Gérer une question imprévue — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez comment vous répondrez si vous avez besoin de réfléchir. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : demander quelques secondes de réflexion. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : demander quelques secondes de réflexion.",
+      "La réponse traite bien de la situation « Gérer une question imprévue » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas improviser une fausse certitude.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : demander quelques secondes de réflexion.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de demander quelques secondes de réflexion ?"
+  },
+  "confidence-2-challenge": {
+    "objective": "Gérer une question imprévue — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez comment vous répondrez si vous avez besoin de réfléchir. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : demander quelques secondes de réflexion. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : demander quelques secondes de réflexion.",
+      "La réponse traite bien de la situation « Gérer une question imprévue » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas improviser une fausse certitude.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : demander quelques secondes de réflexion.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de demander quelques secondes de réflexion ?"
+  },
+  "confidence-3-foundation": {
+    "objective": "Admettre une limite — Découverte",
+    "context": "Atelier découverte : Répondez à une question dont vous ignorez la réponse sans inventer. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : reconnaître ses limites et proposer une méthode. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : reconnaître ses limites et proposer une méthode.",
+      "La réponse traite bien de la situation « Admettre une limite » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas inventer une expérience.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : reconnaître ses limites et proposer une méthode.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de reconnaître ses limites et proposer une méthode ?"
+  },
+  "confidence-3-practice": {
+    "objective": "Admettre une limite — Approfondissement",
+    "context": "Atelier approfondissement : Répondez à une question dont vous ignorez la réponse sans inventer. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : reconnaître ses limites et proposer une méthode. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : reconnaître ses limites et proposer une méthode.",
+      "La réponse traite bien de la situation « Admettre une limite » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas inventer une expérience.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : reconnaître ses limites et proposer une méthode.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de reconnaître ses limites et proposer une méthode ?"
+  },
+  "confidence-3-challenge": {
+    "objective": "Admettre une limite — Mise en situation",
+    "context": "Atelier mise en situation : Répondez à une question dont vous ignorez la réponse sans inventer. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : reconnaître ses limites et proposer une méthode. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : reconnaître ses limites et proposer une méthode.",
+      "La réponse traite bien de la situation « Admettre une limite » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas inventer une expérience.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : reconnaître ses limites et proposer une méthode.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de reconnaître ses limites et proposer une méthode ?"
+  },
+  "confidence-4-foundation": {
+    "objective": "Rebondir après une erreur — Découverte",
+    "context": "Atelier découverte : Rectifiez calmement une réponse que vous venez de mal formuler. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : corriger une erreur avec calme et précision. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : corriger une erreur avec calme et précision.",
+      "La réponse traite bien de la situation « Rebondir après une erreur » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas s’excuser à répétition.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : corriger une erreur avec calme et précision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de corriger une erreur avec calme et précision ?"
+  },
+  "confidence-4-practice": {
+    "objective": "Rebondir après une erreur — Approfondissement",
+    "context": "Atelier approfondissement : Rectifiez calmement une réponse que vous venez de mal formuler. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : corriger une erreur avec calme et précision. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : corriger une erreur avec calme et précision.",
+      "La réponse traite bien de la situation « Rebondir après une erreur » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas s’excuser à répétition.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : corriger une erreur avec calme et précision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de corriger une erreur avec calme et précision ?"
+  },
+  "confidence-4-challenge": {
+    "objective": "Rebondir après une erreur — Mise en situation",
+    "context": "Atelier mise en situation : Rectifiez calmement une réponse que vous venez de mal formuler. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : corriger une erreur avec calme et précision. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : corriger une erreur avec calme et précision.",
+      "La réponse traite bien de la situation « Rebondir après une erreur » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas s’excuser à répétition.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : corriger une erreur avec calme et précision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de corriger une erreur avec calme et précision ?"
+  },
+  "confidence-5-foundation": {
+    "objective": "Faire face au silence — Découverte",
+    "context": "Atelier découverte : Préparez une manière naturelle de laisser le recruteur réfléchir. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : laisser un temps de réflexion à l’interlocuteur. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : laisser un temps de réflexion à l’interlocuteur.",
+      "La réponse traite bien de la situation « Faire face au silence » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas combler tous les silences.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : laisser un temps de réflexion à l’interlocuteur.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de laisser un temps de réflexion à l’interlocuteur ?"
+  },
+  "confidence-5-practice": {
+    "objective": "Faire face au silence — Approfondissement",
+    "context": "Atelier approfondissement : Préparez une manière naturelle de laisser le recruteur réfléchir. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : laisser un temps de réflexion à l’interlocuteur. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : laisser un temps de réflexion à l’interlocuteur.",
+      "La réponse traite bien de la situation « Faire face au silence » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas combler tous les silences.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : laisser un temps de réflexion à l’interlocuteur.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de laisser un temps de réflexion à l’interlocuteur ?"
+  },
+  "confidence-5-challenge": {
+    "objective": "Faire face au silence — Mise en situation",
+    "context": "Atelier mise en situation : Préparez une manière naturelle de laisser le recruteur réfléchir. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : laisser un temps de réflexion à l’interlocuteur. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : laisser un temps de réflexion à l’interlocuteur.",
+      "La réponse traite bien de la situation « Faire face au silence » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas combler tous les silences.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : laisser un temps de réflexion à l’interlocuteur.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de laisser un temps de réflexion à l’interlocuteur ?"
+  },
+  "confidence-6-foundation": {
+    "objective": "Sortir d'une réponse confuse — Découverte",
+    "context": "Atelier découverte : Reformulez une réponse trop longue en deux idées. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : appuyer une force sur une preuve concrète. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : appuyer une force sur une preuve concrète.",
+      "La réponse traite bien de la situation « Sortir d'une réponse confuse » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas se comparer dévalorisamment aux autres.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : appuyer une force sur une preuve concrète.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de appuyer une force sur une preuve concrète ?"
+  },
+  "confidence-6-practice": {
+    "objective": "Sortir d'une réponse confuse — Approfondissement",
+    "context": "Atelier approfondissement : Reformulez une réponse trop longue en deux idées. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : appuyer une force sur une preuve concrète. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : appuyer une force sur une preuve concrète.",
+      "La réponse traite bien de la situation « Sortir d'une réponse confuse » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas se comparer dévalorisamment aux autres.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : appuyer une force sur une preuve concrète.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de appuyer une force sur une preuve concrète ?"
+  },
+  "confidence-6-challenge": {
+    "objective": "Sortir d'une réponse confuse — Mise en situation",
+    "context": "Atelier mise en situation : Reformulez une réponse trop longue en deux idées. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : appuyer une force sur une preuve concrète. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : appuyer une force sur une preuve concrète.",
+      "La réponse traite bien de la situation « Sortir d'une réponse confuse » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas se comparer dévalorisamment aux autres.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : appuyer une force sur une preuve concrète.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de appuyer une force sur une preuve concrète ?"
+  },
+  "confidence-7-foundation": {
+    "objective": "Présenter sa force sans arrogance — Découverte",
+    "context": "Atelier découverte : Défendez une compétence en vous appuyant sur une preuve factuelle. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : reformuler une réponse trop longue. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : reformuler une réponse trop longue.",
+      "La réponse traite bien de la situation « Présenter sa force sans arrogance » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas répéter les mêmes idées.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : reformuler une réponse trop longue.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de reformuler une réponse trop longue ?"
+  },
+  "confidence-7-practice": {
+    "objective": "Présenter sa force sans arrogance — Approfondissement",
+    "context": "Atelier approfondissement : Défendez une compétence en vous appuyant sur une preuve factuelle. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : reformuler une réponse trop longue. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : reformuler une réponse trop longue.",
+      "La réponse traite bien de la situation « Présenter sa force sans arrogance » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas répéter les mêmes idées.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : reformuler une réponse trop longue.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de reformuler une réponse trop longue ?"
+  },
+  "confidence-7-challenge": {
+    "objective": "Présenter sa force sans arrogance — Mise en situation",
+    "context": "Atelier mise en situation : Défendez une compétence en vous appuyant sur une preuve factuelle. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : reformuler une réponse trop longue. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : reformuler une réponse trop longue.",
+      "La réponse traite bien de la situation « Présenter sa force sans arrogance » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas répéter les mêmes idées.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : reformuler une réponse trop longue.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de reformuler une réponse trop longue ?"
+  },
+  "confidence-8-foundation": {
+    "objective": "Recevoir une objection — Découverte",
+    "context": "Atelier découverte : Accueillez une objection sur votre expérience puis répondez avec des faits. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : répondre à une objection par des faits. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : répondre à une objection par des faits.",
+      "La réponse traite bien de la situation « Recevoir une objection » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas transformer une objection en confrontation.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : répondre à une objection par des faits.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de répondre à une objection par des faits ?"
+  },
+  "confidence-8-practice": {
+    "objective": "Recevoir une objection — Approfondissement",
+    "context": "Atelier approfondissement : Accueillez une objection sur votre expérience puis répondez avec des faits. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : répondre à une objection par des faits. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : répondre à une objection par des faits.",
+      "La réponse traite bien de la situation « Recevoir une objection » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas transformer une objection en confrontation.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : répondre à une objection par des faits.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de répondre à une objection par des faits ?"
+  },
+  "confidence-8-challenge": {
+    "objective": "Recevoir une objection — Mise en situation",
+    "context": "Atelier mise en situation : Accueillez une objection sur votre expérience puis répondez avec des faits. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : répondre à une objection par des faits. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : répondre à une objection par des faits.",
+      "La réponse traite bien de la situation « Recevoir une objection » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas transformer une objection en confrontation.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : répondre à une objection par des faits.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de répondre à une objection par des faits ?"
+  },
+  "leadership-1-foundation": {
+    "objective": "Donner un cap — Découverte",
+    "context": "Atelier découverte : Expliquez comment vous avez mobilisé une équipe autour d'un objectif. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : formuler une direction partagée et mesurable. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : formuler une direction partagée et mesurable.",
+      "La réponse traite bien de la situation « Donner un cap » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas confondre vision et slogan.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler une direction partagée et mesurable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler une direction partagée et mesurable ?"
+  },
+  "leadership-1-practice": {
+    "objective": "Donner un cap — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez comment vous avez mobilisé une équipe autour d'un objectif. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : formuler une direction partagée et mesurable. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : formuler une direction partagée et mesurable.",
+      "La réponse traite bien de la situation « Donner un cap » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas confondre vision et slogan.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler une direction partagée et mesurable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler une direction partagée et mesurable ?"
+  },
+  "leadership-1-challenge": {
+    "objective": "Donner un cap — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez comment vous avez mobilisé une équipe autour d'un objectif. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : formuler une direction partagée et mesurable. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : formuler une direction partagée et mesurable.",
+      "La réponse traite bien de la situation « Donner un cap » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas confondre vision et slogan.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler une direction partagée et mesurable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler une direction partagée et mesurable ?"
+  },
+  "leadership-2-foundation": {
+    "objective": "Déléguer efficacement — Découverte",
+    "context": "Atelier découverte : Racontez comment vous avez confié une responsabilité et assuré le suivi. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : expliciter responsabilité, autonomie et suivi. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : expliciter responsabilité, autonomie et suivi.",
+      "La réponse traite bien de la situation « Déléguer efficacement » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas présenter la délégation comme un abandon.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliciter responsabilité, autonomie et suivi.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliciter responsabilité, autonomie et suivi ?"
+  },
+  "leadership-2-practice": {
+    "objective": "Déléguer efficacement — Approfondissement",
+    "context": "Atelier approfondissement : Racontez comment vous avez confié une responsabilité et assuré le suivi. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : expliciter responsabilité, autonomie et suivi. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : expliciter responsabilité, autonomie et suivi.",
+      "La réponse traite bien de la situation « Déléguer efficacement » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas présenter la délégation comme un abandon.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliciter responsabilité, autonomie et suivi.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliciter responsabilité, autonomie et suivi ?"
+  },
+  "leadership-2-challenge": {
+    "objective": "Déléguer efficacement — Mise en situation",
+    "context": "Atelier mise en situation : Racontez comment vous avez confié une responsabilité et assuré le suivi. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : expliciter responsabilité, autonomie et suivi. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : expliciter responsabilité, autonomie et suivi.",
+      "La réponse traite bien de la situation « Déléguer efficacement » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas présenter la délégation comme un abandon.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliciter responsabilité, autonomie et suivi.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliciter responsabilité, autonomie et suivi ?"
+  },
+  "leadership-3-foundation": {
+    "objective": "Gérer une sous-performance — Découverte",
+    "context": "Atelier découverte : Décrivez comment vous accompagneriez un collaborateur en difficulté. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : décrire un accompagnement juste et factuel. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : décrire un accompagnement juste et factuel.",
+      "La réponse traite bien de la situation « Gérer une sous-performance » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas diagnostiquer la personnalité du collaborateur.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : décrire un accompagnement juste et factuel.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de décrire un accompagnement juste et factuel ?"
+  },
+  "leadership-3-practice": {
+    "objective": "Gérer une sous-performance — Approfondissement",
+    "context": "Atelier approfondissement : Décrivez comment vous accompagneriez un collaborateur en difficulté. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : décrire un accompagnement juste et factuel. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : décrire un accompagnement juste et factuel.",
+      "La réponse traite bien de la situation « Gérer une sous-performance » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas diagnostiquer la personnalité du collaborateur.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : décrire un accompagnement juste et factuel.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de décrire un accompagnement juste et factuel ?"
+  },
+  "leadership-3-challenge": {
+    "objective": "Gérer une sous-performance — Mise en situation",
+    "context": "Atelier mise en situation : Décrivez comment vous accompagneriez un collaborateur en difficulté. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : décrire un accompagnement juste et factuel. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : décrire un accompagnement juste et factuel.",
+      "La réponse traite bien de la situation « Gérer une sous-performance » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas diagnostiquer la personnalité du collaborateur.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : décrire un accompagnement juste et factuel.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de décrire un accompagnement juste et factuel ?"
+  },
+  "leadership-4-foundation": {
+    "objective": "Conduire le changement — Découverte",
+    "context": "Atelier découverte : Présentez une transformation à laquelle vous avez contribué. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : montrer l’adhésion et les obstacles d’un changement. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : montrer l’adhésion et les obstacles d’un changement.",
+      "La réponse traite bien de la situation « Conduire le changement » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas ignorer les inquiétudes des équipes.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : montrer l’adhésion et les obstacles d’un changement.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de montrer l’adhésion et les obstacles d’un changement ?"
+  },
+  "leadership-4-practice": {
+    "objective": "Conduire le changement — Approfondissement",
+    "context": "Atelier approfondissement : Présentez une transformation à laquelle vous avez contribué. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : montrer l’adhésion et les obstacles d’un changement. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : montrer l’adhésion et les obstacles d’un changement.",
+      "La réponse traite bien de la situation « Conduire le changement » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas ignorer les inquiétudes des équipes.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : montrer l’adhésion et les obstacles d’un changement.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de montrer l’adhésion et les obstacles d’un changement ?"
+  },
+  "leadership-4-challenge": {
+    "objective": "Conduire le changement — Mise en situation",
+    "context": "Atelier mise en situation : Présentez une transformation à laquelle vous avez contribué. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : montrer l’adhésion et les obstacles d’un changement. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : montrer l’adhésion et les obstacles d’un changement.",
+      "La réponse traite bien de la situation « Conduire le changement » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas ignorer les inquiétudes des équipes.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : montrer l’adhésion et les obstacles d’un changement.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de montrer l’adhésion et les obstacles d’un changement ?"
+  },
+  "leadership-5-foundation": {
+    "objective": "Prioriser une équipe — Découverte",
+    "context": "Atelier découverte : Expliquez comment répartir les efforts face à trois urgences concurrentes. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : arbitrer des priorités sous contraintes. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : arbitrer des priorités sous contraintes.",
+      "La réponse traite bien de la situation « Prioriser une équipe » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas promettre de tout livrer simultanément.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : arbitrer des priorités sous contraintes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de arbitrer des priorités sous contraintes ?"
+  },
+  "leadership-5-practice": {
+    "objective": "Prioriser une équipe — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez comment répartir les efforts face à trois urgences concurrentes. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : arbitrer des priorités sous contraintes. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : arbitrer des priorités sous contraintes.",
+      "La réponse traite bien de la situation « Prioriser une équipe » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas promettre de tout livrer simultanément.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : arbitrer des priorités sous contraintes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de arbitrer des priorités sous contraintes ?"
+  },
+  "leadership-5-challenge": {
+    "objective": "Prioriser une équipe — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez comment répartir les efforts face à trois urgences concurrentes. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : arbitrer des priorités sous contraintes. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : arbitrer des priorités sous contraintes.",
+      "La réponse traite bien de la situation « Prioriser une équipe » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas promettre de tout livrer simultanément.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : arbitrer des priorités sous contraintes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de arbitrer des priorités sous contraintes ?"
+  },
+  "leadership-6-foundation": {
+    "objective": "Influencer sans autorité — Découverte",
+    "context": "Atelier découverte : Racontez comment vous avez obtenu l'adhésion d'un acteur hors de votre hiérarchie. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : convaincre sans lien hiérarchique. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : convaincre sans lien hiérarchique.",
+      "La réponse traite bien de la situation « Influencer sans autorité » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas confondre influence et pression.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : convaincre sans lien hiérarchique.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de convaincre sans lien hiérarchique ?"
+  },
+  "leadership-6-practice": {
+    "objective": "Influencer sans autorité — Approfondissement",
+    "context": "Atelier approfondissement : Racontez comment vous avez obtenu l'adhésion d'un acteur hors de votre hiérarchie. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : convaincre sans lien hiérarchique. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : convaincre sans lien hiérarchique.",
+      "La réponse traite bien de la situation « Influencer sans autorité » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas confondre influence et pression.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : convaincre sans lien hiérarchique.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de convaincre sans lien hiérarchique ?"
+  },
+  "leadership-6-challenge": {
+    "objective": "Influencer sans autorité — Mise en situation",
+    "context": "Atelier mise en situation : Racontez comment vous avez obtenu l'adhésion d'un acteur hors de votre hiérarchie. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : convaincre sans lien hiérarchique. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : convaincre sans lien hiérarchique.",
+      "La réponse traite bien de la situation « Influencer sans autorité » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas confondre influence et pression.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : convaincre sans lien hiérarchique.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de convaincre sans lien hiérarchique ?"
+  },
+  "leadership-7-foundation": {
+    "objective": "Gérer un conflit d'équipe — Découverte",
+    "context": "Atelier découverte : Décrivez la façon dont vous restaureriez une collaboration dégradée. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : rechercher une médiation équitable. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : rechercher une médiation équitable.",
+      "La réponse traite bien de la situation « Gérer un conflit d'équipe » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas prendre parti sans entendre les faits.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : rechercher une médiation équitable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de rechercher une médiation équitable ?"
+  },
+  "leadership-7-practice": {
+    "objective": "Gérer un conflit d'équipe — Approfondissement",
+    "context": "Atelier approfondissement : Décrivez la façon dont vous restaureriez une collaboration dégradée. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : rechercher une médiation équitable. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : rechercher une médiation équitable.",
+      "La réponse traite bien de la situation « Gérer un conflit d'équipe » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas prendre parti sans entendre les faits.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : rechercher une médiation équitable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de rechercher une médiation équitable ?"
+  },
+  "leadership-7-challenge": {
+    "objective": "Gérer un conflit d'équipe — Mise en situation",
+    "context": "Atelier mise en situation : Décrivez la façon dont vous restaureriez une collaboration dégradée. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : rechercher une médiation équitable. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : rechercher une médiation équitable.",
+      "La réponse traite bien de la situation « Gérer un conflit d'équipe » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas prendre parti sans entendre les faits.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : rechercher une médiation équitable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de rechercher une médiation équitable ?"
+  },
+  "leadership-8-foundation": {
+    "objective": "Prendre une décision impopulaire — Découverte",
+    "context": "Atelier découverte : Justifiez une décision nécessaire malgré des résistances. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : expliquer une décision difficile et ses conséquences. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer une décision difficile et ses conséquences.",
+      "La réponse traite bien de la situation « Prendre une décision impopulaire » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas minimiser l’impact humain.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer une décision difficile et ses conséquences.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer une décision difficile et ses conséquences ?"
+  },
+  "leadership-8-practice": {
+    "objective": "Prendre une décision impopulaire — Approfondissement",
+    "context": "Atelier approfondissement : Justifiez une décision nécessaire malgré des résistances. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : expliquer une décision difficile et ses conséquences. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer une décision difficile et ses conséquences.",
+      "La réponse traite bien de la situation « Prendre une décision impopulaire » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas minimiser l’impact humain.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer une décision difficile et ses conséquences.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer une décision difficile et ses conséquences ?"
+  },
+  "leadership-8-challenge": {
+    "objective": "Prendre une décision impopulaire — Mise en situation",
+    "context": "Atelier mise en situation : Justifiez une décision nécessaire malgré des résistances. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : expliquer une décision difficile et ses conséquences. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer une décision difficile et ses conséquences.",
+      "La réponse traite bien de la situation « Prendre une décision impopulaire » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas minimiser l’impact humain.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer une décision difficile et ses conséquences.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer une décision difficile et ses conséquences ?"
+  },
+  "negotiation-1-foundation": {
+    "objective": "Parler de rémunération — Découverte",
+    "context": "Atelier découverte : Présentez vos attentes salariales avec une justification professionnelle. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : justifier une fourchette par marché et périmètre. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : justifier une fourchette par marché et périmètre.",
+      "La réponse traite bien de la situation « Parler de rémunération » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Éviter une exigence sans contexte.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : justifier une fourchette par marché et périmètre.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de justifier une fourchette par marché et périmètre ?"
+  },
+  "negotiation-1-practice": {
+    "objective": "Parler de rémunération — Approfondissement",
+    "context": "Atelier approfondissement : Présentez vos attentes salariales avec une justification professionnelle. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : justifier une fourchette par marché et périmètre. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : justifier une fourchette par marché et périmètre.",
+      "La réponse traite bien de la situation « Parler de rémunération » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Éviter une exigence sans contexte.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : justifier une fourchette par marché et périmètre.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de justifier une fourchette par marché et périmètre ?"
+  },
+  "negotiation-1-challenge": {
+    "objective": "Parler de rémunération — Mise en situation",
+    "context": "Atelier mise en situation : Présentez vos attentes salariales avec une justification professionnelle. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : justifier une fourchette par marché et périmètre. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : justifier une fourchette par marché et périmètre.",
+      "La réponse traite bien de la situation « Parler de rémunération » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Éviter une exigence sans contexte.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : justifier une fourchette par marché et périmètre.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de justifier une fourchette par marché et périmètre ?"
+  },
+  "negotiation-2-foundation": {
+    "objective": "Expliquer un départ — Découverte",
+    "context": "Atelier découverte : Expliquez pourquoi vous quittez votre poste sans dénigrer votre employeur. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : expliquer un départ sans critique personnelle. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer un départ sans critique personnelle.",
+      "La réponse traite bien de la situation « Expliquer un départ » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas divulguer d’informations confidentielles.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer un départ sans critique personnelle.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer un départ sans critique personnelle ?"
+  },
+  "negotiation-2-practice": {
+    "objective": "Expliquer un départ — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez pourquoi vous quittez votre poste sans dénigrer votre employeur. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : expliquer un départ sans critique personnelle. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer un départ sans critique personnelle.",
+      "La réponse traite bien de la situation « Expliquer un départ » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas divulguer d’informations confidentielles.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer un départ sans critique personnelle.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer un départ sans critique personnelle ?"
+  },
+  "negotiation-2-challenge": {
+    "objective": "Expliquer un départ — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez pourquoi vous quittez votre poste sans dénigrer votre employeur. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : expliquer un départ sans critique personnelle. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer un départ sans critique personnelle.",
+      "La réponse traite bien de la situation « Expliquer un départ » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas divulguer d’informations confidentielles.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer un départ sans critique personnelle.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer un départ sans critique personnelle ?"
+  },
+  "negotiation-3-foundation": {
+    "objective": "Justifier un manque d'expérience — Découverte",
+    "context": "Atelier découverte : Présentez vos compétences transférables face à une exigence non maîtrisée. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : valoriser des apprentissages transférables. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : valoriser des apprentissages transférables.",
+      "La réponse traite bien de la situation « Justifier un manque d'expérience » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas nier une lacune réelle.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : valoriser des apprentissages transférables.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de valoriser des apprentissages transférables ?"
+  },
+  "negotiation-3-practice": {
+    "objective": "Justifier un manque d'expérience — Approfondissement",
+    "context": "Atelier approfondissement : Présentez vos compétences transférables face à une exigence non maîtrisée. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : valoriser des apprentissages transférables. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : valoriser des apprentissages transférables.",
+      "La réponse traite bien de la situation « Justifier un manque d'expérience » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas nier une lacune réelle.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : valoriser des apprentissages transférables.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de valoriser des apprentissages transférables ?"
+  },
+  "negotiation-3-challenge": {
+    "objective": "Justifier un manque d'expérience — Mise en situation",
+    "context": "Atelier mise en situation : Présentez vos compétences transférables face à une exigence non maîtrisée. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : valoriser des apprentissages transférables. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : valoriser des apprentissages transférables.",
+      "La réponse traite bien de la situation « Justifier un manque d'expérience » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas nier une lacune réelle.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : valoriser des apprentissages transférables.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de valoriser des apprentissages transférables ?"
+  },
+  "negotiation-4-foundation": {
+    "objective": "Répondre à une objection — Découverte",
+    "context": "Atelier découverte : Répondez à : votre profil semble différent de ce que nous cherchons. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : écouter l’objection avant de répondre. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : écouter l’objection avant de répondre.",
+      "La réponse traite bien de la situation « Répondre à une objection » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas adopter un ton défensif.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : écouter l’objection avant de répondre.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de écouter l’objection avant de répondre ?"
+  },
+  "negotiation-4-practice": {
+    "objective": "Répondre à une objection — Approfondissement",
+    "context": "Atelier approfondissement : Répondez à : votre profil semble différent de ce que nous cherchons. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : écouter l’objection avant de répondre. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : écouter l’objection avant de répondre.",
+      "La réponse traite bien de la situation « Répondre à une objection » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas adopter un ton défensif.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : écouter l’objection avant de répondre.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de écouter l’objection avant de répondre ?"
+  },
+  "negotiation-4-challenge": {
+    "objective": "Répondre à une objection — Mise en situation",
+    "context": "Atelier mise en situation : Répondez à : votre profil semble différent de ce que nous cherchons. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : écouter l’objection avant de répondre. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : écouter l’objection avant de répondre.",
+      "La réponse traite bien de la situation « Répondre à une objection » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas adopter un ton défensif.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : écouter l’objection avant de répondre.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de écouter l’objection avant de répondre ?"
+  },
+  "negotiation-5-foundation": {
+    "objective": "Aborder une rupture de contrat — Découverte",
+    "context": "Atelier découverte : Expliquez factuellement une fin de collaboration difficile. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : expliquer sobrement une rupture de contrat. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer sobrement une rupture de contrat.",
+      "La réponse traite bien de la situation « Aborder une rupture de contrat » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas livrer de données privées superflues.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer sobrement une rupture de contrat.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer sobrement une rupture de contrat ?"
+  },
+  "negotiation-5-practice": {
+    "objective": "Aborder une rupture de contrat — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez factuellement une fin de collaboration difficile. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : expliquer sobrement une rupture de contrat. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer sobrement une rupture de contrat.",
+      "La réponse traite bien de la situation « Aborder une rupture de contrat » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas livrer de données privées superflues.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer sobrement une rupture de contrat.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer sobrement une rupture de contrat ?"
+  },
+  "negotiation-5-challenge": {
+    "objective": "Aborder une rupture de contrat — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez factuellement une fin de collaboration difficile. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : expliquer sobrement une rupture de contrat. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer sobrement une rupture de contrat.",
+      "La réponse traite bien de la situation « Aborder une rupture de contrat » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas livrer de données privées superflues.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer sobrement une rupture de contrat.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer sobrement une rupture de contrat ?"
+  },
+  "negotiation-6-foundation": {
+    "objective": "Gérer deux offres — Découverte",
+    "context": "Atelier découverte : Expliquez avec tact que vous avez plusieurs processus en cours. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : rester transparent sur le calendrier de décision. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : rester transparent sur le calendrier de décision.",
+      "La réponse traite bien de la situation « Gérer deux offres » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas inventer une offre concurrente.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : rester transparent sur le calendrier de décision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de rester transparent sur le calendrier de décision ?"
+  },
+  "negotiation-6-practice": {
+    "objective": "Gérer deux offres — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez avec tact que vous avez plusieurs processus en cours. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : rester transparent sur le calendrier de décision. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : rester transparent sur le calendrier de décision.",
+      "La réponse traite bien de la situation « Gérer deux offres » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas inventer une offre concurrente.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : rester transparent sur le calendrier de décision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de rester transparent sur le calendrier de décision ?"
+  },
+  "negotiation-6-challenge": {
+    "objective": "Gérer deux offres — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez avec tact que vous avez plusieurs processus en cours. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : rester transparent sur le calendrier de décision. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : rester transparent sur le calendrier de décision.",
+      "La réponse traite bien de la situation « Gérer deux offres » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas inventer une offre concurrente.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : rester transparent sur le calendrier de décision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de rester transparent sur le calendrier de décision ?"
+  },
+  "negotiation-7-foundation": {
+    "objective": "Négocier une date de démarrage — Découverte",
+    "context": "Atelier découverte : Proposez un calendrier de prise de poste réaliste. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : proposer un démarrage réalisable. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : proposer un démarrage réalisable.",
+      "La réponse traite bien de la situation « Négocier une date de démarrage » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas s’engager contre ses obligations.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : proposer un démarrage réalisable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de proposer un démarrage réalisable ?"
+  },
+  "negotiation-7-practice": {
+    "objective": "Négocier une date de démarrage — Approfondissement",
+    "context": "Atelier approfondissement : Proposez un calendrier de prise de poste réaliste. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : proposer un démarrage réalisable. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : proposer un démarrage réalisable.",
+      "La réponse traite bien de la situation « Négocier une date de démarrage » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas s’engager contre ses obligations.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : proposer un démarrage réalisable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de proposer un démarrage réalisable ?"
+  },
+  "negotiation-7-challenge": {
+    "objective": "Négocier une date de démarrage — Mise en situation",
+    "context": "Atelier mise en situation : Proposez un calendrier de prise de poste réaliste. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : proposer un démarrage réalisable. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : proposer un démarrage réalisable.",
+      "La réponse traite bien de la situation « Négocier une date de démarrage » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas s’engager contre ses obligations.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : proposer un démarrage réalisable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de proposer un démarrage réalisable ?"
+  },
+  "negotiation-8-foundation": {
+    "objective": "Poser une question exigeante — Découverte",
+    "context": "Atelier découverte : Posez une question pertinente sur les difficultés du poste. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : poser une question qui éclaire un risque réel. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : poser une question qui éclaire un risque réel.",
+      "La réponse traite bien de la situation « Poser une question exigeante » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Éviter les provocations gratuites.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : poser une question qui éclaire un risque réel.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de poser une question qui éclaire un risque réel ?"
+  },
+  "negotiation-8-practice": {
+    "objective": "Poser une question exigeante — Approfondissement",
+    "context": "Atelier approfondissement : Posez une question pertinente sur les difficultés du poste. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : poser une question qui éclaire un risque réel. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : poser une question qui éclaire un risque réel.",
+      "La réponse traite bien de la situation « Poser une question exigeante » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Éviter les provocations gratuites.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : poser une question qui éclaire un risque réel.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de poser une question qui éclaire un risque réel ?"
+  },
+  "negotiation-8-challenge": {
+    "objective": "Poser une question exigeante — Mise en situation",
+    "context": "Atelier mise en situation : Posez une question pertinente sur les difficultés du poste. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : poser une question qui éclaire un risque réel. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : poser une question qui éclaire un risque réel.",
+      "La réponse traite bien de la situation « Poser une question exigeante » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Éviter les provocations gratuites.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : poser une question qui éclaire un risque réel.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de poser une question qui éclaire un risque réel ?"
+  },
+  "problem-1-foundation": {
+    "objective": "Analyser un problème inconnu — Découverte",
+    "context": "Atelier découverte : Expliquez comment vous cadreriez un problème avec peu d'informations. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : cadrer les symptômes, parties prenantes et contraintes. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : cadrer les symptômes, parties prenantes et contraintes.",
+      "La réponse traite bien de la situation « Analyser un problème inconnu » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas choisir la solution avant le diagnostic.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : cadrer les symptômes, parties prenantes et contraintes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de cadrer les symptômes, parties prenantes et contraintes ?"
+  },
+  "problem-1-practice": {
+    "objective": "Analyser un problème inconnu — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez comment vous cadreriez un problème avec peu d'informations. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : cadrer les symptômes, parties prenantes et contraintes. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : cadrer les symptômes, parties prenantes et contraintes.",
+      "La réponse traite bien de la situation « Analyser un problème inconnu » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas choisir la solution avant le diagnostic.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : cadrer les symptômes, parties prenantes et contraintes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de cadrer les symptômes, parties prenantes et contraintes ?"
+  },
+  "problem-1-challenge": {
+    "objective": "Analyser un problème inconnu — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez comment vous cadreriez un problème avec peu d'informations. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : cadrer les symptômes, parties prenantes et contraintes. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : cadrer les symptômes, parties prenantes et contraintes.",
+      "La réponse traite bien de la situation « Analyser un problème inconnu » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas choisir la solution avant le diagnostic.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : cadrer les symptômes, parties prenantes et contraintes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de cadrer les symptômes, parties prenantes et contraintes ?"
+  },
+  "problem-2-foundation": {
+    "objective": "Prioriser des hypothèses — Découverte",
+    "context": "Atelier découverte : Choisissez deux hypothèses à tester pour comprendre une baisse de performance. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : ordonner les hypothèses par impact et testabilité. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : ordonner les hypothèses par impact et testabilité.",
+      "La réponse traite bien de la situation « Prioriser des hypothèses » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas confondre intuition et validation.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : ordonner les hypothèses par impact et testabilité.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de ordonner les hypothèses par impact et testabilité ?"
+  },
+  "problem-2-practice": {
+    "objective": "Prioriser des hypothèses — Approfondissement",
+    "context": "Atelier approfondissement : Choisissez deux hypothèses à tester pour comprendre une baisse de performance. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : ordonner les hypothèses par impact et testabilité. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : ordonner les hypothèses par impact et testabilité.",
+      "La réponse traite bien de la situation « Prioriser des hypothèses » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas confondre intuition et validation.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : ordonner les hypothèses par impact et testabilité.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de ordonner les hypothèses par impact et testabilité ?"
+  },
+  "problem-2-challenge": {
+    "objective": "Prioriser des hypothèses — Mise en situation",
+    "context": "Atelier mise en situation : Choisissez deux hypothèses à tester pour comprendre une baisse de performance. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : ordonner les hypothèses par impact et testabilité. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : ordonner les hypothèses par impact et testabilité.",
+      "La réponse traite bien de la situation « Prioriser des hypothèses » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas confondre intuition et validation.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : ordonner les hypothèses par impact et testabilité.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de ordonner les hypothèses par impact et testabilité ?"
+  },
+  "problem-3-foundation": {
+    "objective": "Décider avec des données incomplètes — Découverte",
+    "context": "Atelier découverte : Présentez votre méthode de décision sous incertitude. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : rendre visibles les risques et incertitudes. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : rendre visibles les risques et incertitudes.",
+      "La réponse traite bien de la situation « Décider avec des données incomplètes » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas prétendre disposer de données inexistantes.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : rendre visibles les risques et incertitudes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de rendre visibles les risques et incertitudes ?"
+  },
+  "problem-3-practice": {
+    "objective": "Décider avec des données incomplètes — Approfondissement",
+    "context": "Atelier approfondissement : Présentez votre méthode de décision sous incertitude. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : rendre visibles les risques et incertitudes. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : rendre visibles les risques et incertitudes.",
+      "La réponse traite bien de la situation « Décider avec des données incomplètes » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas prétendre disposer de données inexistantes.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : rendre visibles les risques et incertitudes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de rendre visibles les risques et incertitudes ?"
+  },
+  "problem-3-challenge": {
+    "objective": "Décider avec des données incomplètes — Mise en situation",
+    "context": "Atelier mise en situation : Présentez votre méthode de décision sous incertitude. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : rendre visibles les risques et incertitudes. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : rendre visibles les risques et incertitudes.",
+      "La réponse traite bien de la situation « Décider avec des données incomplètes » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas prétendre disposer de données inexistantes.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : rendre visibles les risques et incertitudes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de rendre visibles les risques et incertitudes ?"
+  },
+  "problem-4-foundation": {
+    "objective": "Mesurer un impact — Découverte",
+    "context": "Atelier découverte : Définissez trois indicateurs utiles pour évaluer une nouvelle initiative. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : choisir des indicateurs alignés aux objectifs. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : choisir des indicateurs alignés aux objectifs.",
+      "La réponse traite bien de la situation « Mesurer un impact » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas privilégier des métriques flatteuses mais inutiles.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : choisir des indicateurs alignés aux objectifs.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de choisir des indicateurs alignés aux objectifs ?"
+  },
+  "problem-4-practice": {
+    "objective": "Mesurer un impact — Approfondissement",
+    "context": "Atelier approfondissement : Définissez trois indicateurs utiles pour évaluer une nouvelle initiative. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : choisir des indicateurs alignés aux objectifs. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : choisir des indicateurs alignés aux objectifs.",
+      "La réponse traite bien de la situation « Mesurer un impact » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas privilégier des métriques flatteuses mais inutiles.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : choisir des indicateurs alignés aux objectifs.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de choisir des indicateurs alignés aux objectifs ?"
+  },
+  "problem-4-challenge": {
+    "objective": "Mesurer un impact — Mise en situation",
+    "context": "Atelier mise en situation : Définissez trois indicateurs utiles pour évaluer une nouvelle initiative. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : choisir des indicateurs alignés aux objectifs. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : choisir des indicateurs alignés aux objectifs.",
+      "La réponse traite bien de la situation « Mesurer un impact » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas privilégier des métriques flatteuses mais inutiles.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : choisir des indicateurs alignés aux objectifs.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de choisir des indicateurs alignés aux objectifs ?"
+  },
+  "problem-5-foundation": {
+    "objective": "Diagnostiquer une dérive — Découverte",
+    "context": "Atelier découverte : Expliquez votre démarche face à un projet en retard. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : distinguer cause racine et symptômes. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : distinguer cause racine et symptômes.",
+      "La réponse traite bien de la situation « Diagnostiquer une dérive » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas désigner de responsable trop tôt.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : distinguer cause racine et symptômes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de distinguer cause racine et symptômes ?"
+  },
+  "problem-5-practice": {
+    "objective": "Diagnostiquer une dérive — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez votre démarche face à un projet en retard. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : distinguer cause racine et symptômes. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : distinguer cause racine et symptômes.",
+      "La réponse traite bien de la situation « Diagnostiquer une dérive » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas désigner de responsable trop tôt.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : distinguer cause racine et symptômes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de distinguer cause racine et symptômes ?"
+  },
+  "problem-5-challenge": {
+    "objective": "Diagnostiquer une dérive — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez votre démarche face à un projet en retard. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : distinguer cause racine et symptômes. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : distinguer cause racine et symptômes.",
+      "La réponse traite bien de la situation « Diagnostiquer une dérive » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas désigner de responsable trop tôt.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : distinguer cause racine et symptômes.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de distinguer cause racine et symptômes ?"
+  },
+  "problem-6-foundation": {
+    "objective": "Arbitrer un compromis — Découverte",
+    "context": "Atelier découverte : Présentez un choix entre qualité, délai et coût. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : expliciter un compromis coût-qualité-délai. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : expliciter un compromis coût-qualité-délai.",
+      "La réponse traite bien de la situation « Arbitrer un compromis » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas promettre une optimisation simultanée sans preuve.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliciter un compromis coût-qualité-délai.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliciter un compromis coût-qualité-délai ?"
+  },
+  "problem-6-practice": {
+    "objective": "Arbitrer un compromis — Approfondissement",
+    "context": "Atelier approfondissement : Présentez un choix entre qualité, délai et coût. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : expliciter un compromis coût-qualité-délai. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : expliciter un compromis coût-qualité-délai.",
+      "La réponse traite bien de la situation « Arbitrer un compromis » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas promettre une optimisation simultanée sans preuve.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliciter un compromis coût-qualité-délai.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliciter un compromis coût-qualité-délai ?"
+  },
+  "problem-6-challenge": {
+    "objective": "Arbitrer un compromis — Mise en situation",
+    "context": "Atelier mise en situation : Présentez un choix entre qualité, délai et coût. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : expliciter un compromis coût-qualité-délai. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : expliciter un compromis coût-qualité-délai.",
+      "La réponse traite bien de la situation « Arbitrer un compromis » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas promettre une optimisation simultanée sans preuve.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliciter un compromis coût-qualité-délai.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliciter un compromis coût-qualité-délai ?"
+  },
+  "problem-7-foundation": {
+    "objective": "Faire un plan d'action — Découverte",
+    "context": "Atelier découverte : Construisez les trois premières étapes face à une situation urgente. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : proposer un plan court avec propriétaires et échéances. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : proposer un plan court avec propriétaires et échéances.",
+      "La réponse traite bien de la situation « Faire un plan d'action » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas lister des actions sans priorité.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : proposer un plan court avec propriétaires et échéances.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de proposer un plan court avec propriétaires et échéances ?"
+  },
+  "problem-7-practice": {
+    "objective": "Faire un plan d'action — Approfondissement",
+    "context": "Atelier approfondissement : Construisez les trois premières étapes face à une situation urgente. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : proposer un plan court avec propriétaires et échéances. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : proposer un plan court avec propriétaires et échéances.",
+      "La réponse traite bien de la situation « Faire un plan d'action » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas lister des actions sans priorité.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : proposer un plan court avec propriétaires et échéances.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de proposer un plan court avec propriétaires et échéances ?"
+  },
+  "problem-7-challenge": {
+    "objective": "Faire un plan d'action — Mise en situation",
+    "context": "Atelier mise en situation : Construisez les trois premières étapes face à une situation urgente. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : proposer un plan court avec propriétaires et échéances. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : proposer un plan court avec propriétaires et échéances.",
+      "La réponse traite bien de la situation « Faire un plan d'action » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas lister des actions sans priorité.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : proposer un plan court avec propriétaires et échéances.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de proposer un plan court avec propriétaires et échéances ?"
+  },
+  "problem-8-foundation": {
+    "objective": "Expliquer un échec d'analyse — Découverte",
+    "context": "Atelier découverte : Décrivez une hypothèse démentie par les faits et votre réaction. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : reconnaître et corriger une hypothèse démentie. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : reconnaître et corriger une hypothèse démentie.",
+      "La réponse traite bien de la situation « Expliquer un échec d'analyse » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas cacher les données contradictoires.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : reconnaître et corriger une hypothèse démentie.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de reconnaître et corriger une hypothèse démentie ?"
+  },
+  "problem-8-practice": {
+    "objective": "Expliquer un échec d'analyse — Approfondissement",
+    "context": "Atelier approfondissement : Décrivez une hypothèse démentie par les faits et votre réaction. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : reconnaître et corriger une hypothèse démentie. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : reconnaître et corriger une hypothèse démentie.",
+      "La réponse traite bien de la situation « Expliquer un échec d'analyse » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas cacher les données contradictoires.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : reconnaître et corriger une hypothèse démentie.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de reconnaître et corriger une hypothèse démentie ?"
+  },
+  "problem-8-challenge": {
+    "objective": "Expliquer un échec d'analyse — Mise en situation",
+    "context": "Atelier mise en situation : Décrivez une hypothèse démentie par les faits et votre réaction. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : reconnaître et corriger une hypothèse démentie. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : reconnaître et corriger une hypothèse démentie.",
+      "La réponse traite bien de la situation « Expliquer un échec d'analyse » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas cacher les données contradictoires.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : reconnaître et corriger une hypothèse démentie.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de reconnaître et corriger une hypothèse démentie ?"
+  },
+  "technical-1-foundation": {
+    "objective": "Expliquer une architecture — Découverte",
+    "context": "Atelier découverte : Présentez l'architecture générale d'un système que vous connaissez. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : décrire frontières, composants et flux du système. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : décrire frontières, composants et flux du système.",
+      "La réponse traite bien de la situation « Expliquer une architecture » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas noyer le recruteur dans les acronymes.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : décrire frontières, composants et flux du système.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de décrire frontières, composants et flux du système ?"
+  },
+  "technical-1-practice": {
+    "objective": "Expliquer une architecture — Approfondissement",
+    "context": "Atelier approfondissement : Présentez l'architecture générale d'un système que vous connaissez. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : décrire frontières, composants et flux du système. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : décrire frontières, composants et flux du système.",
+      "La réponse traite bien de la situation « Expliquer une architecture » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas noyer le recruteur dans les acronymes.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : décrire frontières, composants et flux du système.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de décrire frontières, composants et flux du système ?"
+  },
+  "technical-1-challenge": {
+    "objective": "Expliquer une architecture — Mise en situation",
+    "context": "Atelier mise en situation : Présentez l'architecture générale d'un système que vous connaissez. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : décrire frontières, composants et flux du système. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : décrire frontières, composants et flux du système.",
+      "La réponse traite bien de la situation « Expliquer une architecture » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas noyer le recruteur dans les acronymes.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : décrire frontières, composants et flux du système.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de décrire frontières, composants et flux du système ?"
+  },
+  "technical-2-foundation": {
+    "objective": "Défendre un choix technique — Découverte",
+    "context": "Atelier découverte : Justifiez une technologie face à une alternative crédible. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : comparer les options avec critères explicites. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : comparer les options avec critères explicites.",
+      "La réponse traite bien de la situation « Défendre un choix technique » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas déclarer une technologie universellement supérieure.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : comparer les options avec critères explicites.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de comparer les options avec critères explicites ?"
+  },
+  "technical-2-practice": {
+    "objective": "Défendre un choix technique — Approfondissement",
+    "context": "Atelier approfondissement : Justifiez une technologie face à une alternative crédible. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : comparer les options avec critères explicites. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : comparer les options avec critères explicites.",
+      "La réponse traite bien de la situation « Défendre un choix technique » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas déclarer une technologie universellement supérieure.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : comparer les options avec critères explicites.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de comparer les options avec critères explicites ?"
+  },
+  "technical-2-challenge": {
+    "objective": "Défendre un choix technique — Mise en situation",
+    "context": "Atelier mise en situation : Justifiez une technologie face à une alternative crédible. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : comparer les options avec critères explicites. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : comparer les options avec critères explicites.",
+      "La réponse traite bien de la situation « Défendre un choix technique » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas déclarer une technologie universellement supérieure.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : comparer les options avec critères explicites.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de comparer les options avec critères explicites ?"
+  },
+  "technical-3-foundation": {
+    "objective": "Traiter un incident — Découverte",
+    "context": "Atelier découverte : Décrivez votre démarche face à une panne critique. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : distinguer confinement, diagnostic, correction et prévention. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : distinguer confinement, diagnostic, correction et prévention.",
+      "La réponse traite bien de la situation « Traiter un incident » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas ignorer l’impact pour les utilisateurs.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : distinguer confinement, diagnostic, correction et prévention.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de distinguer confinement, diagnostic, correction et prévention ?"
+  },
+  "technical-3-practice": {
+    "objective": "Traiter un incident — Approfondissement",
+    "context": "Atelier approfondissement : Décrivez votre démarche face à une panne critique. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : distinguer confinement, diagnostic, correction et prévention. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : distinguer confinement, diagnostic, correction et prévention.",
+      "La réponse traite bien de la situation « Traiter un incident » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas ignorer l’impact pour les utilisateurs.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : distinguer confinement, diagnostic, correction et prévention.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de distinguer confinement, diagnostic, correction et prévention ?"
+  },
+  "technical-3-challenge": {
+    "objective": "Traiter un incident — Mise en situation",
+    "context": "Atelier mise en situation : Décrivez votre démarche face à une panne critique. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : distinguer confinement, diagnostic, correction et prévention. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : distinguer confinement, diagnostic, correction et prévention.",
+      "La réponse traite bien de la situation « Traiter un incident » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas ignorer l’impact pour les utilisateurs.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : distinguer confinement, diagnostic, correction et prévention.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de distinguer confinement, diagnostic, correction et prévention ?"
+  },
+  "technical-4-foundation": {
+    "objective": "Fiabiliser la qualité — Découverte",
+    "context": "Atelier découverte : Expliquez comment vous testez et validez un livrable. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : montrer une stratégie de tests adaptée au risque. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : montrer une stratégie de tests adaptée au risque.",
+      "La réponse traite bien de la situation « Fiabiliser la qualité » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas confondre quantité de tests et qualité.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : montrer une stratégie de tests adaptée au risque.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de montrer une stratégie de tests adaptée au risque ?"
+  },
+  "technical-4-practice": {
+    "objective": "Fiabiliser la qualité — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez comment vous testez et validez un livrable. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : montrer une stratégie de tests adaptée au risque. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : montrer une stratégie de tests adaptée au risque.",
+      "La réponse traite bien de la situation « Fiabiliser la qualité » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas confondre quantité de tests et qualité.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : montrer une stratégie de tests adaptée au risque.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de montrer une stratégie de tests adaptée au risque ?"
+  },
+  "technical-4-challenge": {
+    "objective": "Fiabiliser la qualité — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez comment vous testez et validez un livrable. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : montrer une stratégie de tests adaptée au risque. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : montrer une stratégie de tests adaptée au risque.",
+      "La réponse traite bien de la situation « Fiabiliser la qualité » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas confondre quantité de tests et qualité.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : montrer une stratégie de tests adaptée au risque.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de montrer une stratégie de tests adaptée au risque ?"
+  },
+  "technical-5-foundation": {
+    "objective": "Protéger les données — Découverte",
+    "context": "Atelier découverte : Présentez les précautions prises pour traiter des données sensibles. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : aborder minimisation, accès et traçabilité des données. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : aborder minimisation, accès et traçabilité des données.",
+      "La réponse traite bien de la situation « Protéger les données » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas révéler des informations sensibles réelles.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : aborder minimisation, accès et traçabilité des données.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de aborder minimisation, accès et traçabilité des données ?"
+  },
+  "technical-5-practice": {
+    "objective": "Protéger les données — Approfondissement",
+    "context": "Atelier approfondissement : Présentez les précautions prises pour traiter des données sensibles. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : aborder minimisation, accès et traçabilité des données. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : aborder minimisation, accès et traçabilité des données.",
+      "La réponse traite bien de la situation « Protéger les données » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas révéler des informations sensibles réelles.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : aborder minimisation, accès et traçabilité des données.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de aborder minimisation, accès et traçabilité des données ?"
+  },
+  "technical-5-challenge": {
+    "objective": "Protéger les données — Mise en situation",
+    "context": "Atelier mise en situation : Présentez les précautions prises pour traiter des données sensibles. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : aborder minimisation, accès et traçabilité des données. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : aborder minimisation, accès et traçabilité des données.",
+      "La réponse traite bien de la situation « Protéger les données » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas révéler des informations sensibles réelles.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : aborder minimisation, accès et traçabilité des données.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de aborder minimisation, accès et traçabilité des données ?"
+  },
+  "technical-6-foundation": {
+    "objective": "Faire parler des données — Découverte",
+    "context": "Atelier découverte : Racontez comment vous avez transformé une analyse en décision. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : relier une analyse à une décision observable. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : relier une analyse à une décision observable.",
+      "La réponse traite bien de la situation « Faire parler des données » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas confondre corrélation et causalité.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : relier une analyse à une décision observable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de relier une analyse à une décision observable ?"
+  },
+  "technical-6-practice": {
+    "objective": "Faire parler des données — Approfondissement",
+    "context": "Atelier approfondissement : Racontez comment vous avez transformé une analyse en décision. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : relier une analyse à une décision observable. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : relier une analyse à une décision observable.",
+      "La réponse traite bien de la situation « Faire parler des données » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas confondre corrélation et causalité.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : relier une analyse à une décision observable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de relier une analyse à une décision observable ?"
+  },
+  "technical-6-challenge": {
+    "objective": "Faire parler des données — Mise en situation",
+    "context": "Atelier mise en situation : Racontez comment vous avez transformé une analyse en décision. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : relier une analyse à une décision observable. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : relier une analyse à une décision observable.",
+      "La réponse traite bien de la situation « Faire parler des données » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas confondre corrélation et causalité.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : relier une analyse à une décision observable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de relier une analyse à une décision observable ?"
+  },
+  "technical-7-foundation": {
+    "objective": "Gérer une dette technique — Découverte",
+    "context": "Atelier découverte : Justifiez votre méthode de priorisation d'une dette technique. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : argumenter la priorisation d’une dette technique. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : argumenter la priorisation d’une dette technique.",
+      "La réponse traite bien de la situation « Gérer une dette technique » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas promettre zéro dette technique.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : argumenter la priorisation d’une dette technique.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de argumenter la priorisation d’une dette technique ?"
+  },
+  "technical-7-practice": {
+    "objective": "Gérer une dette technique — Approfondissement",
+    "context": "Atelier approfondissement : Justifiez votre méthode de priorisation d'une dette technique. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : argumenter la priorisation d’une dette technique. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : argumenter la priorisation d’une dette technique.",
+      "La réponse traite bien de la situation « Gérer une dette technique » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas promettre zéro dette technique.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : argumenter la priorisation d’une dette technique.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de argumenter la priorisation d’une dette technique ?"
+  },
+  "technical-7-challenge": {
+    "objective": "Gérer une dette technique — Mise en situation",
+    "context": "Atelier mise en situation : Justifiez votre méthode de priorisation d'une dette technique. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : argumenter la priorisation d’une dette technique. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : argumenter la priorisation d’une dette technique.",
+      "La réponse traite bien de la situation « Gérer une dette technique » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas promettre zéro dette technique.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : argumenter la priorisation d’une dette technique.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de argumenter la priorisation d’une dette technique ?"
+  },
+  "technical-8-foundation": {
+    "objective": "Collaborer avec le métier — Découverte",
+    "context": "Atelier découverte : Expliquez comment vous traduisez un besoin métier en exigences concrètes. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : traduire une demande métier en critères vérifiables. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : traduire une demande métier en critères vérifiables.",
+      "La réponse traite bien de la situation « Collaborer avec le métier » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas présenter une exigence supposée comme validée.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : traduire une demande métier en critères vérifiables.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de traduire une demande métier en critères vérifiables ?"
+  },
+  "technical-8-practice": {
+    "objective": "Collaborer avec le métier — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez comment vous traduisez un besoin métier en exigences concrètes. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : traduire une demande métier en critères vérifiables. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : traduire une demande métier en critères vérifiables.",
+      "La réponse traite bien de la situation « Collaborer avec le métier » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas présenter une exigence supposée comme validée.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : traduire une demande métier en critères vérifiables.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de traduire une demande métier en critères vérifiables ?"
+  },
+  "technical-8-challenge": {
+    "objective": "Collaborer avec le métier — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez comment vous traduisez un besoin métier en exigences concrètes. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : traduire une demande métier en critères vérifiables. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : traduire une demande métier en critères vérifiables.",
+      "La réponse traite bien de la situation « Collaborer avec le métier » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas présenter une exigence supposée comme validée.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : traduire une demande métier en critères vérifiables.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de traduire une demande métier en critères vérifiables ?"
+  },
+  "graduates-1-foundation": {
+    "objective": "Présenter un projet académique — Découverte",
+    "context": "Atelier découverte : Présentez un projet d'études comme une expérience démontrant une compétence. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : présenter une réalisation académique vérifiable. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : présenter une réalisation académique vérifiable.",
+      "La réponse traite bien de la situation « Présenter un projet académique » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas faire passer un projet académique pour un emploi.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : présenter une réalisation académique vérifiable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de présenter une réalisation académique vérifiable ?"
+  },
+  "graduates-1-practice": {
+    "objective": "Présenter un projet académique — Approfondissement",
+    "context": "Atelier approfondissement : Présentez un projet d'études comme une expérience démontrant une compétence. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : présenter une réalisation académique vérifiable. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : présenter une réalisation académique vérifiable.",
+      "La réponse traite bien de la situation « Présenter un projet académique » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas faire passer un projet académique pour un emploi.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : présenter une réalisation académique vérifiable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de présenter une réalisation académique vérifiable ?"
+  },
+  "graduates-1-challenge": {
+    "objective": "Présenter un projet académique — Mise en situation",
+    "context": "Atelier mise en situation : Présentez un projet d'études comme une expérience démontrant une compétence. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : présenter une réalisation académique vérifiable. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : présenter une réalisation académique vérifiable.",
+      "La réponse traite bien de la situation « Présenter un projet académique » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas faire passer un projet académique pour un emploi.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : présenter une réalisation académique vérifiable.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de présenter une réalisation académique vérifiable ?"
+  },
+  "graduates-2-foundation": {
+    "objective": "Valoriser un stage — Découverte",
+    "context": "Atelier découverte : Racontez une contribution précise apportée pendant un stage. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : décrire une contribution précise lors d’un stage. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : décrire une contribution précise lors d’un stage.",
+      "La réponse traite bien de la situation « Valoriser un stage » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas attribuer tous les résultats du stage à soi seul.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : décrire une contribution précise lors d’un stage.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de décrire une contribution précise lors d’un stage ?"
+  },
+  "graduates-2-practice": {
+    "objective": "Valoriser un stage — Approfondissement",
+    "context": "Atelier approfondissement : Racontez une contribution précise apportée pendant un stage. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : décrire une contribution précise lors d’un stage. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : décrire une contribution précise lors d’un stage.",
+      "La réponse traite bien de la situation « Valoriser un stage » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas attribuer tous les résultats du stage à soi seul.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : décrire une contribution précise lors d’un stage.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de décrire une contribution précise lors d’un stage ?"
+  },
+  "graduates-2-challenge": {
+    "objective": "Valoriser un stage — Mise en situation",
+    "context": "Atelier mise en situation : Racontez une contribution précise apportée pendant un stage. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : décrire une contribution précise lors d’un stage. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : décrire une contribution précise lors d’un stage.",
+      "La réponse traite bien de la situation « Valoriser un stage » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas attribuer tous les résultats du stage à soi seul.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : décrire une contribution précise lors d’un stage.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de décrire une contribution précise lors d’un stage ?"
+  },
+  "graduates-3-foundation": {
+    "objective": "Parler sans expérience — Découverte",
+    "context": "Atelier découverte : Répondez à la question : pourquoi vous choisir sans expérience professionnelle ? Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : valoriser potentiel, apprentissage et réalisations. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : valoriser potentiel, apprentissage et réalisations.",
+      "La réponse traite bien de la situation « Parler sans expérience » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas inventer une expérience professionnelle.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : valoriser potentiel, apprentissage et réalisations.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de valoriser potentiel, apprentissage et réalisations ?"
+  },
+  "graduates-3-practice": {
+    "objective": "Parler sans expérience — Approfondissement",
+    "context": "Atelier approfondissement : Répondez à la question : pourquoi vous choisir sans expérience professionnelle ? Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : valoriser potentiel, apprentissage et réalisations. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : valoriser potentiel, apprentissage et réalisations.",
+      "La réponse traite bien de la situation « Parler sans expérience » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas inventer une expérience professionnelle.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : valoriser potentiel, apprentissage et réalisations.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de valoriser potentiel, apprentissage et réalisations ?"
+  },
+  "graduates-3-challenge": {
+    "objective": "Parler sans expérience — Mise en situation",
+    "context": "Atelier mise en situation : Répondez à la question : pourquoi vous choisir sans expérience professionnelle ? Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : valoriser potentiel, apprentissage et réalisations. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : valoriser potentiel, apprentissage et réalisations.",
+      "La réponse traite bien de la situation « Parler sans expérience » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas inventer une expérience professionnelle.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : valoriser potentiel, apprentissage et réalisations.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de valoriser potentiel, apprentissage et réalisations ?"
+  },
+  "graduates-4-foundation": {
+    "objective": "Expliquer son mémoire ou PFE — Découverte",
+    "context": "Atelier découverte : Présentez la problématique, la méthode et le résultat de votre projet de fin d'études. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : expliquer problème, méthode et limites du PFE. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer problème, méthode et limites du PFE.",
+      "La réponse traite bien de la situation « Expliquer son mémoire ou PFE » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas prétendre que le projet prouve une expertise senior.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer problème, méthode et limites du PFE.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer problème, méthode et limites du PFE ?"
+  },
+  "graduates-4-practice": {
+    "objective": "Expliquer son mémoire ou PFE — Approfondissement",
+    "context": "Atelier approfondissement : Présentez la problématique, la méthode et le résultat de votre projet de fin d'études. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : expliquer problème, méthode et limites du PFE. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer problème, méthode et limites du PFE.",
+      "La réponse traite bien de la situation « Expliquer son mémoire ou PFE » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas prétendre que le projet prouve une expertise senior.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer problème, méthode et limites du PFE.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer problème, méthode et limites du PFE ?"
+  },
+  "graduates-4-challenge": {
+    "objective": "Expliquer son mémoire ou PFE — Mise en situation",
+    "context": "Atelier mise en situation : Présentez la problématique, la méthode et le résultat de votre projet de fin d'études. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : expliquer problème, méthode et limites du PFE. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : expliquer problème, méthode et limites du PFE.",
+      "La réponse traite bien de la situation « Expliquer son mémoire ou PFE » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas prétendre que le projet prouve une expertise senior.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : expliquer problème, méthode et limites du PFE.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de expliquer problème, méthode et limites du PFE ?"
+  },
+  "graduates-5-foundation": {
+    "objective": "Exprimer sa motivation junior — Découverte",
+    "context": "Atelier découverte : Expliquez ce que vous voulez apprendre dans les premiers mois. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : formuler des objectifs d’apprentissage concrets. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : formuler des objectifs d’apprentissage concrets.",
+      "La réponse traite bien de la situation « Exprimer sa motivation junior » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas réciter des motivations vagues.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler des objectifs d’apprentissage concrets.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler des objectifs d’apprentissage concrets ?"
+  },
+  "graduates-5-practice": {
+    "objective": "Exprimer sa motivation junior — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez ce que vous voulez apprendre dans les premiers mois. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : formuler des objectifs d’apprentissage concrets. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : formuler des objectifs d’apprentissage concrets.",
+      "La réponse traite bien de la situation « Exprimer sa motivation junior » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas réciter des motivations vagues.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler des objectifs d’apprentissage concrets.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler des objectifs d’apprentissage concrets ?"
+  },
+  "graduates-5-challenge": {
+    "objective": "Exprimer sa motivation junior — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez ce que vous voulez apprendre dans les premiers mois. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : formuler des objectifs d’apprentissage concrets. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : formuler des objectifs d’apprentissage concrets.",
+      "La réponse traite bien de la situation « Exprimer sa motivation junior » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas réciter des motivations vagues.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler des objectifs d’apprentissage concrets.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler des objectifs d’apprentissage concrets ?"
+  },
+  "graduates-6-foundation": {
+    "objective": "Valoriser une association — Découverte",
+    "context": "Atelier découverte : Reliez un engagement associatif à une compétence professionnelle. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : relier une activité associative à une compétence observée. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : relier une activité associative à une compétence observée.",
+      "La réponse traite bien de la situation « Valoriser une association » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas sur-vendre une responsabilité associative.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : relier une activité associative à une compétence observée.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de relier une activité associative à une compétence observée ?"
+  },
+  "graduates-6-practice": {
+    "objective": "Valoriser une association — Approfondissement",
+    "context": "Atelier approfondissement : Reliez un engagement associatif à une compétence professionnelle. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : relier une activité associative à une compétence observée. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : relier une activité associative à une compétence observée.",
+      "La réponse traite bien de la situation « Valoriser une association » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas sur-vendre une responsabilité associative.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : relier une activité associative à une compétence observée.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de relier une activité associative à une compétence observée ?"
+  },
+  "graduates-6-challenge": {
+    "objective": "Valoriser une association — Mise en situation",
+    "context": "Atelier mise en situation : Reliez un engagement associatif à une compétence professionnelle. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : relier une activité associative à une compétence observée. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : relier une activité associative à une compétence observée.",
+      "La réponse traite bien de la situation « Valoriser une association » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas sur-vendre une responsabilité associative.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : relier une activité associative à une compétence observée.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de relier une activité associative à une compétence observée ?"
+  },
+  "graduates-7-foundation": {
+    "objective": "Demander un encadrement — Découverte",
+    "context": "Atelier découverte : Expliquez le type de feedback dont vous avez besoin pour progresser. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : formuler un besoin d’accompagnement compatible avec l’autonomie. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : formuler un besoin d’accompagnement compatible avec l’autonomie.",
+      "La réponse traite bien de la situation « Demander un encadrement » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas attendre que le manager organise chaque tâche.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler un besoin d’accompagnement compatible avec l’autonomie.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler un besoin d’accompagnement compatible avec l’autonomie ?"
+  },
+  "graduates-7-practice": {
+    "objective": "Demander un encadrement — Approfondissement",
+    "context": "Atelier approfondissement : Expliquez le type de feedback dont vous avez besoin pour progresser. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : formuler un besoin d’accompagnement compatible avec l’autonomie. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : formuler un besoin d’accompagnement compatible avec l’autonomie.",
+      "La réponse traite bien de la situation « Demander un encadrement » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas attendre que le manager organise chaque tâche.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler un besoin d’accompagnement compatible avec l’autonomie.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler un besoin d’accompagnement compatible avec l’autonomie ?"
+  },
+  "graduates-7-challenge": {
+    "objective": "Demander un encadrement — Mise en situation",
+    "context": "Atelier mise en situation : Expliquez le type de feedback dont vous avez besoin pour progresser. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : formuler un besoin d’accompagnement compatible avec l’autonomie. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : formuler un besoin d’accompagnement compatible avec l’autonomie.",
+      "La réponse traite bien de la situation « Demander un encadrement » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas attendre que le manager organise chaque tâche.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : formuler un besoin d’accompagnement compatible avec l’autonomie.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de formuler un besoin d’accompagnement compatible avec l’autonomie ?"
+  },
+  "graduates-8-foundation": {
+    "objective": "Poser ses premières questions — Découverte",
+    "context": "Atelier découverte : Formulez trois questions de qualité sur un stage. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : poser des questions sur missions, apprentissage et supervision. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : poser des questions sur missions, apprentissage et supervision.",
+      "La réponse traite bien de la situation « Poser ses premières questions » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Ne pas réduire la discussion aux avantages.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : poser des questions sur missions, apprentissage et supervision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de poser des questions sur missions, apprentissage et supervision ?"
+  },
+  "graduates-8-practice": {
+    "objective": "Poser ses premières questions — Approfondissement",
+    "context": "Atelier approfondissement : Formulez trois questions de qualité sur un stage. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : poser des questions sur missions, apprentissage et supervision. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : poser des questions sur missions, apprentissage et supervision.",
+      "La réponse traite bien de la situation « Poser ses premières questions » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Ne pas réduire la discussion aux avantages.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : poser des questions sur missions, apprentissage et supervision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de poser des questions sur missions, apprentissage et supervision ?"
+  },
+  "graduates-8-challenge": {
+    "objective": "Poser ses premières questions — Mise en situation",
+    "context": "Atelier mise en situation : Formulez trois questions de qualité sur un stage. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : poser des questions sur missions, apprentissage et supervision. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : poser des questions sur missions, apprentissage et supervision.",
+      "La réponse traite bien de la situation « Poser ses premières questions » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Ne pas réduire la discussion aux avantages.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Trame d'entraînement à personnaliser : « Dans [situation précise], ma responsabilité était [rôle]. J'ai choisi [action concrète] pour [raison]. Le résultat observable a été [conséquence vérifiable]. Ce que j'en retiens : [apprentissage]. » Pour cet exercice : poser des questions sur missions, apprentissage et supervision.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de poser des questions sur missions, apprentissage et supervision ?"
+  },
+  "international-1-foundation": {
+    "objective": "Introduce yourself in English — Découverte",
+    "context": "Atelier découverte : Introduce your background and career goal in clear professional English. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : tell a concise career story in accessible English. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : tell a concise career story in accessible English.",
+      "La réponse traite bien de la situation « Introduce yourself in English » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Avoid memorised idioms and exaggerated fluency claims.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: tell a concise career story in accessible English.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de tell a concise career story in accessible English ?"
+  },
+  "international-1-practice": {
+    "objective": "Introduce yourself in English — Approfondissement",
+    "context": "Atelier approfondissement : Introduce your background and career goal in clear professional English. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : tell a concise career story in accessible English. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : tell a concise career story in accessible English.",
+      "La réponse traite bien de la situation « Introduce yourself in English » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Avoid memorised idioms and exaggerated fluency claims.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: tell a concise career story in accessible English.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de tell a concise career story in accessible English ?"
+  },
+  "international-1-challenge": {
+    "objective": "Introduce yourself in English — Mise en situation",
+    "context": "Atelier mise en situation : Introduce your background and career goal in clear professional English. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : tell a concise career story in accessible English. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : tell a concise career story in accessible English.",
+      "La réponse traite bien de la situation « Introduce yourself in English » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Avoid memorised idioms and exaggerated fluency claims.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: tell a concise career story in accessible English.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de tell a concise career story in accessible English ?"
+  },
+  "international-2-foundation": {
+    "objective": "Behavioral interview in English — Découverte",
+    "context": "Atelier découverte : Tell me about a time you handled disagreement in an international team. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : give a specific example of cross-cultural teamwork. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : give a specific example of cross-cultural teamwork.",
+      "La réponse traite bien de la situation « Behavioral interview in English » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Avoid stereotyping colleagues by nationality.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: give a specific example of cross-cultural teamwork.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de give a specific example of cross-cultural teamwork ?"
+  },
+  "international-2-practice": {
+    "objective": "Behavioral interview in English — Approfondissement",
+    "context": "Atelier approfondissement : Tell me about a time you handled disagreement in an international team. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : give a specific example of cross-cultural teamwork. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : give a specific example of cross-cultural teamwork.",
+      "La réponse traite bien de la situation « Behavioral interview in English » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Avoid stereotyping colleagues by nationality.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: give a specific example of cross-cultural teamwork.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de give a specific example of cross-cultural teamwork ?"
+  },
+  "international-2-challenge": {
+    "objective": "Behavioral interview in English — Mise en situation",
+    "context": "Atelier mise en situation : Tell me about a time you handled disagreement in an international team. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : give a specific example of cross-cultural teamwork. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : give a specific example of cross-cultural teamwork.",
+      "La réponse traite bien de la situation « Behavioral interview in English » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Avoid stereotyping colleagues by nationality.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: give a specific example of cross-cultural teamwork.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de give a specific example of cross-cultural teamwork ?"
+  },
+  "international-3-foundation": {
+    "objective": "Explain a career move — Découverte",
+    "context": "Atelier découverte : Explain why you are considering an international opportunity. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : describe an international move with realistic motivations. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : describe an international move with realistic motivations.",
+      "La réponse traite bien de la situation « Explain a career move » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Avoid vague reasons detached from the job.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: describe an international move with realistic motivations.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de describe an international move with realistic motivations ?"
+  },
+  "international-3-practice": {
+    "objective": "Explain a career move — Approfondissement",
+    "context": "Atelier approfondissement : Explain why you are considering an international opportunity. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : describe an international move with realistic motivations. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : describe an international move with realistic motivations.",
+      "La réponse traite bien de la situation « Explain a career move » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Avoid vague reasons detached from the job.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: describe an international move with realistic motivations.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de describe an international move with realistic motivations ?"
+  },
+  "international-3-challenge": {
+    "objective": "Explain a career move — Mise en situation",
+    "context": "Atelier mise en situation : Explain why you are considering an international opportunity. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : describe an international move with realistic motivations. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : describe an international move with realistic motivations.",
+      "La réponse traite bien de la situation « Explain a career move » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Avoid vague reasons detached from the job.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: describe an international move with realistic motivations.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de describe an international move with realistic motivations ?"
+  },
+  "international-4-foundation": {
+    "objective": "Remote collaboration — Découverte",
+    "context": "Atelier découverte : Describe how you collaborate effectively across time zones. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : explain async communication and timezone coordination. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : explain async communication and timezone coordination.",
+      "La réponse traite bien de la situation « Remote collaboration » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Avoid assuming everyone is always available.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: explain async communication and timezone coordination.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de explain async communication and timezone coordination ?"
+  },
+  "international-4-practice": {
+    "objective": "Remote collaboration — Approfondissement",
+    "context": "Atelier approfondissement : Describe how you collaborate effectively across time zones. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : explain async communication and timezone coordination. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : explain async communication and timezone coordination.",
+      "La réponse traite bien de la situation « Remote collaboration » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Avoid assuming everyone is always available.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: explain async communication and timezone coordination.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de explain async communication and timezone coordination ?"
+  },
+  "international-4-challenge": {
+    "objective": "Remote collaboration — Mise en situation",
+    "context": "Atelier mise en situation : Describe how you collaborate effectively across time zones. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : explain async communication and timezone coordination. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : explain async communication and timezone coordination.",
+      "La réponse traite bien de la situation « Remote collaboration » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Avoid assuming everyone is always available.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: explain async communication and timezone coordination.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de explain async communication and timezone coordination ?"
+  },
+  "international-5-foundation": {
+    "objective": "Cultural adaptability — Découverte",
+    "context": "Atelier découverte : Give an example of adapting your communication to a different working culture. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : show adaptation through listening and clarification. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : show adaptation through listening and clarification.",
+      "La réponse traite bien de la situation « Cultural adaptability » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Avoid presenting cultures as homogeneous.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: show adaptation through listening and clarification.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de show adaptation through listening and clarification ?"
+  },
+  "international-5-practice": {
+    "objective": "Cultural adaptability — Approfondissement",
+    "context": "Atelier approfondissement : Give an example of adapting your communication to a different working culture. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : show adaptation through listening and clarification. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : show adaptation through listening and clarification.",
+      "La réponse traite bien de la situation « Cultural adaptability » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Avoid presenting cultures as homogeneous.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: show adaptation through listening and clarification.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de show adaptation through listening and clarification ?"
+  },
+  "international-5-challenge": {
+    "objective": "Cultural adaptability — Mise en situation",
+    "context": "Atelier mise en situation : Give an example of adapting your communication to a different working culture. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : show adaptation through listening and clarification. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : show adaptation through listening and clarification.",
+      "La réponse traite bien de la situation « Cultural adaptability » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Avoid presenting cultures as homogeneous.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: show adaptation through listening and clarification.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de show adaptation through listening and clarification ?"
+  },
+  "international-6-foundation": {
+    "objective": "Present a technical project — Découverte",
+    "context": "Atelier découverte : Explain a technical project to an international non-specialist audience. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : explain a technical project to non-specialists. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : explain a technical project to non-specialists.",
+      "La réponse traite bien de la situation « Present a technical project » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Avoid acronyms without context.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: explain a technical project to non-specialists.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de explain a technical project to non-specialists ?"
+  },
+  "international-6-practice": {
+    "objective": "Present a technical project — Approfondissement",
+    "context": "Atelier approfondissement : Explain a technical project to an international non-specialist audience. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : explain a technical project to non-specialists. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : explain a technical project to non-specialists.",
+      "La réponse traite bien de la situation « Present a technical project » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Avoid acronyms without context.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: explain a technical project to non-specialists.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de explain a technical project to non-specialists ?"
+  },
+  "international-6-challenge": {
+    "objective": "Present a technical project — Mise en situation",
+    "context": "Atelier mise en situation : Explain a technical project to an international non-specialist audience. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : explain a technical project to non-specialists. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : explain a technical project to non-specialists.",
+      "La réponse traite bien de la situation « Present a technical project » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Avoid acronyms without context.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: explain a technical project to non-specialists.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de explain a technical project to non-specialists ?"
+  },
+  "international-7-foundation": {
+    "objective": "Ask smart questions — Découverte",
+    "context": "Atelier découverte : Prepare thoughtful questions about an international team and its ways of working. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : ask thoughtful questions about goals and collaboration. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : ask thoughtful questions about goals and collaboration.",
+      "La réponse traite bien de la situation « Ask smart questions » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Avoid questions answered in the job description.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: ask thoughtful questions about goals and collaboration.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de ask thoughtful questions about goals and collaboration ?"
+  },
+  "international-7-practice": {
+    "objective": "Ask smart questions — Approfondissement",
+    "context": "Atelier approfondissement : Prepare thoughtful questions about an international team and its ways of working. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : ask thoughtful questions about goals and collaboration. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : ask thoughtful questions about goals and collaboration.",
+      "La réponse traite bien de la situation « Ask smart questions » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Avoid questions answered in the job description.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: ask thoughtful questions about goals and collaboration.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de ask thoughtful questions about goals and collaboration ?"
+  },
+  "international-7-challenge": {
+    "objective": "Ask smart questions — Mise en situation",
+    "context": "Atelier mise en situation : Prepare thoughtful questions about an international team and its ways of working. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : ask thoughtful questions about goals and collaboration. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : ask thoughtful questions about goals and collaboration.",
+      "La réponse traite bien de la situation « Ask smart questions » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Avoid questions answered in the job description.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: ask thoughtful questions about goals and collaboration.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de ask thoughtful questions about goals and collaboration ?"
+  },
+  "international-8-foundation": {
+    "objective": "Handle a misunderstanding — Découverte",
+    "context": "Atelier découverte : Explain how you would clarify a misunderstanding during an English-language interview. Identifiez une idée principale et ajoutez un exemple concret.",
+    "methodology": "Objectif : clarify misunderstanding calmly and check shared understanding. À ce niveau, décrivez une situation simple et un exemple vérifiable.",
+    "evidence": [
+      "L'idée principale est explicite : clarify misunderstanding calmly and check shared understanding.",
+      "La réponse traite bien de la situation « Handle a misunderstanding » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau découverte est respecté : décrivez une situation simple et un exemple vérifiable."
+    ],
+    "pitfalls": [
+      "Avoid blaming language ability or cultural origin.",
+      "Ne surchargez pas la réponse.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: clarify misunderstanding calmly and check shared understanding.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de clarify misunderstanding calmly and check shared understanding ?"
+  },
+  "international-8-practice": {
+    "objective": "Handle a misunderstanding — Approfondissement",
+    "context": "Atelier approfondissement : Explain how you would clarify a misunderstanding during an English-language interview. Formulez une réponse structurée et justifiez votre raisonnement.",
+    "methodology": "Objectif : clarify misunderstanding calmly and check shared understanding. À ce niveau, justifiez votre choix et reliez-le aux attentes du poste.",
+    "evidence": [
+      "L'idée principale est explicite : clarify misunderstanding calmly and check shared understanding.",
+      "La réponse traite bien de la situation « Handle a misunderstanding » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau approfondissement est respecté : justifiez votre choix et reliez-le aux attentes du poste."
+    ],
+    "pitfalls": [
+      "Avoid blaming language ability or cultural origin.",
+      "Évitez les arguments génériques.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: clarify misunderstanding calmly and check shared understanding.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de clarify misunderstanding calmly and check shared understanding ?"
+  },
+  "international-8-challenge": {
+    "objective": "Handle a misunderstanding — Mise en situation",
+    "context": "Atelier mise en situation : Explain how you would clarify a misunderstanding during an English-language interview. Imaginez un recruteur exigeant : répondez avec précision puis anticipez une relance.",
+    "methodology": "Objectif : clarify misunderstanding calmly and check shared understanding. À ce niveau, anticipez une relance critique et expliquez un arbitrage ou une limite.",
+    "evidence": [
+      "L'idée principale est explicite : clarify misunderstanding calmly and check shared understanding.",
+      "La réponse traite bien de la situation « Handle a misunderstanding » plutôt que d'un sujet voisin.",
+      "Au moins un fait, une action ou un raisonnement personnel est identifiable.",
+      "Le niveau mise en situation est respecté : anticipez une relance critique et expliquez un arbitrage ou une limite."
+    ],
+    "pitfalls": [
+      "Avoid blaming language ability or cultural origin.",
+      "Ne répondez pas avec une certitude inventée.",
+      "Inventer une situation, un chiffre ou une expertise non vécue."
+    ],
+    "example": "Guided response structure (adapt it to your real experience): 'The situation was [specific context]. My responsibility was [your role]. I chose [action] because [reason]. The observed result was [verifiable result]. Looking back, I learned [lesson].' Focus on: clarify misunderstanding calmly and check shared understanding.",
+    "reflection": "Pouvez-vous démontrer comment votre réponse permet de clarify misunderstanding calmly and check shared understanding ?"
+  }
+};
+
 export function premiumGuide(exercise: Exercise): PremiumGuide | null {
-  return guides[exercise.id] ?? a2Guides[exercise.id] ?? null;
+  return guides[exercise.id] ?? a2Guides[exercise.id] ?? remainingGuides[exercise.id] ?? null;
 }
