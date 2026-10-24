@@ -518,3 +518,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .report-v2-delay-3 { animation-delay: .28s; }
 .report-v2-delay-4 { animation-delay: .35s; }
 @media (prefers-reduced-motion: reduce) { .report-v2-rise { animation: none; } }
+
+/* Academy belongs to the candidate dashboard visual system. */
+.academy-ui .academy-cta { color: #fff; background: linear-gradient(110deg,#5769fe,#8751eb,#be52c9); box-shadow: 0 12px 28px rgba(107,78,204,.22); }
+.academy-ui .interview-v2-glass { color: #5766a3; background: rgba(255,255,255,.88); border-color: #dce2f4; }
+.academy-ui .interview-v2-pill { background: #f1eeff; color: #7856bd; }
+.academy-ui input, .academy-ui textarea, .academy-ui select { color: #172041; }
+.academy-ui button:focus-visible, .academy-ui a:focus-visible { outline: 3px solid #8071e8; outline-offset: 3px; }
