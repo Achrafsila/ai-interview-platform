@@ -1,14 +1,17 @@
 import {paths,stepsForPath} from "./paths";
 
-export type NeedKey="stress"|"structure"|"communication"|"technical"|"leadership"|"motivation"|"unknown";
+export type NeedKey="stress"|"structure"|"communication"|"technical"|"leadership"|"motivation"|"first_interview"|"internship"|"negotiation"|"unknown";
 type NeedRule={key:NeedKey;label:string;terms:RegExp;pathIds:string[];module:string};
 const rules:NeedRule[]=[
+ {key:"first_interview",label:"Préparer un premier entretien d’embauche",terms:/premier.{0,35}entretien|premiere.{0,35}entrevue|premier.{0,35}embauche|premier emploi|premier job|debuter.{0,20}entretien/i,pathIds:["first-job","graduate-tech","stress"],module:"pitch"},
+ {key:"internship",label:"Préparer un entretien de stage ou PFE",terms:/entretien.{0,30}(stage|pfe|alternance)|stage.{0,30}entretien|pfe|alternance/i,pathIds:["internship","first-job","graduate-tech"],module:"graduates"},
+ {key:"negotiation",label:"Négocier mon salaire",terms:/salaire|remuneration|negoci|pretention salariale/i,pathIds:["salary","hard-questions","promotion"],module:"negotiation"},
  {key:"stress",label:"Gérer le stress en entretien",terms:/stress|angoiss|anxi|pression|panique|trac|peur|perd.{0,12}moyen|confiance|intimid|nerveu/i,pathIds:["stress","hard-questions","eloquence"],module:"confidence"},
  {key:"structure",label:"Structurer mes réponses",terms:/structur|star|réponse.{0,12}longue|synthès|organis.{0,12}idée/i,pathIds:["star","eloquence","behavioral"],module:"structure"},
  {key:"communication",label:"Mieux communiquer à l’oral",terms:/communi|oral|éloquen|articul|fluidit|exprimer|parler|clarté/i,pathIds:["eloquence","stress","behavioral"],module:"communication"},
  {key:"technical",label:"Renforcer l’argumentation métier",terms:/techni|data|développeur|code|cyber|devops|métier|expertis/i,pathIds:["data","engineering","graduate-tech"],module:"technical"},
  {key:"leadership",label:"Défendre mon leadership",terms:/leadership|manage|manager|équipe|délég|encadr/i,pathIds:["lead-first","promotion","senior-leader"],module:"leadership"},
- {key:"motivation",label:"Expliquer mes motivations",terms:/motivat|pourquoi ce poste|reconversion|changement de carrière/i,pathIds:["career-switch","first-job","internal-mobility"],module:"motivation"}
+ {key:"motivation",label:"Expliquer mes motivations",terms:/motivat|pourquoi ce poste|reconversion|changement de carriere/i,pathIds:["career-switch","first-job","internal-mobility"],module:"motivation"}
 ];
 export function interpretNeed(text:string){
  const normalized=text.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
@@ -17,7 +20,11 @@ export function interpretNeed(text:string){
 }
 export function pedagogicalMatch(text:string,focus?:string){
  const need=interpretNeed(text+" "+(focus||""));
- if(!need)return {kind:"clarify" as const,question:"Sur quel aspect de vos entretiens souhaitez-vous progresser en priorité ?",options:["Gérer mon stress","Structurer mes réponses","Communiquer à l’oral","Approfondir les questions métier"]};
+ if(!need){
+  const normalized=text.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  if(/entretien|embauche|recrutement|preparer|preparation/.test(normalized))return {kind:"clarify" as const,question:"Pour mieux vous orienter, quel est votre objectif principal pour cet entretien ?",options:["Préparer mon premier entretien","Gérer mon stress","Structurer mes réponses","Répondre aux questions difficiles"]};
+  return {kind:"clarify" as const,question:"Quel résultat souhaitez-vous obtenir grâce à votre entraînement ?",options:["Préparer mon premier entretien","Mieux communiquer à l’oral","Négocier mon salaire","Défendre mon leadership"]};
+ }
  const candidates=need.pathIds.map(id=>paths.find(p=>p.id===id)).filter((p):p is (typeof paths)[number]=>Boolean(p));
  const path=candidates[0];
  if(!path)return {kind:"clarify" as const,question:"Pouvez-vous préciser la difficulté rencontrée ?",options:["Questions imprévues","Présentation personnelle","Questions métier"]};
