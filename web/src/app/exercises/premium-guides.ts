@@ -10,12 +10,12 @@ export type PremiumGuide = {
   reflection: string;
 };
 
-/** Premier lot de références éditoriales : scénarios écrits et critères adaptés à la difficulté. */
+/** Révision pédagogique assistée par IA, pour pilote interne uniquement. Pas de validation humaine/certification. */
 const guides: Record<string, PremiumGuide> = {
   "pitch-1-foundation": {
     objective: "Construire une présentation claire et mémorable en une minute.",
     context: "Vous rencontrez un recruteur pour la première fois. Il attend une présentation ciblée, et non la lecture de votre CV.",
-    methodology: "Présent → expérience utile → preuve → lien avec le poste. Visez 100 à 140 mots maximum, puis entraînez-vous à voix haute.",
+    methodology: "Présent → expérience utile → preuve → lien avec le poste. Visez environ 90 à 120 mots, puis ajustez au débit naturel et à la clarté de votre voix.",
     evidence: ["Une identité professionnelle claire dès l'ouverture.", "Une expérience ou un projet concret illustrant une compétence.", "Une phrase qui relie le parcours au poste convoité.", "Une durée proche de 60 secondes à l'oral."],
     pitfalls: ["Énumérer toutes ses expériences dans l'ordre chronologique.", "Utiliser des adjectifs sans illustration.", "Terminer sans évoquer le poste ciblé."],
     example: "Je termine une formation en analyse de données. Lors de mon projet de fin d'études, j'ai construit un tableau de bord pour faciliter le suivi d'indicateurs. J'y ai appris à clarifier un besoin métier et à présenter des résultats simplement. Je souhaite aujourd'hui développer ces compétences dans une équipe Data.",
@@ -36,7 +36,7 @@ const guides: Record<string, PremiumGuide> = {
     methodology: "Répondez d'abord par une différence observable, apportez une preuve, puis formulez le bénéfice attendu pour l'équipe.",
     evidence: ["Une différenciation précise, sans prétention excessive.", "Une preuve personnelle et vérifiable.", "Un impact formulé en termes métier.", "Une réponse concise malgré l'interruption."],
     pitfalls: ["Confondre assurance et affirmation non démontrée.", "Reprendre tout son CV pour se justifier.", "Inventer une mesure pour convaincre."],
-    example: "Ma différence tient à ma capacité à transformer un problème mal cadré en plan d'action partagé. Dans mon dernier projet, j'ai aligné les équipes métier et technique sur trois priorités mesurables. Cela a rendu les arbitrages plus rapides. C'est cette approche structurée que je peux apporter ici.",
+    example: "Ma différence tient à ma capacité à transformer un problème mal cadré en plan d'action partagé. Dans mon dernier projet, j'ai aligné les équipes métier et technique sur trois priorités mesurables. Les décisions ont pu être prises dans un cadre partagé, avec des responsabilités plus claires. C'est cette approche structurée que je peux apporter ici.",
     reflection: "Votre argument résisterait-il à la question : « Pouvez-vous me le démontrer ? »"
   },
   "communication-1-foundation": {
@@ -54,7 +54,7 @@ const guides: Record<string, PremiumGuide> = {
     methodology: "Situation factuelle → point de divergence → écoute → solution → apprentissage. Distinguez les faits de vos interprétations.",
     evidence: ["Le désaccord est expliqué sans jugement de valeur.", "Votre rôle et vos actions sont identifiables.", "La recherche de solution est explicite.", "L'apprentissage est formulé honnêtement."],
     pitfalls: ["Présenter l'autre personne comme le problème.", "Décrire une victoire personnelle plutôt qu'une résolution.", "Omettre ce qui a changé après le conflit."],
-    example: "Nous avions des priorités différentes pour une livraison. J'ai proposé de clarifier les contraintes de chacun avec notre responsable de projet. Nous avons identifié un périmètre commun, puis revu le calendrier. J'ai appris à expliciter les arbitrages plus tôt.",
+    example: "Nous avions des priorités différentes pour une livraison. J'ai proposé de clarifier les contraintes de chacun avec notre responsable de projet. Nous avons identifié un périmètre commun, puis revu le calendrier. J’ai appris à clarifier les contraintes de chacun avant qu’un désaccord ne s’installe.",
     reflection: "Votre récit donne-t-il des preuves de coopération et de responsabilité ?"
   },
   "structure-1-foundation": {
