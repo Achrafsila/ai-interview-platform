@@ -1,0 +1,7 @@
+PASS vague clarify  Quel type d'entretien préparez‑vous (ex. commercial, technique, RH, premier emploi, stage) et quels aspects vous semblent les plus difficiles ?
+PASS precise-rh recommend softskills,hr_final
+PASS sales-technical recommend sales
+PASS clarified recommend first_interview,internship,softskills
+PASS followup recommend softskills,hr_final
+PASS clear-stress recommend stress,communication
+BEHAVIOR 6/6 evaluated of 6

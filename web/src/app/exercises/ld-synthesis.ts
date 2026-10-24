@@ -1,5 +1,6 @@
 import {interpretNeed} from "./ld-matching";
 import {paths,stepsForPath} from "./paths";
+import {exercises} from "./catalog";
 
 export const themes=[
  {key:"softskills",label:"Valoriser vos soft skills",pathId:"behavioral",module:"behavior"},
@@ -9,14 +10,30 @@ export const themes=[
  {key:"communication",label:"Renforcer votre communication",pathId:"eloquence",module:"communication"},
  {key:"motivation",label:"Exprimer votre motivation",pathId:"first-job",module:"motivation"},
  {key:"first_interview",label:"Préparer votre premier entretien",pathId:"first-job",module:"pitch"},
- {key:"sales",label:"Préparer un entretien pour un poste commercial",pathId:"sales",module:"negotiation"},
+ {key:"sales",label:"Préparer un entretien pour un poste commercial",pathId:"sales",module:"pitch"},
  {key:"technical",label:"Défendre vos compétences techniques",pathId:"graduate-tech",module:"technical"},
  {key:"leadership",label:"Illustrer votre leadership",pathId:"lead-first",module:"leadership"},
  {key:"negotiation",label:"Préparer une négociation",pathId:"salary",module:"negotiation"},
  {key:"internship",label:"Préparer votre stage ou PFE",pathId:"internship",module:"graduates"},
 ] as const;
-type Step={exerciseId:string;exerciseName:string;pathId:string;pathTitle:string;goal:string};
+const methods:Record<string,string>={
+ softskills:"Préparer un exemple précis de collaboration ou d’adaptation, puis une qualité et un axe de progrès illustrés par des faits.",
+ hr_final:"Relier une expérience concrète aux attentes RH, en distinguant votre contribution et vos apprentissages.",
+ structure:"Organiser une réponse avec la situation, la tâche, votre action personnelle et le résultat, sans réciter une formule.",
+ stress:"Formuler une réponse à une question déstabilisante, puis identifier une stratégie pour retrouver le fil.",
+ communication:"Travailler un message oral bref, intelligible et illustré par un exemple.",
+ motivation:"Relier vos motivations au poste avec deux preuves issues de votre parcours.",
+ first_interview:"Construire une présentation claire du parcours et une preuve adaptée à un premier entretien.",
+ sales:"Présenter une réalisation commerciale en précisant le contexte client, l’action conduite et la valeur apportée.",
+ technical:"Expliquer une décision technique, ses alternatives et ses compromis, sans inventer de résultats.",
+ leadership:"Illustrer une décision d’équipe, votre rôle, les arbitrages et ce que vous avez appris.",
+ negotiation:"Argumenter une attente de rémunération avec des critères professionnels et une posture ouverte.",
+ internship:"Valoriser un projet académique ou de stage en mettant l’accent sur votre contribution réelle."
+};
+type Step={exerciseId:string;exerciseName:string;pathId:string;pathTitle:string;goal:string;method:string};
 export function synthesizeLearningNeeds(userMessages:string[],semanticKeys?:string[]){
+ const resetAt=userMessages.findLastIndex((message,index)=>index>0&&/\b(finalement|uniquement|seulement|desormais|plutot|je change d.avis)\b/i.test(message.normalize("NFD").replace(/[\u0300-\u036f]/g,"")));
+ if(resetAt>0)userMessages=userMessages.slice(resetAt);
  const found:Array<(typeof themes)[number]["key"]>=[];
  for(const message of userMessages){
   const normalized=message.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
@@ -53,8 +70,10 @@ export function synthesizeLearningNeeds(userMessages:string[],semanticKeys?:stri
  for(const theme of selected){
   const path=paths.find(p=>p.id===theme.pathId);
   if(!path)continue;
-  const exercise=stepsForPath(path).find(s=>s.category===theme.module)?.exercise;
-  if(exercise&&!steps.some(s=>s.exerciseId===exercise.id))steps.push({exerciseId:exercise.id,exerciseName:exercise.name,pathId:path.id,pathTitle:path.title,goal:theme.label});
+  const preferred=stepsForPath(path).find(s=>s.category===theme.module)?.exercise;
+  const alternatives=exercises.filter(e=>e.category===theme.module&&e.level===path.level);
+  const exercise=[preferred,...alternatives].find(e=>e&&!steps.some(s=>s.exerciseId===e.id));
+  if(exercise)steps.push({exerciseId:exercise.id,exerciseName:exercise.name,pathId:path.id,pathTitle:path.title,goal:theme.label,method:methods[theme.key]});
  }
  return {needs:selected.map(t=>({key:t.key,label:t.label})),steps};
 }

@@ -1,0 +1,47 @@
+Academy V2 release acceptance — 2026-10-24
+PASS sales-technical => sales | sales
+PASS hr-softskills => softskills, hr_final, structure | behavioral,behavioral,star
+PASS stress => stress | stress
+PASS star => structure | star
+PASS internship => internship | internship
+PASS first-job => first_interview | first-job
+PASS salary => negotiation | salary
+PASS leadership => leadership | lead-first
+PASS oral => communication | eloquence
+RESULT 9 / 9
+PASS hr-multi softskills,hr_final,structure steps 3
+PASS commercial-no-it sales steps 1
+PASS exclusive-switch communication steps 1
+PASS stress-oral stress,communication steps 2
+PASS pfe-tech technical,internship steps 2
+CURRICULUM QA 233 path steps 12 theme mappings 5 dialogue cases failures 0
+EXERCISES 288 unique ids 288
+CATEGORIES 12 behavior:24 communication:24 confidence:24 graduates:24 international:24 leadership:24 motivation:24 negotiation:24 pitch:24 problem:24 structure:24 technical:24
+LEVELS challenge:96 foundation:96 practice:96
+PATHS 47 module references 233
+CONTENT QUALITY PASS structural checks only
+EDITORIAL GATE PENDING: expert L&D validation required before actual candidates
+PASS candidate and coach login
+PASS owner upsert
+PASS owner readback
+PASS other account cannot read candidate plan
+PASS other account cannot modify candidate plan
+PASS QA plan cleaned
+PASS anonymous denied
+PASS coach denied
+PASS cross-origin denied
+PASS invalid prompt denied
+PASS vague request handled
+PASS stage recommendation
+PASS recommendation persisted
+PASS multi-need curriculum
+PASS cross-session follow-up uses saved curriculum
+PASS explicit goal switch replaces previous programme
+PASS QA plan removed
+API INTEGRATION 11/11
+PASS Academy page rendered
+PASS Persisted programme used for next step
+PASS Personalised programme visible in Paths
+PASS Programme contains pedagogical objective
+PASS Programme links to exercises
+BROWSER E2E 5/5

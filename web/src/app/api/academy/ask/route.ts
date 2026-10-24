@@ -11,6 +11,11 @@ Ta sortie est EXCLUSIVEMENT un objet JSON valide avec "action" ("clarify" ou "re
 Règles : "entretien technique de responsable commercial" signifie sales, PAS technical. La clé technical est réservée aux compétences réellement informatiques, data ou ingénierie logicielle. « entretien technique » décrit seulement une modalité et ne prouve aucune difficulté technique IT. "soft skills" + "qualités défauts" sont des compétences comportementales, pas uniquement STAR. "et pour les soft skills ?" ajoute la compétence, conserve le cadre RH/DRH et ne répète pas la même recommandation sans l'adapter.
 Si le besoin suffit à recommander, choisis "recommend" sans interroger par routine. Si le type d'entretien ou la difficulté est vraiment indéterminé, demande UNE clarification contextualisée, jamais les mêmes quatre choix systématiques. Si tu as déjà posé une question ciblée et que le candidat précise enfin le type (stage PFE, entretien RH, premier emploi), ne demande pas automatiquement une deuxième précision : recommande une première préparation adaptable. Une deuxième clarification est justifiée uniquement si aucun exercice utile ne peut être choisi. Maximum deux clarifications par conversation. N'invente jamais de diplôme, poste, score ou données personnelles. Ne demande pas d'informations sensibles.`;
 function response(data:object){return NextResponse.json(data,{headers:{"Cache-Control":"no-store"}});}
+async function savePlan(client:NonNullable<Awaited<ReturnType<typeof getServerAuthClient>>>,userId:string,recommendation:ReturnType<typeof makeRecommendation>,source:"rules"|"ai-ld"){
+ const {error}=await client.from("academy_learning_plans").upsert({user_id:userId,needs:recommendation.needs,steps:recommendation.steps,primary_path_id:recommendation.pathId,context:recommendation.context||null,source,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+ if(error){console.error("Academy plan persistence:",error.code);return false;}
+ return true;
+}
 export async function POST(request:NextRequest){
  const origin=request.headers.get("origin");
  if(origin&&origin!==request.nextUrl.origin)return NextResponse.json({error:"Origine non autorisée."},{status:403});
@@ -26,12 +31,19 @@ export async function POST(request:NextRequest){
  const history=messages as Turn[];
  const last=history.at(-1);
  if(last?.role!=="user"||last.content.trim().length<3)return NextResponse.json({error:"Précisez votre demande."},{status:400});
+ const {data:quotaAllowed,error:quotaError}=await client.rpc("academy_claim_chat_quota");
+ if(quotaError){console.error("Academy rate-limit check:",quotaError.code);return NextResponse.json({error:"Le coach est temporairement indisponible. Réessayez dans un instant."},{status:503,headers:{"Cache-Control":"no-store"}});}
+ if(!quotaAllowed)return NextResponse.json({error:"Vous avez envoyé beaucoup de demandes. Réessayez dans une minute."},{status:429,headers:{"Retry-After":"60","Cache-Control":"no-store"}});
  const userTurns=history.filter(m=>m.role==="user").map(m=>m.content);
- const fallback=synthesizeLearningNeeds(userTurns);
+ const followup=userTurns.length===1&&/^(et\b|et pour\b|aussi\b|en plus\b|egalement\b|ajoute\b)/i.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim());
+ const {data:previous}=followup?await client.from("academy_learning_plans").select("needs,context").eq("user_id",user.id).maybeSingle():{data:null};
+ const oldKeys=Array.isArray(previous?.needs)?previous.needs.flatMap((entry:unknown)=>typeof entry==="object"&&entry!==null&&"key" in entry&&typeof entry.key==="string"&&validKeys.has(entry.key)?[entry.key]:[]):[];
+ const currentKeys=synthesizeLearningNeeds(userTurns).needs.map(n=>n.key);
+ const fallback=synthesizeLearningNeeds(userTurns,[...currentKeys,...oldKeys]);
  const key=process.env.GROQ_API_KEY;
- if(!key)return response(fallback.steps.length?{...makeRecommendation(fallback),source:"rules"}:{kind:"clarify",question:"Pouvez-vous préciser le type d’entretien et ce que vous souhaitez améliorer ?",options:["Entretien final RH","Premier entretien","Questions métier"]});
+ if(!key){if(fallback.steps.length){const plan=makeRecommendation(fallback);const saved=await savePlan(client,user.id,plan,"rules");return response({...plan,source:"rules",saved});}return response({kind:"clarify",question:"Pouvez-vous préciser le type d’entretien et ce que vous souhaitez améliorer ?",options:["Entretien final RH","Premier entretien","Questions métier"]});}
  try{
-  const upstream=await fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${key}`},body:JSON.stringify({model:process.env.ACADEMY_AI_MODEL||"openai/gpt-oss-120b",temperature:0.1,max_tokens:1200,response_format:{type:"json_object"},messages:[{role:"system",content:coachingInstruction},...history.map(t=>({role:t.role,content:t.content}))]}),signal:AbortSignal.timeout(20000),cache:"no-store"});
+  const upstream=await fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${key}`},body:JSON.stringify({model:process.env.ACADEMY_AI_MODEL||"openai/gpt-oss-120b",temperature:0.1,max_tokens:1200,response_format:{type:"json_object"},messages:[{role:"system",content:coachingInstruction+(oldKeys.length?`\nContexte pédagogique précédent (continuation volontaire du candidat) : compétences ${oldKeys.join(", ")}; contexte ${String(previous?.context||"").slice(0,130)}. Conserve les compétences précédentes seulement si compatibles avec sa demande actuelle.`:"")},...history.map(t=>({role:t.role,content:t.content}))]}),signal:AbortSignal.timeout(20000),cache:"no-store"});
   if(!upstream.ok){console.error("Academy classifier provider status:",upstream.status);throw Error("provider error");}
   const output=await upstream.json() as {choices?:{message?:{content?:string}}[]};
   const decision=JSON.parse(output.choices?.[0]?.message?.content||"null") as Decision|null;
@@ -51,12 +63,14 @@ export async function POST(request:NextRequest){
    const options=decision.options.filter((x):x is string=>typeof x==="string"&&x.trim().length>1).slice(0,4);
    if(options.length>=2)return response({kind:"clarify",question:decision.question.slice(0,240),options});
   }
-  return response(synthesis.steps.length?{...makeRecommendation(synthesis,decision.context),source:"ai-ld"}:{kind:"clarify",question:"Quelle partie de l’entretien vous pose le plus de difficulté ?",options:["Questions RH et comportementales","Stress et prise de parole","Questions sur mon métier"]});
+  if(synthesis.steps.length){const plan=makeRecommendation(synthesis,decision.context||previous?.context||undefined);const saved=await savePlan(client,user.id,plan,"ai-ld");return response({...plan,source:"ai-ld",saved});}
+  return response({kind:"clarify",question:"Quelle partie de l’entretien vous pose le plus de difficulté ?",options:["Questions RH et comportementales","Stress et prise de parole","Questions sur mon métier"]});
  }catch{
-  return response(fallback.steps.length?{...makeRecommendation(fallback),source:"rules"}:{kind:"clarify",question:"Pour adapter les exercices, quelle difficulté souhaitez-vous travailler ?",options:["Questions RH et soft skills","Structurer mes réponses","Questions techniques métier"]});
+  if(fallback.steps.length){const plan=makeRecommendation(fallback);const saved=await savePlan(client,user.id,plan,"rules");return response({...plan,source:"rules",saved});}
+  return response({kind:"clarify",question:"Pour adapter les exercices, quelle difficulté souhaitez-vous travailler ?",options:["Questions RH et soft skills","Structurer mes réponses","Questions techniques métier"]});
  }
 }
 function makeRecommendation(synthesis:ReturnType<typeof synthesizeLearningNeeds>,context?:string){
  const main=synthesis.steps[0];
- return {kind:"recommend",need:synthesis.needs[0].label,pathId:main.pathId,pathTitle:main.pathTitle,exerciseId:main.exerciseId,exerciseName:main.exerciseName,needs:synthesis.needs,steps:synthesis.steps,reason:`Nous avons retenu ${synthesis.needs.length} axe${synthesis.needs.length>1?"s":""} de préparation : ${synthesis.needs.map(n=>n.label.toLowerCase()).join(", ")}. Le programme propose des exercices ciblés issus du catalogue L&D.`,context:typeof context==="string"?context.slice(0,150):undefined};
+ return {kind:"recommend",need:synthesis.needs[0].label,pathId:main.pathId,pathTitle:main.pathTitle,exerciseId:main.exerciseId,exerciseName:main.exerciseName,needs:synthesis.needs,steps:synthesis.steps,reason:`Nous avons retenu ${synthesis.needs.length} axe${synthesis.needs.length>1?"s":""} de préparation : ${synthesis.needs.map(n=>n.label.toLowerCase()).join(", ")}. Commencez par : ${main.method} Les exercices suivants approfondissent les autres objectifs exprimés.`,context:typeof context==="string"?context.slice(0,150):undefined};
 }
