@@ -5,6 +5,7 @@ import {ArrowRight,ArrowUp,BrainCircuit,Sparkles} from "lucide-react";
 
 type Suggestion={kind:"recommend";understanding?:string;need:string;pathId:string;pathTitle:string;reason:string;exerciseId:string;exerciseName:string;source?:"rules"|"ai-ld";saved?:boolean;needs?:{key:string;label:string}[];steps?:{exerciseId:string;exerciseName:string;pathId:string;pathTitle:string;goal:string;method?:string}[]};
 type Clarification={kind:"clarify";understanding?:string;question:string;options:string[]};
+type Answer={kind:"answer";reply:string;question?:string};
 
 function CoachMascot({thinking}:{thinking:boolean}){
  return <div aria-hidden="true" className="academy-mascot relative flex h-[80px] w-[92px] shrink-0 items-center justify-center sm:h-[92px] sm:w-[108px]">
@@ -31,9 +32,9 @@ export function AcademyAsk({compact=false,onRecommendation}:{compact?:boolean;on
   setBusy(true);setError("");setSuggestion(null);setClarification(null);
   try{
    const response=await fetch("/api/academy/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:next})});
-   const body=await response.json() as (Suggestion|Clarification)&{error?:string};
+   const body=await response.json() as (Suggestion|Clarification|Answer)&{error?:string};
    if(!response.ok)throw new Error(body.error||"Le coach n’est pas disponible.");
-   if(body.kind==="clarify"){setClarification(body);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.question}`}].slice(-9));}else{setSuggestion(body);onRecommendation?.(body.exerciseId);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.needs&&body.needs.length>1?"J’ai retenu plusieurs axes de préparation : "+body.needs.map(n=>n.label.toLowerCase()).join(", ")+". ":""}${body.reason}`}].slice(-9));}
+   if(body.kind==="answer"){setHistory(items=>[...items,{role:"assistant" as const,content:`${body.reply}${body.question?"\n\n"+body.question:""}`}].slice(-9));}else if(body.kind==="clarify"){setClarification(body);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.question}`}].slice(-9));}else{setSuggestion(body);onRecommendation?.(body.exerciseId);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.needs&&body.needs.length>1?"J’ai retenu plusieurs axes de préparation : "+body.needs.map(n=>n.label.toLowerCase()).join(", ")+". ":""}${body.reason}`}].slice(-9));}
   }catch(e){setHistory(items=>items.slice(0,-1));setPrompt(text);setError(e instanceof Error?e.message:"Le coach n’est pas disponible.");}
   finally{setBusy(false);}
  }
@@ -44,7 +45,7 @@ export function AcademyAsk({compact=false,onRecommendation}:{compact?:boolean;on
   </div>
   {history.length>0&&<div className="mt-3 flex justify-end"><button type="button" disabled={busy} onClick={()=>{setHistory([]);setSuggestion(null);setClarification(null);setPrompt("");setError("");}} className="min-h-9 rounded-lg px-3 text-xs font-semibold text-[#6953AD] hover:bg-[#F0EEFC] disabled:opacity-50">Nouvelle discussion</button></div>}
   {history.length>0&&<div aria-live="polite" className="mt-3 max-h-64 space-y-2 overflow-y-auto rounded-2xl border border-[#E2DFF1] bg-[#FBFAFF] p-3">{history.map((item,i)=><div key={i} className={item.role==="user"?"ml-auto max-w-[87%] rounded-2xl rounded-br-md bg-[#E8E2FF] p-3 text-sm text-[#433A78]":"mr-auto max-w-[90%] rounded-2xl rounded-bl-md bg-white p-3 text-sm text-[#263654] shadow-sm"}>{item.content}</div>)}</div>}
-  {busy&&<p role="status" className="mt-3 flex items-center gap-2 text-xs font-medium text-[#6955B5]"><span className="size-2 animate-pulse rounded-full bg-[#8262E1]"/> Le coach analyse votre besoin et consulte les parcours…</p>}
+  {busy&&<p role="status" className="mt-3 flex items-center gap-2 text-xs font-medium text-[#6955B5]"><span className="size-2 animate-pulse rounded-full bg-[#8262E1]"/> Le coach prépare sa réponse…</p>}
   <div className={compact?"mt-3 rounded-2xl border border-[#C7CAE3] bg-white p-3 shadow-sm focus-within:border-[#8275DA]":"mt-5 rounded-[26px] border border-[#C7CAE3] bg-gradient-to-br from-white to-[#FBFAFF] px-4 pb-3 pt-4 shadow-[0_16px_44px_rgba(61,54,125,.10)] transition-all focus-within:border-[#8275DA] focus-within:shadow-[0_18px_48px_rgba(93,74,185,.17)] sm:px-6 sm:pt-5"}>
    <label className="sr-only" htmlFor="academy-ask">Votre demande au coach Academy</label>
    <textarea id="academy-ask" value={prompt} onChange={e=>setPrompt(e.target.value.slice(0,700))} rows={compact?1:3} maxLength={700} placeholder="Qu’aimeriez-vous améliorer ? Décrivez votre entretien, votre difficulté, ou votre objectif…" className={compact?"min-h-11 w-full resize-none bg-transparent px-2 text-sm leading-7 text-[#172041] outline-none placeholder:text-[#828BA3]":"min-h-24 w-full resize-y bg-transparent text-base leading-7 text-[#172041] outline-none placeholder:text-[#828BA3] sm:min-h-28"} onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();void ask();}}}/>

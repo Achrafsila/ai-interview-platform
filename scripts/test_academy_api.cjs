@@ -26,6 +26,8 @@ async function call(cookie,messages,headers={}){
  const origin=await call(candidate.cookie(),[{role:'user',content:'Je prépare mon stage PFE'}],{origin:'https://invalid.example'});check('cross-origin denied',origin.status===403);
  const short=await call(candidate.cookie(),[{role:'user',content:'x'}]);check('invalid prompt denied',short.status===400);
  const first=await call(candidate.cookie(),[{role:'user',content:'Je dois bientôt passer un entretien'}]);check('vague request handled',first.status===200&&['clarify','recommend'].includes(first.body.kind));
+ const information=await call(candidate.cookie(),[{role:'user',content:'Peux-tu m’expliquer la différence entre le staffing des consultants et le recrutement dans une ESN ?'}]);
+ check('career question answered without prescribing exercises',information.status===200&&information.body.kind==='answer'&&typeof information.body.reply==='string'&&information.body.reply.length>40&&!information.body.pathId);
  const staffing=await call(candidate.cookie(),[{role:'user',content:'Je souhaite préparer un entretien pour une position de Staffing Manager pour une SSII'}]);
  check('specialist role is clarified before prescription',staffing.status===200&&staffing.body.kind==='clarify'&&/responsabilit|périmètre|experience/i.test(staffing.body.question)&&!staffing.body.pathId);
  const stage=await call(candidate.cookie(),[{role:'user',content:'Je prépare un entretien de stage PFE, je veux parler de mon projet académique'}]);check('stage recommendation',stage.status===200&&stage.body.kind==='recommend'&&stage.body.needs?.some(x=>x.key==='internship')&&stage.body.saved===true);
