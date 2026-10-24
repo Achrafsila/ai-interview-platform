@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check, Lightbulb, RotateCcw, Sparkles, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Check, Dumbbell, Lightbulb, RotateCcw, Sparkles, Target } from "lucide-react";
 
 type ReportSection = { title: string; body: string };
 const strip = (value: string) => value.replace(/\*\*(.*?)\*\*/g, "$1").replace(/__(.*?)__/g, "$1").replace(/^\s*[-*•]\s+/gm, "").replace(/^#{1,6}\s+/gm, "").trim();
@@ -24,8 +24,18 @@ function parseFeedback(raw: string) {
  return { summary: find(/synthèse|bilan|résumé/i)?.body || sections[0]?.body || "Votre séance est terminée.", strength: find(/point.*fort/i)?.body, improvement: find(/amélior|à améliorer/i)?.body, advice: find(/conseil|recommandation|exercice|prochaine étape/i)?.body, extras: sections.filter(section => !/synthèse|bilan|résumé|point.*fort|amélior|à améliorer|conseil|recommandation|exercice|prochaine étape/i.test(section.title)) };
 }
 
+function recommendedFocus(improvement?: string) {
+ const value = (improvement || "").toLocaleLowerCase("fr");
+ if (/structur|star|organis|fil conducteur/.test(value)) return { name: "Structurer vos réponses", detail: "Travaillez le contexte, votre rôle, les actions réalisées et le résultat avec la méthode STAR." };
+ if (/élocution|oral|communication|fluidit|hésit|clarté|expression/.test(value)) return { name: "Gagner en aisance à l’oral", detail: "Entraînez-vous à exprimer une idée principale, puis à l’illustrer sans précipitation." };
+ if (/chiffr|impact|résultat|mesur|exemple|concret/.test(value)) return { name: "Renforcer vos exemples", detail: "Préparez une réalisation précise et expliquez votre contribution et son impact." };
+ if (/techni|métier|connaissance|compétence/.test(value)) return { name: "Approfondir votre argumentation", detail: "Préparez un exemple qui relie vos compétences aux attentes du poste." };
+ return { name: "Consolider votre préparation", detail: "Reprenez la priorité identifiée dans votre bilan lors de votre prochaine simulation." };
+}
+
 export function InterviewReport({ feedback, jobTitle, family, elapsed, interrupted = false }: { feedback?: string; jobTitle?: string; family?: "rh" | "technical"; elapsed: number; interrupted?: boolean }) {
  const data = parseFeedback(feedback || "Aucun retour pédagogique disponible pour cette séance.");
+ const focus = recommendedFocus(data.improvement);
  const duration = `${Math.floor(elapsed / 60)} min ${String(elapsed % 60).padStart(2, "0")} s`;
  return <main className="report-v2 relative min-h-dvh overflow-hidden bg-[#0A1028] px-4 pb-16 pt-8 text-white sm:px-8 sm:pt-12">
   <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_52%_8%,#2D3C82_0%,#17204B_34%,#0A1028_74%)]" />
@@ -51,6 +61,35 @@ export function InterviewReport({ feedback, jobTitle, family, elapsed, interrupt
    </div>}
    {!interrupted && <section className="report-v2-rise report-v2-delay-4 mt-5 flex flex-col gap-4 rounded-[28px] border border-white/15 bg-white/[.06] p-6 sm:flex-row sm:items-start sm:p-7"><span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-[#8BAFFF]/15 text-[#B9CCFF]"><Lightbulb size={22}/></span><div><h2 className="text-lg font-semibold">Pour votre prochain entretien</h2><p className="mt-3 whitespace-pre-line text-sm leading-7 text-[#D5DDF5]">{data.advice || "Entraînez-vous à présenter une situation concrète, votre action personnelle et le résultat obtenu. Recommencez une simulation pour mesurer votre progression."}</p></div></section>}
    {data.extras.length > 0 && <section className="report-v2-rise report-v2-delay-4 mt-5 rounded-[28px] border border-white/10 bg-white/[.045] p-6 sm:p-7"><h2 className="text-lg font-semibold">Observations complémentaires</h2>{data.extras.map((section, index) => <div key={`${section.title}-${index}`} className="mt-4 border-t border-white/10 pt-4"><h3 className="text-sm font-semibold text-[#D6C6FF]">{section.title}</h3><p className="mt-2 whitespace-pre-line text-sm leading-7 text-[#D5DDF5]">{section.body}</p></div>)}</section>}
+   {!interrupted && <section aria-labelledby="next-step-heading" className="report-v2-rise report-v2-delay-4 relative mt-7 overflow-hidden rounded-[30px] border border-[#BAA6FE]/25 bg-gradient-to-br from-[#252657]/90 via-[#1B2751]/95 to-[#14354D]/90 p-6 shadow-[0_24px_70px_#060B2966] sm:p-9">
+    <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-28 size-72 rounded-full bg-[#BA82FF]/15 blur-[85px]"/>
+    <div className="relative">
+     <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.18em] text-[#C9ACFF]"><Sparkles size={15}/> La suite de votre parcours</p>
+     <h2 id="next-step-heading" className="mt-4 text-balance text-2xl font-semibold tracking-[-.035em] sm:text-3xl">Votre prochaine étape, à votre rythme.</h2>
+     <p className="mt-3 max-w-2xl text-sm leading-7 text-[#D2DDF5]">À partir de votre bilan, voici un point à travailler en priorité. Les autres formes d’accompagnement arriveront progressivement.</p>
+     <div className="mt-7 rounded-[25px] border border-[#9BD9EC]/25 bg-white/[.09] p-5 sm:p-7">
+      <p className="text-xs font-bold uppercase tracking-[.13em] text-[#A9E9E6]">Recommandation pour votre prochaine simulation</p>
+      <h3 className="mt-3 text-xl font-semibold">{focus.name}</h3>
+      <p className="mt-2 max-w-2xl text-sm leading-7 text-[#D8E6F7]">{focus.detail}</p>
+      <Link href="/preparation" className="interview-v2-primary mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold">Refaire une simulation ciblée <ArrowRight size={17}/></Link>
+      <p className="mt-3 text-xs leading-5 text-[#B7C9DF]">Vous pourrez choisir vos objectifs avant la simulation. Les exercices dédiés ne sont pas encore disponibles.</p>
+     </div>
+     <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <article className="rounded-[24px] border border-white/15 bg-white/[.055] p-5 sm:p-6">
+       <Dumbbell size={22} className="text-[#A3C8FF]" aria-hidden="true"/>
+       <h3 className="mt-4 text-lg font-semibold">Explorer des entraînements</h3>
+       <p className="mt-2 text-sm leading-7 text-[#CDD8EF]">Des exercices courts et des supports pratiques adaptés à chaque compétence.</p>
+       <p className="mt-4 text-xs font-semibold text-[#B7C6F8]">Rubriques en préparation · bientôt disponibles</p>
+      </article>
+      <article className="rounded-[24px] border border-white/15 bg-white/[.055] p-5 sm:p-6">
+       <CalendarDays size={22} className="text-[#DAB4FF]" aria-hidden="true"/>
+       <h3 className="mt-4 text-lg font-semibold">Échanger avec un expert</h3>
+       <p className="mt-2 text-sm leading-7 text-[#CDD8EF]">Un accompagnement individuel pour travailler votre discours, votre posture et vos réponses.</p>
+       <p className="mt-4 text-xs font-semibold text-[#D4B9F3]">Réservation one-to-one · bientôt disponible</p>
+      </article>
+     </div>
+    </div>
+   </section>}
    <nav aria-label="Actions après entretien" className="report-v2-rise report-v2-delay-4 mt-9 flex flex-col gap-3 sm:flex-row sm:justify-center"><Link href="/preparation" className="interview-v2-primary inline-flex min-h-13 items-center justify-center gap-3 rounded-2xl px-7 py-4 text-sm font-bold">Refaire un entretien <RotateCcw size={17}/></Link><Link href="/dashboard" className="interview-v2-glass inline-flex min-h-13 items-center justify-center gap-3 rounded-2xl px-7 py-4 text-sm font-semibold">Retour au tableau de bord <ArrowRight size={17}/></Link></nav>
    <p className="mx-auto mt-9 max-w-xl text-center text-xs leading-6 text-[#ABB8D9]">Retour pédagogique indicatif, sans note ni jugement de recrutement. Cette séance locale n’est pas encore enregistrée dans Supabase.</p>
   </div>
