@@ -525,3 +525,6 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .academy-ui .interview-v2-pill { background: #f1eeff; color: #7856bd; }
 .academy-ui input, .academy-ui textarea, .academy-ui select { color: #172041; }
 .academy-ui button:focus-visible, .academy-ui a:focus-visible { outline: 3px solid #8071e8; outline-offset: 3px; }
+
+/* Explicit text fill: inherited legacy interview glass styling uses -webkit-text-fill-color. */
+.academy-ui .academy-back-link, .academy-ui .academy-back-link * { color: #344D91 !important; -webkit-text-fill-color: #344D91 !important; opacity: 1 !important; }
