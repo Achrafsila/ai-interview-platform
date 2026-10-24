@@ -36,7 +36,7 @@ export async function POST(request:NextRequest,{params}:{params:Promise<{action:
  try{
   const response=await fetch(`${UPSTREAM}${action === "tts" || action === "transcribe" ? `/api/ai/${action}` : `/api/ai/session/${action}`}`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload),cache:"no-store",signal:AbortSignal.timeout(35000)});
   if(action==="tts"){
-   if(!response.ok)return NextResponse.json({error:"Synthèse vocale locale indisponible."},{status:response.status});
+   if(!response.ok)return NextResponse.json({error:response.status===400?"Texte vocal invalide":"Synthèse vocale locale indisponible."},{status:response.status===400?400:503});
    return new NextResponse(await response.arrayBuffer(),{status:200,headers:{"Content-Type":"audio/mpeg","Cache-Control":"no-store"}});
   }
   const text=await response.text();

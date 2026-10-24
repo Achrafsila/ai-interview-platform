@@ -13,7 +13,7 @@ with sync_playwright() as playwright:
     page.get_by_label('Mot de passe', exact=True).fill(password)
     page.get_by_role('button', name='Se connecter', exact=True).click()
     page.wait_for_url('**/dashboard', timeout=20000)
-    for action, expected_error in [('transcribe', 'invalid_audio'), ('tts', 'invalid_tts_payload')]:
+    for action, expected_error in [('transcribe', 'invalid_audio'), ('tts', 'Texte vocal invalide')]:
         result = page.evaluate('''async (action) => {
           const response = await fetch('/api/interview/' + action, {
             method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'
