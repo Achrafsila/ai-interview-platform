@@ -251,7 +251,8 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
                     req = urllib.request.Request(
                         "https://api.groq.com/openai/v1/audio/transcriptions", data=payload,
                         headers={"Authorization": f"Bearer {key}",
-                                 "Content-Type": f"multipart/form-data; boundary={boundary}"},
+                                 "Content-Type": f"multipart/form-data; boundary={boundary}",
+                                 "User-Agent": "AIInterviewPlatform/0.1"},
                         method="POST")
                     with urllib.request.urlopen(req, timeout=40) as response:
                         transcript = json.loads(response.read(100_000))
