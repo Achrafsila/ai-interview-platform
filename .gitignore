@@ -52,3 +52,6 @@ temp/
 # Local Academy multilingual embedding cache
 .academy-model-cache/
 .academy-embedding-venv/
+# Local Academy pilot knowledge/vector exports
+.academy-approved-knowledge.json
+.academy-embeddings.json
