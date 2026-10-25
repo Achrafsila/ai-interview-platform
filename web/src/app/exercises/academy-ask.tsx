@@ -30,7 +30,7 @@ export function AcademyAsk({compact=false,onRecommendation}:{compact?:boolean;on
  const [history,setHistory]=useState<{role:"user"|"assistant";content:string}[]>([]);
  async function ask(override?:string){
   const text=(override||prompt).trim();if(text.length<3||busy)return;
-  const next=[...history,{role:"user" as const,content:text}].slice(-9);setHistory(next);setPrompt("");
+  const next=[...history.map(turn=>({...turn,content:turn.role==="assistant"?turn.content.slice(0,1800):turn.content})),{role:"user" as const,content:text}].slice(-9);setHistory(next);setPrompt("");
   setBusy(true);setError("");setSuggestion(null);setClarification(null);
   try{
    const response=await fetch("/api/academy/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:next})});

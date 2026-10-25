@@ -21,7 +21,7 @@ Principes comportementaux à suivre, issus de dix conversations de référence :
 8) Choix technique : examine les contraintes, coûts, performances, alternatives et compromis (ex. serverless vs conteneurs), sans affirmer des faits absents du contexte.
 9) Échec professionnel : questionne la responsabilité et les apprentissages sans attribuer automatiquement la faute au candidat.
 10) Fin d'entretien : suggère une question contextualisée sur les objectifs à 90 jours ou les critères de réussite, puis encourage l'adaptation au poste.
-Style : chaleureux, clair, naturel, constructif. Privilégie UNE question pertinente à la fois, pas un interrogatoire. Le but est de co-construire la clarté et l'autonomie ; valorise les preuves et les exemples personnels. Pour une demande de conseil immédiat, apporte une réponse utile avant de questionner. N'invente jamais de diplôme, poste, score ou données personnelles. Ne demande pas d'informations sensibles.`;
+Quand le candidat explique n’avoir jamais été responsable, ne suppose pas une expérience de management, ne lui demande pas immédiatement un résultat chiffré ou un pitch STAR. Commence par une compétence transférable observée dans ses missions réelles. Si le candidat répond « Je ne sais pas », rassure sobrement et facilite un premier exemple concret, sans lui prescrire une formation. Réponds en 3 à 4 phrases maximum, et pose une seule question. Style : chaleureux, clair, naturel, constructif. Privilégie UNE question pertinente à la fois, pas un interrogatoire. Le but est de co-construire la clarté et l'autonomie ; valorise les preuves et les exemples personnels. Pour une demande de conseil immédiat, apporte une réponse utile avant de questionner. N'invente jamais de diplôme, poste, score ou données personnelles. Ne demande pas d'informations sensibles.`;
 function response(data:object){return NextResponse.json(data,{headers:{"Cache-Control":"no-store"}});}
 async function savePlan(client:NonNullable<Awaited<ReturnType<typeof getServerAuthClient>>>,userId:string,recommendation:ReturnType<typeof makeRecommendation>,source:"rules"|"ai-ld"){
  const {error}=await client.from("academy_learning_plans").upsert({user_id:userId,needs:recommendation.needs,steps:recommendation.steps,primary_path_id:recommendation.pathId,context:recommendation.context||null,source,updated_at:new Date().toISOString()},{onConflict:"user_id"});
@@ -39,7 +39,7 @@ export async function POST(request:NextRequest){
  let body:unknown;try{body=await request.json();}catch{return NextResponse.json({error:"Requête invalide."},{status:400});}
  if(!body||typeof body!=="object")return NextResponse.json({error:"Conversation invalide."},{status:400});
  const messages=(body as {messages?:unknown}).messages;
- if(!Array.isArray(messages)||messages.length<1||messages.length>11||messages.some(m=>!m||typeof m!=="object"||!["user","assistant"].includes(m.role)||typeof m.content!=="string"||m.content.length>700))return NextResponse.json({error:"Conversation invalide."},{status:400});
+ if(!Array.isArray(messages)||messages.length<1||messages.length>11||messages.some(m=>!m||typeof m!=="object"||!["user","assistant"].includes(m.role)||typeof m.content!=="string"||m.content.length>(m.role==="assistant"?2500:700)))return NextResponse.json({error:"Conversation invalide."},{status:400});
  const history=messages as Turn[];
  const last=history.at(-1);
  if(last?.role!=="user"||last.content.trim().length<3)return NextResponse.json({error:"Précisez votre demande."},{status:400});
@@ -56,6 +56,8 @@ export async function POST(request:NextRequest){
  const isStaffingRole=/staffing manager|responsable staffing|staffing lead/.test(normalizedConversation);
  const hasMeaningfulBrief=/allocation|planification|ressource|consultant|intercontrat|commercial|recrutement|operationnel|experience|difficulte|priorite|entretien rh|soft skills|mise en situation/.test(normalizedConversation);
 
+ const uncertainReply=/^(je (ne )?sais pas|aucune idee|pas d.exemple|je n.ai pas d.exemple|je ne vois pas|aucune experience)[.!?\s]*$/i.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim());
+ if(uncertainReply){return response({kind:"clarify",understanding:"Pas besoin d’avoir déjà occupé un poste de responsable pour identifier une expérience utile. On peut partir d’une contribution plus simple.",question:"Dans votre expérience actuelle, avez-vous déjà mené un recrutement, accompagné un collègue ou résolu un problème avec un manager ?",options:[]});}
  const normalizedLast=last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
  const vagueExpert=/^(une?\s+)?(difficulte|niveau|probleme|question|sujet)\s+(d.expert|avance|senior|technique|rh|professionnel)(e|s)?[.!?]*$/.test(normalizedLast)||/^(je ne sais pas|aucune idee|aidez.moi|je veux progresser)[.!?]*$/.test(normalizedLast);
  if(vagueExpert){return response({kind:"clarify",understanding:"Je comprends que vous souhaitez une préparation de niveau expert, mais cela ne précise pas encore la situation à travailler.",question:"Pour ce poste, quelle situation exigeante aimeriez-vous savoir gérer en entretien ?",options:[]});}
