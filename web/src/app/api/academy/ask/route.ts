@@ -60,12 +60,17 @@ export async function POST(request:NextRequest){
  const queryText=last.content.slice(0,450);
  let queryEmbedding:number[]|undefined;
  const embeddingUrl=process.env.ACADEMY_EMBEDDING_URL;
- // An opt-in server-side encoder. Failure must never prevent lexical retrieval.
  if(embeddingUrl){
   try{
    const target=new URL(embeddingUrl);
-   if(target.protocol!=="http:"||!["127.0.0.1","localhost"].includes(target.hostname))throw Error("Only local encoder URLs are allowed");
-   const embeddingResponse=await fetch(new URL("/embed",target),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:queryText}),signal:AbortSignal.timeout(3500),cache:"no-store"});
+   const local=["127.0.0.1","localhost"].includes(target.hostname);
+   const secureRemote=target.protocol==="https:"&&!local;
+   if(!((local&&target.protocol==="http:")||secureRemote)||target.username||target.password||target.search||target.hash)throw Error("Invalid embedding endpoint");
+   const token=process.env.ACADEMY_EMBEDDING_TOKEN;
+   if(secureRemote&&(!token||token.length<32))throw Error("Missing remote embedding authentication");
+   const headers:Record<string,string>={"Content-Type":"application/json"};
+   if(token)headers.Authorization=`Bearer ${token}`;
+   const embeddingResponse=await fetch(new URL("/embed",target),{method:"POST",headers,body:JSON.stringify({text:queryText}),signal:AbortSignal.timeout(3500),cache:"no-store",redirect:"error"});
    if(embeddingResponse.ok){const payload=await embeddingResponse.json() as {embedding?:unknown};if(Array.isArray(payload.embedding)&&payload.embedding.length===384&&payload.embedding.every(x=>typeof x==="number"&&Number.isFinite(x)))queryEmbedding=payload.embedding;}
   }catch{console.warn("Academy embedding unavailable; lexical fallback active");}
  }
