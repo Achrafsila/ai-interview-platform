@@ -1,4 +1,5 @@
 "use client";
+import {CandidateSidebar} from "@/components/ui/candidate-sidebar";
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -63,15 +64,7 @@ export default function PreparationPage() {
  const summary=[kind==="rh"?"Entretien RH":kind==="technical"?"Entretien technique":"",job.trim(),`${language==="fr"?"Français":"Anglais"} · ${duration} min · ${priorities.length} priorité(s)`];
  return <main className="preparation-v2 relative min-h-screen overflow-x-clip bg-[#F8F9FF] text-[#172041]"><div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute -top-40 -right-48 h-[660px] w-[660px] rounded-full bg-[#F6D4F7]/65 blur-[110px]"/><div className="absolute left-[-200px] top-[30%] h-[600px] w-[600px] rounded-full bg-[#DBE6FF]/75 blur-[115px]"/></div>
  <div className="relative mx-auto flex min-h-screen max-w-[1720px]">
- <aside className="sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col border-r border-white/75 bg-white/65 px-5 py-7 backdrop-blur-2xl lg:flex">
-  <Link href="/" className="flex items-center gap-2.5 px-2 text-sm font-extrabold"><span className="grid size-10 place-items-center rounded-xl bg-gradient-to-br from-[#5365FF] via-[#8755F4] to-[#E054C9] text-white"><Sparkles size={20}/></span><span>Interview<span className="block text-[10px] tracking-[.16em] text-[#6779A2]">LAB</span></span></Link>
-  <p className="mb-3 mt-12 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-[#8593AF]">Espace candidat</p>
-  <nav aria-label="Navigation candidat" className="space-y-1.5">
-   <Link href="/dashboard" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm text-[#62718D] hover:bg-[#F2ECFF]"><LayoutDashboard size={18}/> Vue d’ensemble</Link>
-   <Link href="/preparation" aria-current="page" className="flex min-h-12 items-center gap-3 rounded-2xl bg-[#EDE7FF] px-3.5 text-sm font-bold text-[#784DD6]"><CirclePlay size={18}/> Simulation</Link>
-   <Link href="/onboarding" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm text-[#62718D] hover:bg-[#F2ECFF]"><UserRound size={18}/> Mon profil</Link>
-  </nav>
- </aside>
+ <CandidateSidebar/>
  <div className="min-w-0 flex-1">
   <header className="flex min-h-[92px] flex-wrap items-center justify-between gap-3 border-b border-white/80 bg-white/65 backdrop-blur-xl px-5 py-4 sm:px-8 lg:px-10">
    <div className="flex items-center gap-3"><span className="grid size-11 place-items-center rounded-2xl bg-[#EDE7FF] text-[#7A52DA]"><CirclePlay size={22}/></span><div><p className="text-xs font-semibold text-[#6A7A97]">Simulation <ChevronRight size={13} className="inline"/> Configuration</p><p className="mt-0.5 text-base font-bold tracking-tight text-[#172033]">Préparer mon entretien</p></div></div>

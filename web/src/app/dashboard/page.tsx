@@ -1,4 +1,5 @@
 "use client";
+import {CandidateSidebar} from "@/components/ui/candidate-sidebar";
 import {CandidateProfileMenu} from "@/components/ui/candidate-profile-menu";
 
 import Link from "next/link";
@@ -59,16 +60,7 @@ export default function DashboardPage() {
     <div className="absolute -left-48 top-32 h-[680px] w-[680px] rounded-full bg-[#D7E5FF]/65 blur-[110px]"/>
    </div>
    <div className="relative mx-auto flex min-h-screen max-w-[1720px]">
-    <aside className="sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col border-r border-white/75 bg-white/65 px-5 py-7 backdrop-blur-2xl lg:flex">
-      <Link href="/" className="flex items-center gap-2.5 px-2 text-[14px] font-extrabold tracking-tight"><span className="grid size-10 place-items-center rounded-[13px] bg-gradient-to-br from-[#5365FF] via-[#8755F4] to-[#E054C9] text-white"><Sparkles size={21}/></span><span>Interview<span className="block text-[10px] font-semibold tracking-[.15em] text-[#8B62E7]">LAB</span></span></Link>
-      <p className="mb-3 mt-12 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-[#8593AF]">Espace candidat</p>
-      <nav aria-label="Navigation candidat" className="space-y-1.5">
-       <Link href="/dashboard" aria-current="page" className="flex min-h-12 items-center gap-3 rounded-2xl bg-[#EDE7FF] px-3.5 text-sm font-bold text-[#784DD6]"><LayoutDashboard size={18}/> Vue d’ensemble</Link>
-       <Link href="/preparation" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-medium text-[#62718D] transition hover:bg-[#F2ECFF] hover:text-[#784DD6]"><CirclePlay size={18}/> Simulation</Link>
-       <Link href="/exercises" className="flex min-h-12 items-center gap-3 rounded-xl px-3.5 text-sm font-semibold text-[#62718D] transition hover:bg-[#F2ECFF] hover:text-[#784DD6]"><GraduationCap size={18}/> Academy</Link>
-      </nav>
-      <div className="mt-auto rounded-2xl border border-[#E9DCFF] bg-gradient-to-br from-[#F4EEFF] to-[#E9F7FF] p-4"><div className="flex items-center gap-2 text-xs font-bold text-[#7055B3]"><BrainCircuit size={17}/> Coach IA</div><p className="mt-2 text-xs leading-6 text-[#695F83]">Des conseils personnalisés après votre premier entretien.</p></div>
-    </aside>
+    <CandidateSidebar/>
     <div className="min-w-0 flex-1">
      <header className="flex min-h-[78px] items-center justify-between gap-4 border-b border-white/80 bg-white/60 backdrop-blur-xl px-5 sm:px-8 lg:px-9">
       <div className="flex items-center gap-2 text-xs font-semibold text-[#70819F]"><LayoutDashboard size={17} className="text-[#4770D8]"/><span className="hidden sm:inline">Espace candidat</span><ChevronRight size={13} className="hidden sm:inline"/><span className="text-[#172033]">Vue d’ensemble</span></div>
