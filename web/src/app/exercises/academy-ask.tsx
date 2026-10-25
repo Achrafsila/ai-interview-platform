@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect,useRef,useState} from "react";
 import {ArrowRight,ArrowUp,BrainCircuit,Sparkles} from "lucide-react";
 
 type Reference={slug:string;title:string;source:string};
@@ -28,8 +28,15 @@ export function AcademyAsk({compact=false,onRecommendation,onConversationStart,o
  const [clarification,setClarification]=useState<Clarification|null>(null);
  const [references,setReferences]=useState<Reference[]>([]);
  const [history,setHistory]=useState<{role:"user"|"assistant";content:string}[]>([]);
+ const [historyReady,setHistoryReady]=useState(false);
+ const onRestoreRef=useRef(onConversationStart);
+ useEffect(()=>{onRestoreRef.current=onConversationStart;},[onConversationStart]);
+ useEffect(()=>{let active=true;void (async()=>{try{const res=await fetch("/api/academy/conversation",{cache:"no-store"});if(!res.ok)return;const body=await res.json() as {turns?:{role:"user"|"assistant";content:string}[]};if(active&&Array.isArray(body.turns)){const restored=body.turns.filter(t=>["user","assistant"].includes(t.role)&&typeof t.content==="string").slice(-9);setHistory(restored);if(restored.length)onRestoreRef.current?.();}}catch{}finally{if(active)setHistoryReady(true);}})();return()=>{active=false;};},[]);
+ async function persist(turns:{role:"user"|"assistant";content:string}[],diagnostic?:unknown){try{const res=await fetch("/api/academy/conversation",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({turns,diagnostic})});if(!res.ok)setError("La discussion continue, mais sa sauvegarde a échoué.");}catch{setError("La discussion continue, mais sa sauvegarde a échoué.");}}
+ async function resetDiscussion(){try{const res=await fetch("/api/academy/conversation",{method:"DELETE"});if(!res.ok)throw Error("Suppression indisponible");setHistory([]);setSuggestion(null);setClarification(null);setReferences([]);setPrompt("");setError("");onConversationReset?.();}catch{setError("Impossible de supprimer l'historique enregistré pour le moment.");}}
+
  async function ask(override?:string){
-  const text=(override||prompt).trim();if(text.length<3||busy)return;
+  const text=(override||prompt).trim();if(text.length<3||busy||!historyReady)return;
   onConversationStart?.();
   const next=[...history.map(turn=>({...turn,content:turn.role==="assistant"?turn.content.slice(0,1800):turn.content})),{role:"user" as const,content:text}].slice(-9);setHistory(next);setPrompt("");
   setBusy(true);setError("");setSuggestion(null);setClarification(null);
@@ -39,6 +46,8 @@ export function AcademyAsk({compact=false,onRecommendation,onConversationStart,o
    if(!response.ok)throw new Error(body.error||"Le coach n’est pas disponible.");
    setReferences(body.references||[]);
    if(body.kind==="answer"){setHistory(items=>[...items,{role:"assistant" as const,content:`${body.reply}${body.question?"\n\n"+body.question:""}`}].slice(-9));}else if(body.kind==="clarify"){setClarification(body);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.question}`}].slice(-9));}else{setSuggestion(body);onRecommendation?.(body.exerciseId);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.reason}`}].slice(-9));}
+   const assistantContent=body.kind==="answer"?`${body.reply}${body.question?"\n\n"+body.question:""}`:body.kind==="clarify"?`${body.understanding?body.understanding+"\n\n":""}${body.question}`:`${body.understanding?body.understanding+"\n\n":""}${body.reason}`;
+   await persist([...next,{role:"assistant" as const,content:assistantContent}].slice(-9),(body as {diagnostic?:unknown}).diagnostic);
   }catch(e){setHistory(items=>items.slice(0,-1));setPrompt(text);setError(e instanceof Error?e.message:"Le coach n’est pas disponible.");}
   finally{setBusy(false);}
  }
@@ -47,7 +56,7 @@ export function AcademyAsk({compact=false,onRecommendation,onConversationStart,o
    <div className={compact?"scale-[.65] -ml-3 -mr-3 -my-3":""}><CoachMascot thinking={busy}/></div>
    <div className="min-w-0"><p className="text-xs font-bold uppercase tracking-[.15em] text-[#7253C7]">Votre coach Academy</p><h2 className={compact?"mt-1 text-base font-bold text-[#172041] sm:text-lg":"mt-1 text-2xl font-bold tracking-tight text-[#172041] sm:text-[30px]"}>Comment puis-je vous aider aujourd’hui ?</h2>{!compact&&<p className="mt-2 text-sm text-[#667591] sm:text-base">Décrivez votre objectif. Je vous proposerai un parcours ou un exercice adapté.</p>}</div>
   </div>
-  {history.length>0&&<div className="mt-3 flex justify-end"><button type="button" disabled={busy} onClick={()=>{setHistory([]);setSuggestion(null);setClarification(null);setReferences([]);setPrompt("");setError("");onConversationReset?.();}} className="min-h-9 rounded-lg px-3 text-xs font-semibold text-[#6953AD] hover:bg-[#F0EEFC] disabled:opacity-50">Nouvelle discussion</button></div>}
+  {history.length>0&&<div className="mt-3 flex justify-end"><button type="button" disabled={busy||!historyReady} onClick={()=>void resetDiscussion()} className="min-h-9 rounded-lg px-3 text-xs font-semibold text-[#6953AD] hover:bg-[#F0EEFC] disabled:opacity-50">Nouvelle discussion</button></div>}
   {history.length>0&&<div aria-live="polite" className="mt-3 max-h-[min(58vh,580px)] space-y-3 overflow-y-auto rounded-2xl border border-[#E2DFF1] bg-[#FBFAFF] p-3">{history.map((item,i)=><div key={i} className={item.role==="user"?"ml-auto max-w-[87%] rounded-2xl rounded-br-md bg-[#E8E2FF] p-3 text-sm text-[#433A78]":"mr-auto max-w-[90%] rounded-2xl rounded-bl-md bg-white p-3 text-sm text-[#263654] shadow-sm"}><span className="whitespace-pre-wrap break-words leading-6">{item.content}</span></div>)}</div>}
   {references.length>0&&<div className="mt-2 text-xs text-[#62718D]">Références internes : {references.map(item=>item.title).join(" · ")}</div>}
   {busy&&<p role="status" className="mt-3 flex items-center gap-2 text-xs font-medium text-[#6955B5]"><span className="size-2 animate-pulse rounded-full bg-[#8262E1]"/> Le coach prépare sa réponse…</p>}
