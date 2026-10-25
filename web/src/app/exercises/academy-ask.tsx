@@ -3,9 +3,10 @@ import Link from "next/link";
 import {useState} from "react";
 import {ArrowRight,ArrowUp,BrainCircuit,Sparkles} from "lucide-react";
 
-type Suggestion={kind:"recommend";understanding?:string;need:string;pathId:string;pathTitle:string;reason:string;exerciseId:string;exerciseName:string;source?:"rules"|"ai-ld";saved?:boolean;needs?:{key:string;label:string}[];steps?:{exerciseId:string;exerciseName:string;pathId:string;pathTitle:string;goal:string;method?:string}[]};
-type Clarification={kind:"clarify";understanding?:string;question:string;options:string[]};
-type Answer={kind:"answer";reply:string;question?:string};
+type Reference={slug:string;title:string;source:string};
+type Suggestion={kind:"recommend";references?:Reference[];understanding?:string;need:string;pathId:string;pathTitle:string;reason:string;exerciseId:string;exerciseName:string;source?:"rules"|"ai-ld";saved?:boolean;needs?:{key:string;label:string}[];steps?:{exerciseId:string;exerciseName:string;pathId:string;pathTitle:string;goal:string;method?:string}[]};
+type Clarification={kind:"clarify";references?:Reference[];understanding?:string;question:string;options:string[]};
+type Answer={kind:"answer";references?:Reference[];reply:string;question?:string};
 
 function CoachMascot({thinking}:{thinking:boolean}){
  return <div aria-hidden="true" className="academy-mascot relative flex h-[80px] w-[92px] shrink-0 items-center justify-center sm:h-[92px] sm:w-[108px]">
@@ -25,6 +26,7 @@ export function AcademyAsk({compact=false,onRecommendation}:{compact?:boolean;on
  const [suggestion,setSuggestion]=useState<Suggestion|null>(null);
  const [error,setError]=useState("");
  const [clarification,setClarification]=useState<Clarification|null>(null);
+ const [references,setReferences]=useState<Reference[]>([]);
  const [history,setHistory]=useState<{role:"user"|"assistant";content:string}[]>([]);
  async function ask(override?:string){
   const text=(override||prompt).trim();if(text.length<3||busy)return;
@@ -34,6 +36,7 @@ export function AcademyAsk({compact=false,onRecommendation}:{compact?:boolean;on
    const response=await fetch("/api/academy/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:next})});
    const body=await response.json() as (Suggestion|Clarification|Answer)&{error?:string};
    if(!response.ok)throw new Error(body.error||"Le coach n’est pas disponible.");
+   setReferences(body.references||[]);
    if(body.kind==="answer"){setHistory(items=>[...items,{role:"assistant" as const,content:`${body.reply}${body.question?"\n\n"+body.question:""}`}].slice(-9));}else if(body.kind==="clarify"){setClarification(body);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.question}`}].slice(-9));}else{setSuggestion(body);onRecommendation?.(body.exerciseId);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.needs&&body.needs.length>1?"J’ai retenu plusieurs axes de préparation : "+body.needs.map(n=>n.label.toLowerCase()).join(", ")+". ":""}${body.reason}`}].slice(-9));}
   }catch(e){setHistory(items=>items.slice(0,-1));setPrompt(text);setError(e instanceof Error?e.message:"Le coach n’est pas disponible.");}
   finally{setBusy(false);}
@@ -43,8 +46,9 @@ export function AcademyAsk({compact=false,onRecommendation}:{compact?:boolean;on
    <div className={compact?"scale-[.65] -ml-3 -mr-3 -my-3":""}><CoachMascot thinking={busy}/></div>
    <div className="min-w-0"><p className="text-xs font-bold uppercase tracking-[.15em] text-[#7253C7]">Votre coach Academy</p><h2 className={compact?"mt-1 text-base font-bold text-[#172041] sm:text-lg":"mt-1 text-2xl font-bold tracking-tight text-[#172041] sm:text-[30px]"}>Comment puis-je vous aider aujourd’hui ?</h2>{!compact&&<p className="mt-2 text-sm text-[#667591] sm:text-base">Décrivez votre objectif. Je vous proposerai un parcours ou un exercice adapté.</p>}</div>
   </div>
-  {history.length>0&&<div className="mt-3 flex justify-end"><button type="button" disabled={busy} onClick={()=>{setHistory([]);setSuggestion(null);setClarification(null);setPrompt("");setError("");}} className="min-h-9 rounded-lg px-3 text-xs font-semibold text-[#6953AD] hover:bg-[#F0EEFC] disabled:opacity-50">Nouvelle discussion</button></div>}
+  {history.length>0&&<div className="mt-3 flex justify-end"><button type="button" disabled={busy} onClick={()=>{setHistory([]);setSuggestion(null);setClarification(null);setReferences([]);setPrompt("");setError("");}} className="min-h-9 rounded-lg px-3 text-xs font-semibold text-[#6953AD] hover:bg-[#F0EEFC] disabled:opacity-50">Nouvelle discussion</button></div>}
   {history.length>0&&<div aria-live="polite" className="mt-3 max-h-64 space-y-2 overflow-y-auto rounded-2xl border border-[#E2DFF1] bg-[#FBFAFF] p-3">{history.map((item,i)=><div key={i} className={item.role==="user"?"ml-auto max-w-[87%] rounded-2xl rounded-br-md bg-[#E8E2FF] p-3 text-sm text-[#433A78]":"mr-auto max-w-[90%] rounded-2xl rounded-bl-md bg-white p-3 text-sm text-[#263654] shadow-sm"}>{item.content}</div>)}</div>}
+  {references.length>0&&<div className="mt-2 text-xs text-[#62718D]">Références internes : {references.map(item=>item.title).join(" · ")}</div>}
   {busy&&<p role="status" className="mt-3 flex items-center gap-2 text-xs font-medium text-[#6955B5]"><span className="size-2 animate-pulse rounded-full bg-[#8262E1]"/> Le coach prépare sa réponse…</p>}
   <div className={compact?"mt-3 rounded-2xl border border-[#C7CAE3] bg-white p-3 shadow-sm focus-within:border-[#8275DA]":"mt-5 rounded-[26px] border border-[#C7CAE3] bg-gradient-to-br from-white to-[#FBFAFF] px-4 pb-3 pt-4 shadow-[0_16px_44px_rgba(61,54,125,.10)] transition-all focus-within:border-[#8275DA] focus-within:shadow-[0_18px_48px_rgba(93,74,185,.17)] sm:px-6 sm:pt-5"}>
    <label className="sr-only" htmlFor="academy-ask">Votre demande au coach Academy</label>
