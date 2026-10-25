@@ -1,0 +1,13 @@
+const fs=require('fs'),ts=require('../web/node_modules/typescript'),assert=require('node:assert/strict');const Module=require('node:module');const source=fs.readFileSync('web/src/app/api/academy/ask/diagnostic.ts','utf8');const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;const m=new Module('diagnostic-test');m._compile(js,'diagnostic-test');const {buildDiagnostic,allowRecommendation}=m.exports;
+const turns=(...messages)=>messages.map((content,i)=>({role:i%2?'assistant':'user',content}));
+let count=0;const check=(name,fn)=>{fn();count++;console.log('PASS',name)};
+check('role alone is exploration',()=>assert.equal(buildDiagnostic(turns('Je prépare un entretien de Responsable recrutement dans une ESN.'),{role:'Responsable recrutement'},['leadership'],true).phase,'exploration'));
+check('ambiguous declaration does not permit training',()=>assert.equal(buildDiagnostic(turns('Je prépare un entretien de Responsable recrutement','Quelle difficulté ?','Une difficulté d’expert'),{},['leadership'],true).phase,'exploration'));
+check('concrete structure goal allows training',()=>assert.equal(buildDiagnostic(turns('Je prépare un entretien et je veux structurer mes réponses'),{},['structure'],false).phase,'training'));
+check('project stage with explicit target allows training',()=>assert.equal(buildDiagnostic(turns('Je prépare un entretien de stage PFE, je veux parler de mon projet académique'),{},['internship'],false).phase,'training'));
+check('advice without training is coaching',()=>assert.equal(buildDiagnostic(turns('J’ai du mal à expliquer mon projet'),{},['structure'],false).phase,'coaching'));
+check('model cannot invent evidence',()=>assert.equal(buildDiagnostic(turns('Je suis recruteur IT'),{evidence:[{need:'leadership',statement:'J’ai dirigé dix recruteurs'}]},[],false).evidence.length,0));
+check('verbatim evidence accepted',()=>assert.equal(buildDiagnostic(turns('J’ai coordonné un projet inter-équipes'),{evidence:[{need:'leadership',statement:'J’ai coordonné un projet inter-équipes'}]},[],false).evidence.length,1));
+check('clarification never authorizes recommendation',()=>assert.equal(allowRecommendation({phase:'training'},'clarify'),false));
+check('training and explicit model recommendation required',()=>assert.equal(allowRecommendation({phase:'training'},'recommend'),true));
+console.log('DIAGNOSTIC',count+'/9');
