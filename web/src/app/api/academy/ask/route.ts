@@ -57,7 +57,13 @@ export async function POST(request:NextRequest){
  const hasMeaningfulBrief=/allocation|planification|ressource|consultant|intercontrat|commercial|recrutement|operationnel|experience|difficulte|priorite|entretien rh|soft skills|mise en situation/.test(normalizedConversation);
 
  const uncertainReply=/^(je (ne )?sais pas|aucune idee|pas d.exemple|je n.ai pas d.exemple|je ne vois pas|aucune experience)[.!?\s]*$/i.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim());
- if(uncertainReply){return response({kind:"clarify",understanding:"Pas besoin d’avoir déjà occupé un poste de responsable pour identifier une expérience utile. On peut partir d’une contribution plus simple.",question:"Dans votre expérience actuelle, avez-vous déjà mené un recrutement, accompagné un collègue ou résolu un problème avec un manager ?",options:[]});}
+ if(uncertainReply){
+  const hasRecruitingContext=/recrut|staffing|talent acquisition|sourcing|\besn\b|\bssii\b/.test(normalizedConversation);
+  const hasManagerContext=/\b(responsable|manager|manag|chef d.equipe|lead)\b/.test(normalizedConversation);
+  const understanding=hasManagerContext&&hasRecruitingContext?"Vous n'avez pas besoin d'avoir déjà managé pour identifier une expérience transférable.":"Ce n'est pas grave de ne pas savoir par où commencer. On peut avancer avec une seule information.";
+  const question=hasRecruitingContext?"Avez-vous déjà participé à un recrutement, même sur une seule étape ?":"Quel poste ou domaine concerne votre prochain entretien ?";
+  return response({kind:"clarify",understanding,question,options:[]});
+ }
  const normalizedLast=last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
  const vagueExpert=/^(une?\s+)?(difficulte|niveau|probleme|question|sujet)\s+(d.expert|avance|senior|technique|rh|professionnel)(e|s)?[.!?]*$/.test(normalizedLast)||/^(je ne sais pas|aucune idee|aidez.moi|je veux progresser)[.!?]*$/.test(normalizedLast);
  if(vagueExpert){return response({kind:"clarify",understanding:"Je comprends que vous souhaitez une préparation de niveau expert, mais cela ne précise pas encore la situation à travailler.",question:"Pour ce poste, quelle situation exigeante aimeriez-vous savoir gérer en entretien ?",options:[]});}
