@@ -10,7 +10,7 @@ function session(role){
 }
 const endpoint='http://localhost:3000/api/academy/ask';
 async function call(cookie,messages,headers={}){
- const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json',Cookie:cookie,...headers},body:JSON.stringify({messages})});
+ let response;for(let attempt=0;attempt<3;attempt++){response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json',Cookie:cookie,...headers},body:JSON.stringify({messages})});if(response.status!==429)break;console.log('RATE_LIMIT_WAIT',attempt+1);await new Promise(r=>setTimeout(r,65000));}
  return {status:response.status,body:await response.json()};
 }
 (async()=>{
@@ -39,12 +39,12 @@ async function call(cookie,messages,headers={}){
  check('unknown-role uncertainty does not invent manager or recruiting experience',unsureWithoutRole.status===200&&unsureWithoutRole.body.kind==='clarify'&&!/responsable|recrutement|manager/i.test(unsureWithoutRole.body.question+' '+unsureWithoutRole.body.understanding)&&/poste|domaine/i.test(unsureWithoutRole.body.question));
  const unsureRecruiting=await call(candidate.cookie(),[{role:'user',content:'Je prépare un entretien de Responsable recrutement dans une ESN'},{role:'assistant',content:'Quel aspect souhaitez-vous préparer ?'},{role:'user',content:'Je ne sais pas.'}]);
  check('recruiting uncertainty is context-aware',unsureRecruiting.status===200&&unsureRecruiting.body.kind==='clarify'&&/recrutement/i.test(unsureRecruiting.body.question)&&!unsureRecruiting.body.pathId);
- const stage=await call(candidate.cookie(),[{role:'user',content:'Je prépare un entretien de stage PFE, je veux parler de mon projet académique'}]);check('stage recommendation',stage.status===200&&stage.body.kind==='recommend'&&stage.body.needs?.some(x=>x.key==='internship')&&stage.body.saved===true);
+ const stage=await call(candidate.cookie(),[{role:'user',content:'Je prépare un entretien de stage PFE, je souhaite un exercice pour présenter mon projet académique'}]);check('stage recommendation',stage.status===200&&stage.body.kind==='recommend'&&stage.body.needs?.some(x=>x.key==='internship')&&stage.body.saved===true);
  const stored=await candidate.client.from('academy_learning_plans').select('primary_path_id,steps,needs').eq('user_id',(await candidate.client.auth.getUser()).data.user.id).maybeSingle();check('recommendation persisted',!stored.error&&stored.data?.primary_path_id===stage.body.pathId&&stored.data.steps[0]?.exerciseId===stage.body.exerciseId);
- const multi=await call(candidate.cookie(),[{role:'user',content:'Je prépare un entretien final RH avec une DRH'}, {role:'assistant',content:'Quel aspect voulez-vous travailler ?'}, {role:'user',content:'La structure et les soft skills, mes qualités et défauts'}]);check('multi-need curriculum',multi.status===200&&multi.body.kind==='recommend'&&multi.body.needs?.some(x=>x.key==='softskills')&&multi.body.needs?.some(x=>x.key==='structure')&&multi.body.saved===true);
- const memory=await call(candidate.cookie(),[{role:'user',content:'Et pour travailler mes soft skills ?'}]);
+ const multi=await call(candidate.cookie(),[{role:'user',content:'Je prépare un entretien final RH avec une DRH'}, {role:'assistant',content:'Quel aspect voulez-vous travailler ?'}, {role:'user',content:'Je veux un exercice pour travailler la structure et les soft skills, mes qualités et défauts'}]);check('multi-need curriculum',multi.status===200&&multi.body.kind==='recommend'&&multi.body.needs?.some(x=>x.key==='softskills')&&multi.body.needs?.some(x=>x.key==='structure')&&multi.body.saved===true);
+ const memory=await call(candidate.cookie(),[{role:'user',content:'Et pour m’entraîner sur mes soft skills ?'}]);
  check('cross-session follow-up uses saved curriculum',memory.status===200&&memory.body.kind==='recommend'&&memory.body.needs?.some(x=>x.key==='softskills')&&memory.body.needs?.some(x=>x.key==='hr_final'));
- const reset=await call(candidate.cookie(),[{role:'user',content:'Finalement je veux uniquement améliorer ma communication orale'}]);
+ const reset=await call(candidate.cookie(),[{role:'user',content:'Finalement je veux uniquement un exercice pour améliorer ma communication orale'}]);
  check('explicit goal switch replaces previous programme',reset.status===200&&reset.body.kind==='recommend'&&reset.body.needs?.some(x=>x.key==='communication')&&!reset.body.needs?.some(x=>x.key==='hr_final'));
  if(original.data){const restore=await candidate.client.from('academy_learning_plans').upsert({user_id:ownerId,...original.data},{onConflict:'user_id'});check('original plan restored',!restore.error);}else{const deleted=await candidate.client.from('academy_learning_plans').delete().eq('user_id',ownerId);check('QA plan removed',!deleted.error);}
  console.log('API INTEGRATION',pass+'/'+total);

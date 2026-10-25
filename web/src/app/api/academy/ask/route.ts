@@ -22,7 +22,7 @@ Principes comportementaux à suivre, issus de dix conversations de référence :
 8) Choix technique : examine les contraintes, coûts, performances, alternatives et compromis (ex. serverless vs conteneurs), sans affirmer des faits absents du contexte.
 9) Échec professionnel : questionne la responsabilité et les apprentissages sans attribuer automatiquement la faute au candidat.
 10) Fin d'entretien : suggère une question contextualisée sur les objectifs à 90 jours ou les critères de réussite, puis encourage l'adaptation au poste.
-Quand le candidat explique n’avoir jamais été responsable, ne suppose pas une expérience de management, ne lui demande pas immédiatement un résultat chiffré ou un pitch STAR. Commence par une compétence transférable observée dans ses missions réelles. Si le candidat répond « Je ne sais pas », rassure sobrement et facilite un premier exemple concret, sans lui prescrire une formation. Réponds en 3 à 4 phrases maximum, et pose une seule question. Style : chaleureux, clair, naturel, constructif. Privilégie UNE question pertinente à la fois, pas un interrogatoire. Le but est de co-construire la clarté et l'autonomie ; valorise les preuves et les exemples personnels. Pour une demande de conseil immédiat, apporte une réponse utile avant de questionner. N'invente jamais de diplôme, poste, score ou données personnelles. Ne demande pas d'informations sensibles.`;
+Quand le candidat explique n’avoir jamais été responsable, ne suppose pas une expérience de management, ne lui demande pas immédiatement un résultat chiffré ou un pitch STAR. Commence par une compétence transférable observée dans ses missions réelles. Si le candidat répond « Je ne sais pas », rassure sobrement et facilite un premier exemple concret, sans lui prescrire une formation. Réponds en 3 à 4 phrases maximum, et pose une seule question. Si le candidat demande EXPLICITEMENT un exercice et décrit le contenu à travailler (exemple : présenter son projet PFE, structurer ses qualités et défauts, s’entraîner à la communication), choisis recommend avec les besoins correspondants sans retarder artificiellement la prescription. Une simple demande de préparation de poste sans difficulté ni exercice explicite ne suffit pas. Style : chaleureux, clair, naturel, constructif. Privilégie UNE question pertinente à la fois, pas un interrogatoire. Le but est de co-construire la clarté et l'autonomie ; valorise les preuves et les exemples personnels. Pour une demande de conseil immédiat, apporte une réponse utile avant de questionner. N'invente jamais de diplôme, poste, score ou données personnelles. Ne demande pas d'informations sensibles.`;
 function response(data:object){return NextResponse.json(data,{headers:{"Cache-Control":"no-store"}});}
 async function savePlan(client:NonNullable<Awaited<ReturnType<typeof getServerAuthClient>>>,userId:string,recommendation:ReturnType<typeof makeRecommendation>,source:"rules"|"ai-ld"){
  const {error}=await client.from("academy_learning_plans").upsert({user_id:userId,needs:recommendation.needs,steps:recommendation.steps,primary_path_id:recommendation.pathId,context:recommendation.context||null,source,updated_at:new Date().toISOString()},{onConflict:"user_id"});
@@ -53,6 +53,19 @@ export async function POST(request:NextRequest){
  const oldKeys=Array.isArray(previous?.needs)?previous.needs.flatMap((entry:unknown)=>typeof entry==="object"&&entry!==null&&"key" in entry&&typeof entry.key==="string"&&validKeys.has(entry.key)?[entry.key]:[]):[];
  const currentKeys=synthesizeLearningNeeds(userTurns).needs.map(n=>n.key);
  const fallback=synthesizeLearningNeeds(userTurns,[...currentKeys,...oldKeys]);
+ // Explicit exercise requests with an identified need do not need another LLM decision.
+ // A replacement goal uses the last message; a continuation may preserve the saved curriculum.
+ const normalizedTraining=last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ if(/exercic|entrain|simulation|atelier/.test(normalizedTraining)){
+  const replaceGoal=/\b(finalement|uniquement|seulement|desormais|plutot)\b/.test(normalizedTraining);
+  const selected=replaceGoal?synthesizeLearningNeeds([last.content]):fallback;
+  const scope=buildDiagnostic(history,undefined,selected.needs.map(n=>n.key),true);
+  if(selected.steps.length&&scope.phase==="training"){
+   const plan=makeRecommendation(selected);
+   const saved=await savePlan(client,user.id,plan,"rules");
+   return response({...plan,source:"rules",saved,diagnostic:scope});
+  }
+ }
  const normalizedConversation=userTurns.join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
  const isStaffingRole=/staffing manager|responsable staffing|staffing lead/.test(normalizedConversation);
  const hasMeaningfulBrief=/allocation|planification|ressource|consultant|intercontrat|commercial|recrutement|operationnel|experience|difficulte|priorite|entretien rh|soft skills|mise en situation/.test(normalizedConversation);
@@ -99,7 +112,8 @@ export async function POST(request:NextRequest){
   if(!upstream.ok){console.error("Academy classifier provider status:",upstream.status);throw Error("provider error");}
   const output=await upstream.json() as {choices?:{message?:{content?:string}}[]};
   const decision=JSON.parse(output.choices?.[0]?.message?.content||"null") as Decision|null;
-  if(!decision||!Array.isArray(decision.needs))throw Error("Invalid classification");
+  if(!decision||typeof decision!=="object")throw Error("Invalid classification");
+  if(!Array.isArray(decision.needs))decision.needs=[];
   if(decision.action==="answer"&&!followup&&!/\b(finalement|uniquement|seulement|desormais|plutot)\b/i.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,""))&&!/\b(prepar|entrain|exercic|programme|parcours|amelior|travaill)/i.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,""))&&typeof decision.reply==="string"&&decision.reply.trim().length>=25)return response({kind:"answer",reply:decision.reply.trim().slice(0,1250),question:typeof decision.question==="string"?decision.question.slice(0,220):undefined,references:citations.map(({slug,title,source_label})=>({slug,title,source:source_label}))});
   const keys=decision.needs.filter(x=>typeof x==="string"&&validKeys.has(x)).slice(0,4);
   // Keep explicit domain constraints grounded in the candidate’s words.
@@ -108,14 +122,16 @@ export async function POST(request:NextRequest){
   const combinedText=userTurns.join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   const hasTechnicalEvidence=/informatique|developpement logiciel|programmation|data analyst|devops|cyber|ingenierie informatique/.test(combinedText);
   const safeKeys=keys.filter(k=>k!=="technical"||hasTechnicalEvidence);
-  const merged=[...concreteKeys,...safeKeys.filter(k=>!concreteKeys.includes(k as typeof concreteKeys[number]))];
+  // Explicit topic switches replace model-inferred unrelated needs.
+  const switchTopic=/\b(finalement|uniquement|seulement|desormais|plutot)\b/i.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,""));
+  const merged=switchTopic&&concreteKeys.length?concreteKeys:[...concreteKeys,...safeKeys.filter(k=>!concreteKeys.includes(k as typeof concreteKeys[number]))];
   const synthesis=synthesizeLearningNeeds(userTurns,merged);
   const diagnostic=buildDiagnostic(history,decision.diagnostic,merged,/\b(entrain|exercic|simulation|programme|parcours|atelier)/i.test(last.content));
+  if(synthesis.steps.length&&allowRecommendation(diagnostic,decision.action)){const plan=makeRecommendation(synthesis,decision.context||previous?.context||undefined);const saved=await savePlan(client,user.id,plan,"ai-ld");return response({...plan,diagnostic,understanding:typeof decision.understanding==="string"?decision.understanding.slice(0,350):undefined,source:"ai-ld",saved,references:citations.map(({slug,title,source_label})=>({slug,title,source:source_label}))});}
    if(decision.action==="clarify"&&typeof decision.question==="string"&&decision.question.trim().length>12){
    const options=(Array.isArray(decision.options)?decision.options:[]).filter((x):x is string=>typeof x==="string"&&x.trim().length>1).slice(0,4);
    return response({kind:"clarify",understanding:typeof decision.understanding==="string"?decision.understanding.slice(0,350):undefined,question:decision.question.slice(0,240),options});
   }
-  if(synthesis.steps.length&&allowRecommendation(diagnostic,decision.action)){const plan=makeRecommendation(synthesis,decision.context||previous?.context||undefined);const saved=await savePlan(client,user.id,plan,"ai-ld");return response({...plan,diagnostic,understanding:typeof decision.understanding==="string"?decision.understanding.slice(0,350):undefined,source:"ai-ld",saved,references:citations.map(({slug,title,source_label})=>({slug,title,source:source_label}))});}
   if(typeof decision.reply==="string"&&decision.reply.trim().length>=25&&diagnostic.phase!=="exploration")return response({kind:"answer",reply:decision.reply.trim().slice(0,800),question:typeof decision.question==="string"?decision.question.slice(0,220):undefined,diagnostic});
   return response({kind:"clarify",understanding:typeof decision.understanding==="string"?decision.understanding.slice(0,220):undefined,question:typeof decision.question==="string"&&decision.question.trim().length>12?decision.question.slice(0,220):"Quel aspect précis de cet entretien souhaitez-vous travailler ?",options:[],diagnostic});
  }catch{

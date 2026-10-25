@@ -8,6 +8,7 @@ check('project stage with explicit target allows training',()=>assert.equal(buil
 check('advice without training is coaching',()=>assert.equal(buildDiagnostic(turns('J’ai du mal à expliquer mon projet'),{},['structure'],false).phase,'coaching'));
 check('model cannot invent evidence',()=>assert.equal(buildDiagnostic(turns('Je suis recruteur IT'),{evidence:[{need:'leadership',statement:'J’ai dirigé dix recruteurs'}]},[],false).evidence.length,0));
 check('verbatim evidence accepted',()=>assert.equal(buildDiagnostic(turns('J’ai coordonné un projet inter-équipes'),{evidence:[{need:'leadership',statement:'J’ai coordonné un projet inter-équipes'}]},[],false).evidence.length,1));
-check('clarification never authorizes recommendation',()=>assert.equal(allowRecommendation({phase:'training'},'clarify'),false));
-check('training and explicit model recommendation required',()=>assert.equal(allowRecommendation({phase:'training'},'recommend'),true));
-console.log('DIAGNOSTIC',count+'/9');
+check('clarification never authorizes recommendation',()=>assert.equal(allowRecommendation({phase:'training',explicitExerciseRequest:false},'clarify'),false));
+check('training and explicit model recommendation required',()=>assert.equal(allowRecommendation({phase:'training',explicitExerciseRequest:false},'recommend'),true));
+check('explicit exercise request authorizes eligible training',()=>assert.equal(allowRecommendation(buildDiagnostic(turns('Je souhaite un exercice pour améliorer la communication'),{},['communication'],true),'clarify'),true));
+console.log('DIAGNOSTIC',count+'/10');

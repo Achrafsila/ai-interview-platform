@@ -15,3 +15,9 @@ Objectif : séparer le constat du candidat, les décisions d'orientation et la p
 - Les tests d'intégration Groq ont été irréguliers lors de la campagne (15/18 puis 6/18), ce qui empêche de considérer la régression globale comme validée. Investiguer les codes HTTP/quota avant de confirmer la stabilité.
 - Valider les parcours d'exercices déjà précis (stage PFE, RH final, etc.), les conversations longues et la continuité entre sessions avant activation complète.
 - La recherche sémantique vectorielle sur Vercel reste un chantier distinct.
+
+## Stabilisation après la première tranche
+- Une demande explicite d'exercice, associée à un besoin concret détecté, peut désormais être résolue par l'orchestrateur sans dépendre d'une seconde décision variable de Groq. Le poste seul demeure insuffisant.
+- Un changement explicite de priorité (`finalement`, `uniquement`) est résolu sur le dernier message uniquement ; une continuation peut conserver les objectifs du programme précédent.
+- Le banc d'intégration distingue les réponses HTTP 429 des erreurs métier : attente bornée avant nouvelle tentative ; il ne contourne aucun quota.
+- Validation finale de la tranche : **10/10 tests unitaires de diagnostic, 18/18 tests d'intégration API**, TypeScript et ESLint validés. L'objectif reste d'évaluer ultérieurement la qualité qualitative des dialogues.

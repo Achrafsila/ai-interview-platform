@@ -1,6 +1,6 @@
 /** Academy V4 diagnostic gate: a role is context, never evidence of a learning gap. */
 export type DiagnosticEvidence={need:string;statement:string;source:"candidate"};
-export type DiagnosticState={phase:"exploration"|"coaching"|"training";role:string|null;goal:string|null;evidence:DiagnosticEvidence[];missing:string[]};
+export type DiagnosticState={phase:"exploration"|"coaching"|"training";role:string|null;goal:string|null;evidence:DiagnosticEvidence[];missing:string[];explicitExerciseRequest:boolean};
 export type Extraction={role?:unknown;goal?:unknown;evidence?:unknown;missing?:unknown};
 type Turn={role:"user"|"assistant";content:string};
 const trim=(v:unknown,max=160)=>typeof v==="string"?v.trim().slice(0,max):"";
@@ -21,8 +21,9 @@ export function buildDiagnostic(history:Turn[],extraction:Extraction|undefined,n
  }
  const missing=Array.isArray(extraction?.missing)?extraction.missing.map(v=>trim(v)).filter(Boolean).slice(0,3):[];
  const hasSpecificNeed=needs.length>0&&/(stress|confiance|salaire|negoci|structur|star|communi|defaut|qualite|soft.skill|projet|pitch|conflit|presentation|stage pfe|premier emploi)/i.test(normalized);
- const explicitTraining=/(exercic|entrain|simulation|programme|parcours|atelier|prepar)/i.test(normalized);
+ const explicitExerciseRequest=/(exercic|entrain|simulation|programme|parcours|atelier)/i.test(normalize(userTurns.at(-1)||""));
+ const explicitTraining=explicitExerciseRequest||/prepar/i.test(normalized);
  const phase=hasSpecificNeed&&(explicitTraining||requestTraining)?"training":hasSpecificNeed||evidence.length>0?"coaching":"exploration";
- return {phase,role,goal,evidence,missing};
+ return {phase,role,goal,evidence,missing,explicitExerciseRequest};
 }
-export function allowRecommendation(state:DiagnosticState,decisionAction:string|undefined){return state.phase==="training"&&decisionAction==="recommend";}
+export function allowRecommendation(state:DiagnosticState,decisionAction:string|undefined){return state.phase==="training"&&(decisionAction==="recommend"||state.explicitExerciseRequest);}
