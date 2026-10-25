@@ -17,3 +17,9 @@
 - Les messages utilisateurs restent gardés sur 9 tours dans le composant Academy ; la table autorise 20 entrées pour une future extension, sans encore garantir de mémoire longue.
 - Le diagnostic n'est enregistré que lorsqu'il est renvoyé par l'API de coaching ; certains retours de clarification n'ont pas encore d'état structuré.
 - Tester en navigateur avec utilisateur de démonstration, nouvel onglet, rafraîchissement, reprise, puis suppression, avant la fusion dans `main`.
+
+## Recette automatisée validée
+- Un test navigateur Chrome headless authentifié a été ajouté : `scripts/test_academy_conversation_browser.cjs`.
+- Résultat : 8/8 contrôles réussis (rendu Academy, restauration initiale, réponse restaurée, actualisation, sauvegarde API authentifiée, réaffichage du nouvel historique, suppression via « Nouvelle discussion », persistance de la suppression après rafraîchissement).
+- Les données de conversation préexistantes du compte de démonstration sont sauvegardées puis restaurées à la fin du script.
+- Les 5 tests navigateur Academy existants et les 10 tests unitaires de diagnostic passent. TypeScript, ESLint et build Next.js réussis.
