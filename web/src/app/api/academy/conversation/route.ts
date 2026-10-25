@@ -1,3 +1,4 @@
+import {trackGoals} from "@/app/api/academy/ask/goal-tracker";
 import {NextRequest,NextResponse} from "next/server";
 import {getServerAuthClient} from "@/lib/supabase-server";
 import {getAppRole} from "@/lib/profile";
@@ -21,7 +22,8 @@ export async function PUT(request:NextRequest){const origin=request.headers.get(
  if(!body||typeof body!=="object")return json({error:"Requête invalide."},400);
  const {turns,diagnostic} = body as {turns?:unknown;diagnostic?:unknown};
  if(!Array.isArray(turns)||turns.length>20||turns.some((t:Turn)=>!t||!["user","assistant"].includes(t.role)||typeof t.content!=="string"||t.content.length>2500))return json({error:"Historique invalide."},400);
- const safeDiagnostic=diagnostic&&typeof diagnostic==="object"&&JSON.stringify(diagnostic).length<=4000?diagnostic:null;
+ const timeline=trackGoals(turns);
+ const safeDiagnostic={phase:diagnostic&&typeof diagnostic==="object"&&"phase" in diagnostic&&["exploration","coaching","training"].includes(String(diagnostic.phase))?diagnostic.phase:"exploration",timeline};
  const {error}=await auth.client.from("academy_conversations").upsert({user_id:auth.user.id,turns,diagnostic:safeDiagnostic,updated_at:new Date().toISOString()},{onConflict:"user_id"});
  if(error)return json({error:"Sauvegarde indisponible."},503);
  return json({saved:true});

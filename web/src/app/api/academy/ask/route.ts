@@ -1,3 +1,4 @@
+import {goalContext,trackGoals} from "./goal-tracker";
 import {prepareCoachingMemory} from "./memory";
 import {allowRecommendation,buildDiagnostic,type Extraction} from "./diagnostic";
 import {NextRequest,NextResponse} from "next/server";
@@ -50,6 +51,7 @@ export async function POST(request:NextRequest){
  if(!quotaAllowed)return NextResponse.json({error:"Vous avez envoyé beaucoup de demandes. Réessayez dans une minute."},{status:429,headers:{"Retry-After":"60","Cache-Control":"no-store"}});
  const {data:savedConversation}=await client.from("academy_conversations").select("turns").eq("user_id",user.id).maybeSingle();
  const coachingMemory=prepareCoachingMemory(savedConversation?.turns,history);
+ const goalTimeline=trackGoals([...(Array.isArray(savedConversation?.turns)?savedConversation.turns:[]),...history].slice(-40));
  const userTurns=history.filter(m=>m.role==="user").map(m=>m.content);
  const followup=userTurns.length===1&&/^(et\b|et pour\b|aussi\b|en plus\b|egalement\b|ajoute\b)/i.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim());
  const {data:previous}=followup?await client.from("academy_learning_plans").select("needs,context").eq("user_id",user.id).maybeSingle():{data:null};
@@ -111,7 +113,7 @@ export async function POST(request:NextRequest){
  const key=process.env.GROQ_API_KEY;
  if(!key)return response({kind:"clarify",understanding:"Le coach IA est momentanément indisponible ; votre préparation peut continuer sans programme automatique.",question:"Sur quel aspect précis souhaitez-vous travailler ?",options:[]});
  try{
-  const upstream=await fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${key}`},body:JSON.stringify({model:process.env.ACADEMY_AI_MODEL||"openai/gpt-oss-120b",temperature:0.1,max_tokens:1200,response_format:{type:"json_object"},messages:[{role:"system",content:coachingInstruction+knowledgeContext+(coachingMemory.summary?"\n"+coachingMemory.summary:"")+(oldKeys.length?`\nContexte pédagogique précédent (continuation volontaire du candidat) : compétences ${oldKeys.join(", ")}; contexte ${String(previous?.context||"").slice(0,130)}. Conserve les compétences précédentes seulement si compatibles avec sa demande actuelle.`:"")},...history.map(t=>({role:t.role,content:t.content}))]}),signal:AbortSignal.timeout(20000),cache:"no-store"});
+  const upstream=await fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${key}`},body:JSON.stringify({model:process.env.ACADEMY_AI_MODEL||"openai/gpt-oss-120b",temperature:0.1,max_tokens:1200,response_format:{type:"json_object"},messages:[{role:"system",content:coachingInstruction+knowledgeContext+(goalContext(goalTimeline)?"\n"+goalContext(goalTimeline):"")+(coachingMemory.summary?"\n"+coachingMemory.summary:"")+(oldKeys.length?`\nContexte pédagogique précédent (continuation volontaire du candidat) : compétences ${oldKeys.join(", ")}; contexte ${String(previous?.context||"").slice(0,130)}. Conserve les compétences précédentes seulement si compatibles avec sa demande actuelle.`:"")},...history.map(t=>({role:t.role,content:t.content}))]}),signal:AbortSignal.timeout(20000),cache:"no-store"});
   if(!upstream.ok){console.error("Academy classifier provider status:",upstream.status);throw Error("provider error");}
   const output=await upstream.json() as {choices?:{message?:{content?:string}}[]};
   const decision=JSON.parse(output.choices?.[0]?.message?.content||"null") as Decision|null;
