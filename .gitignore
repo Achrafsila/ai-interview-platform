@@ -48,3 +48,7 @@ temp/
 
 # Local-only auth fixtures; never commit demo passwords
 .demo-credentials/
+
+# Local Academy multilingual embedding cache
+.academy-model-cache/
+.academy-embedding-venv/
