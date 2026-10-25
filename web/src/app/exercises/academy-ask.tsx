@@ -31,23 +31,23 @@ export function AcademyAsk({compact=false,onRecommendation,onConversationStart,o
  const [historyReady,setHistoryReady]=useState(false);
  const onRestoreRef=useRef(onConversationStart);
  useEffect(()=>{onRestoreRef.current=onConversationStart;},[onConversationStart]);
- useEffect(()=>{let active=true;void (async()=>{try{const res=await fetch("/api/academy/conversation",{cache:"no-store"});if(!res.ok)return;const body=await res.json() as {turns?:{role:"user"|"assistant";content:string}[]};if(active&&Array.isArray(body.turns)){const restored=body.turns.filter(t=>["user","assistant"].includes(t.role)&&typeof t.content==="string").slice(-9);setHistory(restored);if(restored.length)onRestoreRef.current?.();}}catch{}finally{if(active)setHistoryReady(true);}})();return()=>{active=false;};},[]);
+ useEffect(()=>{let active=true;void (async()=>{try{const res=await fetch("/api/academy/conversation",{cache:"no-store"});if(!res.ok)return;const body=await res.json() as {turns?:{role:"user"|"assistant";content:string}[]};if(active&&Array.isArray(body.turns)){const restored=body.turns.filter(t=>["user","assistant"].includes(t.role)&&typeof t.content==="string").slice(-20);setHistory(restored);if(restored.length)onRestoreRef.current?.();}}catch{}finally{if(active)setHistoryReady(true);}})();return()=>{active=false;};},[]);
  async function persist(turns:{role:"user"|"assistant";content:string}[],diagnostic?:unknown){try{const res=await fetch("/api/academy/conversation",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({turns,diagnostic})});if(!res.ok)setError("La discussion continue, mais sa sauvegarde a échoué.");}catch{setError("La discussion continue, mais sa sauvegarde a échoué.");}}
  async function resetDiscussion(){try{const res=await fetch("/api/academy/conversation",{method:"DELETE"});if(!res.ok)throw Error("Suppression indisponible");setHistory([]);setSuggestion(null);setClarification(null);setReferences([]);setPrompt("");setError("");onConversationReset?.();}catch{setError("Impossible de supprimer l'historique enregistré pour le moment.");}}
 
  async function ask(override?:string){
   const text=(override||prompt).trim();if(text.length<3||busy||!historyReady)return;
   onConversationStart?.();
-  const next=[...history.map(turn=>({...turn,content:turn.role==="assistant"?turn.content.slice(0,1800):turn.content})),{role:"user" as const,content:text}].slice(-9);setHistory(next);setPrompt("");
+  const next=[...history.map(turn=>({...turn,content:turn.role==="assistant"?turn.content.slice(0,1800):turn.content})),{role:"user" as const,content:text}].slice(-20);setHistory(next);setPrompt("");
   setBusy(true);setError("");setSuggestion(null);setClarification(null);
   try{
-   const response=await fetch("/api/academy/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:next})});
+   const response=await fetch("/api/academy/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:next.slice(-9)})});
    const body=await response.json() as (Suggestion|Clarification|Answer)&{error?:string};
    if(!response.ok)throw new Error(body.error||"Le coach n’est pas disponible.");
    setReferences(body.references||[]);
-   if(body.kind==="answer"){setHistory(items=>[...items,{role:"assistant" as const,content:`${body.reply}${body.question?"\n\n"+body.question:""}`}].slice(-9));}else if(body.kind==="clarify"){setClarification(body);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.question}`}].slice(-9));}else{setSuggestion(body);onRecommendation?.(body.exerciseId);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.reason}`}].slice(-9));}
+   if(body.kind==="answer"){setHistory(items=>[...items,{role:"assistant" as const,content:`${body.reply}${body.question?"\n\n"+body.question:""}`}].slice(-20));}else if(body.kind==="clarify"){setClarification(body);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.question}`}].slice(-20));}else{setSuggestion(body);onRecommendation?.(body.exerciseId);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.reason}`}].slice(-20));}
    const assistantContent=body.kind==="answer"?`${body.reply}${body.question?"\n\n"+body.question:""}`:body.kind==="clarify"?`${body.understanding?body.understanding+"\n\n":""}${body.question}`:`${body.understanding?body.understanding+"\n\n":""}${body.reason}`;
-   await persist([...next,{role:"assistant" as const,content:assistantContent}].slice(-9),(body as {diagnostic?:unknown}).diagnostic);
+   await persist([...next,{role:"assistant" as const,content:assistantContent}].slice(-20),(body as {diagnostic?:unknown}).diagnostic);
   }catch(e){setHistory(items=>items.slice(0,-1));setPrompt(text);setError(e instanceof Error?e.message:"Le coach n’est pas disponible.");}
   finally{setBusy(false);}
  }
