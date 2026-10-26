@@ -30,6 +30,9 @@ HERE = Path(__file__).resolve().parent
 NEW_USER = HERE.parent / "new-user-e2e"
 sys.path.insert(0, str(HERE))
 from ai_interview import InterviewLab, configure_ai_provider, LabValidationError, AIUnavailableError
+from v2_interview import V2InterviewLab
+sys.path.insert(0, str(ROOT / 'src' / 'interview-engine'))
+from job_intelligence import interpret_job
 
 BANK = ROOT / "data" / "question-bank"
 FILES = (
@@ -109,6 +112,8 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
     e2e_js = (NEW_USER / "app.js").read_bytes()
     ai_provider, ai_provider_name = configure_ai_provider(os.environ)
     ai_lab = InterviewLab(questions, ai_provider)
+    v2_lab = V2InterviewLab(ai_provider, interpret_job)
+    v2_enabled = os.environ.get('INTERVIEW_INTELLIGENCE_V2', '').lower() == 'true'
 
     class Handler(BaseHTTPRequestHandler):
         server_version = "AIInterviewLocalPreview/1.0"
@@ -299,16 +304,18 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
                 if not ai_provider.api_key:
                     return self._send({"error": "Clé API du fournisseur sélectionné non configurée (GROQ_API_KEY ou OPENAI_API_KEY)."}, 503)
                 try:
-                    response = ai_lab.start(body)
+                    response = v2_lab.start(body) if v2_enabled else ai_lab.start(body)
                     return self._send(response, 201)
-                except LabValidationError as exc:
+                except (LabValidationError, ValueError, TypeError) as exc:
                     return self._send({"error": str(exc)}, 400)
+                except AIUnavailableError as exc:
+                    return self._send({"error": str(exc)}, 502)
             if url.path == "/api/ai/session/answer":
                 if not ai_provider.api_key:
                     return self._send({"error": "OPENAI_API_KEY non configurée sur ce serveur local."}, 503)
                 try:
-                    return self._send(ai_lab.answer(body))
-                except LabValidationError as exc:
+                    return self._send(v2_lab.answer(body) if v2_lab.owns(body.get('session_id')) else ai_lab.answer(body))
+                except (LabValidationError, ValueError, TypeError) as exc:
                     return self._send({"error": str(exc)}, 400)
                 except AIUnavailableError as exc:
                     return self._send({"error": str(exc)}, 502)
