@@ -21,7 +21,7 @@ export async function PUT(request:NextRequest){const origin=request.headers.get(
  let body:unknown;try{body=await request.json();}catch{return json({error:"Requête invalide."},400);}
  if(!body||typeof body!=="object")return json({error:"Requête invalide."},400);
  const {turns,diagnostic} = body as {turns?:unknown;diagnostic?:unknown};
- if(!Array.isArray(turns)||turns.length>20||turns.some((t:Turn)=>!t||!["user","assistant"].includes(t.role)||typeof t.content!=="string"||t.content.length>2500))return json({error:"Historique invalide."},400);
+ if(!Array.isArray(turns)||turns.length>20||turns.some((t:Turn)=>!t||!["user","assistant"].includes(t.role)||typeof t.content!=="string"||t.content.length>(t.role==="user"?5000:2500)))return json({error:"Historique invalide."},400);
  const timeline=trackGoals(turns);
  const safeDiagnostic={phase:diagnostic&&typeof diagnostic==="object"&&"phase" in diagnostic&&["exploration","coaching","training"].includes(String(diagnostic.phase))?diagnostic.phase:"exploration",timeline};
  const {error}=await auth.client.from("academy_conversations").upsert({user_id:auth.user.id,turns,diagnostic:safeDiagnostic,updated_at:new Date().toISOString()},{onConflict:"user_id"});

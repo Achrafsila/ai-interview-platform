@@ -57,7 +57,7 @@ export async function POST(request:NextRequest){
  let body:unknown;try{body=await request.json();}catch{return NextResponse.json({error:"Requête invalide."},{status:400});}
  if(!body||typeof body!=="object")return NextResponse.json({error:"Conversation invalide."},{status:400});
  const messages=(body as {messages?:unknown}).messages;
- if(!Array.isArray(messages)||messages.length<1||messages.length>11||messages.some(m=>!m||typeof m!=="object"||!["user","assistant"].includes(m.role)||typeof m.content!=="string"||m.content.length>(m.role==="assistant"?2500:700)))return NextResponse.json({error:"Conversation invalide."},{status:400});
+ if(!Array.isArray(messages)||messages.length<1||messages.length>11||messages.some(m=>!m||typeof m!=="object"||!["user","assistant"].includes(m.role)||typeof m.content!=="string"||m.content.length>(m.role==="assistant"?2500:5000)))return NextResponse.json({error:"Conversation invalide."},{status:400});
  const history=messages as Turn[];
  const last=history.at(-1);
  if(last?.role!=="user"||last.content.trim().length<3)return NextResponse.json({error:"Précisez votre demande."},{status:400});
