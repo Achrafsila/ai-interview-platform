@@ -38,6 +38,8 @@ export function InterviewReport({ feedback, jobTitle, family, elapsed, interrupt
  const data = parseFeedback(feedback || "Aucun retour pédagogique disponible pour cette séance.");
  const focus = recommendedFocus(data.improvement);
  const duration = `${Math.floor(elapsed / 60)} min ${String(elapsed % 60).padStart(2, "0")} s`;
+ const academyHref = `/exercises?source=interview&focus=${encodeURIComponent(focus.name)}&job=${encodeURIComponent((jobTitle||"").slice(0,120))}`;
+ const retryHref = `/preparation?source=interview&job=${encodeURIComponent((jobTitle||"").slice(0,120))}&family=${family||"rh"}`;
  return <main className="report-v2 relative min-h-dvh overflow-hidden bg-[#0A1028] px-4 pb-16 pt-8 text-white sm:px-8 sm:pt-12">
   <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_52%_8%,#2D3C82_0%,#17204B_34%,#0A1028_74%)]" />
   <div aria-hidden="true" className="pointer-events-none absolute -right-32 top-12 size-96 rounded-full bg-[#A453FA]/15 blur-[100px]" />
@@ -73,7 +75,7 @@ export function InterviewReport({ feedback, jobTitle, family, elapsed, interrupt
       <p className="text-xs font-bold uppercase tracking-[.13em] text-[#A9E9E6]">Recommandation pour votre prochaine simulation</p>
       <h3 className="mt-3 text-xl font-semibold">{focus.name}</h3>
       <p className="mt-2 max-w-2xl text-sm leading-7 text-[#D8E6F7]">{focus.detail}</p>
-      <Link href="/exercises" className="interview-v2-primary mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold">Travailler ce point maintenant <ArrowRight size={17}/></Link>
+      <Link href={academyHref} className="interview-v2-primary mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold">Travailler ce point maintenant <ArrowRight size={17}/></Link>
       <p className="mt-3 text-xs leading-5 text-[#B7C9DF]">Ouvrez un exercice guidé, puis revenez à une simulation pour mettre vos acquis en pratique.</p>
      </div>
      <div className="mt-4 grid gap-4 md:grid-cols-2">
@@ -92,7 +94,7 @@ export function InterviewReport({ feedback, jobTitle, family, elapsed, interrupt
      </div>
     </div>
    </section>}
-   <nav aria-label="Actions après entretien" className="report-v2-rise report-v2-delay-4 mt-9 flex flex-col gap-3 sm:flex-row sm:justify-center"><Link href="/preparation" className="interview-v2-primary inline-flex min-h-13 items-center justify-center gap-3 rounded-2xl px-7 py-4 text-sm font-bold">Refaire un entretien <RotateCcw size={17}/></Link><Link href="/dashboard" className="interview-v2-glass inline-flex min-h-13 items-center justify-center gap-3 rounded-2xl px-7 py-4 text-sm font-semibold">Retour au tableau de bord <ArrowRight size={17}/></Link></nav>
+   <nav aria-label="Actions après entretien" className="report-v2-rise report-v2-delay-4 mt-9 flex flex-col gap-3 sm:flex-row sm:justify-center"><Link href={retryHref} className="interview-v2-primary inline-flex min-h-13 items-center justify-center gap-3 rounded-2xl px-7 py-4 text-sm font-bold">Refaire un entretien <RotateCcw size={17}/></Link><Link href="/dashboard" className="interview-v2-glass inline-flex min-h-13 items-center justify-center gap-3 rounded-2xl px-7 py-4 text-sm font-semibold">Retour au tableau de bord <ArrowRight size={17}/></Link></nav>
    <p className="mx-auto mt-9 max-w-xl text-center text-xs leading-6 text-[#ABB8D9]">Retour pédagogique indicatif, sans note ni jugement de recrutement. Cette séance locale n’est pas encore enregistrée dans Supabase.</p>
   </div>
  </main>;
