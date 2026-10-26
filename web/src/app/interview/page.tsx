@@ -90,7 +90,9 @@ export default function InterviewPage(){
  const questionAudio=useRef<HTMLAudioElement|null>(null);
  const questionAudioUrl=useRef<string|null>(null);
  const voiceSequence=useRef(0);
+ const voiceTimeout=useRef<ReturnType<typeof setTimeout>|null>(null);
  function stopQuestionAudio(){
+  if(voiceTimeout.current){clearTimeout(voiceTimeout.current);voiceTimeout.current=null;}
   voiceSequence.current++;
   questionAudio.current?.pause();questionAudio.current=null;
   if(questionAudioUrl.current){URL.revokeObjectURL(questionAudioUrl.current);questionAudioUrl.current=null;}
@@ -125,17 +127,25 @@ export default function InterviewPage(){
   const total=segmentInterviewerText(text).length;
   if(muted){setQuestionReveal(total);setState("listening");setVoiceNotice("Le son est coupé.");return;}
   const sequence=voiceSequence.current;
+  // Always expose the question immediately; audio is progressive enhancement.
+  setQuestionReveal(total);
   setState("speaking");
   setVoiceNotice("Chargement de la voix…");
+  voiceTimeout.current=setTimeout(()=>{
+   if(sequence!==voiceSequence.current)return;
+   window.speechSynthesis?.cancel();
+   setState("listening");
+   setVoiceNotice("La voix ne répond pas. Vous pouvez répondre directement, ou réessayer l’écoute.");
+  },6500);
   // Production-safe browser TTS: localhost-only audio service is not available on Vercel.
   if("speechSynthesis" in window && "SpeechSynthesisUtterance" in window){
    const utterance=new SpeechSynthesisUtterance(text);
    utterance.lang=locale==="en"?"en-US":"fr-FR";
    utterance.rate=0.98;
-   utterance.onstart=()=>{if(sequence===voiceSequence.current){setQuestionReveal(total);setVoiceNotice("");}};
-   utterance.onend=()=>{if(sequence===voiceSequence.current){setState("listening");setVoiceNotice("");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}};
-   utterance.onerror=()=>{if(sequence===voiceSequence.current){setQuestionReveal(total);setState("listening");setVoiceNotice("Audio navigateur indisponible, vous pouvez répondre par écrit.");}};
-   window.speechSynthesis.cancel();window.speechSynthesis.speak(utterance);
+   utterance.onstart=()=>{if(sequence===voiceSequence.current){if(voiceTimeout.current)clearTimeout(voiceTimeout.current);voiceTimeout.current=null;setVoiceNotice("");}};
+   utterance.onend=()=>{if(sequence===voiceSequence.current){if(voiceTimeout.current)clearTimeout(voiceTimeout.current);voiceTimeout.current=null;setState("listening");setVoiceNotice("");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}};
+   utterance.onerror=()=>{if(sequence===voiceSequence.current){if(voiceTimeout.current)clearTimeout(voiceTimeout.current);voiceTimeout.current=null;setQuestionReveal(total);setState("listening");setVoiceNotice("Audio navigateur indisponible, vous pouvez répondre par écrit.");}};
+   try{window.speechSynthesis.cancel();window.speechSynthesis.speak(utterance);}catch{if(voiceTimeout.current)clearTimeout(voiceTimeout.current);voiceTimeout.current=null;setState("listening");setVoiceNotice("La synthèse vocale est indisponible. Répondez directement.");}
    return;
   }
   const url="/api/interview/tts?"+new URLSearchParams({text,locale}).toString();
@@ -144,6 +154,7 @@ export default function InterviewPage(){
   questionAudio.current=audio;
   audio.onplaying=()=>{
    if(sequence!==voiceSequence.current)return;
+   if(voiceTimeout.current)clearTimeout(voiceTimeout.current);voiceTimeout.current=null;
    setVoiceNotice("");
    // Reveal the full question with a smooth entrance; audio duration is not word alignment.
    setQuestionReveal(total);
@@ -156,6 +167,7 @@ export default function InterviewPage(){
   };
   audio.onerror=()=>{
    if(sequence!==voiceSequence.current)return;
+   if(voiceTimeout.current)clearTimeout(voiceTimeout.current);voiceTimeout.current=null;
    setQuestionReveal(total);setState("listening");
    setVoiceNotice("La lecture a échoué. Essayez « Écouter la question ».");
   };
