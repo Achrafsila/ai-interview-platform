@@ -1,0 +1,18 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const ts = require('../web/node_modules/typescript');
+const vm = require('node:vm');
+const source = fs.readFileSync('web/src/app/api/academy/ask/route.ts','utf8');
+const snippet = source.match(/function scopedPractice\([\s\S]*?\n}\nfunction response/);
+assert.ok(snippet,'scoped practice function exists');
+const js = ts.transpileModule(snippet[0].replace(/\nfunction response$/, ''), {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.None}}).outputText;
+const sandbox = {};
+vm.runInNewContext(js+'\nthis.run=scopedPractice;',sandbox);
+const turns = ['Bonjour','Bonjour','Je veux préparer un entretien pour une position datascitist','case study','churn','EDA','Selection des variables','Importance'].map(content=>({role:'user',content}));
+const result = sandbox.run(turns);
+assert.ok(result?.reply?.includes('churn'));
+assert.ok(result?.question?.includes('cancellation_date'));
+assert.equal(sandbox.run([{role:'user',content:'Bonjour'}]),null);
+const exercise = sandbox.run([...turns,{role:'user',content:'Vous pouvez me donner des exercices ?'}]);
+assert.ok(exercise?.question?.includes('data leakage'));
+console.log('PASS: scoped churn practice, exercise and greeting guard');
