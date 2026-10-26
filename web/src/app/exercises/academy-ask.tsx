@@ -6,7 +6,7 @@ import {ArrowRight,ArrowUp,BrainCircuit,Sparkles,MessageSquareText,Target} from 
 type Reference={slug:string;title:string;source:string};
 type Suggestion={kind:"recommend";references?:Reference[];understanding?:string;need:string;pathId:string;pathTitle:string;reason:string;exerciseId:string;exerciseName:string;source?:"rules"|"ai-ld";saved?:boolean;needs?:{key:string;label:string}[];steps?:{exerciseId:string;exerciseName:string;pathId:string;pathTitle:string;goal:string;method?:string}[]};
 type Clarification={kind:"clarify";references?:Reference[];understanding?:string;question:string;options:string[]};
-type Answer={kind:"answer";references?:Reference[];reply:string;question?:string;practiceFeedback?:boolean;suggestedPath?:{pathId:string;pathTitle:string;exerciseId:string;exerciseName:string}|null};
+type Answer={presentation?:{version:1;view:"explanation"|"question"|"case"|"feedback"|"recommendation"|"resources";message:string;question?:string;actions:{type:string;label:string}[]};kind:"answer";references?:Reference[];reply:string;question?:string;practiceFeedback?:boolean;suggestedPath?:{pathId:string;pathTitle:string;exerciseId:string;exerciseName:string}|null};
 
 function CoachMascot({thinking}:{thinking:boolean}){
  return <div aria-hidden="true" className="academy-mascot relative flex h-[80px] w-[92px] shrink-0 items-center justify-center sm:h-[92px] sm:w-[108px]">
@@ -95,7 +95,7 @@ export function AcademyAsk({compact=false,onRecommendation,onConversationStart,o
   setBusy(true);setSelectedScenario("");setCustomScenario("");setSelectedFocus("");setCustomFocus("");setError("");setAdaptivePath(null);setSavedSuggested(false);setSuggestion(null);setClarification(null);
   try{
    const response=await fetch("/api/academy/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:next.slice(-9)})});
-   const body=await response.json() as (Suggestion|Clarification|Answer)&{error?:string};
+   const body=await response.json() as (Suggestion|Clarification|Answer)&{error?:string;presentation?:Answer["presentation"]};
    if(!response.ok)throw new Error(body.error||"Le coach n’est pas disponible.");
    setReferences(body.references||[]);
    if(body.kind==="answer"){setAdaptivePath(body.suggestedPath||null);setSavedSuggested(false);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.reply}${body.question?"\n\n"+body.question:""}`}].slice(-20));}else if(body.kind==="clarify"){setClarification(body);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.question}`}].slice(-20));}else{setSuggestion(body);onRecommendation?.(body.exerciseId);setHistory(items=>[...items,{role:"assistant" as const,content:`${body.understanding?body.understanding+"\n\n":""}${body.reason}`}].slice(-20));}

@@ -1,3 +1,4 @@
+import {createResponseContract} from "./response-contract";
 import {deriveSessionState} from "./session-state";
 import {routeAcademyTurn} from "./orchestrator";
 import {goalContext,trackGoals} from "./goal-tracker";
@@ -42,7 +43,7 @@ function scopedPractice(turns:Turn[]):{reply:string;question?:string}|null{
  if(/exercic|entrain|pratiqu|mise en situation|cas pratique|donne.*cas/.test(last))return {reply:"Passons à un exercice interactif de sélection de variables pour un modèle de churn. Les variables candidates sont tenure, monthly_charges, contract_type, support_tickets, cancellation_date et payment_method. On avance en trois étapes : fuite de données, importance prédictive, puis justification business.",question:"Étape 1 : laquelle de ces six variables peut causer une fuite de données (*data leakage*) et pourquoi ? Répondez comme devant un recruteur ; je commenterai votre raisonnement avant l’étape suivante."};
  return null;
 }
-function response(data:object){return NextResponse.json(data,{headers:{"Cache-Control":"no-store"}});}
+function response(data:object){const payload=data as Record<string,unknown>;return NextResponse.json({...payload,presentation:createResponseContract(payload)},{headers:{"Cache-Control":"no-store"}});}
 export async function POST(request:NextRequest){
  const origin=request.headers.get("origin");
  if(origin&&origin!==request.nextUrl.origin)return NextResponse.json({error:"Origine non autorisée."},{status:403});
