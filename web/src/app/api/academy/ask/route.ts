@@ -41,11 +41,6 @@ function scopedPractice(turns:Turn[]):{reply:string;question?:string}|null{
  return null;
 }
 function response(data:object){return NextResponse.json(data,{headers:{"Cache-Control":"no-store"}});}
-async function savePlan(client:NonNullable<Awaited<ReturnType<typeof getServerAuthClient>>>,userId:string,recommendation:ReturnType<typeof makeRecommendation>,source:"rules"|"ai-ld"){
- const {error}=await client.from("academy_learning_plans").upsert({user_id:userId,needs:recommendation.needs,steps:recommendation.steps,primary_path_id:recommendation.pathId,context:recommendation.context||null,source,updated_at:new Date().toISOString()},{onConflict:"user_id"});
- if(error){console.error("Academy plan persistence:",error.code);return false;}
- return true;
-}
 export async function POST(request:NextRequest){
  const origin=request.headers.get("origin");
  if(origin&&origin!==request.nextUrl.origin)return NextResponse.json({error:"Origine non autorisée."},{status:403});
@@ -106,7 +101,9 @@ export async function POST(request:NextRequest){
  if(practice)return response({kind:"answer",...practice});
  // Interactive coaching: assess the actual candidate answer before offering another exercise.
  const latestAssistant=[...history.slice(0,-1)].reverse().find(t=>t.role==="assistant")?.content||"";
- const isPracticeAnswer=/(a vous de jouer|mini-cas|etape 1|et pourquoi|quelle action|repondez comme|votre reponse|mise en situation|quelles sont vos premieres questions|quelles donnees demanderiez)/i.test(latestAssistant.normalize("NFD").replace(/[\u0300-\u036f]/g,"")) && !/^(je veux|je souhaite|donne.moi|propose|passons|nouvel exercice)/i.test(last.content.trim());
+ const inCaseStudy=history.some(turn=>turn.role==="assistant"&&/cas pratique|case study|mise en situation/i.test(turn.content));
+ const lastAssistantQuestion=latestAssistant.trim().endsWith("?");
+ const isPracticeAnswer=(/(a vous de jouer|mini-cas|etape 1|et pourquoi|quelle action|repondez comme|votre reponse|mise en situation|quelles sont vos premieres questions|quelles donnees demanderiez)/i.test(latestAssistant.normalize("NFD").replace(/[\u0300-\u036f]/g,""))||(inCaseStudy&&lastAssistantQuestion)) && !/^(je veux|je souhaite|donne.moi|propose|passons|nouvel exercice)/i.test(last.content.trim());
  const normalizedCandidate=last.content.trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
  const isScenarioSelection=/^Je choisis ce scénario\s*:/i.test(last.content.trim())||last.content.trim().split(/\s+/).length<=8&&!/[.!?;:]/.test(last.content)&&!/\b(je|nous|j.ai|nous avons|parce que|car|afin de|ensuite|d.abord)\b/i.test(normalizedCandidate);
  if(isPracticeAnswer&&last.content.trim().length>=35&&!isScenarioSelection){
@@ -138,7 +135,7 @@ export async function POST(request:NextRequest){
   const context=history.filter(t=>t.role==="user").map(t=>t.content).join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   const subject=/(mise en situation|cas pratique|etude de cas)/.test(context)?"structure":null;
   const selected=synthesizeLearningNeeds(userTurns,subject?[subject]:undefined);
-  if(selected.steps.length){const plan=makeRecommendation(selected,"Préparation avec des exercices disponibles dans Academy.");const saved=await savePlan(client,user.id,plan,"rules");return response({...plan,understanding:"Je vous propose un parcours fondé sur les exercices réellement disponibles dans Academy. Je ne peux pas confirmer l'existence de documents externes sans référence vérifiée.",source:"rules",saved});}
+  if(selected.steps.length){const plan=makeRecommendation(selected,"Préparation avec des exercices disponibles dans Academy.");const saved=false;return response({...plan,understanding:"Je vous propose un parcours fondé sur les exercices réellement disponibles dans Academy. Je ne peux pas confirmer l'existence de documents externes sans référence vérifiée.",source:"rules",saved});}
   return response({kind:"answer",reply:"Je peux vous accompagner avec des exercices Academy, mais je n'ai pas trouvé de parcours suffisamment précis pour votre demande. Je ne vais pas vous présenter des documents non vérifiés comme s'ils étaient disponibles.",question:"Quel type de mise en situation souhaitez-vous préparer ?"});
  }
  const currentKeys=synthesizeLearningNeeds(userTurns).needs.map(n=>n.key);
@@ -152,7 +149,7 @@ export async function POST(request:NextRequest){
   const scope=buildDiagnostic(history,undefined,selected.needs.map(n=>n.key),true);
   if(selected.steps.length&&scope.phase==="training"){
    const plan=makeRecommendation(selected);
-   const saved=await savePlan(client,user.id,plan,"rules");
+   const saved=false;
    return response({...plan,source:"rules",saved,diagnostic:scope});
   }
  }
@@ -217,7 +214,7 @@ export async function POST(request:NextRequest){
   const merged=switchTopic&&concreteKeys.length?concreteKeys:[...concreteKeys,...safeKeys.filter(k=>!concreteKeys.includes(k as typeof concreteKeys[number]))];
   const synthesis=synthesizeLearningNeeds(userTurns,merged);
   const diagnostic=buildDiagnostic(history,decision.diagnostic,merged,/\b(entrain|exercic|simulation|programme|parcours|atelier)/i.test(last.content));
-  if(synthesis.steps.length&&allowRecommendation(diagnostic,decision.action)){const plan=makeRecommendation(synthesis,decision.context||previous?.context||undefined);const saved=await savePlan(client,user.id,plan,"ai-ld");return response({...plan,diagnostic,understanding:typeof decision.understanding==="string"?decision.understanding.slice(0,350):undefined,source:"ai-ld",saved,references:citations.map(({slug,title,source_label})=>({slug,title,source:source_label}))});}
+  if(synthesis.steps.length&&allowRecommendation(diagnostic,decision.action)){const plan=makeRecommendation(synthesis,decision.context||previous?.context||undefined);const saved=false;return response({...plan,diagnostic,understanding:typeof decision.understanding==="string"?decision.understanding.slice(0,350):undefined,source:"ai-ld",saved,references:citations.map(({slug,title,source_label})=>({slug,title,source:source_label}))});}
    if(decision.action==="clarify"&&typeof decision.question==="string"&&decision.question.trim().length>12){
    const options=(Array.isArray(decision.options)?decision.options:[]).filter((x):x is string=>typeof x==="string"&&x.trim().length>1).slice(0,4);
    return response({kind:"clarify",understanding:typeof decision.understanding==="string"?decision.understanding.slice(0,350):undefined,question:decision.question.slice(0,240),options});
