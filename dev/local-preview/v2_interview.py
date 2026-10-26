@@ -38,6 +38,7 @@ class V2InterviewLab:
             "history_untrusted": state["history"][-10:],
             "candidate_answer_untrusted": answer,
             "remaining_questions": state["count"] - state["position"],
+            "conversation_rules": {"one_main_question": True, "avoid_repeating_previous_questions": True},
             "next_move": state.get("next_move", "OPEN"),
             "active_competency": choose_topic(state, state.get("next_move", "OPEN")),
             "reference_topics_only": state.get("reference_topics", []),
@@ -81,7 +82,7 @@ class V2InterviewLab:
                  "family": family, "locale": locale, "count": count,
                  "competencies": [vars(c) for c in competencies],
                  "position": 0, "history": [], "created": time.time(),
-                 "followups": 0, "topic_index": 0,
+                 "followups": 0, "topic_index": 0, "max_followups": 2,
                  "reference_topics": self._references_for(family, competencies)}
         question = self._generate(state)
         sid = "v2_" + secrets.token_urlsafe(24)
@@ -132,4 +133,5 @@ class V2InterviewLab:
             return {"completed": False, "phase": "conversation", "index": proposed["position"]+1,
                     "total": proposed["count"], "question": {"prompt": next_question},
                     "conversation_move": move,
+                    "active_competency": choose_topic(proposed, "OPEN"),
                     "ai": True, "draft_preview": True, "engine": "conversation_v2"}
