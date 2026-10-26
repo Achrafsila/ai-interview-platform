@@ -112,7 +112,7 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
     e2e_js = (NEW_USER / "app.js").read_bytes()
     ai_provider, ai_provider_name = configure_ai_provider(os.environ)
     ai_lab = InterviewLab(questions, ai_provider)
-    v2_lab = V2InterviewLab(ai_provider, interpret_job)
+    v2_lab = V2InterviewLab(ai_provider, interpret_job, questions)
     v2_enabled = os.environ.get('INTERVIEW_INTELLIGENCE_V2', '').lower() == 'true'
 
     class Handler(BaseHTTPRequestHandler):
