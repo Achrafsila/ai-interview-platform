@@ -19,7 +19,7 @@ export async function POST(request:NextRequest){
  const existing=await client.from("academy_learning_plans").select("steps,needs,primary_path_id,context,source").eq("user_id",user.id).maybeSingle();
  if(existing.error)return NextResponse.json({error:"Lecture du parcours indisponible."},{status:503});
  const prior=Array.isArray(existing.data?.steps)?existing.data.steps.filter((v:unknown):v is {exerciseId:string;pathId:string;exerciseName:string;goal:string}=>!!v&&typeof v==="object"&&"exerciseId" in v&&typeof v.exerciseId==="string"&&"pathId" in v&&typeof v.pathId==="string"&&"exerciseName" in v&&typeof v.exerciseName==="string"&&"goal" in v&&typeof v.goal==="string"):[];
- const steps=prior.some(step=>step.exerciseId===exerciseId)?prior:[...prior,{exerciseId,pathId,exerciseName:exercise.title,goal:"Compétence à travailler après votre étude de cas"}];
+ const steps=prior.some(step=>step.exerciseId===exerciseId)?prior:[...prior,{exerciseId,pathId,exerciseName:exercise.name,goal:"Compétence à travailler après votre étude de cas"}];
  const {error}=await client.from("academy_learning_plans").upsert({user_id:user.id,steps:steps.slice(-20),needs:existing.data?.needs||[],primary_path_id:existing.data?.primary_path_id||pathId,context:existing.data?.context||"Exercices enregistrés depuis le coach Academy",source:existing.data?.source||"ai-ld",updated_at:new Date().toISOString()},{onConflict:"user_id"});
  if(error)return NextResponse.json({error:"Sauvegarde indisponible."},{status:503});
  return NextResponse.json({saved:true},{headers:{"Cache-Control":"no-store"}});
