@@ -554,7 +554,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 .interview-session-v2 .interview-v2-stage h2,
 .interview-session-v2 .interview-v2-stage label,
-.interview-session-v2 .interview-v2-stage .text-\\[\\#25345D\\]{
+.interview-session-v2 .interview-v2-stage .text-\[\#25345D\]{
  color:#1F2A44 !important;
  -webkit-text-fill-color:#1F2A44 !important;
 }
@@ -578,8 +578,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
  color:#FFFFFF !important;
  -webkit-text-fill-color:#FFFFFF !important;
 }
-.interview-session-v2 .interview-v2-stage .text-\\[\\#D1D9FF\\],
-.interview-session-v2 .interview-v2-stage .text-\\[\\#B9C7E8\\]{
+.interview-session-v2 .interview-v2-stage .text-\[\#D1D9FF\],
+.interview-session-v2 .interview-v2-stage .text-\[\#B9C7E8\]{
  color:#65718D !important;
  -webkit-text-fill-color:#65718D !important;
 }
