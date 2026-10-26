@@ -31,3 +31,13 @@ class ReferencePolicyTests(unittest.TestCase):
         refs=lab._references_for('technical',[C()])
         self.assertEqual(refs,[{'category':'data_analysis','difficulty':2}])
         self.assertNotIn('SECRET QUESTION',str(refs))
+
+class BetterRoutingTests(unittest.TestCase):
+    def test_english_candidate_clarification(self):
+        self.assertEqual(choose_move({}, 'Could you clarify the scope of this case?'), 'ANSWER_CANDIDATE')
+    def test_candidate_question_does_not_get_lost_after_budget(self):
+        self.assertEqual(choose_move({'followups': 2}, 'Can you repeat the question?'), 'ANSWER_CANDIDATE')
+    def test_custom_followup_budget(self):
+        self.assertEqual(choose_move({'followups': 1, 'max_followups': 1}, 'I reviewed the data and aligned stakeholders on next steps.'), 'TRANSITION')
+    def test_unicode_short_response(self):
+        self.assertEqual(choose_move({}, 'J’ai essayé.'), 'CLARIFY')
