@@ -90,10 +90,10 @@ class ConversationState:
             "competence": competence, "evidence": evidence,
         })
         self.turns[:] = self.turns[-60:]
-        if move == Move.TRANSITION or competence != self.active_competency:
+        if move == Move.TRANSITION:
             self.followups_in_topic = 0
         elif move in (Move.CLARIFY, Move.FOLLOW_UP, Move.CHALLENGE):
-            self.followups_in_topic += 1
+            self.followups_in_topic = (1 if competence != self.active_competency else self.followups_in_topic + 1)
         if competence is not None:
             self.active_competency = competence
         if competence and evidence and evidence.strip():
