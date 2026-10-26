@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { RoleplayDebrief } from "./RoleplayDebrief";
 import { ArrowLeft, ArrowRight, CalendarDays, Check, Dumbbell, Lightbulb, RotateCcw, Sparkles, Target } from "lucide-react";
 
 type ReportSection = { title: string; body: string };
@@ -33,7 +34,7 @@ function recommendedFocus(improvement?: string) {
  return { name: "Consolider votre préparation", detail: "Reprenez la priorité identifiée dans votre bilan lors de votre prochaine simulation." };
 }
 
-export function InterviewReport({ feedback, jobTitle, family, elapsed, interrupted = false }: { feedback?: string; jobTitle?: string; family?: "rh" | "technical"; elapsed: number; interrupted?: boolean }) {
+export function InterviewReport({ feedback, jobTitle, family, elapsed, interrupted = false, transcript }: { feedback?: string; jobTitle?: string; family?: "rh" | "technical"; elapsed: number; interrupted?: boolean; transcript?: {question:string;answer:string}[] }) {
  const data = parseFeedback(feedback || "Aucun retour pédagogique disponible pour cette séance.");
  const focus = recommendedFocus(data.improvement);
  const duration = `${Math.floor(elapsed / 60)} min ${String(elapsed % 60).padStart(2, "0")} s`;
@@ -50,6 +51,7 @@ export function InterviewReport({ feedback, jobTitle, family, elapsed, interrupt
     <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#C7D2EE] sm:text-base">{interrupted ? "Aucun bilan pédagogique complet n'est disponible pour cette séance interrompue." : "Votre retour pédagogique, pour mieux comprendre vos points d’appui et préparer votre prochain entretien."}</p>
     <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-[#DCE3FD]"><span className="interview-v2-pill rounded-full px-4 py-2">{family === "technical" ? "Entretien technique" : "Entretien RH"}</span><span className="interview-v2-pill rounded-full px-4 py-2">{duration}</span><span className="interview-v2-pill rounded-full px-4 py-2">Analyse non notée</span></div>
    </header>
+   {!interrupted && <RoleplayDebrief transcript={transcript} feedback={feedback} jobTitle={jobTitle}/>}
    <section aria-labelledby="report-summary" className="report-v2-rise report-v2-delay-1 mt-10 rounded-[30px] border border-white/15 bg-white/[.075] p-6 shadow-[0_28px_85px_#05091b55] backdrop-blur-xl sm:p-9">
     <div className="flex items-center gap-3"><span className="flex size-11 items-center justify-center rounded-2xl bg-[#BCA1FF]/15 text-[#D2BEFF]"><Sparkles size={21}/></span><div><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#BCB5E8]">Votre retour immédiat</p><h2 id="report-summary" className="mt-1 text-xl font-semibold">L’essentiel de votre séance</h2></div></div>
     {jobTitle && <p className="mt-5 text-xs font-medium text-[#B8C9EA]">Contexte · {jobTitle}</p>}

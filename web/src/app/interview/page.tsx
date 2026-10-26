@@ -1,17 +1,27 @@
 "use client";
+import {CandidateSidebar} from "@/components/ui/candidate-sidebar";
 import Link from "next/link";
+import { getAuthClient } from "@/lib/supabase-auth";
 import { VoicePoweredOrb } from "@/components/ui/voice-powered-orb";
 import { CountdownTimer } from "@/components/ui/countdown-timer";
 import { InterviewAnalysisLoader } from "@/components/ui/interview-analysis-loader";
 import { InterviewReport } from "./InterviewReport";
 import {useEffect,useRef,useState} from "react";
-import {ArrowLeft,Mic,Volume2,VolumeX,Pause,Play,Send,AlertTriangle} from "lucide-react";
+import {ArrowLeft,Mic,Volume2,VolumeX,Pause,Play,Send,AlertTriangle,Target,Settings2,UserRound} from "lucide-react";
 type Config={family:"rh"|"technical";locale:"fr"|"en";jobTitle:string;job_description:string;goals:string[];count:number};
 type Response={session_id?:string;question?:{prompt:string};phase?:string;index?:number;total?:number;completed?:boolean;feedback?:string;transcript?:{question:string;answer:string}[];error?:string};
 type Recognizer={lang:string;continuous:boolean;interimResults:boolean;onresult:((e:{results:ArrayLike<(ArrayLike<{transcript:string}> & {isFinal:boolean})>})=>void)|null;onerror:((e:{error:string})=>void)|null;onend:(()=>void)|null;start:()=>void;stop:()=>void};
 type SpeechWindow=Window & {SpeechRecognition?:new()=>Recognizer;webkitSpeechRecognition?:new()=>Recognizer};
+async function sessionToken(){
+ const client=getAuthClient();
+ if(!client)throw new Error("Service de connexion non configuré.");
+ const {data,error}=await client.auth.getSession();
+ if(error||!data.session?.access_token)throw new Error("Votre session a expiré. Reconnectez-vous pour poursuivre.");
+ return data.session.access_token;
+}
 async function send(action:"start"|"answer",payload:object):Promise<Response>{
- const r=await fetch("/api/interview/"+action,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+ const token=await sessionToken();
+ const r=await fetch("/api/interview/"+action,{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${token}`},body:JSON.stringify(payload)});
  const data=await r.json() as Response;
  if(!r.ok)throw new Error(data.error||"Le moteur est indisponible.");
  return data;
@@ -56,13 +66,23 @@ export default function InterviewPage(){
  const [introStage,setIntroStage]=useState<"none"|"welcome"|"breathing"|"countdown"|"transition">("none");
  const [introReveal,setIntroReveal]=useState(0);
  const [introNotice,setIntroNotice]=useState("");
+ const [preflight,setPreflight]=useState<"checking"|"ready"|"auth"|"offline">("checking");
+ const [preflightMessage,setPreflightMessage]=useState("");
+ async function checkReadiness(){
+  setPreflight("checking");setPreflightMessage("");
+  try {
+   const token=await sessionToken();
+   const response=await fetch("/api/interview/status",{cache:"no-store",credentials:"same-origin",headers:{"Authorization":`Bearer ${token}`}});
+   const body=await response.json() as {error?:string};
+   if(response.status===401){setPreflight("auth");setPreflightMessage("Votre session a expiré. Reconnectez-vous pour continuer.");return;}
+   if(!response.ok){setPreflight("offline");setPreflightMessage(body.error||"La simulation est momentanément indisponible.");return;}
+   setPreflight("ready");
+  }catch{setPreflight("offline");setPreflightMessage("Impossible de vérifier le service de simulation.");}
+ }
  const introAudio=useRef<HTMLAudioElement|null>(null);
  const introInterval=useRef<ReturnType<typeof setInterval>|null>(null);
  const introTransitionTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
  const introFinished=useRef(false);
- const introLine=config?.locale==="en"
-  ?"I hope you're ready! Your interview will begin in five seconds. Good luck!"
-  :"J’espère que vous êtes prêt ! Votre entretien commencera dans cinq secondes. Bonne chance !";
  const introPhrases=config?.locale==="en"
   ?["I hope you’re ready.","Your interview will begin in five seconds.","Good luck!"]
   :["J’espère que vous êtes prêt !","Votre entretien commencera dans cinq secondes.","Bonne chance !"];
@@ -151,7 +171,7 @@ export default function InterviewPage(){
   setIntroReveal(introPhrases.length);
   setIntroStage("breathing");
   if(introTransitionTimer.current)clearTimeout(introTransitionTimer.current);
-  introTransitionTimer.current=setTimeout(()=>setIntroStage("countdown"),650);
+  introTransitionTimer.current=setTimeout(()=>setIntroStage(preflight==="ready"?"countdown":"breathing"),650);
  }
  function playIntro(){
   const audio=introAudio.current;
@@ -170,6 +190,14 @@ export default function InterviewPage(){
    setIntroNotice("Cliquez sur « Écouter le message » pour activer la voix.");
   });
  },[introStage]);
+ useEffect(()=>{if(config)queueMicrotask(()=>void checkReadiness());
+ // Initial check is tied to a new interview configuration.
+ },[config]);
+ useEffect(()=>{
+  if(introStage!=="breathing"||preflight!=="ready"||!introFinished.current)return;
+  const timeout=setTimeout(()=>setIntroStage("countdown"),650);
+  return()=>clearTimeout(timeout);
+ },[introStage,preflight]);
  // Launch the immersive introduction immediately when a configured interview opens.
  useEffect(()=>{
   if(!config||state!=="ready"||introStage!=="none")return;
@@ -178,6 +206,7 @@ export default function InterviewPage(){
   // eslint-disable-next-line react-hooks/exhaustive-deps
  },[config]);
  function finishCountdown(){
+  if(preflight!=="ready")return;
   setIntroStage("transition");
   if(introTransitionTimer.current)clearTimeout(introTransitionTimer.current);
   introTransitionTimer.current=setTimeout(()=>void startInterview(),500);
@@ -285,7 +314,14 @@ export default function InterviewPage(){
   r.onerror=e=>{
    clearSilence();if(recognition.current===r)recognition.current=null;
    setDictating(false);setSpeechHint("");
-   setError("Microphone : "+e.error+". Vous pouvez aussi utiliser le champ texte.");
+   if(e.error==="no-speech"){
+    setSpeechHint("Aucune parole détectée. Réessayez le micro ou répondez par écrit.");
+    setError("");
+   }else if(e.error==="not-allowed"||e.error==="service-not-allowed"){
+    setError("Le microphone est bloqué. Autorisez son utilisation dans le navigateur ou répondez par écrit.");
+   }else{
+    setError("Reconnaissance vocale indisponible ("+e.error+"). Vous pouvez répondre par écrit.");
+   }
   };
   r.onend=()=>{
    clearSilence();
@@ -315,66 +351,84 @@ export default function InterviewPage(){
  function interrupt(){setQuestionReveal(segmentInterviewerText(result?.question?.prompt||"").length);stopQuestionAudio();window.speechSynthesis?.cancel();setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}
  const question=result?.question?.prompt;
  if(!configChecked || (config&&state==="ready"&&introStage==="none"))return <main role="status" className="flex min-h-dvh items-center justify-center bg-[#0C1436] text-sm font-semibold text-[#B8C8E8]">Préparation de votre entretien…</main>;
- if(introStage!=="none")return <main className="interview-intro-v2 relative flex min-h-dvh items-center justify-center overflow-hidden bg-[#0A1028] px-5 py-14 text-white sm:px-8">
-  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_39%,#2C3B82_0%,#172450_33%,#0A1028_75%)]"/>
-  <div className="pointer-events-none absolute -left-28 top-12 size-80 rounded-full bg-[#A453FA]/25 blur-[95px]"/>
-  <div className="pointer-events-none absolute -right-20 bottom-8 size-80 rounded-full bg-[#33D5D1]/18 blur-[95px]"/>
-  <div aria-hidden="true" className="intro-v2-ambient pointer-events-none absolute inset-x-[15%] top-[18%] h-[55%] rounded-full bg-gradient-to-r from-[#5365FF]/10 via-[#A453FA]/20 to-[#F34CD4]/10 blur-[90px]"/>
-  <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center">
-   <div className="mb-6 flex flex-wrap items-center justify-center gap-2 text-[10px] font-semibold tracking-[.07em] text-[#D6D9FF]">
-    <span className="intro-v2-pill inline-flex items-center gap-2 rounded-full px-3 py-2"><span className="h-1.5 w-1.5 rounded-full bg-[#33D5D1] shadow-[0_0_8px_#33D5D1]"/> Votre espace de préparation</span>
-    <span className="intro-v2-pill inline-flex items-center rounded-full px-3 py-2">{config?.family==="technical"?"Entretien technique":"Entretien RH"}</span>
-   </div>
-   <p className="text-xs font-semibold uppercase tracking-[.26em] text-[#AEBEF8]">INTERVIEW<span className="text-[#D99AFB]">LAB</span></p>
-   <p className="mt-3 text-sm text-[#B8C8E8]">{introStage==="welcome"||introStage==="breathing"?"Préparons votre entretien":"Vous entrez dans votre entretien"}</p>
-   <div className="intro-v2-orb relative my-7 size-60 sm:my-8 sm:size-80"><VoicePoweredOrb state={introStage==="welcome"?"speaking":"thinking"} voiceLevel={introStage==="welcome"?.25+.13*Math.sin(introReveal*1.6):.05} className="h-full w-full"/></div>
-   {introStage==="welcome"&&<audio ref={introAudio} preload="auto" src={config?.locale==="en"?"/audio/interview-intro-en.mp3":"/audio/interview-intro-fr.mp3"}
-    onPlay={()=>{
-     setIntroNotice("");
-     if(introInterval.current)clearInterval(introInterval.current);
-     setIntroReveal(1);
-     const audio=introAudio.current;
-     introInterval.current=setInterval(()=>{
-      if(!audio||audio.paused)return;
-      const portion=audio.duration>0&&Number.isFinite(audio.duration)?audio.currentTime/audio.duration:0;
-      setIntroReveal(Math.max(1,Math.min(introPhrases.length,1+Math.floor(portion*introPhrases.length))));
-     },120);
-    }}
-    onEnded={finishIntroduction}
-    onError={()=>setIntroNotice("Le fichier audio n’a pas pu être chargé. Vérifiez le navigateur ou continuez sans audio.")}/>}
-   <div className={`relative flex min-h-36 w-full items-center justify-center transition-all duration-500 ${introStage==="transition"?"translate-y-3 opacity-0":"translate-y-0 opacity-100"}`}>
-    {(introStage==="welcome"||introStage==="breathing")?
-     <h1 aria-label={introLine} className="flex max-w-3xl flex-col items-center gap-3 text-balance text-center text-[clamp(1.65rem,4.2vw,2.7rem)] font-semibold leading-[1.24] tracking-[-.04em]">
-      {introPhrases.map((phrase,index)=><span key={index} aria-hidden="true"
-       className={`block transform-gpu transition-[opacity,transform,filter] duration-700 ease-out motion-reduce:transition-none ${introReveal>index?"translate-y-0 opacity-100 blur-none":"translate-y-3 opacity-0 blur-[6px]"} ${index===2?"intro-v2-highlight":"text-white"}`}>{phrase}</span>)}
-     </h1>:
-     introStage==="countdown"?<div key="countdown" className="animate-[fade-in_.5s_ease-out]"><CountdownTimer onComplete={finishCountdown}/></div>:null}
-   </div>
-   {introStage==="welcome"&&<div className="mt-5 flex flex-col items-center gap-3">
-    {introNotice&&<p role="status" className="max-w-sm text-sm leading-6 text-[#CFDAF9]">{introNotice}</p>}
-    <button type="button" onClick={playIntro} className="intro-v2-glass inline-flex min-h-12 items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold text-white"><Volume2 size={17}/> Écouter le message</button>
-    {introNotice&&<button type="button" onClick={finishIntroduction} className="intro-v2-primary inline-flex min-h-11 items-center rounded-2xl px-5 py-2 text-xs font-bold text-white">Continuer sans audio</button>}
-   </div>}
-   <p className="mt-8 max-w-sm text-[10px] font-semibold leading-5 tracking-[.16em] text-[#B5C3E8] sm:text-xs">{introStage==="welcome"||introStage==="breathing"?"UN INSTANT POUR VOUS METTRE À L’AISE":"L’INTERVIEWEUR PREND LA PAROLE DANS QUELQUES SECONDES"}</p>
+ if(introStage!=="none")return <main className="interview-intro-v3 relative flex min-h-dvh items-center justify-center overflow-hidden bg-[#FAFAFF] px-5 py-12 text-[#1C2850]">
+  <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_22%_25%,#EBEBFF_0%,transparent_53%),radial-gradient(ellipse_at_85%_75%,#F9EAF9_0%,transparent_55%)]"/>
+  <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center text-center">
+   {introStage==="countdown"?
+    <div className="flex min-h-[65vh] flex-col items-center justify-center animate-[fade-in_.45s_ease-out]">
+     <p className="mb-8 text-xs font-bold uppercase tracking-[.25em] text-[#7C73AB]">Votre entretien commence</p>
+     <CountdownTimer onComplete={finishCountdown} variant="light"/>
+    </div>:
+    introStage==="transition"?
+    <p role="status" className="text-lg font-semibold text-[#6A58D4]">Connexion à votre intervieweur…</p>:
+    <>
+     <span className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#E4E0FA] bg-white/80 px-4 py-2 text-xs font-semibold text-[#7663C4] shadow-sm"><span className="size-2 rounded-full bg-[#7ADCC9]"/>{config?.family==="technical"?"Entretien technique":"Entretien RH"} · {config?.jobTitle}</span>
+     <p className="text-xs font-extrabold uppercase tracking-[.26em] text-[#8671DD]">INTERVIEWLAB</p>
+     <h1 className="mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#1C2850] sm:text-5xl">{introStage==="welcome"?"Bienvenue dans votre entretien":preflight==="ready"?"Vous êtes prêt.":"Préparons votre connexion"}</h1>
+     <p className="mt-4 max-w-xl text-base leading-7 text-[#6B7898]">{introStage==="welcome"?"Votre intervieweur IA vous accueille. Écoutez son message avant de commencer.":preflight==="ready"?"Votre préparation est terminée. Démarrez lorsque vous êtes prêt.":"Nous vérifions votre accès à la simulation."}</p>
+     <div className="intro-v3-orb relative my-8 size-48 sm:size-60"><VoicePoweredOrb state={introStage==="welcome"?"speaking":"ready"} voiceLevel={introStage==="welcome"?.25+.13*Math.sin(introReveal*1.6):.04} className="h-full w-full"/></div>
+     {introStage==="welcome"&&<audio ref={introAudio} preload="auto" src={config?.locale==="en"?"/audio/interview-intro-en.mp3":"/audio/interview-intro-fr.mp3"}
+      onPlay={()=>{
+       setIntroNotice("");
+       if(introInterval.current)clearInterval(introInterval.current);
+       setIntroReveal(1);
+       introInterval.current=setInterval(()=>{
+        const audio=introAudio.current;
+        if(!audio||audio.paused)return;
+        const portion=audio.duration>0&&Number.isFinite(audio.duration)?audio.currentTime/audio.duration:0;
+        setIntroReveal(Math.max(1,Math.min(introPhrases.length,1+Math.floor(portion*introPhrases.length))));
+       },120);
+      }}
+      onEnded={finishIntroduction}
+      onError={()=>setIntroNotice("Le message audio n’est pas disponible. Vous pouvez continuer sans audio.")}/>}
+     {introStage==="welcome"?
+      <div className="flex min-h-36 flex-col items-center justify-center gap-3" aria-live="polite">
+       <div className="flex max-w-xl flex-col items-center gap-2 text-balance text-xl font-semibold leading-8 sm:text-2xl">
+        {introPhrases.map((phrase,index)=><span key={index} className={`transition-all duration-500 ${introReveal>index?"translate-y-0 opacity-100":"translate-y-2 opacity-0"} ${index===2?"bg-gradient-to-r from-[#5B64F1] to-[#D251C6] bg-clip-text text-transparent":"text-[#25335A]"}`}>{phrase}</span>)}
+       </div>
+       {introNotice&&<p role="status" className="max-w-md text-sm text-[#8761B7]">{introNotice}</p>}
+       <button type="button" onClick={playIntro} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-2xl border border-[#DCD7F9] bg-white px-5 text-sm font-semibold text-[#6452CB] shadow-sm"><Volume2 size={17}/> Réécouter le message</button>
+       {introNotice&&<button type="button" onClick={finishIntroduction} className="text-sm font-semibold text-[#6555CD] underline underline-offset-4">Continuer sans audio</button>}
+      </div>:
+      <div className="flex min-h-36 flex-col items-center justify-center gap-4">
+       {preflight==="ready"?<p className="text-sm font-semibold text-[#6958CB]">Votre entretien démarre…</p>:
+        <><p role="status" className="max-w-lg text-sm text-[#725F95]">{preflight==="checking"?"Vérification des services…":preflightMessage}</p>
+         {preflight==="auth"?<Link href="/login" className="rounded-xl bg-[#625CE6] px-6 py-3 text-sm font-bold text-white">Se reconnecter</Link>:<button type="button" onClick={()=>void checkReadiness()} className="rounded-xl bg-[#625CE6] px-6 py-3 text-sm font-bold text-white">Réessayer la connexion</button>}</>}
+       <Link href="/preparation" className="text-sm font-medium text-[#71809D] underline underline-offset-4">Retour à la configuration</Link>
+      </div>}
+    </>}
   </div>
  </main>;
- if(analyzingFinal && state==="thinking")return <InterviewAnalysisLoader />;
- if(state==="done")return <InterviewReport feedback={result?.feedback} jobTitle={config?.jobTitle} family={config?.family} elapsed={elapsed} interrupted={!result?.transcript?.length && Boolean(result?.feedback?.startsWith("Séance interrompue"))}/>;
- return <main className="interview-session-v2 relative min-h-dvh overflow-x-clip bg-[#0A1028] px-4 py-7 text-white sm:px-8 sm:py-10"><div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(ellipse_at_50%_20%,#26376F_0%,#131E45_46%,transparent_82%)]"/><div className="absolute -right-36 top-40 size-[430px] rounded-full bg-[#BA58EE]/15 blur-[110px]"/><div className="absolute -left-36 top-[36%] size-[440px] rounded-full bg-[#5365FF]/15 blur-[110px]"/></div>
-  <div className="relative mx-auto max-w-5xl">
-   <header className="flex flex-wrap items-center justify-between gap-4"><Link href="/preparation" className="interview-v2-glass inline-flex min-h-11 items-center gap-2 rounded-2xl px-4 text-sm font-bold"><ArrowLeft size={17}/> Configuration</Link><span className="interview-v2-pill rounded-full px-4 py-2 text-xs font-bold">Laboratoire vocal · Non noté</span></header>
-   <div className="mt-9 flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[.14em] text-[#BCA7FF]">Simulation {config?.family==="technical"?"technique":"RH"}</p><h1 className="mt-2 text-3xl font-bold tracking-tight">Votre entretien IA</h1><p className="mt-2 text-sm text-[#B9C7E8]">{config?.jobTitle||(configChecked?"Configuration manquante":"Chargement de la configuration…")}</p></div><span className="text-sm font-semibold tabular-nums text-[#CBD3FF]">{Math.floor(elapsed/60).toString().padStart(2,"0")}:{(elapsed%60).toString().padStart(2,"0")}</span></div>
-   <section className="interview-v2-stage mt-7 rounded-[32px] p-5 sm:p-10">
-    <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-     <div className="interview-v2-orb relative size-52 sm:size-64"><VoicePoweredOrb state={state} voiceLevel={dictating ? .55 : 0} className="h-full w-full"/><span className="sr-only">{state==="speaking"?"L’intervieweur parle":dictating?"Microphone actif":state==="listening"?"À vous de répondre":"Orbe d’entretien"}</span></div>
-     <p className="mt-5 text-sm font-bold text-[#BCA7FF]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",error:"Connexion indisponible"})[state]}</p>
-     <div className="mt-6 flex min-h-24 w-full items-center justify-center">
+  if(analyzingFinal && state==="thinking")return <InterviewAnalysisLoader />;
+ if(state==="done")return <InterviewReport feedback={result?.feedback} jobTitle={config?.jobTitle} family={config?.family} elapsed={elapsed} transcript={result?.transcript} interrupted={!result?.transcript?.length && Boolean(result?.feedback?.startsWith("Séance interrompue"))}/>;
+ return <main className="interview-session-v2 relative min-h-dvh overflow-x-clip bg-[#F8F9FF] px-4 py-7 text-[#172041] sm:px-8 sm:py-10"><div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(ellipse_at_50%_20%,#E9E8FF_0%,#F8F9FF_60%,transparent_85%)]"/><div className="absolute -right-36 top-40 size-[430px] rounded-full bg-[#BA58EE]/15 blur-[110px]"/><div className="absolute -left-36 top-[36%] size-[440px] rounded-full bg-[#5365FF]/15 blur-[110px]"/></div>
+  <div className="relative mx-auto flex min-h-dvh max-w-[1720px] gap-0">
+   <CandidateSidebar/>
+   <div className="min-w-0 flex-1 px-1 pb-12 sm:px-4 lg:px-8">
+   <header className="flex flex-wrap items-center justify-between gap-4"><Link href="/preparation" className="interview-v2-glass inline-flex min-h-11 items-center gap-2 rounded-2xl px-4 text-sm font-bold"><ArrowLeft size={17}/> Configuration</Link><span className="interview-v2-pill rounded-full px-4 py-2 text-xs font-bold">Entretien d’entraînement</span></header>
+   <div className="mt-9 flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-[.14em] text-[#8256E9]">Simulation {config?.family==="technical"?"technique":"RH"}</p><h1 className="mt-2 text-3xl font-bold tracking-tight">Votre entretien IA</h1><p className="mt-2 text-sm text-[#697694]">{config?.jobTitle||(configChecked?"Configuration manquante":"Chargement de la configuration…")}</p></div><span className="text-sm font-semibold tabular-nums text-[#566382]">{Math.floor(elapsed/60).toString().padStart(2,"0")}:{(elapsed%60).toString().padStart(2,"0")}</span></div>
+   <div className="mt-7 grid items-start gap-5 xl:grid-cols-[minmax(300px,.85fr)_minmax(0,1.15fr)]">
+    <section className="rounded-[26px] border border-[#E3E5F5] bg-white p-6 shadow-[0_15px_45px_rgba(66,70,137,.06)] sm:p-8">
+     <p className="text-xs font-extrabold uppercase tracking-[.15em] text-[#8657E4]">Votre séance</p>
+     <h2 className="mt-3 text-xl font-extrabold tracking-tight text-[#1B2850]">{config?.family==="technical"?"Entretien technique":"Entretien RH"}</h2>
+     <div className="mt-5 rounded-2xl border border-[#E6E8F8] bg-[#FAFAFF] p-4"><p className="text-xs font-semibold text-[#8290AD]">Poste préparé</p><p className="mt-1 font-bold text-[#26365D]">{config?.jobTitle}</p></div>
+     <div className="mt-5 flex items-center gap-3 rounded-2xl border border-[#E6E8F8] p-4"><span className="grid size-11 place-items-center rounded-2xl bg-[#EDE7FF] text-[#8057DD]"><UserRound size={21}/></span><div><p className="text-sm font-bold text-[#25345C]">Intervieweur IA</p><p className="text-xs text-[#75839F]">Simulation conversationnelle · {config?.locale==="en"?"Anglais":"Français"}</p></div></div>
+     <h3 className="mt-7 text-sm font-bold text-[#26365D]">Votre objectif</h3><p className="mt-2 text-sm leading-7 text-[#697794]">Répondez naturellement aux questions. Prenez le temps de structurer vos idées et illustrez-les par des exemples concrets.</p>
+     <div className="mt-6 rounded-2xl bg-[#F0EDFF] p-5"><p className="flex items-center gap-2 text-sm font-bold text-[#7751D4]"><Target size={17}/> Conseils pour la séance</p><p className="mt-2 text-sm leading-7 text-[#4F5E87]">Écoutez la question, expliquez votre action personnelle et terminez par le résultat obtenu.</p></div>
+     <Link href="/preparation" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-[#7457CA]"><Settings2 size={16}/> Modifier la configuration</Link>
+    </section>
+    <div className="min-w-0">
+   <section className="interview-v2-stage mt-0 rounded-[28px] p-6 sm:p-8">
+    <div className="mx-auto flex w-full max-w-[920px] flex-col items-center text-center">
+     <div className="interview-v2-orb relative size-28 sm:size-36"><VoicePoweredOrb state={state} voiceLevel={dictating ? .55 : 0} className="h-full w-full"/><span className="sr-only">{state==="speaking"?"L’intervieweur parle":dictating?"Microphone actif":state==="listening"?"À vous de répondre":"Orbe d’entretien"}</span></div>
+     <p className="mt-5 text-sm font-bold text-[#7655D1]">{({ready:"Prêt à commencer",speaking:"Votre intervieweur parle",listening:"À vous de répondre",thinking:"L'intervieweur prépare sa question",paused:"Entretien en pause",error:"Connexion indisponible"})[state]}</p>
+     <div className="mt-5 flex min-h-24 w-full items-center justify-center">
       {question&&state!=="ready"?
-       <h2 aria-label={question} className="flex max-w-2xl flex-col items-center gap-3 text-balance text-center text-xl font-semibold leading-relaxed tracking-tight text-[#F3F4FF] sm:text-[27px]">
+       <h2 aria-label={question} className="flex max-w-[640px] flex-col items-center gap-2 text-balance text-center text-lg font-semibold leading-[1.55] tracking-tight text-[#25345D] sm:text-[23px]">
         {segmentInterviewerText(question).map((phrase,index)=><span key={result?.session_id+"-"+(result?.index||0)+"-"+index} aria-hidden="true"
          className={`block transform-gpu transition-[opacity,transform,filter] duration-700 ease-out motion-reduce:transition-none ${questionReveal>index?"translate-y-0 opacity-100 blur-none":"translate-y-3 opacity-0 blur-[6px]"}`}>{phrase}</span>)}
        </h2>:
-       <h2 className="text-xl font-semibold leading-9 tracking-tight sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":"Préparation de la prochaine question…"}</h2>}
+       <h2 className="text-xl font-semibold leading-9 tracking-tight text-[#24335A] sm:text-2xl">{state==="ready"?"Un entraînement oral adapté à votre configuration.":"Préparation de la prochaine question…"}</h2>}
      </div>
      {state==="ready"&&introStage==="none"&&configChecked&&!config&&<div role="alert" className="mt-7 rounded-2xl border border-[#D4DDF3] bg-[#F4F7FF] p-5 text-left"><p className="text-sm text-[#526482]">Aucun entretien n’a été configuré pour cet onglet. Complétez d’abord les trois étapes pour activer le lancement.</p><Link href="/preparation" className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#3456D7] px-5 py-3 text-sm font-bold text-white">Configurer mon entretien</Link></div>}
      {state==="error"&&<button onClick={()=>void startInterview()} className="mt-7 rounded-xl bg-[#3456D7] px-6 py-3 text-white">Réessayer</button>}
@@ -413,8 +467,10 @@ export default function InterviewPage(){
     <button onClick={togglePause} className="interview-v2-glass inline-flex min-h-12 items-center gap-2 rounded-2xl px-5 py-3 text-sm">{state==="paused"?<Play size={18}/>:<Pause size={18}/>} {state==="paused"?"Reprendre":"Pause"}</button>
     <button onClick={()=>setStopOpen(true)} className="interview-v2-glass-danger min-h-12 rounded-2xl px-5 py-3 text-sm font-semibold">Terminer</button>
    </div>}
+    </div></div>
    {stopOpen&&<div role="dialog" aria-modal="true" aria-label="Terminer l’entretien" className="mx-auto mt-5 max-w-md rounded-[24px] border border-[#CEB2DC]/40 bg-[#1C2548] p-6 shadow-2xl"><h3 className="font-bold">Terminer cette séance ?</h3><p className="mt-2 text-sm text-[#CFD6EA]">Les réponses en cours ne pourront pas être conservées et aucun bilan partiel ne sera produit par le laboratoire actuel.</p><div className="mt-5 flex gap-3"><button onClick={()=>setStopOpen(false)} className="interview-v2-glass min-h-11 rounded-2xl px-5 py-2">Continuer</button><button onClick={()=>{stopDictation();stopQuestionAudio();window.speechSynthesis?.cancel();setStopOpen(false);setResult({completed:true,feedback:"Séance interrompue volontairement. Le laboratoire ne permet pas encore de produire ni de conserver un bilan partiel."});setState("done");}} className="interview-v2-glass-danger min-h-11 rounded-2xl px-5 py-2 font-bold">Terminer</button></div></div>}
    <p className="mt-7 text-center text-xs leading-6 text-[#A9B5D3]">Prototype local : questions issues du corpus brouillon ; reconnaissance vocale selon le navigateur ; aucune évaluation chiffrée.</p>
+   </div>
   </div>
  </main>;
 }

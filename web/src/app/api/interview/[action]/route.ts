@@ -2,14 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerAuthClient } from "@/lib/supabase-server";
 import { getAppRole } from "@/lib/profile";
 const UPSTREAM = "http://127.0.0.1:8765";
+async function requestUser(client:NonNullable<Awaited<ReturnType<typeof getServerAuthClient>>>,request:NextRequest){
+ const header=request.headers.get("authorization");
+ const token=header?.startsWith("Bearer ")?header.slice(7):undefined;
+ return client.auth.getUser(token);
+}
 export async function GET(request:NextRequest,{params}:{params:Promise<{action:string}>}){
  const {action}=await params;
- if(action!=="tts")return NextResponse.json({error:"Action inconnue"},{status:404});
+ if(action!=="tts" && action!=="status")return NextResponse.json({error:"Action inconnue"},{status:404});
  const client=await getServerAuthClient();
  if(!client)return NextResponse.json({error:"Authentification indisponible"},{status:503});
- const {data:{user}}=await client.auth.getUser();
+ const {data:{user}}=await requestUser(client,request);
  if(!user)return NextResponse.json({error:"Connectez-vous pour lancer l’entretien."},{status:401});
  if(await getAppRole(client,user.id)!=="user")return NextResponse.json({error:"Accès candidat uniquement"},{status:403});
+ if(action==="status"){
+  try {
+   const response=await fetch(`${UPSTREAM}/api/health`,{cache:"no-store",signal:AbortSignal.timeout(2500)});
+   if(!response.ok)throw new Error("unavailable");
+   return NextResponse.json({ready:true},{headers:{"Cache-Control":"no-store"}});
+  } catch {return NextResponse.json({error:"Le moteur vocal local est indisponible. Démarrez le laboratoire IA avant de continuer."},{status:503});}
+ }
  const text=request.nextUrl.searchParams.get("text")||"";
  const locale=request.nextUrl.searchParams.get("locale")||"fr";
  if(!text.trim()||text.length>1200||!["fr","en"].includes(locale))
@@ -28,7 +40,7 @@ export async function POST(request:NextRequest,{params}:{params:Promise<{action:
  if(origin&&origin!==request.nextUrl.origin)return NextResponse.json({error:"Origine non autorisée"},{status:403});
  const client=await getServerAuthClient();
  if(!client)return NextResponse.json({error:"Authentification indisponible"},{status:503});
- const {data:{user}}=await client.auth.getUser();
+ const {data:{user}}=await requestUser(client,request);
  if(!user)return NextResponse.json({error:"Connectez-vous pour lancer l’entretien."},{status:401});
  if(await getAppRole(client,user.id)!=="user")return NextResponse.json({error:"Accès candidat uniquement"},{status:403});
  let payload:unknown;try{payload=await request.json();}catch{return NextResponse.json({error:"Données invalides"},{status:400});}

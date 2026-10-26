@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useState, useSyncExternalStore, type FormEvent } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Eye, EyeOff, LockKeyhole, Mail, ShieldCheck, Sparkles, AudioLines, CheckCircle2 } from "lucide-react";
 
@@ -14,7 +14,13 @@ type Message = { type: "error" | "success"; text: string };
 
 export function LoginForm() {
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>("signin");
+  const signupFromUrl = useSyncExternalStore(
+    () => () => {},
+    () => new URLSearchParams(window.location.search).get("mode") === "signup",
+    () => false,
+  );
+  const [selectedMode, setSelectedMode] = useState<Mode | null>(null);
+  const mode = selectedMode ?? (signupFromUrl ? "signup" : "signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +30,7 @@ export function LoginForm() {
   const ready = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY));
 
   function switchMode(next: Mode) {
-    setMode(next); setMessage(null); setPassword("");
+    setSelectedMode(next); setMessage(null); setPassword("");
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {

@@ -179,7 +179,7 @@ export function OnboardingStages({
   }
 
   function openDashboard() {
-    router.push("/dashboard");
+    router.push("/start");
   }
 
   function previous() {

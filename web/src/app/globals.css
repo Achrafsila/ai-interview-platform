@@ -528,3 +528,67 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 /* Explicit text fill: inherited legacy interview glass styling uses -webkit-text-fill-color. */
 .academy-ui .academy-back-link, .academy-ui .academy-back-link * { color: #344D91 !important; -webkit-text-fill-color: #344D91 !important; opacity: 1 !important; }
+
+/* Unified candidate interview journey: light application shell, immersive interview surface. */
+.interview-session-v2 .interview-v2-stage{background:linear-gradient(120deg,#192D68 0%,#272965 55%,#5D398C 100%);border:1px solid rgba(255,255,255,.46);box-shadow:0 24px 65px rgba(65,60,131,.17),inset 0 1px 0 rgba(255,255,255,.12)}
+.interview-session-v2 header .interview-v2-glass{background:rgba(255,255,255,.88);border-color:#D9DDF5;color:#394A7C;box-shadow:0 6px 20px rgba(69,65,133,.08)}
+.interview-session-v2 header .interview-v2-pill{color:#7353CC;background:#EDE7FF;border-color:#DAD0FD}
+.interview-intro-v2 .intro-v2-glass{background:rgba(255,255,255,.14);color:#fff}
+.interview-intro-v2 .intro-v2-primary{color:#fff}
+
+/* InterviewLab conversation room V3 — unified light studio layout */
+.interview-session-v2 .interview-v2-stage{background:linear-gradient(145deg,#F1F3FC 0%,#E8EDF8 60%,#EDEBFB 100%);border:1px solid #DCE2F8;box-shadow:0 14px 45px rgba(47,67,129,.10);color:#25345D}
+.interview-session-v2 .interview-v2-stage .interview-v2-glass{background:#fff;border:1px solid #D9DEF3;color:#4F4A9C;box-shadow:0 5px 18px rgba(53,68,123,.08)}
+.interview-session-v2 .interview-v2-stage .interview-v2-glass:hover{background:#F5F1FF}
+.interview-session-v2 .interview-v2-stage .interview-v2-glass-danger{color:#9B365A;background:#FFF0F4;border:1px solid #F4CBDC}
+.interview-session-v2 .interview-v2-stage .interview-v2-primary{color:#fff}
+.interview-session-v2 .interview-v2-stage .text-\[\#B9C7E8\],.interview-session-v2 .interview-v2-stage .text-\[\#D1D9FF\]{color:#5E6D92}
+.interview-session-v2 .interview-v2-stage textarea{background:#fff;border:1px solid #D9DEF3;box-shadow:0 5px 25px rgba(54,68,139,.05)}
+
+/* InterviewLab V4 — strict full-light conversation room. */
+.interview-session-v2 .interview-v2-stage{
+ background:linear-gradient(145deg,#FFFFFF 0%,#FCFAFF 62%,#F7F3FF 100%) !important;
+ color:#1F2A44 !important;
+ border:1px solid #E6E2F5 !important;
+ box-shadow:0 16px 50px rgba(74,61,130,.08) !important;
+}
+.interview-session-v2 .interview-v2-stage h2,
+.interview-session-v2 .interview-v2-stage label,
+.interview-session-v2 .interview-v2-stage .text-\\[\\#25345D\\]{
+ color:#1F2A44 !important;
+ -webkit-text-fill-color:#1F2A44 !important;
+}
+.interview-session-v2 .interview-v2-stage .interview-v2-glass,
+.interview-session-v2 > div .interview-v2-glass{
+ background:#FFFFFF !important;
+ border:1px solid #DED9F1 !important;
+ color:#5747AB !important;
+ -webkit-text-fill-color:#5747AB !important;
+ box-shadow:0 5px 20px rgba(92,78,154,.07) !important;
+}
+.interview-session-v2 .interview-v2-glass-danger{
+ background:#FFF2F5 !important;
+ border:1px solid #F0D8E1 !important;
+ color:#A44261 !important;
+ -webkit-text-fill-color:#A44261 !important;
+}
+.interview-session-v2 .interview-v2-primary{
+ background:linear-gradient(110deg,#665CF1,#B750CC) !important;
+ border-color:transparent !important;
+ color:#FFFFFF !important;
+ -webkit-text-fill-color:#FFFFFF !important;
+}
+.interview-session-v2 .interview-v2-stage .text-\\[\\#D1D9FF\\],
+.interview-session-v2 .interview-v2-stage .text-\\[\\#B9C7E8\\]{
+ color:#65718D !important;
+ -webkit-text-fill-color:#65718D !important;
+}
+.interview-session-v2 .interview-v2-orb{
+ filter:none !important;
+ border-radius:9999px;
+}
+.interview-session-v2 .interview-v2-orb > div{
+ background:radial-gradient(circle,#F1E9FD 0%,#F8F5FF 51%,transparent 73%) !important;
+}
+.interview-session-v2 .interview-v2-stage textarea{background:#fff !important;border-color:#DED9F1 !important}
+.interview-session-v2 .interview-v2-stage button:focus-visible{outline:3px solid #9F86E8;outline-offset:3px}

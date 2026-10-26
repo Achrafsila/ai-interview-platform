@@ -31,7 +31,7 @@ export default function Home() {
           </Link>
           <nav aria-label="Compte et démarrage" className="flex shrink-0 items-center gap-1 sm:gap-3">
             <Link href="/login" className="rounded-full px-2.5 py-3 text-[12px] font-bold text-[#283458] transition-colors hover:text-[#7951E9] sm:px-5 sm:text-sm">Connexion</Link>
-            <Link href="/login" className="landing-primary-btn inline-flex min-h-10 items-center gap-1.5 rounded-full px-3.5 text-[12px] font-bold text-white sm:min-h-11 sm:gap-2 sm:px-6 sm:text-sm">Commencer <ArrowUpRight size={15}/></Link>
+            <Link href="/login?mode=signup" className="landing-primary-btn inline-flex min-h-10 items-center gap-1.5 rounded-full px-3.5 text-[12px] font-bold text-white sm:min-h-11 sm:gap-2 sm:px-6 sm:text-sm">Commencer <ArrowUpRight size={15}/></Link>
           </nav>
         </header>
       </div>
@@ -54,7 +54,7 @@ export default function Home() {
             Préparez vos entretiens comme vous les vivrez vraiment. Entraînez-vous à l’oral avec un coach IA, recevez des conseils personnalisés et progressez à votre rythme.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-4">
-            <Link href="/login" className="landing-primary-btn inline-flex min-h-[58px] items-center justify-center gap-3 rounded-2xl px-7 text-[15px] font-bold text-white">
+            <Link href="/login?mode=signup" className="landing-primary-btn inline-flex min-h-[58px] items-center justify-center gap-3 rounded-2xl px-7 text-[15px] font-bold text-white">
               Je prépare mon entretien <ArrowRight size={19}/>
             </Link>
             <a href="#comment-ca-marche" className="inline-flex min-h-[54px] items-center gap-2 rounded-2xl border border-white/80 bg-white/75 px-6 text-sm font-bold text-[#35446B] shadow-[0_8px_35px_rgba(70,83,145,.07)] backdrop-blur-xl transition hover:border-[#D3CBFF] hover:bg-white">
@@ -126,7 +126,7 @@ export default function Home() {
         <div aria-hidden="true" className="pointer-events-none absolute -right-28 -top-40 h-[500px] w-[500px] rounded-full bg-[#8458F5]/25 blur-[100px]"/>
         <div className="relative mx-auto flex max-w-[1376px] flex-col items-start justify-between gap-8 md:flex-row md:items-center md:gap-16">
           <div className="max-w-2xl"><span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.2em] text-[#BDA7FF]"><Sparkles size={16}/> Votre prochain pas</span><h2 className="mt-5 text-[clamp(2rem,4.2vw,3.5rem)] font-extrabold leading-tight tracking-[-.06em]">Votre meilleur entretien<br/>se prépare <span className="text-[#ECA0EF]">aujourd’hui.</span></h2><p className="mt-5 text-base leading-7 text-[#B5BFDF]">Un espace pour essayer, apprendre, recommencer. Sans pression.</p></div>
-          <Link href="/login" className="landing-primary-btn inline-flex min-h-[58px] shrink-0 items-center gap-3 rounded-2xl px-7 text-sm font-bold text-white">C’est parti <MoveUpRight size={19}/></Link>
+          <Link href="/login?mode=signup" className="landing-primary-btn inline-flex min-h-[58px] shrink-0 items-center gap-3 rounded-2xl px-7 text-sm font-bold text-white">C’est parti <MoveUpRight size={19}/></Link>
         </div>
       </section>
       <footer className="landing-footer relative border-0 bg-[#11183B] px-5 py-8 text-[#C4CEEB] sm:px-10">

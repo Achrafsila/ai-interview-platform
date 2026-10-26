@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, BriefcaseBusiness, Check, ChevronRight, CirclePlay, Code2, FileText, LayoutDashboard, Sparkles, UserRound, Languages, Clock3, Target, Pencil, Play } from "lucide-react";
+import { ArrowLeft, ArrowRight, BriefcaseBusiness, Check, ChevronRight, CirclePlay, Code2, FileText, Languages, Clock3, Target, Pencil, Play } from "lucide-react";
 import { getAuthClient } from "@/lib/supabase-auth";
 import { getAppRole, readProfile } from "@/lib/profile";
 import { experienceOptions, employmentOptions, professionalOptions, goalsForContext, type OnboardingProfile, type PreparationGoal, type ExperienceLevel, type EmploymentStatus, type ProfessionalGoal } from "@/components/ui/onboarding-stages";
@@ -23,6 +23,7 @@ export default function PreparationPage() {
  const [profile,setProfile]=useState<OnboardingProfile|null|undefined>(undefined);
  const [loadError,setLoadError]=useState("");
  const [step,setStep]=useState(0);
+ const [roleplaySource,setRoleplaySource]=useState<{title:string;persona:string}|null>(null);
  const [kind,setKind]=useState<Kind|null>(null);
  const [job,setJob]=useState("");
  const [description,setDescription]=useState("");
@@ -45,6 +46,18 @@ export default function PreparationPage() {
    if(mounted){setProfile(saved.profile);setExperience(saved.profile.experienceLevel??"");setSituation(saved.profile.employmentStatus??"");setProfessionalGoal(saved.profile.professionalGoal);setLanguage(saved.profile.preferredLocale);setPriorities(saved.profile.preparationGoals);}
   }catch{if(mounted)setLoadError("Impossible de récupérer votre profil. Réessayez.");}
  }void load();return()=>{mounted=false};},[router]);
+ useEffect(()=>{if(!profile)return;
+  const raw=sessionStorage.getItem("roleplay-scenario-draft");if(!raw)return;
+  sessionStorage.removeItem("roleplay-scenario-draft");
+  try{const draft=JSON.parse(raw) as {title?:unknown;family?:unknown;jobTitle?:unknown;context?:unknown;interviewPersona?:unknown;goals?:unknown};
+   queueMicrotask(()=>{if(draft.family==="rh"||draft.family==="technical"){setKind(draft.family);setStep(1);setRoleplaySource({title:typeof draft.title==="string"?draft.title:"Simulation personnalisée",persona:typeof draft.interviewPersona==="string"?draft.interviewPersona:"Intervieweur IA"});}
+   if(typeof draft.jobTitle==="string"&&!/à préciser/i.test(draft.jobTitle))setJob(draft.jobTitle.slice(0,120));
+   const contextual=[draft.context,draft.interviewPersona].filter(x=>typeof x==="string").join(" — ");
+   if(contextual)setDescription(contextual.slice(0,12000));
+   if(Array.isArray(draft.goals)){const eligible=draft.goals.filter((g:unknown):g is PreparationGoal=>typeof g==="string"&&g in goalLabels).slice(0,3);if(eligible.length)setPriorities(eligible);}
+   });
+  }catch{/* malformed draft: use standard preparation */}
+ },[profile]);
  useEffect(()=>{if(step>0 && !reduced)currentRef.current?.scrollIntoView({behavior:"smooth",block:"start"});},[step,reduced]);
  const allowedGoals=goalsForContext(situation||undefined,experience||undefined);
  const selectedProfessionalGoal=professionalGoal&&allowedGoals.includes(professionalGoal)?professionalGoal:"";
@@ -71,20 +84,21 @@ export default function PreparationPage() {
    <Link href="/dashboard" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[#405AB7] hover:bg-white"><ArrowLeft size={16}/> Mon espace</Link>
   </header>
   <div className="mx-auto w-full max-w-[1370px] px-5 pb-20 pt-10 sm:px-8 lg:px-11">
-   <div className="mb-9"><p className="text-xs font-bold uppercase tracking-[.16em] text-[#8256E9]">PERSONNALISONS VOTRE ENTRAÎNEMENT</p><h1 className="mt-3 text-[clamp(2.1rem,4vw,3.5rem)] font-extrabold leading-[1.1] tracking-[-.055em]">Votre entretien, vos objectifs.</h1><p className="mt-4 max-w-2xl text-sm leading-7 text-[#677792]">Trois étapes pour une préparation qui vous ressemble. Chaque choix validé reste visible et modifiable.</p>
-    <div className="mt-7 flex items-center gap-2">{[0,1,2].map(i=><div key={i} className={cn("h-1.5 flex-1 rounded-full",i<=step?"bg-gradient-to-r from-[#5365FF] via-[#8855EF] to-[#E054CA]":"bg-[#E4E0F1]")}/>)}</div>
+   <div className="mb-9"><p className="text-xs font-bold uppercase tracking-[.16em] text-[#8256E9]">PERSONNALISONS VOTRE ENTRAÎNEMENT</p><h1 className="mt-3 text-[clamp(2.1rem,4vw,3.5rem)] font-extrabold leading-[1.1] tracking-[-.055em]">Votre entretien, vos objectifs.</h1><p className="mt-4 max-w-2xl text-sm leading-7 text-[#677792]">{roleplaySource?"Votre scénario est déjà sélectionné. Complétez seulement le contexte et vos préférences.":"Trois étapes pour une préparation qui vous ressemble. Chaque choix validé reste visible et modifiable."}</p>
+    <div className="mt-7 flex items-center gap-2">{(roleplaySource?[1,2]:[0,1,2]).map(i=><div key={i} className={cn("h-1.5 flex-1 rounded-full",i<=step?"bg-gradient-to-r from-[#5365FF] via-[#8855EF] to-[#E054CA]":"bg-[#E4E0F1]")}/>)}</div>
    </div>
    {loadError?<div role="alert" className={surface}>{loadError}</div>:profile===undefined?<p role="status" className={surface}>Chargement de votre profil…</p>:profile===null?<p className={surface}>Complétez votre profil pour préparer une simulation.</p>:
    <>
+    {roleplaySource&&<div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#C9C0F9] bg-[#F0ECFF] px-5 py-4"><div><p className="text-[11px] font-bold uppercase tracking-widest text-[#7853DB]">Scénario sélectionné</p><p className="mt-1 text-sm font-bold">{roleplaySource.title} · {roleplaySource.persona}</p></div><Link href="/roleplays" className="text-xs font-bold text-[#654FC5]">Changer de scénario</Link></div>}
     <div className="space-y-3">
-     {Array.from({length:step},(_,i)=><motion.div layout key={i} initial={reduced?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} className="flex items-center justify-between gap-4 rounded-2xl border border-[#C6EEE5] bg-[#EDFCF9]/85 px-5 py-4">
+     {(roleplaySource?[1,2]:[0,1,2]).filter(i=>i<step).map(i=><motion.div layout key={i} initial={reduced?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} className="flex items-center justify-between gap-4 rounded-2xl border border-[#C6EEE5] bg-[#EDFCF9]/85 px-5 py-4">
        <div className="flex min-w-0 items-center gap-3"><span className="grid size-9 shrink-0 place-items-center rounded-xl bg-[#CDF5EB] text-[#15897C]"><Check size={18}/></span><div className="min-w-0"><p className="text-[11px] font-bold uppercase tracking-[.13em] text-[#1C8B83]">Étape 0{i+1} validée</p><p className="truncate text-sm font-semibold">{summary[i]}</p></div></div><button type="button" onClick={()=>{setComplete(false);setStep(i);setError("");}} className="flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-[#315F7C] hover:bg-white"><Pencil size={14}/> Modifier</button>
       </motion.div>)}
     </div>
     <div ref={currentRef} className="scroll-mt-28">
     <AnimatePresence mode="wait">
      {!complete?<motion.section key={step} initial={reduced?false:{opacity:0,y:30}} animate={{opacity:1,y:0}} exit={reduced?undefined:{opacity:0,y:-15}} transition={{duration:reduced?0:.36}} className={surface+" mt-4"}>
-      <p className="text-xs font-bold uppercase tracking-[.16em] text-[#8256E9]">Étape 0{step+1} / 03</p>
+      <p className="text-xs font-bold uppercase tracking-[.16em] text-[#8256E9]">Étape {roleplaySource?step:step+1} / {roleplaySource?"02":"03"}</p>
       {step===0&&<><h2 className="mt-3 text-2xl font-bold">Quel entretien souhaitez-vous préparer ?</h2><p className="mt-3 text-sm leading-7 text-[#65748D]">Choisissez le format pour adapter les questions et les relances.</p>
         <div role="radiogroup" aria-label="Type d'entretien" className="mt-7 grid gap-4 sm:grid-cols-2">{([{key:"rh" as Kind,title:"Entretien RH",detail:"Parcours, motivation, comportement et mises en situation.",icon:BriefcaseBusiness},{key:"technical" as Kind,title:"Entretien technique",detail:"Connaissances métier, raisonnement et résolution de problèmes.",icon:Code2}]).map(x=><button key={x.key} type="button" role="radio" aria-checked={kind===x.key} onClick={()=>{setKind(x.key);setError("");}} className={cn("rounded-2xl border p-6 text-left transition hover:-translate-y-1",kind===x.key?"border-[#8E67EF] bg-[#F1EBFF] shadow-[0_10px_28px_rgba(130,90,222,.1)]":"border-[#DFE3F1] bg-white/80 hover:border-[#AA8EF0]")}><span className="flex items-center justify-between"><x.icon size={24} className="text-[#8458E7]"/>{kind===x.key&&<Check size={18} className="text-[#8458E7]"/>}</span><strong className="mt-5 block text-lg">{x.title}</strong><span className="mt-2 block text-sm leading-6 text-[#63738E]">{x.detail}</span></button>)}</div>
        </>}
@@ -123,7 +137,7 @@ export default function PreparationPage() {
        <div className="mt-7"><p className="mb-3 flex items-center gap-2 text-sm font-semibold"><Clock3 size={17}/> Durée cible</p><div className="grid grid-cols-3 gap-3">{([10,20,35] as Duration[]).map(min=><button key={min} onClick={()=>setDuration(min)} className={cn("rounded-xl border px-2 py-4 text-sm font-bold",duration===min?"border-[#9565ED] bg-[#F2EAFE] text-[#754BCC]":"border-[#DAE2F0] bg-white")}>{min} min{min===20&&<span className="mt-1 block text-[10px] font-medium">Standard</span>}</button>)}</div></div>
        </>}
        {error&&<p role="alert" className="mt-5 text-sm font-medium text-red-700">{error}</p>}
-       <div className="mt-9 flex flex-wrap items-center justify-between gap-3 border-t border-[#E1E7F3] pt-6"><button type="button" onClick={()=>{if(step===0)router.push("/dashboard");else setStep(s=>s-1);setError("");}} className="preparation-glass-secondary inline-flex min-h-12 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold"><ArrowLeft size={17}/> Retour</button><button type="button" onClick={advance} disabled={!valid} className="preparation-glass-primary inline-flex min-h-12 items-center gap-2 rounded-2xl px-6 text-sm font-bold text-white ">{step===2?"Vérifier ma configuration":"Valider et continuer"}<ArrowRight size={17}/></button></div>
+       <div className="mt-9 flex flex-wrap items-center justify-between gap-3 border-t border-[#E1E7F3] pt-6"><button type="button" onClick={()=>{if(step===0)router.push("/dashboard");else if(roleplaySource&&step===1)router.push("/roleplays");else setStep(s=>s-1);setError("");}} className="preparation-glass-secondary inline-flex min-h-12 items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold"><ArrowLeft size={17}/> Retour</button><button type="button" onClick={advance} disabled={!valid} className="preparation-glass-primary inline-flex min-h-12 items-center gap-2 rounded-2xl px-6 text-sm font-bold text-white ">{step===2?"Vérifier ma configuration":"Valider et continuer"}<ArrowRight size={17}/></button></div>
       </motion.section>:
       <motion.section key="recap" initial={reduced?false:{opacity:0,y:20}} animate={{opacity:1,y:0}} className={surface+" mt-4"}>
        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.15em] text-[#21856A]"><Check size={17}/> Configuration terminée</div><h2 className="mt-4 text-2xl font-bold">Tout est prêt pour votre simulation.</h2>
