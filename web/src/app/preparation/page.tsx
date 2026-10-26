@@ -37,6 +37,7 @@ export default function PreparationPage() {
  const [error,setError]=useState("");
  const [complete,setComplete]=useState(false);
  const currentRef=useRef<HTMLDivElement>(null);
+ useEffect(()=>{const params=new URLSearchParams(window.location.search);if(!["interview","academy"].includes(params.get("source")||""))return;const role=(params.get("job")||"").trim().slice(0,120);if(role)setJob(role);const family=params.get("family");if(family==="rh"||family==="technical")setKind(family);},[]);
 
  useEffect(()=>{let mounted=true;async function load(){
   try{const client=getAuthClient();if(!client)throw new Error("Supabase non configuré");
