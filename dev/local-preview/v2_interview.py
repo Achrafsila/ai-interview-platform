@@ -8,6 +8,7 @@ import threading
 import time
 from conversation_strategy import choose_move, choose_topic
 from evidence_memory import extract_candidate_claims, evidence_references
+from semantic_evidence import extract_with_provider
 
 class V2InterviewLab:
     def __init__(self, provider, interpreter, question_references=None):
@@ -126,9 +127,15 @@ class V2InterviewLab:
                 feedback = self.provider.feedback(
                     transcript=proposed["history"], locale=state["locale"],
                     family=state["family"], goals=[])
+                try:
+                    observations = extract_with_provider(self.provider, proposed["history"],
+                                                         proposed["competencies"], proposed["job_title"])
+                except Exception:
+                    observations = []
                 del self.sessions[sid]
                 return {"completed": True, "transcript": proposed["history"],
-                        "feedback": feedback, "evidence_references": evidence_references(proposed["history"]),
+                        "feedback": feedback, "semantic_observations": observations,
+                        "evidence_references": evidence_references(proposed["history"]),
                         "evaluated": False, "persisted": False,
                         "draft_preview": True, "engine": "conversation_v2"}
             # Commit only after successful provider response; retry leaves session intact.
