@@ -87,6 +87,21 @@ export async function POST(request:NextRequest){
   const gaps=["Segmentez les départs par équipe, ancienneté et type de fonction : une moyenne globale peut masquer les poches de risque.","Explorez aussi les trajectoires de carrière, le management et la charge de travail avant d'attribuer le turnover à la rémunération."];
   return response({kind:"answer",practiceFeedback:true,reply:["## Votre feedback · Diagnostic HRBP","### Les bons réflexes",...observed.map(x=>`- ${x}`),"### Pour renforcer votre diagnostic",...gaps.map(x=>`- ${x}`),"### Approche à présenter au directeur","Je commencerais par segmenter le turnover et confronter trois sources : données RH, retours qualitatifs des départs et comparaison au marché. Je testerais plusieurs hypothèses avant de prioriser les mesures correctives."].join("\n\n"),question:"Le directeur confirme que les salaires sont alignés sur le marché, mais plusieurs entretiens de départ évoquent un manque de perspectives d'évolution. Quelle action lanceriez-vous en premier, et comment mesureriez-vous son efficacité ?"});
  }
+ // Generate a grounded interview case for other roles using the existing Groq provider.
+ // The HRBP pilot remains available as a deterministic fallback above.
+ if(requestsCase&&!/\bhrbp\b|hr business partner|human resources business partner/.test(contextFromUser)){
+  const key=process.env.GROQ_API_KEY;
+  if(key){try{
+   const upstream=await fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${key}`},body:JSON.stringify({model:process.env.ACADEMY_AI_MODEL||"openai/gpt-oss-120b",temperature:0.25,max_tokens:520,response_format:{type:"json_object"},messages:[{role:"system",content:"Tu es un recruteur expérimenté. Construis un court case study crédible adapté STRICTEMENT au poste explicitement indiqué dans les messages du candidat. Si aucun poste n'est connu, renvoie {\"role\":\"\",\"scenario\":\"\",\"question\":\"\"}. Sinon, réponds uniquement en JSON avec role (intitulé du poste connu), scenario (80 à 135 mots maximum: rôle, situation fictive, contrainte, données de départ; pas de solution, ni méthode, ni résultat inventé comme vrai), question (UNE question de décision pertinente à adresser au candidat, sans indice de correction). Ne suppose aucune expérience du candidat. Évite une liste de consignes et un devoir écrit. La langue est celle de la conversation."},{role:"user",content:contextFromUser.slice(-1400)}]}),signal:AbortSignal.timeout(14000),cache:"no-store"});
+   if(upstream.ok){const output=await upstream.json() as {choices?:{message?:{content?:string}}[]};const parsed=JSON.parse(output.choices?.[0]?.message?.content||"null") as {role?:unknown;scenario?:unknown;question?:unknown}|null;
+    const role=typeof parsed?.role==="string"?parsed.role.trim().slice(0,90):"";
+    const scenario=typeof parsed?.scenario==="string"?parsed.scenario.trim().slice(0,1000):"";
+    const question=typeof parsed?.question==="string"?parsed.question.trim().slice(0,300):"";
+    if(role.length>=3&&scenario.length>=90&&question.length>=20&&question.includes("?"))return response({kind:"answer",reply:`## Cas pratique · ${role}\n\n${scenario}\n\nNous avançons une décision à la fois, et j'adapterai la suite à votre raisonnement.`,question});
+   }
+  }catch{console.warn("Academy case generation unavailable");}}
+  return response({kind:"clarify",understanding:"Je peux construire une mise en situation adaptée à votre métier.",question:"Quel poste précis préparez-vous pour cet entretien ?",options:[]});
+ }
  const practice=scopedPractice([...earlierTurns,...history].slice(-40));
  if(practice)return response({kind:"answer",...practice});
  // Interactive coaching: assess the actual candidate answer before offering another exercise.
