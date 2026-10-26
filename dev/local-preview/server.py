@@ -308,6 +308,8 @@ def make_handler(questions: list[dict], sessions: dict, lock: threading.RLock):
                     return self._send(response, 201)
                 except (LabValidationError, ValueError, TypeError) as exc:
                     return self._send({"error": str(exc)}, 400)
+                except AIUnavailableError as exc:
+                    return self._send({"error": str(exc)}, 502)
             if url.path == "/api/ai/session/answer":
                 if not ai_provider.api_key:
                     return self._send({"error": "OPENAI_API_KEY non configurée sur ce serveur local."}, 503)
