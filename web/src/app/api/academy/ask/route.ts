@@ -122,7 +122,7 @@ export async function POST(request:NextRequest){
     if((strengths.length||gaps.length)&&improved){
      const skill=typeof feedback.skill==="string"&&validKeys.has(feedback.skill)?feedback.skill:"";
      let suggestedPath:null|{pathId:string;pathTitle:string;exerciseId:string;exerciseName:string}=null;
-     if(feedback.needsTraining===true&&skill&&gaps.length){const selection=synthesizeLearningNeeds([contextQuestion,candidateAnswer],[skill]);if(selection.steps.length){const plan=makeRecommendation(selection,"Axes d'amélioration identifiés dans une réponse d'entraînement.");const saved=await savePlan(client,user.id,plan,"ai-ld");if(saved)suggestedPath={pathId:plan.pathId,pathTitle:plan.pathTitle,exerciseId:plan.exerciseId,exerciseName:plan.exerciseName};}}
+     if(feedback.needsTraining===true&&skill&&gaps.length){const selection=synthesizeLearningNeeds([contextQuestion,candidateAnswer],[skill]);if(selection.steps.length){const plan=makeRecommendation(selection,"Axes d'amélioration identifiés dans une réponse d'entraînement.");suggestedPath={pathId:plan.pathId,pathTitle:plan.pathTitle,exerciseId:plan.exerciseId,exerciseName:plan.exerciseName};}}
      return response({kind:"answer",reply:["## Votre feedback personnalisé",strengths.length?"### Ce qui fonctionne\n"+strengths.map(x=>`- ${x}`).join("\n"):"",gaps.length?"### À renforcer\n"+gaps.map(x=>`- ${x}`).join("\n"):"","### Exemple de réponse améliorée\n"+improved].filter(Boolean).join("\n\n"),question:nextQuestion||undefined,practiceFeedback:true,suggestedPath});
     }
    }
