@@ -1,3 +1,4 @@
+import {deriveSessionState} from "./session-state";
 import {routeAcademyTurn} from "./orchestrator";
 import {goalContext,trackGoals} from "./goal-tracker";
 import {prepareCoachingMemory} from "./memory";
@@ -65,6 +66,7 @@ export async function POST(request:NextRequest){
  const goalTimeline=trackGoals([...(Array.isArray(savedConversation?.turns)?savedConversation.turns:[]),...history].slice(-40));
  const earlierTurns=Array.isArray(savedConversation?.turns)?savedConversation.turns.filter((turn):turn is Turn=>!!turn&&typeof turn==="object"&&"role" in turn&&"content" in turn&&(turn.role==="user"||turn.role==="assistant")&&typeof turn.content==="string"):[];
  // Start a scoped case as an interview, not a worksheet or a pre-written answer.
+ const sessionState=deriveSessionState(history.slice(0,-1));
  const routing=routeAcademyTurn(history);
  const normalizedLatest=last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
  const contextFromUser=[...earlierTurns,...history].filter(t=>t.role==="user").map(t=>t.content).join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
@@ -103,7 +105,7 @@ export async function POST(request:NextRequest){
  if(practice)return response({kind:"answer",...practice});
  // Interactive coaching: assess the actual candidate answer before offering another exercise.
  const latestAssistant=[...history.slice(0,-1)].reverse().find(t=>t.role==="assistant")?.content||"";
- const inCaseStudy=routing.activeCase;
+ const inCaseStudy=routing.activeCase||sessionState.mode==="case";
  const lastAssistantQuestion=latestAssistant.trim().endsWith("?");
  const isPracticeAnswer=(/(a vous de jouer|mini-cas|etape 1|et pourquoi|quelle action|repondez comme|votre reponse|mise en situation|quelles sont vos premieres questions|quelles donnees demanderiez)/i.test(latestAssistant.normalize("NFD").replace(/[\u0300-\u036f]/g,""))||(inCaseStudy&&lastAssistantQuestion)) && !/^(je veux|je souhaite|donne.moi|propose|passons|nouvel exercice)/i.test(last.content.trim());
  const normalizedCandidate=last.content.trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();

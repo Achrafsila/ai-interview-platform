@@ -1,3 +1,4 @@
+import {deriveSessionState} from "@/app/api/academy/ask/session-state";
 import {trackGoals} from "@/app/api/academy/ask/goal-tracker";
 import {NextRequest,NextResponse} from "next/server";
 import {getServerAuthClient} from "@/lib/supabase-server";
@@ -14,7 +15,7 @@ async function authorize(){
 export async function GET(){const auth=await authorize();if(!auth)return json({error:"Accès non autorisé."},401);
  const {data,error}=await auth.client.from("academy_conversations").select("turns,diagnostic,updated_at").eq("user_id",auth.user.id).maybeSingle();
  if(error)return json({error:"Historique indisponible."},503);
- return json({turns:data?.turns||[],diagnostic:data?.diagnostic||null,updatedAt:data?.updated_at||null});
+ return json({turns:data?.turns||[],session:data?.diagnostic&&typeof data.diagnostic==="object"&&"session" in data.diagnostic?data.diagnostic.session:deriveSessionState(Array.isArray(data?.turns)?data.turns as Turn[]:[]),diagnostic:data?.diagnostic||null,updatedAt:data?.updated_at||null});
 }
 export async function PUT(request:NextRequest){const origin=request.headers.get("origin");if(origin&&origin!==request.nextUrl.origin)return json({error:"Origine interdite."},403);
  const auth=await authorize();if(!auth)return json({error:"Accès non autorisé."},401);
@@ -23,7 +24,8 @@ export async function PUT(request:NextRequest){const origin=request.headers.get(
  const {turns,diagnostic} = body as {turns?:unknown;diagnostic?:unknown};
  if(!Array.isArray(turns)||turns.length>20||turns.some((t:Turn)=>!t||!["user","assistant"].includes(t.role)||typeof t.content!=="string"||t.content.length>(t.role==="user"?5000:2500)))return json({error:"Historique invalide."},400);
  const timeline=trackGoals(turns);
- const safeDiagnostic={phase:diagnostic&&typeof diagnostic==="object"&&"phase" in diagnostic&&["exploration","coaching","training"].includes(String(diagnostic.phase))?diagnostic.phase:"exploration",timeline};
+ const session=deriveSessionState(turns as Turn[]);
+ const safeDiagnostic={session,phase:diagnostic&&typeof diagnostic==="object"&&"phase" in diagnostic&&["exploration","coaching","training"].includes(String(diagnostic.phase))?diagnostic.phase:"exploration",timeline};
  const {error}=await auth.client.from("academy_conversations").upsert({user_id:auth.user.id,turns,diagnostic:safeDiagnostic,updated_at:new Date().toISOString()},{onConflict:"user_id"});
  if(error)return json({error:"Sauvegarde indisponible."},503);
  return json({saved:true});
