@@ -127,6 +127,17 @@ export default function InterviewPage(){
   const sequence=voiceSequence.current;
   setState("speaking");
   setVoiceNotice("Chargement de la voix…");
+  // Production-safe browser TTS: localhost-only audio service is not available on Vercel.
+  if("speechSynthesis" in window && "SpeechSynthesisUtterance" in window){
+   const utterance=new SpeechSynthesisUtterance(text);
+   utterance.lang=locale==="en"?"en-US":"fr-FR";
+   utterance.rate=0.98;
+   utterance.onstart=()=>{if(sequence===voiceSequence.current){setQuestionReveal(total);setVoiceNotice("");}};
+   utterance.onend=()=>{if(sequence===voiceSequence.current){setState("listening");setVoiceNotice("");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}};
+   utterance.onerror=()=>{if(sequence===voiceSequence.current){setQuestionReveal(total);setState("listening");setVoiceNotice("Audio navigateur indisponible, vous pouvez répondre par écrit.");}};
+   window.speechSynthesis.cancel();window.speechSynthesis.speak(utterance);
+   return;
+  }
   const url="/api/interview/tts?"+new URLSearchParams({text,locale}).toString();
   const audio=new Audio();
   audio.preload="auto";
