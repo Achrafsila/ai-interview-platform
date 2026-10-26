@@ -74,6 +74,15 @@ export async function POST(request:NextRequest){
  const followup=userTurns.length===1&&/^(et\b|et pour\b|aussi\b|en plus\b|egalement\b|ajoute\b)/i.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim());
  const {data:previous}=followup?await client.from("academy_learning_plans").select("needs,context").eq("user_id",user.id).maybeSingle():{data:null};
  const oldKeys=Array.isArray(previous?.needs)?previous.needs.flatMap((entry:unknown)=>typeof entry==="object"&&entry!==null&&"key" in entry&&typeof entry.key==="string"&&validKeys.has(entry.key)?[entry.key]:[]):[];
+ // A request for documentation or a pathway is a catalog lookup, not permission to invent publications.
+ const asksResources=/(documentation|documents?|ressources?|guides?|pdf|supports?|parcours|formations?)/.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase())&&/(suivre|dans ce sens|pour (cela|ca|preparer|travailler)|as.tu|avez.vous|y.a.t.il|propos)/.test(last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase());
+ if(asksResources){
+  const context=history.filter(t=>t.role==="user").map(t=>t.content).join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  const subject=/(mise en situation|cas pratique|etude de cas)/.test(context)?"structure":null;
+  const selected=synthesizeLearningNeeds(userTurns,subject?[subject]:undefined);
+  if(selected.steps.length){const plan=makeRecommendation(selected,"Préparation avec des exercices disponibles dans Academy.");const saved=await savePlan(client,user.id,plan,"rules");return response({...plan,understanding:"Je vous propose un parcours fondé sur les exercices réellement disponibles dans Academy. Je ne peux pas confirmer l'existence de documents externes sans référence vérifiée.",source:"rules",saved});}
+  return response({kind:"answer",reply:"Je peux vous accompagner avec des exercices Academy, mais je n'ai pas trouvé de parcours suffisamment précis pour votre demande. Je ne vais pas vous présenter des documents non vérifiés comme s'ils étaient disponibles.",question:"Quel type de mise en situation souhaitez-vous préparer ?"});
+ }
  const currentKeys=synthesizeLearningNeeds(userTurns).needs.map(n=>n.key);
  const fallback=synthesizeLearningNeeds(userTurns,[...currentKeys,...oldKeys]);
  // Explicit exercise requests with an identified need do not need another LLM decision.
