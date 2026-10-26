@@ -1,3 +1,4 @@
+import {routeAcademyTurn} from "./orchestrator";
 import {goalContext,trackGoals} from "./goal-tracker";
 import {prepareCoachingMemory} from "./memory";
 import {allowRecommendation,buildDiagnostic,type Extraction} from "./diagnostic";
@@ -64,9 +65,10 @@ export async function POST(request:NextRequest){
  const goalTimeline=trackGoals([...(Array.isArray(savedConversation?.turns)?savedConversation.turns:[]),...history].slice(-40));
  const earlierTurns=Array.isArray(savedConversation?.turns)?savedConversation.turns.filter((turn):turn is Turn=>!!turn&&typeof turn==="object"&&"role" in turn&&"content" in turn&&(turn.role==="user"||turn.role==="assistant")&&typeof turn.content==="string"):[];
  // Start a scoped case as an interview, not a worksheet or a pre-written answer.
+ const routing=routeAcademyTurn(history);
  const normalizedLatest=last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
  const contextFromUser=[...earlierTurns,...history].filter(t=>t.role==="user").map(t=>t.content).join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
- const requestsCase=/^(?:un |une )?(?:use case|case study|etude de cas|cas pratique|mise en situation|scenario)(?:\s+(?:rh|hrbp))?[.!? ]*$/.test(normalizedLatest)||/^je souhaite travailler\s*:\s*(?:etude de cas|use case|case study|mise en situation|cas pratique)/.test(normalizedLatest);
+ const requestsCase=routing.intent==="case_start";
  if(requestsCase&&/\bhrbp\b|hr business partner|human resources business partner/.test(contextFromUser))return response({kind:"answer",reply:"## Cas pratique · HR Business Partner\n\n**Votre rôle :** vous êtes HRBP d'une Business Unit de 600 collaborateurs. Le directeur vous alerte : le turnover volontaire a atteint **18 % sur douze mois**, particulièrement parmi les managers intermédiaires. Il estime que les rémunérations sont la cause principale, mais aucune analyse n'a encore été réalisée.\n\n**Votre enjeu :** conduire un diagnostic crédible et recommander des actions alignées avec les priorités business. Vous êtes en réunion avec le directeur de la BU.\n\nNous avançons comme dans un entretien : une décision à la fois, avec un retour sur votre raisonnement avant de poursuivre.",question:"Vous avez dix minutes pour démarrer cet échange. Quelles sont vos premières questions au directeur, et quelles données demanderiez-vous pour vérifier son hypothèse ?"});
  // Grounded, deterministic first-turn feedback for the HRBP turnover case.
  // No provider dependency: the candidate must always receive actionable coaching.
@@ -101,12 +103,12 @@ export async function POST(request:NextRequest){
  if(practice)return response({kind:"answer",...practice});
  // Interactive coaching: assess the actual candidate answer before offering another exercise.
  const latestAssistant=[...history.slice(0,-1)].reverse().find(t=>t.role==="assistant")?.content||"";
- const inCaseStudy=history.some(turn=>turn.role==="assistant"&&/cas pratique|case study|mise en situation/i.test(turn.content));
+ const inCaseStudy=routing.activeCase;
  const lastAssistantQuestion=latestAssistant.trim().endsWith("?");
  const isPracticeAnswer=(/(a vous de jouer|mini-cas|etape 1|et pourquoi|quelle action|repondez comme|votre reponse|mise en situation|quelles sont vos premieres questions|quelles donnees demanderiez)/i.test(latestAssistant.normalize("NFD").replace(/[\u0300-\u036f]/g,""))||(inCaseStudy&&lastAssistantQuestion)) && !/^(je veux|je souhaite|donne.moi|propose|passons|nouvel exercice)/i.test(last.content.trim());
  const normalizedCandidate=last.content.trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
  const isScenarioSelection=/^Je choisis ce scénario\s*:/i.test(last.content.trim())||last.content.trim().split(/\s+/).length<=8&&!/[.!?;:]/.test(last.content)&&!/\b(je|nous|j.ai|nous avons|parce que|car|afin de|ensuite|d.abord)\b/i.test(normalizedCandidate);
- if(isPracticeAnswer&&last.content.trim().length>=35&&!isScenarioSelection){
+ if((routing.intent==="case_answer"||isPracticeAnswer&&routing.intent==="conversation")&&last.content.trim().length>=35&&!isScenarioSelection){
   const candidateAnswer=last.content.trim();
   const contextQuestion=latestAssistant.slice(-1400);
   const key=process.env.GROQ_API_KEY;
@@ -133,7 +135,7 @@ export async function POST(request:NextRequest){
  const lastNormalized=last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
  // Explicit resource requests must never be answered with fabricated external titles or files.
  const asksResources=/\b(supports?|ressources?|documentation|documents?|guides?|pdf|livres?|lectures?|articles?|videos?|podcasts?)\b/.test(lastNormalized)&&(/\b(aider|utile|preparer|pour|avoir|proposer|disponible|trouver|conseiller|auriez|avez|as.tu|aurez|pourrais|peux.tu)\b/.test(lastNormalized)||lastNormalized.trim().split(/\s+/).length<=6);
- if(asksResources){
+ if(routing.intent==="resources"&&asksResources){
   const earlierContext=[...earlierTurns,...history].filter(t=>t.role==="user").map(t=>t.content).join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   const hrbp=/\bhrbp\b|hr business partner/.test(earlierContext);
   return response({kind:"answer",reply:hrbp?"## Supports pour préparer votre entretien HRBP\n\n### Fiches de travail disponibles dans cette conversation\n- **Fiche métier HRBP** : missions stratégiques, dialogue avec les opérationnels, mobilité, rétention et conduite du changement.\n- **Trame d'analyse d'un cas RH** : problème business, hypothèses, données à vérifier, recommandations et indicateurs.\n- **Grille d'entretien** : questions sur le partenariat business, l'influence, les indicateurs RH et le pilotage d'un plan d'action.\n\nJe peux construire ces supports de préparation avec vous et vous orienter vers les exercices du catalogue Academy. Je ne prétends pas qu'il s'agit de PDF déjà publiés. Je ne cite aucun ouvrage, article ou lien externe comme vérifié sans source contrôlée.":"## Supports de préparation\n\nJe peux vous aider à créer une fiche métier, une trame de case study et une grille de questions adaptées au poste préparé. Les exercices du catalogue Academy peuvent compléter ce travail. Aucun PDF, ouvrage ou lien externe n'est présenté comme vérifié sans source contrôlée.",question:hrbp?"Souhaitez-vous commencer par une fiche métier HRBP synthétique ou une grille de questions d'entretien ?":"Quel support souhaitez-vous construire en premier : fiche métier, trame d'étude de cas ou questions d'entretien ?"});
@@ -143,7 +145,7 @@ export async function POST(request:NextRequest){
  // Explicit exercise requests with an identified need do not need another LLM decision.
  // A replacement goal uses the last message; a continuation may preserve the saved curriculum.
  const normalizedTraining=last.content.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
- if(/exercic|entrain|simulation|atelier/.test(normalizedTraining)){
+ if(routing.intent==="training"&&/exercic|entrain|simulation|atelier/.test(normalizedTraining)){
   const replaceGoal=/\b(finalement|uniquement|seulement|desormais|plutot)\b/.test(normalizedTraining);
   const selected=replaceGoal?synthesizeLearningNeeds([last.content]):fallback;
   const scope=buildDiagnostic(history,undefined,selected.needs.map(n=>n.key),true);
