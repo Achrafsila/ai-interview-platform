@@ -27,10 +27,10 @@ async function ready(url,tries=30){for(let i=0;i<tries;i++){try{const r=await fe
   await new Promise((resolve,reject)=>{ws.addEventListener('open',resolve,{once:true});ws.addEventListener('error',reject,{once:true})});
   ws.addEventListener('message',event=>{const msg=JSON.parse(event.data);const item=pending.get(msg.id);if(item){pending.delete(msg.id);msg.error?item.reject(Error(msg.error.message)):item.resolve(msg.result)}});
   function send(method,params={}){const id=++seq;return new Promise((resolve,reject)=>{pending.set(id,{resolve,reject});ws.send(JSON.stringify({id,method,params}))})}
-  async function navigate(route){await send('Page.navigate',{url:'http://localhost:3000'+route});await delay(3300)}
+  async function navigate(route){await send('Page.navigate',{url:(process.env.ACADEMY_TEST_ORIGIN||'http://localhost:3000')+route});await delay(3300)}
   async function evalText(expression){const r=await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});return r.result?.value}
   await send('Network.enable');await send('Page.enable');await send('Runtime.enable');
-  await send('Network.setCookies',{cookies:[...cookies].map(([name,value])=>({name,value,url:'http://localhost:3000',path:'/'}))});
+  await send('Network.setCookies',{cookies:[...cookies].map(([name,value])=>({name,value,url:(process.env.ACADEMY_TEST_ORIGIN||'http://localhost:3000'),path:'/'}))});
   await navigate('/exercises');
   check('Academy page rendered',await evalText("Boolean(document.querySelector('[aria-label=\"Demander à mon coach Academy\"]'))"));
   check('Restored transcript visible in browser',await evalText('document.body.innerText.includes("reprise Academy QA")'));
