@@ -121,6 +121,7 @@ export default function InterviewPage(){
 
  useEffect(()=>{const t=setInterval(()=>{if(sessionRef.current)setElapsed(s=>s+1)},1000);return()=>clearInterval(t)},[]);
  useEffect(()=>{sessionRef.current=["speaking","listening","thinking"].includes(state);},[state]);
+ useEffect(()=>{if(state==="listening"||state==="paused"||state==="done"||state==="error"){setVoiceNotice(previous=>previous==="Chargement de la voix…"?"":previous);}},[state]);
  useEffect(()=>()=>{recognition.current?.stop();questionAudio.current?.pause();if(questionAudioUrl.current)URL.revokeObjectURL(questionAudioUrl.current);window.speechSynthesis?.cancel();if(introInterval.current)clearInterval(introInterval.current);if(introTransitionTimer.current)clearTimeout(introTransitionTimer.current);introAudio.current?.pause();if(silenceTimer.current)clearTimeout(silenceTimer.current);},[]);
  function speak(text:string,locale:string){
   stopDictation();stopQuestionAudio();setQuestionReveal(0);
@@ -371,7 +372,7 @@ export default function InterviewPage(){
   if(state==="speaking"){questionAudio.current?.pause();if("speechSynthesis" in window)window.speechSynthesis.pause();}
   setState("paused");
  }
- function interrupt(){setQuestionReveal(segmentInterviewerText(result?.question?.prompt||"").length);stopQuestionAudio();window.speechSynthesis?.cancel();setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}
+ function interrupt(){setQuestionReveal(segmentInterviewerText(result?.question?.prompt||"").length);stopQuestionAudio();window.speechSynthesis?.cancel();setVoiceNotice("");setState("listening");if(handsFreeRef.current)queueMicrotask(()=>autoListenRef.current());}
  const question=result?.question?.prompt;
  if(!configChecked || (config&&state==="ready"&&introStage==="none"))return <main role="status" className="flex min-h-dvh items-center justify-center bg-[#0C1436] text-sm font-semibold text-[#B8C8E8]">Préparation de votre entretien…</main>;
  if(introStage!=="none")return <main className="interview-intro-v3 relative flex min-h-dvh items-center justify-center overflow-hidden bg-[#FAFAFF] px-5 py-12 text-[#1C2850]">
