@@ -20,15 +20,35 @@ export default function VoiceLab(){
  const kokoroSample=`/voice-lab/kokoro-${scenario}.wav`;
  const audioRef=useRef<HTMLAudioElement|null>(null);
  const urlRef=useRef<string|null>(null);
+ const speechTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+ const speechRun=useRef(0);
+ const utteranceRef=useRef<SpeechSynthesisUtterance|null>(null);
  useEffect(()=>{
   const update=()=>{if(!('speechSynthesis' in window))return;const found=window.speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().startsWith('fr'));setVoices(found);setVoiceURI(prev=>prev&&found.some(v=>v.voiceURI===prev)?prev:(found[0]?.voiceURI||''));};
   update();if('speechSynthesis' in window)window.speechSynthesis.addEventListener('voiceschanged',update);
   return()=>{window.speechSynthesis?.cancel();window.speechSynthesis?.removeEventListener('voiceschanged',update);};
  },[]);
  useEffect(()=>()=>{if(urlRef.current)URL.revokeObjectURL(urlRef.current);},[]);
- const stop=()=>{window.speechSynthesis?.cancel();audioRef.current?.pause();setKokoroState('idle');setNotice('Lecture arrêtée.');};
+ const stop=()=>{speechRun.current++;if(speechTimer.current)clearTimeout(speechTimer.current);speechTimer.current=null;utteranceRef.current=null;window.speechSynthesis?.cancel();audioRef.current?.pause();setKokoroState('idle');setNotice('Lecture arrêtée.');};
  const playKokoro=async()=>{const audio=audioRef.current;if(!audio){setNotice('Lecteur audio indisponible.');return;}window.speechSynthesis?.cancel();setKokoroState('idle');setNotice('Ouverture de la lecture Kokoro…');try{audio.load();await audio.play();setKokoroState('playing');setNotice('Lecture Kokoro en cours.');}catch{setKokoroState('error');setNotice('La lecture Kokoro est bloquée sur ce navigateur. Utilisez « Ouvrir le fichier audio ».');}};
- const playBrowser=()=>{stop();if(!('speechSynthesis' in window)){setNotice('Synthèse native indisponible.');return;}const utterance=new SpeechSynthesisUtterance(samples[scenario]);utterance.lang='fr-FR';utterance.rate=speed;utterance.voice=voices.find(v=>v.voiceURI===voiceURI)||null;utterance.onstart=()=>setNotice('Lecture de la voix du navigateur.');utterance.onend=()=>setNotice('Lecture terminée.');utterance.onerror=()=>setNotice('Lecture indisponible sur ce navigateur.');window.speechSynthesis.speak(utterance);};
+ const playBrowser=()=>{
+  stop();
+  if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){setNotice('Ce navigateur ne prend pas en charge la synthèse vocale.');return;}
+  const engine=window.speechSynthesis;
+  const id=++speechRun.current;
+  const available=engine.getVoices();
+  const selected=available.find(v=>v.voiceURI===voiceURI)||available.find(v=>v.lang.toLowerCase().startsWith('fr'));
+  const utterance=new SpeechSynthesisUtterance(samples[scenario]);
+  utteranceRef.current=utterance;
+  utterance.lang=selected?.lang||'fr-FR';utterance.rate=speed;utterance.voice=selected||null;
+  const finish=(message:string)=>{if(id!==speechRun.current)return;if(speechTimer.current)clearTimeout(speechTimer.current);speechTimer.current=null;setNotice(message);};
+  utterance.onstart=()=>finish(`Lecture en cours : ${selected?.name||'voix système'}.`);
+  utterance.onend=()=>finish('Lecture terminée.');
+  utterance.onerror=e=>finish(`Voix du navigateur indisponible (${e.error||'erreur inconnue'}). Testez une autre voix ou utilisez Kokoro.`);
+  setNotice('Initialisation de la voix du navigateur…');
+  speechTimer.current=setTimeout(()=>{if(id!==speechRun.current||engine.speaking)return;finish('La synthèse vocale ne démarre pas. Vérifiez les voix installées sur votre appareil ou utilisez Kokoro.');engine.cancel();},6000);
+  try{engine.resume();engine.speak(utterance);}catch{finish('Impossible de lancer la voix du navigateur. Kokoro reste disponible.');}
+ };
  const onFile=(file?:File)=>{if(!file)return;if(!['audio/wav','audio/x-wav','audio/mpeg','audio/mp3'].includes(file.type)&&!(/\.(wav|mp3)$/i.test(file.name))){setNotice('Importez uniquement un fichier WAV ou MP3.');return;}if(file.size>12*1024*1024){setNotice('Fichier trop volumineux (12 Mo maximum).');return;}stop();if(urlRef.current)URL.revokeObjectURL(urlRef.current);const url=URL.createObjectURL(file);urlRef.current=url;setClip(url);setFilename(file.name);setNotice('Échantillon chargé localement, sans envoi au serveur.');};
  return <main className="min-h-dvh bg-[#F5F4FD] px-5 py-9 text-[#1A2545] sm:px-10"><div className="mx-auto max-w-4xl"><Link href="/dashboard" className="inline-flex items-center gap-2 text-sm text-[#6653DC]"><ArrowLeft size={16}/> Tableau de bord</Link><div className="mt-8 flex items-center gap-3"><span className="rounded-2xl bg-[#EDE8FF] p-3 text-[#6B51DD]"><AudioLines/></span><div><p className="text-xs font-semibold uppercase tracking-[.2em] text-[#7656C9]">InterviewLab · Prototype</p><h1 className="text-3xl font-semibold">Voice Lab</h1></div></div><p className="mt-4 max-w-2xl leading-7 text-[#61708E]">Comparez une voix française du navigateur et un fichier audio généré hors ligne avec Kokoro. Aucun abonnement ElevenLabs, aucun téléchargement du modèle dans votre entretien.</p>
  <div className="mt-7 rounded-[26px] border border-[#DDDDF0] bg-white p-6 shadow-sm"><label htmlFor="scenario" className="text-sm font-semibold">Scénario RH</label><select id="scenario" value={scenario} onChange={e=>{stop();setScenario(e.target.value as Sample);setClip(null);setFilename("");setKokoroState("idle");}} className="mt-3 w-full rounded-xl border border-[#CFCFE6] bg-white p-3"><option value="intro">Introduction</option><option value="relance">Relance contextuelle</option><option value="situation">Mise en situation</option></select><p className="mt-4 rounded-2xl bg-[#F5F4FD] p-5 leading-8">{samples[scenario]}</p></div>
