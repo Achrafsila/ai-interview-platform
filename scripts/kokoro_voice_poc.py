@@ -1,6 +1,8 @@
 """Generate one French Kokoro speech sample locally (never a Vercel endpoint).
 
-Requirements (Python 3.10+): pip install kokoro soundfile
+Requirements: use a Python version supported by the Kokoro and Misaki packages
+(for example Python 3.11 with compatible releases), then pip install kokoro soundfile.
+Python 3.13 on the current Mac failed dependency resolution during this POC.
 System phonemizer: install espeak-ng (e.g. brew install espeak-ng).
 Run: python scripts/kokoro_voice_poc.py intro
 Output: local file under /tmp, upload it in /dev/voice-lab.
