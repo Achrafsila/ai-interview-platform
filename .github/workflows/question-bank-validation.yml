@@ -57,7 +57,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
       - name: Configure Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Validate 120 question drafts and rubrics
@@ -157,7 +157,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Install pinned Playwright browser runtime
